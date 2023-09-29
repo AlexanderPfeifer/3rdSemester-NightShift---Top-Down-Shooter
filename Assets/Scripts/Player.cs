@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -10,6 +7,8 @@ public class Player : MonoBehaviour
     private SpriteRenderer sr;
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private GameInput gameInput;
+    [SerializeField] private PlayerChildObjectMovement playerChildObjectMovement;
+    
 
     private void Start()
     {
@@ -24,6 +23,11 @@ public class Player : MonoBehaviour
 
     private void HandleMovement()
     {
-        rb.velocity = gameInput.GetMovementVectorNormalized() * moveSpeed;
+        rb.AddForce(new Vector2(gameInput.GetMovementVectorNormalized().x, gameInput.GetMovementVectorNormalized().y) * moveSpeed, ForceMode2D.Force);
+    }
+
+    public void HandleShooting(InputAction.CallbackContext context)
+    {
+
     }
 }
