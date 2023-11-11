@@ -38,7 +38,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""aiming"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""bf4279fd-da55-42b1-b9bb-c614de0b418d"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -49,6 +49,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""shoot"",
                     ""type"": ""Button"",
                     ""id"": ""ab4f16cf-1f8f-47d1-b90e-78714f4a9005"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""88c9602f-6ee3-478c-bb85-98165776752a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -154,6 +163,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9df5376b-57ce-4f3c-a2bb-0d56fc161f3d"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -165,6 +185,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_player_move = m_player.FindAction("move", throwIfNotFound: true);
         m_player_aiming = m_player.FindAction("aiming", throwIfNotFound: true);
         m_player_shoot = m_player.FindAction("shoot", throwIfNotFound: true);
+        m_player_pause = m_player.FindAction("pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,6 +250,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_player_move;
     private readonly InputAction m_player_aiming;
     private readonly InputAction m_player_shoot;
+    private readonly InputAction m_player_pause;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -236,6 +258,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @move => m_Wrapper.m_player_move;
         public InputAction @aiming => m_Wrapper.m_player_aiming;
         public InputAction @shoot => m_Wrapper.m_player_shoot;
+        public InputAction @pause => m_Wrapper.m_player_pause;
         public InputActionMap Get() { return m_Wrapper.m_player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -254,6 +277,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @shoot.started += instance.OnShoot;
             @shoot.performed += instance.OnShoot;
             @shoot.canceled += instance.OnShoot;
+            @pause.started += instance.OnPause;
+            @pause.performed += instance.OnPause;
+            @pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -267,6 +293,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @shoot.started -= instance.OnShoot;
             @shoot.performed -= instance.OnShoot;
             @shoot.canceled -= instance.OnShoot;
+            @pause.started -= instance.OnPause;
+            @pause.performed -= instance.OnPause;
+            @pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -289,5 +318,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnAiming(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

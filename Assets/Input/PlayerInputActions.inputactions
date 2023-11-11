@@ -16,7 +16,7 @@
                 },
                 {
                     "name": "aiming",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "bf4279fd-da55-42b1-b9bb-c614de0b418d",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -27,6 +27,15 @@
                     "name": "shoot",
                     "type": "Button",
                     "id": "ab4f16cf-1f8f-47d1-b90e-78714f4a9005",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "pause",
+                    "type": "Button",
+                    "id": "88c9602f-6ee3-478c-bb85-98165776752a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -130,6 +139,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9df5376b-57ce-4f3c-a2bb-0d56fc161f3d",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
