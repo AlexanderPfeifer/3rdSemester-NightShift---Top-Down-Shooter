@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuUIManager : MonoBehaviour
 {
-    public static bool GameIsPaused = false;
+    public static bool GameIsPaused;
     [SerializeField] private GameObject pauseScreen;
 
     private const string MainMenu = "MainMenu";

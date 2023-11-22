@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float bulletSpeed = 14;
-    [SerializeField] private float bulletDistanceUntilDestroy = 10;
+    private float bulletSpeed = 38;
+    private const float BulletDistanceUntilDestroy = 25;
     [SerializeField] private int bulletDamage = 1;
     private Player player;
     
@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Vector2.Distance(startPosition, transform.position) >= bulletDistanceUntilDestroy)
+        if (Vector2.Distance(startPosition, transform.position) >= BulletDistanceUntilDestroy)
         {
             Destroy(gameObject);
         }

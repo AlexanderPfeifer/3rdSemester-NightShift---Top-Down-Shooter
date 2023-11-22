@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -8,20 +10,27 @@ public class Player : MonoBehaviour
     private SpriteRenderer sr;
 
     #region Scripts
+
     [SerializeField] private GameInputManager gameInputManager;
     [SerializeField] private Bullet bulletPrefab;
     [SerializeField] private MenuUIManager menuUIManager;
-    [SerializeField] private AimAt aimAt;
+
     #endregion
 
     [SerializeField] private float moveSpeed = 7f;
-
-    private bool mouseCanAim;
     
-    private Camera mainCamera;
+    [SerializeField] private Camera mainCamera;
+    private Vector3 mousePos;
 
+    private float interactRadius;
+    private LayerMask interactionLayer;
+
+    private Vector3 weaponToMouse;
     [SerializeField] private Transform weaponPosParent;
     [SerializeField] public Transform weaponEndPoint;
+    private Transform weaponVisualStartPos;
+
+    [SerializeField] private GameObject muzzleFlashVisual;
 
     private void Start()
     {
@@ -29,19 +38,21 @@ public class Player : MonoBehaviour
         sr = GetComponentInChildren<SpriteRenderer>();
         gameInputManager.OnShootingAction += GameInputManagerOnShootingAction;
         gameInputManager.OnGamePausedAction += GameInputManagerOnGamePausedAction;
+        gameInputManager.OnInteractAction += GameInputManagerOnInteractAction;
+        muzzleFlashVisual.SetActive(false);
     }
 
     private void Update()
     {
-        if(!MenuUIManager.GameIsPaused && mouseCanAim)
+        if(!MenuUIManager.GameIsPaused)
         {
-            HandleAiming();
+            HandleAimingUpdate();
         }
     }
 
     private void FixedUpdate()
     {
-        HandleMovement();
+        HandleMovementFixedUpdate();
     }
     
     private void GameInputManagerOnShootingAction(object sender, EventArgs e)
@@ -49,10 +60,12 @@ public class Player : MonoBehaviour
         if(!MenuUIManager.GameIsPaused)
         {
             var newBullet = Instantiate(bulletPrefab, weaponEndPoint.transform.position, Quaternion.identity);
-            
-            var targetPosition = aimAt.GetMousePosition();
+
+            var targetPosition = mousePos;
             
             newBullet.Launch(this, targetPosition);
+
+            StartCoroutine(WeaponVisualCoroutine());
         }
     }
 
@@ -60,30 +73,46 @@ public class Player : MonoBehaviour
     {
         menuUIManager.PauseGame();
     }
-
-    private void HandleAiming()
+    
+    private void GameInputManagerOnInteractAction(object sender, EventArgs e)
     {
-        weaponPosParent.right = aimAt.GetMousePosition();
-        weaponEndPoint.right = aimAt.GetMousePosition();
-
-        if (weaponPosParent.eulerAngles.z is > 90 and < 270)
+        if (Physics2D.OverlapCircle(transform.position, interactRadius,  interactionLayer))
         {
-            weaponPosParent.GetComponentInChildren<SpriteRenderer>().sortingOrder = sr.sortingOrder - 1;
-        }
-        else
-        {
-            weaponPosParent.GetComponentInChildren<SpriteRenderer>().sortingOrder = sr.sortingOrder + 1;
+            
         }
     }
 
-    private void HandleMovement()
+    private void HandleAimingUpdate()
+    {
+        mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        mousePos.z = 0;
+        
+        weaponToMouse = mousePos - weaponEndPoint.transform.position;
+        
+        weaponPosParent.transform.right = weaponToMouse;
+
+        if (weaponPosParent.eulerAngles.z is > 90 and < 270)
+        {
+            weaponPosParent.GetComponentInChildren<SpriteRenderer>().sortingOrder = - 1;
+        }
+        else
+        {
+            weaponPosParent.GetComponentInChildren<SpriteRenderer>().sortingOrder = + 1;
+        }
+    }
+
+    private void HandleMovementFixedUpdate()
     {
         rb.AddForce(new Vector2(gameInputManager.GetMovementVectorNormalized().x, gameInputManager.GetMovementVectorNormalized().y) * moveSpeed, ForceMode2D.Force);
     }
 
-    public Vector2 GetPosition()
+    private IEnumerator WeaponVisualCoroutine()
     {
-        return transform.position;
+        muzzleFlashVisual.SetActive(true);
+        
+        yield return new WaitForSeconds(.1f);
+        
+        muzzleFlashVisual.SetActive(false);
     }
 
     public void SavePlayer()
@@ -103,8 +132,10 @@ public class Player : MonoBehaviour
         transform.position = position;
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    private void OnDrawGizmos()
     {
-        //mouseCanAim = !col.OverlapPoint(aimAt.GetMousePosition());
+        Gizmos.DrawRay(weaponEndPoint.transform.position, weaponToMouse);
+        
+        Gizmos.DrawWireCube(mousePos, new Vector3(1, 1, 1));
     }
 }

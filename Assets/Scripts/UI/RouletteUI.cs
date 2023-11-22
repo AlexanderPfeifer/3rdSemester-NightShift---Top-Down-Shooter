@@ -1,34 +1,22 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Roulette : MonoBehaviour
+public class RouletteUI : MonoBehaviour
 {
     [SerializeField] private float minSpinPower, maxSpinPower;
     [SerializeField] private float minStopPower, maxStopPower;
-    [SerializeField] private float maxAngularVelocity = 0;
-    private const float StartingAngle = 22;
-
-    [SerializeField] private int firstPrize;
-    [SerializeField] private int secondPrize;
-    [SerializeField] private int thirdPrize;
-    [SerializeField] private int fourthPrize;
-    [SerializeField] private int fifthPrize;
-    [SerializeField] private int sixthPrize;
-    [SerializeField] private int seventhPrize;
-    [SerializeField] private int eighthPrize;
+    [SerializeField] private float maxAngularVelocity = 1440;
 
     [SerializeField] private List<int> prizeList;
 
     private Rigidbody2D rb;
-    private bool isRotating = false;
+
+    private bool canGetPrize;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
-
-    private float t;
 
     private void Update()
     {
@@ -39,34 +27,32 @@ public class Roulette : MonoBehaviour
     {
         var angularVelocity = rb.angularVelocity;
 
-        if (rb.angularVelocity > 0)
+        if (angularVelocity > 0)
         {
             angularVelocity -= Random.Range(minStopPower, maxStopPower) * Time.deltaTime;
+            if (angularVelocity < 5)
+            {
+                angularVelocity = 0;
+            }
             rb.angularVelocity = angularVelocity;
 
             rb.angularVelocity = Mathf.Clamp(angularVelocity, 0, maxAngularVelocity);
+
+            canGetPrize = true;
         }
 
-        if (angularVelocity != 0 || !isRotating) 
-            return;
-        
-        t += 1 * Time.deltaTime;
-        
-        if (t !>= 0.5f) 
+        if (angularVelocity > 0 || !canGetPrize) 
             return;
         
         GetRewardPosition();
-        isRotating = false;
-        t = 0;
     }
     
     public void SpinWheel()
     {
-        if (isRotating) 
+        if (rb.angularVelocity > 0) 
             return;
         
         rb.AddTorque(Random.Range(minSpinPower, maxSpinPower));
-        isRotating = true;
     }
 
     private void GetRewardPosition()
@@ -75,43 +61,44 @@ public class Roulette : MonoBehaviour
 
         switch (rotationAngle)
         {
-            case > 0+StartingAngle and <= 45+22:
+            case > 0 and <= 45:
                 //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 45);
-                GetPrize(firstPrize);
+                GetPrize(prizeList[0]);
                 break;
-            case > 45+StartingAngle and <= 90+22:
+            case > 45 and <= 90:
                 //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 90);
-                GetPrize(secondPrize);
+                GetPrize(prizeList[1]);
                 break;
-            case > 90+StartingAngle and <= 135+22:
+            case > 90 and <= 135:
                 //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 135);
-                GetPrize(thirdPrize);
+                GetPrize(prizeList[2]);
                 break;
-            case > 135+StartingAngle and <= 180+22:
+            case > 135 and <= 180:
                 //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 180);
-                GetPrize(fourthPrize);
+                GetPrize(prizeList[3]);
                 break;
-            case > 180+StartingAngle and <= 225+22:
+            case > 180 and <= 225:
                 //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 225);
-                GetPrize(fifthPrize);
+                GetPrize(prizeList[4]);
                 break;
-            case > 225+StartingAngle and <= 270+22:
+            case > 225 and <= 270:
                 //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 270);
-                GetPrize(sixthPrize);
+                GetPrize(prizeList[5]);
                 break;
-            case > 270+StartingAngle and <= 315+22:
+            case > 270 and <= 315:
                 //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 315);
-                GetPrize(seventhPrize);
+                GetPrize(prizeList[6]);
                 break;
-            case > 315+StartingAngle and <= 360+22:
+            case > 315 and <= 360:
                 //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 0);
-                GetPrize(eighthPrize);
+                GetPrize(prizeList[7]);
                 break;
         }
     }
 
-    private static void GetPrize(int score)
+    private void GetPrize(int score)
     {
         Debug.Log(score);
+        canGetPrize = false;
     }
 }
