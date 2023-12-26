@@ -58,42 +58,9 @@ public class RouletteUI : MonoBehaviour
     private void GetRewardPosition()
     {
         var rotationAngle = transform.eulerAngles.z;
-
-        switch (rotationAngle)
-        {
-            case > 0 and <= 45:
-                //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 45);
-                GetPrize(prizeList[0]);
-                break;
-            case > 45 and <= 90:
-                //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 90);
-                GetPrize(prizeList[1]);
-                break;
-            case > 90 and <= 135:
-                //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 135);
-                GetPrize(prizeList[2]);
-                break;
-            case > 135 and <= 180:
-                //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 180);
-                GetPrize(prizeList[3]);
-                break;
-            case > 180 and <= 225:
-                //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 225);
-                GetPrize(prizeList[4]);
-                break;
-            case > 225 and <= 270:
-                //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 270);
-                GetPrize(prizeList[5]);
-                break;
-            case > 270 and <= 315:
-                //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 315);
-                GetPrize(prizeList[6]);
-                break;
-            case > 315 and <= 360:
-                //GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, 0);
-                GetPrize(prizeList[7]);
-                break;
-        }
+        var pieSize = (360f / prizeList.Count);
+        int priceIndex = Mathf.FloorToInt((rotationAngle+22.5f) / pieSize) % prizeList.Count;
+        GetPrize(prizeList[priceIndex]);
     }
 
     private void GetPrize(int score)

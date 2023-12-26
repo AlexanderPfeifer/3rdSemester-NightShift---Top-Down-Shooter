@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class GeneratorUI : MonoBehaviour
 {
+    [SerializeField] private AnimationCurve accelarationCurve;
+    
     private Slider generatorSlider;
 
     private float fillTime;
@@ -21,16 +23,10 @@ public class GeneratorUI : MonoBehaviour
 
     private void RandomSliderFill()
     {
-        fillTime += acceleration * Time.deltaTime;
-            if (generatorSlider.value >= 0.5)
-            {
-                acceleration = .5f;
-                if (generatorSlider.value >= 0.75)
-                {
-                    acceleration = 1;
-                }
-            }
+        float finalAcc = acceleration * accelarationCurve.Evaluate(generatorSlider.value);
+        
+        fillTime += finalAcc * Time.deltaTime;
 
-            generatorSlider.value = Mathf.PingPong(fillTime, generatorSlider.maxValue);
+        generatorSlider.value = Mathf.PingPong(fillTime, generatorSlider.maxValue);
     }
 }

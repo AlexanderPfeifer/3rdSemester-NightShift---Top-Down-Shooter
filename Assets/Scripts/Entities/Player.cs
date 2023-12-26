@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
@@ -31,6 +32,15 @@ public class Player : MonoBehaviour
     private Transform weaponVisualStartPos;
 
     [SerializeField] private GameObject muzzleFlashVisual;
+    
+    
+    
+    [SerializeField] private float shootingSpread = .25f;
+    private float currentAbilityTime;
+    [SerializeField] private float maxAbilityTime = 10f;
+    [SerializeField] private float shootDelay = 0.1f;
+    private IEnumerator AssaultRifleAbilityCoroutine;
+    private bool isUsingAbility;
 
     private void Start()
     {
@@ -40,6 +50,7 @@ public class Player : MonoBehaviour
         gameInputManager.OnGamePausedAction += GameInputManagerOnGamePausedAction;
         gameInputManager.OnInteractAction += GameInputManagerOnInteractAction;
         muzzleFlashVisual.SetActive(false);
+        AssaultRifleAbilityCoroutine = AssaultRifleAbility();
     }
 
     private void Update()
@@ -48,16 +59,30 @@ public class Player : MonoBehaviour
         {
             HandleAimingUpdate();
         }
+        
+        currentAbilityTime -= Time.deltaTime;
+
+        if (currentAbilityTime <= 0)
+        {
+            StopCoroutine(AssaultRifleAbilityCoroutine);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            currentAbilityTime = maxAbilityTime;
+
+            StartCoroutine(AssaultRifleAbilityCoroutine);
+        }
     }
 
     private void FixedUpdate()
     {
         HandleMovementFixedUpdate();
     }
-    
+
     private void GameInputManagerOnShootingAction(object sender, EventArgs e)
     {
-        if(!MenuUIManager.GameIsPaused)
+        if(!MenuUIManager.GameIsPaused || !isUsingAbility)
         {
             var newBullet = Instantiate(bulletPrefab, weaponEndPoint.transform.position, Quaternion.identity);
 
@@ -78,7 +103,7 @@ public class Player : MonoBehaviour
     {
         if (Physics2D.OverlapCircle(transform.position, interactRadius,  interactionLayer))
         {
-            
+
         }
     }
 
@@ -87,11 +112,23 @@ public class Player : MonoBehaviour
         mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         mousePos.z = 0;
         
+        if (Vector3.Distance(transform.position, mousePos) <= 1)
+        {
+            Vector3 mouseOffsetDirection = mousePos * 8 - weaponEndPoint.transform.position;
+            mousePos = mouseOffsetDirection;
+        }
+
         weaponToMouse = mousePos - weaponEndPoint.transform.position;
         
-        weaponPosParent.transform.right = weaponToMouse;
+        Vector3 newUp = Vector3.Slerp(weaponPosParent.transform.up, weaponToMouse, Time.deltaTime * 10);
 
-        if (weaponPosParent.eulerAngles.z is > 90 and < 270)
+
+        float angle = Vector3.SignedAngle(Vector3.up, newUp, Vector3.forward);
+        
+        weaponPosParent.eulerAngles = new Vector3(0, 0, angle);
+
+        
+        if (weaponPosParent.eulerAngles.z is > 0 and < 180)
         {
             weaponPosParent.GetComponentInChildren<SpriteRenderer>().sortingOrder = - 1;
         }
@@ -115,21 +152,20 @@ public class Player : MonoBehaviour
         muzzleFlashVisual.SetActive(false);
     }
 
-    public void SavePlayer()
+    private IEnumerator AssaultRifleAbility()
     {
-        SaveSystem.SavePlayer(this);
-    }
+        while (true)
+        {
+            Vector2 bulletDirection = Random.insideUnitCircle;
+            bulletDirection.Normalize();
 
-    public void LoadPlayer()
-    {
-        var save = SaveSystem.LoadPlayer();
-
-        Vector3 position;
-        position.x = save.position[0];
-        position.y = save.position[1];
-        position.z = save.position[2];
-
-        transform.position = position;
+            bulletDirection = Vector3.Slerp(bulletDirection, mousePos, 1.0f - shootingSpread);
+        
+            Bullet newBullet = Instantiate(bulletPrefab, weaponEndPoint.position, Quaternion.identity);
+            newBullet.Launch(this, bulletDirection);
+        
+            yield return new WaitForSeconds(shootDelay);
+        }
     }
 
     private void OnDrawGizmos()
