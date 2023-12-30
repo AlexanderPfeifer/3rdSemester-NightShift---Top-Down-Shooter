@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allCollectibles:
   - {fileID: 11400000, guid: fd0984e3d946f2649a201c757975b827, type: 2}
-  allWeapons: []
+  - {fileID: 11400000, guid: 78968f96d3d0ac349bf84d2ce1ef23d0, type: 2}
+  allWeapons:
+  - {fileID: 11400000, guid: b7a03d4f2082fd4489dcb50ec82937c5, type: 2}

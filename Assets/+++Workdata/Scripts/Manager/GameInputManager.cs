@@ -4,7 +4,6 @@ using UnityEngine;
 public class GameInputManager : MonoBehaviour
 {
     private PlayerInputActions playerInputActions;
-    private Player player;
 
     public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction;
 

@@ -10,7 +10,7 @@ public class FortuneWheelUI : MonoBehaviour
     [SerializeField] private float minStopPower, maxStopPower;
     [SerializeField] private float maxAngularVelocity = 1440;
 
-    [Header("Prize List")]
+    [Header("Weapon Prize List")]
     [SerializeField] private List<WeaponObjectSO> weaponPrizeList;
 
     private Player player;
@@ -84,6 +84,8 @@ public class FortuneWheelUI : MonoBehaviour
         player.weaponVisual.SetActive(true);
         canGetPrize = false;
         gameObject.transform.parent.gameObject.SetActive(false);
+        GameSaveStateManager.instance.saveGameDataManager.AddWeapon(weapon.weaponName);
+        weaponPrizeList.Remove(weapon);
     }
 
     private void OnDisable()

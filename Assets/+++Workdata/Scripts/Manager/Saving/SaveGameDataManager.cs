@@ -1,12 +1,10 @@
 using System.Collections.Generic;
-using UnityEngine.Serialization;
 
 [System.Serializable]
 public class SaveGameDataManager
 {
     public string loadedSceneName = GameSaveStateManager.InGameSceneName;
 
-    public Player.PlayerSaveData newPlayerSaveData;
     
     /// <summary>
     /// A list of all unique identifiers for all collected collectibles 
@@ -15,6 +13,8 @@ public class SaveGameDataManager
     
     public List<string> collectedWeaponsIdentifiers = new List<string>();
     
+    public Player.PlayerSaveData newPlayerSaveData;
+
     /// <summary>
     /// Called whenever a collectible is collected
     /// </summary>

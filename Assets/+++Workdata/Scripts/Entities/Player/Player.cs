@@ -19,8 +19,7 @@ public class Player : MonoBehaviour
     [Header("Scripts")]
     [SerializeField] private GameInputManager gameInputManager;
     [SerializeField] public Bullet bulletPrefab;
-    private InGameUI inGameUI;
-    private PlayerSaveData playerSaveData;
+    [SerializeField] private PlayerSaveData playerSaveData;
     
     [Header("Floats")]
     [SerializeField] private float moveSpeed = 7f;
@@ -72,19 +71,6 @@ public class Player : MonoBehaviour
         
         GameSaveStateManager.instance.saveGameDataManager.newPlayerSaveData = playerSaveData;
     }
-
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        sr = GetComponentInChildren<SpriteRenderer>();
-        gameInputManager.OnShootingAction += GameInputManagerOnShootingAction;
-        gameInputManager.OnGamePausedAction += GameInputManagerOnGamePausedAction;
-        gameInputManager.OnInteractAction += GameInputManagerOnInteractAction;
-        gameInputManager.OnUsingAbilityAction += GameInputManagerOnUsingAbilityAction;
-        muzzleFlashVisual.SetActive(false);
-        assaultRifleAbilityCoroutine = AssaultRifleAbility();
-        inGameUI = FindObjectOfType<InGameUI>();
-    }
     
     private void SetupFromData()
     {
@@ -92,6 +78,41 @@ public class Player : MonoBehaviour
         //if the player was never in this scene, we keep the default position the prefab is at.
         if (playerSaveData.positionBySceneName.TryGetValue(gameObject.scene.name, out var position))
             transform.position = position;
+    }
+    
+    private void LateUpdate()
+    {
+        //we have to save the current position dependant on the scene the player is in.
+        //this way, the position can be retained across multiple scenes, and we can switch back and forth.
+        var sceneName = gameObject.scene.name;
+        if (!playerSaveData.positionBySceneName.ContainsKey(sceneName))
+            playerSaveData.positionBySceneName.Add(sceneName, transform.position);
+        else
+            playerSaveData.positionBySceneName[sceneName] = transform.position;
+    }
+
+    private void OnEnable()
+    {
+        gameInputManager.OnShootingAction += GameInputManagerOnShootingAction;
+        gameInputManager.OnGamePausedAction += GameInputManagerOnGamePausedAction;
+        gameInputManager.OnInteractAction += GameInputManagerOnInteractAction;
+        gameInputManager.OnUsingAbilityAction += GameInputManagerOnUsingAbilityAction;
+    }
+
+    private void OnDisable()
+    {
+        gameInputManager.OnShootingAction -= GameInputManagerOnShootingAction;
+        gameInputManager.OnGamePausedAction -= GameInputManagerOnGamePausedAction;
+        gameInputManager.OnInteractAction -= GameInputManagerOnInteractAction;
+        gameInputManager.OnUsingAbilityAction -= GameInputManagerOnUsingAbilityAction;
+    }
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        sr = GetComponentInChildren<SpriteRenderer>();
+        muzzleFlashVisual.SetActive(false);
+        assaultRifleAbilityCoroutine = AssaultRifleAbility();
     }
 
     private void Update()
@@ -105,19 +126,10 @@ public class Player : MonoBehaviour
     {
         HandleMovementFixedUpdate();
     }
-    
-    private void LateUpdate()
-    {
-        //we have to save the current position dependant on the scene the player is in.
-        //this way, the position can be retained across multiple scenes, and we can switch back and forth.
-        var sceneName = gameObject.scene.name;
-        
-        playerSaveData.positionBySceneName[sceneName] = transform.position;
-    }
 
     private void GameInputManagerOnShootingAction(object sender, EventArgs e)
     {
-        if (inGameUI.gameIsPaused || isUsingAbility || !weaponVisual.activeSelf) 
+        if (InGameUI.instance.gameIsPaused || isUsingAbility || !weaponVisual.activeSelf)
             return;
         
         var newBullet = Instantiate(bulletPrefab, weaponEndPoint.transform.position, Quaternion.identity);
@@ -131,13 +143,13 @@ public class Player : MonoBehaviour
 
     private void GameInputManagerOnGamePausedAction(object sender, EventArgs e)
     {
-        if (inGameUI.isActiveAndEnabled)
+        if (InGameUI.instance.isActiveAndEnabled)
         {
-            inGameUI.PauseGame();
+            InGameUI.instance.PauseGame();
         }
     }
 
-    private Collider2D CircleCast(LayerMask layer)
+    private Collider2D CircleCastForInteractionObjects(LayerMask layer)
     {
         var interactionObjectInRange = Physics2D.OverlapCircle(transform.position, interactRadius, layer);
         return interactionObjectInRange;
@@ -145,7 +157,7 @@ public class Player : MonoBehaviour
     
     private void GameInputManagerOnInteractAction(object sender, EventArgs e)
     {
-        if (CircleCast(wheelOfFortuneLayer))
+        if (CircleCastForInteractionObjects(wheelOfFortuneLayer))
         {
             var rouletteUI = fortuneWheel.GetComponentInChildren<FortuneWheelUI>();
             
@@ -159,11 +171,12 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (CircleCast(generatorLayer))
+        if (CircleCastForInteractionObjects(generatorLayer))
         {
             if (!generator.activeSelf)
             {
                 generator.SetActive(true);
+                InGameUI.instance.SaveGame();
             }
             else
             {
@@ -171,15 +184,16 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (CircleCast(collectibleLayer))
+        if (CircleCastForInteractionObjects(collectibleLayer))
         {
-            CircleCast(collectibleLayer).GetComponent<Collectible>().Collect();
+            CircleCastForInteractionObjects(collectibleLayer).GetComponent<Collectible>().Collect();
         }
     }
     
     private void GameInputManagerOnUsingAbilityAction(object sender, EventArgs e)
     {
-        if (!weaponVisual.activeSelf) return;
+        if (!weaponVisual.activeSelf) 
+            return;
         
         currentAbilityTime = maxAbilityTime;
 
@@ -188,7 +202,7 @@ public class Player : MonoBehaviour
     
     private void HandleAimingUpdate()
     {
-        if (inGameUI.gameIsPaused || !weaponVisual.activeSelf) 
+        if (InGameUI.instance.gameIsPaused || !weaponVisual.activeSelf) 
             return;
         
         mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -222,7 +236,7 @@ public class Player : MonoBehaviour
 
     private void HandleMovementFixedUpdate()
     {
-        if (!isInteracting && !inGameUI.gameIsPaused)
+        if (!isInteracting && !InGameUI.instance.gameIsPaused)
         { 
             rb.AddForce(new Vector2(gameInputManager.GetMovementVectorNormalized().x, gameInputManager.GetMovementVectorNormalized().y) * moveSpeed, ForceMode2D.Force);
         }

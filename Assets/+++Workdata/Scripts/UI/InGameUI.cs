@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class InGameUI : MonoBehaviour
 {
+    public static InGameUI instance;
     [SerializeField] private TextMeshProUGUI collectibleText;
+    [SerializeField] private TextMeshProUGUI weaponText;
     [SerializeField] private InGameCollectedObjects collectedObjects;
     [SerializeField] private GameObject pauseScreen;
     [HideInInspector] public bool gameIsPaused;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
@@ -17,12 +24,13 @@ public class InGameUI : MonoBehaviour
     private void OnStateChange(GameSaveStateManager.GameState newState)
     {
         //we toggle the availability of the inGame menu whenever the game state changes
-        bool isInGame = newState == GameSaveStateManager.GameState.InGame;
+        //bool iwas = newState == GameSaveStateManager.GameState.InGame;
     }
     
     public void GoToMainMenu()
     {
         GameSaveStateManager.instance.GoToMainMenu();
+        PauseGame();
     }
 
     //this is called via the "save game" button
@@ -48,6 +56,24 @@ public class InGameUI : MonoBehaviour
 
         StartCoroutine(LetterByLetterTextCoroutine(collectibleText, text));
     }
+    
+    private void DisplayCollectedWeapons()
+    {
+        string text = "";
+        
+        var collectedCollectibles = GameSaveStateManager.instance.saveGameDataManager.collectedWeaponsIdentifiers;
+
+        for (int index = 0; index < collectedCollectibles.Count; index++)
+        {
+            var letter = collectedObjects.GetWeaponDataByIdentifier(collectedCollectibles[index]);
+            if (letter == null)
+                return;
+            text += letter.weaponName.ToUpper() + "\n";
+            text += letter.weaponDescription + "\n\n";
+        }
+
+        StartCoroutine(LetterByLetterTextCoroutine(weaponText, text));
+    }
 
     private IEnumerator LetterByLetterTextCoroutine(TextMeshProUGUI textField, string text)
     {
@@ -71,6 +97,7 @@ public class InGameUI : MonoBehaviour
         else
         {
             DisplayCollectedLetters();
+            DisplayCollectedWeapons();
             gameIsPaused = true;
             pauseScreen.SetActive(true);
         }

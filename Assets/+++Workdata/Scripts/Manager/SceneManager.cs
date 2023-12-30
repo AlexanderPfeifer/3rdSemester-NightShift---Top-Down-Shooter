@@ -6,13 +6,10 @@ public class SceneManager : MonoBehaviour
 {
     public static SceneManager instance;
     private string currentScene;
-    [SerializeField] private GameObject loadingScreen;
-
 
     private void Awake()
     {
         instance = this;
-        loadingScreen.SetActive(false);
     }
 
     public void SwitchScene(string newScene)
@@ -22,9 +19,7 @@ public class SceneManager : MonoBehaviour
 
     private IEnumerator LoadNewSceneCoroutine(string newSceneName)
     {
-        Time.timeScale = 1f;
-        
-        loadingScreen.SetActive(true);
+        UIManager.instance.ToggleLoadingScreen(true);
         
         var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(currentScene);
         if (scene.isLoaded)
@@ -42,7 +37,7 @@ public class SceneManager : MonoBehaviour
         newScene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(newSceneName);
         UnityEngine.SceneManagement.SceneManager.SetActiveScene(newScene);
         
-        loadingScreen.SetActive(false);
+        UIManager.instance.ToggleLoadingScreen(false);
         currentScene = newSceneName;
     }
 

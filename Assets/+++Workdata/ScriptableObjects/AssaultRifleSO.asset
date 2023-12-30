@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 7897330312661411150, guid: 810acf628009e3f4d89194d96aad8b53, type: 3}
   weaponVisual: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  objectName: AssaultRifle
+  weaponName: Assault Rifle
+  weaponDescription: A handy dandy baller machine.
