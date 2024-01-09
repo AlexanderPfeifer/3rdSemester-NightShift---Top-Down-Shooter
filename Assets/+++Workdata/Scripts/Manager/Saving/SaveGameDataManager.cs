@@ -14,6 +14,8 @@ public class SaveGameDataManager
     
     public List<string> collectedWeaponsIdentifiers = new List<string>();
     
+    public List<string> weaponsInInventoryIdentifiers = new List<string>();
+    
     public Player.PlayerSaveData newPlayerSaveData;
 
     /// <summary>
@@ -36,6 +38,10 @@ public class SaveGameDataManager
         if (collectedWeaponsIdentifiers.Contains(identifier))
             return;
         collectedWeaponsIdentifiers.Add(identifier);
+
+        if (weaponsInInventoryIdentifiers.Contains(identifier))
+            return;
+        weaponsInInventoryIdentifiers.Add(identifier);
     }
     
     /// <summary>
@@ -51,5 +57,10 @@ public class SaveGameDataManager
     public bool HasWeapon(string identifier)
     {
         return collectedWeaponsIdentifiers.Contains(identifier);
+    }
+
+    public bool HasWeaponInInventory(string identifier)
+    {
+        return weaponsInInventoryIdentifiers.Contains(identifier);
     }
 }

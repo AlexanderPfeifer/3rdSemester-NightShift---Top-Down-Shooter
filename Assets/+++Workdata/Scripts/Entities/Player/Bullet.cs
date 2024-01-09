@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -32,8 +33,8 @@ public class Bullet : MonoBehaviour
         
         GetComponent<Rigidbody2D>().AddForce(direction * player.bulletSpeed, ForceMode2D.Impulse);
     }
-
-    private void OnCollisionEnter2D(Collision2D col)
+    
+    private void OnTriggerEnter2D(Collider2D col)
     {
         var healthPointManager = col.gameObject.GetComponent<EnemyHealthPoints>();
         if (healthPointManager != null)

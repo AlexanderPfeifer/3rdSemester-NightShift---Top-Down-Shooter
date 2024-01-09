@@ -6,27 +6,37 @@
   <component name="ChangeListManager">
     <list default="true" id="be4aa387-2548-4626-ac0c-f4e71fe1232b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NightShift/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NightShift/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Input/PlayerInputActions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Input/PlayerInputActions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Input/PlayerInputActions.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Input/PlayerInputActions.inputactions" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/MagnumBullet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/MagnumBullet.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/StartWeaponBullet.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/StartWeaponBullet.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/AssaultRifleBullet.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/AssaultRifleBullet.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/BulletBase.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/BulletBase.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/HuntingRifleBullet.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/HuntingRifleBullet.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/MagnumBullet.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/MagnumBullet.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/PistolBullet.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/PistolBullet.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/ShotgunBullet.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/ShotgunBullet.prefab.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Enemies/EnemyBase.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Enemies/EnemyBase.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Enemies/EnemyBase.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Enemies/EnemyBase.prefab.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/InGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/InGame.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/MainMenu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/MainMenu.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/AssaultRifleSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/AssaultRifleSO.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/HuntingRifleSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/HuntingRifleSO.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/MagnumSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/MagnumSO.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/ShotgunSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/ShotgunSO.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/StartWeaponSO.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/StartWeaponSO.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/Enemy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/Enemy.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/EnemyHealthPoints.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/EnemyHealthPoints.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/EnemyWaveSpawner.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/EnemyWaveSpawner.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Bullet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Bullet.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/GameInputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/GameInputManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Ride.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Ride.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Weapon.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Weapon.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/GameSaveStateManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/GameSaveStateManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/SaveGameDataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/SaveGameDataManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/ScriptableObjectsScripts/WeaponObjectSO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/ScriptableObjectsScripts/WeaponObjectSO.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/FortuneWheelUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/FortuneWheelUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/Renderer2D.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/Renderer2D.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -107,10 +117,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="15528">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="15528" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -161,7 +171,8 @@
       <workItem from="1703937339685" duration="7857000" />
       <workItem from="1704271942801" duration="21086000" />
       <workItem from="1704702786248" duration="16077000" />
-      <workItem from="1704790945279" duration="18272000" />
+      <workItem from="1704790945279" duration="18428000" />
+      <workItem from="1704825332091" duration="7286000" />
     </task>
     <servers />
   </component>

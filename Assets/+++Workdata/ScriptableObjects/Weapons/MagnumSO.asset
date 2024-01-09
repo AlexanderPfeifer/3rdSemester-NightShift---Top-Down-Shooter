@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59bfe808e7dd244fbdf92a6c7cab6b3, type: 3}
   m_Name: MagnumSO
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 4414082024327953419, guid: 2ffc5b7fe09638843b4a2909ece86229, type: 3}
+  bulletPrefab: {fileID: 7897330312661411150, guid: 2ffc5b7fe09638843b4a2909ece86229, type: 3}
   inGameWeaponVisual: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   weaponName: Magnum
   weaponDescription: A handy dandy baller machine.

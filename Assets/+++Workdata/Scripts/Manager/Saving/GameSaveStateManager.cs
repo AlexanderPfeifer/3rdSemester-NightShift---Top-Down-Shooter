@@ -1,6 +1,5 @@
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Rendering;
 
 public class GameSaveStateManager : MonoBehaviour
 {
@@ -24,7 +23,16 @@ public class GameSaveStateManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        OnLoad();
     }
+
+    [RuntimeInitializeOnLoadMethod]
+    static void OnLoad()
+    {
+        GraphicsSettings.transparencySortMode = TransparencySortMode.CustomAxis;
+        GraphicsSettings.transparencySortAxis = new Vector3(0.0f, 1.0f, 0.0f);
+    }
+
     
     private void Start()
     {

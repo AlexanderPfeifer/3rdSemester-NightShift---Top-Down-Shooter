@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float assaultRifleAbilityShootingDelay = 0.1f;
     [SerializeField] private float shootingSpread = .25f;
     [SerializeField] public float maxShootDelay = 0.3f;
+    [SerializeField] public float secondMaxShootDelay = 0.3f;
 
     [Header("Camera")]
     [SerializeField] private Camera mainCamera;
@@ -39,7 +40,6 @@ public class Player : MonoBehaviour
     
     [Header("GameObjects")]
     [SerializeField] private GameObject muzzleFlashVisual;
-    [SerializeField] public GameObject weaponVisual;
     [SerializeField] private GameObject fortuneWheelUI;
     [SerializeField] private GameObject generatorUI;
 
@@ -49,10 +49,20 @@ public class Player : MonoBehaviour
     
     [FormerlySerializedAs("weaponDamage")]
     [Header(("Bullet"))]
+    [SerializeField] public GameObject weaponVisual;
+    [SerializeField] public GameObject secondWeaponVisual;
+    
     [SerializeField] public float bulletDamage;
+    [SerializeField] public float secondBulletDamage;
+    
     [SerializeField] public int maxPenetrationCount;
+    [SerializeField] public int secondMaxPenetrationCount;
+    
     [SerializeField] private float shootDelay;
+    
     [SerializeField] public float activeAbilityGain;
+    [SerializeField] public float secondActiveAbilityGain;
+    
     [SerializeField] public float bulletSpeed = 38f;
     [SerializeField] public float abilityProgress;
     public int currentPenetrationCount;
@@ -74,6 +84,7 @@ public class Player : MonoBehaviour
     private SpriteRenderer sr;
     
     public Action AbilityFunction;
+    public Action SecondAbilityFunction;
     
     private bool weaponAbility;
     private bool canShoot;
@@ -230,7 +241,7 @@ public class Player : MonoBehaviour
         {
             if(fortuneWheelGotUsed && generatorIsActive)
             {
-                StartCoroutine(ride.StartWave());
+                ride.StartNextWave();
             }
         }
 

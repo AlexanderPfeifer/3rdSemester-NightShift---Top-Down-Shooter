@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class FortuneWheelUI : MonoBehaviour
@@ -11,7 +12,8 @@ public class FortuneWheelUI : MonoBehaviour
     [SerializeField] private float maxAngularVelocity = 1440;
 
     [Header("Weapon Prize List")]
-    [SerializeField] private List<WeaponObjectSO> weaponPrizes;
+    [SerializeField] public List<WeaponObjectSO> currentWeaponPrizes;
+    [SerializeField] public List<WeaponObjectSO> allWeaponPrizes;
 
     private const int FortuneWheelPieCount = 5;
 
@@ -23,6 +25,25 @@ public class FortuneWheelUI : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         player.isInteracting = true;
+
+
+        for (int i = 0; i < currentWeaponPrizes.Count; i++)
+        {
+            currentWeaponPrizes.RemoveAt(0);
+        }
+        
+        for (int i = 0; i < allWeaponPrizes.Count; i++)
+        {
+            currentWeaponPrizes.Add(allWeaponPrizes[i]);
+        }
+        
+        for (int i = 0; i < currentWeaponPrizes.Count; i++)
+        {
+            if (GameSaveStateManager.instance.saveGameDataManager.HasWeaponInInventory(currentWeaponPrizes[i].weaponName))
+            {
+                currentWeaponPrizes.Remove(currentWeaponPrizes[i]);
+            }
+        }
     }
 
     private void Start()
@@ -71,10 +92,10 @@ public class FortuneWheelUI : MonoBehaviour
     {
         var rotationAngle = transform.eulerAngles.z;
         const float pieSize = (360f / FortuneWheelPieCount);
-        int priceIndex = Mathf.FloorToInt((rotationAngle+22.5f) / pieSize) % weaponPrizes.Count;
-        GetWeaponPrize(weaponPrizes[priceIndex]);
+        int priceIndex = Mathf.FloorToInt((rotationAngle+22.5f) / pieSize) % currentWeaponPrizes.Count;
+        GetWeaponPrize(currentWeaponPrizes[priceIndex]);
     }
-
+    
     private void GetWeaponPrize(WeaponObjectSO weapon)
     {
         player.weaponVisual.GetComponent<SpriteRenderer>().sprite = weapon.inGameWeaponVisual;
@@ -85,6 +106,7 @@ public class FortuneWheelUI : MonoBehaviour
         player.activeAbilityGain = weapon.activeAbilityGain;
         
         GameSaveStateManager.instance.saveGameDataManager.AddWeapon(weapon.weaponName);
+        currentWeaponPrizes.Remove(weapon);
 
         switch (weapon.weaponName)
         {
@@ -101,12 +123,73 @@ public class FortuneWheelUI : MonoBehaviour
                 player.AbilityFunction = player.StartHuntingRifleAbility;
                 break;
         }
-        
-        weaponPrizes.Remove(weapon);
 
         gameObject.transform.parent.gameObject.SetActive(false);
         player.fortuneWheelGotUsed = true;
         canGetPrize = false;
+    }
+
+    private void GetWeaponOnGameStart(string weaponName)
+    {
+        var gotFirstWeapon = false;
+
+        for (int i = 0; i < allWeaponPrizes.Count; i++)
+        {
+            if(GameSaveStateManager.instance.saveGameDataManager.HasWeaponInInventory(allWeaponPrizes[i].weaponName))
+            {
+                if (!gotFirstWeapon)
+                {
+                    player.weaponVisual.GetComponent<SpriteRenderer>().sprite = allWeaponPrizes[i].inGameWeaponVisual;
+                    player.weaponVisual.SetActive(true);
+                    player.bulletDamage = allWeaponPrizes[i].bulletDamage;
+                    player.maxPenetrationCount = allWeaponPrizes[i].penetrationCount;
+                    player.maxShootDelay = allWeaponPrizes[i].shootDelay;
+                    player.activeAbilityGain = allWeaponPrizes[i].activeAbilityGain;
+                
+                    switch (allWeaponPrizes[i].weaponName)
+                    {
+                        case "Magnum" :
+                            player.AbilityFunction = player.StartMagnumAbility;
+                            break;
+                        case "Assault Rifle" :
+                            player.AbilityFunction = player.StartAssaultRifleAbility;
+                            break;
+                        case "Shotgun" :
+                            player.AbilityFunction = player.StartShotgunAbility;
+                            break;
+                        case "Hunting Rifle" :
+                            player.AbilityFunction = player.StartHuntingRifleAbility;
+                            break;
+                    }
+
+                    gotFirstWeapon = true;
+                }
+                else
+                {
+                    player.secondWeaponVisual.GetComponent<SpriteRenderer>().sprite = allWeaponPrizes[i].inGameWeaponVisual;
+                    player.secondBulletDamage = allWeaponPrizes[i].bulletDamage;
+                    player.secondMaxPenetrationCount = allWeaponPrizes[i].penetrationCount;
+                    player.secondMaxShootDelay = allWeaponPrizes[i].shootDelay;
+                    player.secondActiveAbilityGain = allWeaponPrizes[i].activeAbilityGain;
+                
+                    switch (allWeaponPrizes[i].weaponName)
+                    {
+                        case "Magnum" :
+                            player.SecondAbilityFunction = player.StartMagnumAbility;
+                            break;
+                        case "Assault Rifle" :
+                            player.SecondAbilityFunction = player.StartAssaultRifleAbility;
+                            break;
+                        case "Shotgun" :
+                            player.SecondAbilityFunction = player.StartShotgunAbility;
+                            break;
+                        case "Hunting Rifle" :
+                            player.SecondAbilityFunction = player.StartHuntingRifleAbility;
+                            break;
+                    }
+                }
+            }
+        }
     }
 
     private void OnDisable()
