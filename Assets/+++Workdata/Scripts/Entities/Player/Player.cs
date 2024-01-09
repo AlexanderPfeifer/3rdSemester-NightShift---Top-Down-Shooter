@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
         public string lastOpenedScene;
         public Dictionary<string, SavableVector3> positionBySceneName = new Dictionary<string, SavableVector3>();
     }
-    
+
     [Header("Scripts")]
     [SerializeField] private GameInputManager gameInputManager;
     [SerializeField] public Bullet bulletPrefab;
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sr;
 
-    public Action AbilityFunction;
+    [SerializeField] public ScriptableObject weaponSO;
     
     private bool weaponAbility;
 
@@ -261,27 +261,7 @@ public class Player : MonoBehaviour
         shootDelay -= Time.deltaTime;
     }
 
-    public void StartAssaultRifleAbility()
-    {
-        StartCoroutine(AssaultRifleAbility());
-    }
-    
-    private void StartShotgunAbility()
-    {
-        StartCoroutine(ShotgunAbility());
-    }
-    
-    private void StartMagnumAbility()
-    {
-        StartCoroutine(MagnumAbility());
-    }
-    
-    private void StartHuntingRifleAbility()
-    {
-        StartCoroutine(HuntingRifleAbility());
-    }
-    
-    private IEnumerator WeaponVisualCoroutine()
+        private IEnumerator WeaponVisualCoroutine()
     {
         muzzleFlashVisual.SetActive(true);
         
@@ -292,18 +272,7 @@ public class Player : MonoBehaviour
 
     public IEnumerator AssaultRifleAbility()
     {
-        while (currentAbilityTime > 0)
-        {
-            Vector2 bulletDirection = Random.insideUnitCircle;
-            bulletDirection.Normalize();
-
-            bulletDirection = Vector3.Slerp(bulletDirection, mousePos, 1.0f - shootingSpread);
-        
-            Bullet newBullet = Instantiate(bulletPrefab, weaponEndPoint.position, Quaternion.identity);
-            newBullet.Launch(this, bulletDirection);
-        
-            yield return new WaitForSeconds(assaultRifleAbilityShootingDelay);
-        }
+        IEnumerator
     }
     
     private IEnumerator MagnumAbility()

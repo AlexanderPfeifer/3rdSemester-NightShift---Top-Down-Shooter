@@ -6,40 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="be4aa387-2548-4626-ac0c-f4e71fe1232b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NightShift/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NightShift/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Input/PlayerInputActions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Input/PlayerInputActions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Input/PlayerInputActions.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Input/PlayerInputActions.inputactions" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/BulletBase.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/BulletBase.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/PopcornMachinegunBullet.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullets/PopcornMachinegunBullet.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/AssaultRifle.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/AssaultRifle.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/PopcornMachinegun.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/PopcornMachinegun.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/WeaponBase.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/WeaponBase.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/InGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/InGame.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/MainMenu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/MainMenu.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/ManagerScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/ManagerScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/AssaultRifleSO.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/AssaultRifleSO.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/PauseMenuCollectibles.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/PauseMenuCollectibles.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/SomeLetterSO.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/SomeLetterSO.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/SomeOtherLetter.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/SomeOtherLetter.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Bullet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Bullet.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/SpawnPoint.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/SpawnPoint.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/GameSaveStateManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/GameSaveStateManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/SaveFileManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/SaveFileManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/SaveGameDataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/SaveGameDataManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/FortuneWheel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/FortuneWheel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Generator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Generator.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/ScriptableObjectsScripts/WeaponObjectSO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/ScriptableObjectsScripts/WeaponObjectSO.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/FortuneWheelUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/FortuneWheelUI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/GeneratorUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/GeneratorUI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/InGameUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/InGameUI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/MainMenuUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/MainMenuUI.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +29,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Weapon.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/SaveGameDataManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/+++Workdata/Scripts/ScriptableObjectsScripts/InGameCollectedObjects.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/+++Workdata/Scripts/ScriptableObjectsScripts/Weapons/AssaultRifleObjectSO.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/MainMenuUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.7.0/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs" root0="SKIP_HIGHLIGHTING" />
@@ -169,6 +143,8 @@
       <workItem from="1703937339685" duration="7857000" />
       <workItem from="1704271942801" duration="21086000" />
       <workItem from="1704702786248" duration="16077000" />
+      <workItem from="1704789098965" duration="1382000" />
+      <workItem from="1704790722641" duration="53000" />
     </task>
     <servers />
   </component>
