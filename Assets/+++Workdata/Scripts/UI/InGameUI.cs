@@ -36,7 +36,7 @@ public class InGameUI : MonoBehaviour
     //this is called via the "save game" button
     public void SaveGame()
     {
-        GameSaveStateManager.instance.SaveGame("NightShiftSaveState");
+        GameSaveStateManager.instance.SaveGame();
     }
 
     private void DisplayCollectedLetters()

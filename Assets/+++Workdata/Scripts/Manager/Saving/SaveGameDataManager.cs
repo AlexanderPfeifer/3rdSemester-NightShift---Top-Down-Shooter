@@ -3,6 +3,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class SaveGameDataManager
 {
+    public string saveName;
     public string loadedSceneName = GameSaveStateManager.InGameSceneName;
 
     

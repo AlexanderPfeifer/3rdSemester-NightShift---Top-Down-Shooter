@@ -3,8 +3,11 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private int bulletDamage = 1;
+    [SerializeField] private int penetrationCount;
+    [SerializeField] private float fireRate;
+    [SerializeField] private float activeAbilityGain;
     [SerializeField] private float bulletSpeed = 38;
-    
+
     private const float BulletDistanceUntilDestroy = 25;
     private Player player;
     

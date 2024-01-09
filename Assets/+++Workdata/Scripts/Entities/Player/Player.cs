@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
@@ -24,8 +22,10 @@ public class Player : MonoBehaviour
     [Header("Floats")]
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float maxAbilityTime = 10f;
-    [SerializeField] private float shootDelay = 0.1f;
+    [SerializeField] private float assaultRifleAbilityShootingDelay = 0.1f;
     [SerializeField] private float shootingSpread = .25f;
+    [SerializeField] private float maxShootDelay = 0.3f;
+    private float shootDelay = 0.3f;
 
     [Header("Camera")]
     [SerializeField] private Camera mainCamera;
@@ -38,9 +38,9 @@ public class Player : MonoBehaviour
     [Header("GameObjects")]
     [SerializeField] private GameObject muzzleFlashVisual;
     [SerializeField] public GameObject weaponVisual;
-    [SerializeField] private GameObject fortuneWheel;
-    [SerializeField] private GameObject generator;
- 
+    [SerializeField] private GameObject fortuneWheelUI;
+    [SerializeField] private GameObject generatorUI;
+
     [Header("Transforms")]
     [SerializeField] private Transform weaponPosParent;
     [SerializeField] public Transform weaponEndPoint;
@@ -51,6 +51,8 @@ public class Player : MonoBehaviour
     
     private float interactRadius;
     [HideInInspector] public bool isInteracting;
+    [HideInInspector] public bool generatorIsActive;
+    [HideInInspector] public bool fortuneWheelGotUsed;
     
     private IEnumerator assaultRifleAbilityCoroutine;
     private float currentAbilityTime;
@@ -58,6 +60,10 @@ public class Player : MonoBehaviour
     
     private Rigidbody2D rb;
     private SpriteRenderer sr;
+
+    public Action AbilityFunction;
+    
+    private bool weaponAbility;
 
     private void Awake()
     {
@@ -112,7 +118,6 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
         muzzleFlashVisual.SetActive(false);
-        assaultRifleAbilityCoroutine = AssaultRifleAbility();
     }
 
     private void Update()
@@ -129,8 +134,10 @@ public class Player : MonoBehaviour
 
     private void GameInputManagerOnShootingAction(object sender, EventArgs e)
     {
-        if (InGameUI.instance.gameIsPaused || isUsingAbility || !weaponVisual.activeSelf)
+        if (InGameUI.instance.gameIsPaused || isUsingAbility || !weaponVisual.activeSelf || shootDelay > 0)
             return;
+
+        shootDelay = maxShootDelay;
         
         var newBullet = Instantiate(bulletPrefab, weaponEndPoint.transform.position, Quaternion.identity);
 
@@ -159,28 +166,28 @@ public class Player : MonoBehaviour
     {
         if (CircleCastForInteractionObjects(wheelOfFortuneLayer))
         {
-            var rouletteUI = fortuneWheel.GetComponentInChildren<FortuneWheelUI>();
+            var rouletteUI = fortuneWheelUI.GetComponentInChildren<FortuneWheelUI>();
             
-            if (!fortuneWheel.activeSelf)
+            if (!fortuneWheelUI.activeSelf && !fortuneWheelGotUsed)
             {
-                fortuneWheel.SetActive(true);
+                fortuneWheelUI.SetActive(true);
             }
-            else if(fortuneWheel.activeSelf && !rouletteUI.canGetPrize)
+            else if(fortuneWheelUI.activeSelf && !rouletteUI.canGetPrize)
             {
-                fortuneWheel.SetActive(false);
+                fortuneWheelUI.SetActive(false);
             }
         }
 
         if (CircleCastForInteractionObjects(generatorLayer))
         {
-            if (!generator.activeSelf)
+            if (!generatorUI.activeSelf && !generatorIsActive)
             {
-                generator.SetActive(true);
+                generatorUI.SetActive(true);
                 InGameUI.instance.SaveGame();
             }
             else
             {
-                generator.SetActive(false);
+                generatorUI.SetActive(false);
             }
         }
 
@@ -197,7 +204,7 @@ public class Player : MonoBehaviour
         
         currentAbilityTime = maxAbilityTime;
 
-        StartCoroutine(assaultRifleAbilityCoroutine);
+        AbilityFunction();
     }
     
     private void HandleAimingUpdate()
@@ -242,13 +249,38 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void AbilityTimeUpdate()
+    #region AbilityRegion
+
+        private void AbilityTimeUpdate()
     {
-        if (!weaponVisual.activeSelf) return;
+        if (!weaponVisual.activeSelf) 
+            return;
 
         currentAbilityTime -= Time.deltaTime;
+
+        shootDelay -= Time.deltaTime;
     }
 
+    public void StartAssaultRifleAbility()
+    {
+        StartCoroutine(AssaultRifleAbility());
+    }
+    
+    private void StartShotgunAbility()
+    {
+        StartCoroutine(ShotgunAbility());
+    }
+    
+    private void StartMagnumAbility()
+    {
+        StartCoroutine(MagnumAbility());
+    }
+    
+    private void StartHuntingRifleAbility()
+    {
+        StartCoroutine(HuntingRifleAbility());
+    }
+    
     private IEnumerator WeaponVisualCoroutine()
     {
         muzzleFlashVisual.SetActive(true);
@@ -258,7 +290,7 @@ public class Player : MonoBehaviour
         muzzleFlashVisual.SetActive(false);
     }
 
-    private IEnumerator AssaultRifleAbility()
+    public IEnumerator AssaultRifleAbility()
     {
         while (currentAbilityTime > 0)
         {
@@ -270,9 +302,41 @@ public class Player : MonoBehaviour
             Bullet newBullet = Instantiate(bulletPrefab, weaponEndPoint.position, Quaternion.identity);
             newBullet.Launch(this, bulletDirection);
         
-            yield return new WaitForSeconds(shootDelay);
+            yield return new WaitForSeconds(assaultRifleAbilityShootingDelay);
         }
     }
+    
+    private IEnumerator MagnumAbility()
+    {
+        while (currentAbilityTime > 0)
+        {
+            
+        
+            yield return new WaitForSeconds(assaultRifleAbilityShootingDelay);
+        }
+    }
+    
+    private IEnumerator HuntingRifleAbility()
+    {
+        while (currentAbilityTime > 0)
+        {
+            
+        
+            yield return new WaitForSeconds(assaultRifleAbilityShootingDelay);
+        }
+    }
+    
+    private IEnumerator ShotgunAbility()
+    {
+        while (currentAbilityTime > 0)
+        {
+            
+        
+            yield return new WaitForSeconds(assaultRifleAbilityShootingDelay);
+        }
+    }
+
+    #endregion
 
     private void OnDrawGizmos()
     {

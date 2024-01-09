@@ -10,9 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d59bfe808e7dd244fbdf92a6c7cab6b3, type: 3}
-  m_Name: AssaultRifleSO
+  m_Name: MagnumSO
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 7897330312661411150, guid: 810acf628009e3f4d89194d96aad8b53, type: 3}
-  weaponVisual: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  inGameWeaponVisual: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   weaponName: Assault Rifle
   weaponDescription: A handy dandy baller machine.
+  fireRate: 2
+  penetratingCount: 2
+  damagePerBullet: 2
+  activeAbilityGain: 0.2

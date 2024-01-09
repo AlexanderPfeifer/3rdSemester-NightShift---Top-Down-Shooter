@@ -110,4 +110,30 @@ public static class SaveFileManager
 
         return fileNames.ToArray();
     }
+
+    public static void DeleteSaveState(string saveState)
+    {
+        var path = GetFilePath(saveState);
+
+        //if a try block encounters an error, instead of canceling the execution of the code,
+        //it goes to the catch-block
+        try 
+        {
+            if(!Directory.Exists(SaveFolderPath))
+            {	
+                return;
+            }
+            
+            if (File.Exists(path))
+            {
+                //if the file already exists, we delete it, so that we can create it anew
+                File.Delete(path);
+            }
+        }
+        catch (Exception e)
+        {
+            //if anything goes wrong, we give out an error and return false
+            Debug.LogError($"Data cannot be saved due to: {e.Message} {e.StackTrace}");
+        }
+    }
 }

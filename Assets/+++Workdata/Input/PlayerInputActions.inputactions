@@ -140,9 +140,20 @@
                 },
                 {
                     "name": "",
+                    "id": "1398ef25-0914-4bd9-ba03-945888294d2f",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "aiming",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "8d4fea68-2ccc-452b-8ee3-a436e46f9afa",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "",
+                    "interactions": "Hold(duration=1.401298E-45,pressPoint=1.401298E-45)",
                     "processors": "",
                     "groups": "",
                     "action": "shoot",
@@ -173,6 +184,17 @@
                 },
                 {
                     "name": "",
+                    "id": "7382d56a-d8aa-49a2-9e23-578e2f5eb6ff",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "7e419cc7-fdf4-484c-9747-4d00220f13d1",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -184,8 +206,30 @@
                 },
                 {
                     "name": "",
+                    "id": "083e04d3-8ec6-4f99-8924-cdc3cef4c860",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "ef782501-179d-4468-93bc-8e5af7bf370e",
                     "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ability",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "14c735b8-1e27-4fcf-a46e-9782f9397652",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

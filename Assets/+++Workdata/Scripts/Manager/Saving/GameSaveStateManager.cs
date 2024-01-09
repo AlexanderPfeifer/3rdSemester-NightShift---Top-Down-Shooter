@@ -39,10 +39,11 @@ public class GameSaveStateManager : MonoBehaviour
         SceneManager.instance.SwitchScene(MainMenuSceneName);
     }
     
-    public void StartNewGame()
+    public void StartNewGame(string gameName)
     {
         saveGameDataManager = new SaveGameDataManager();
-        CurrentState = GameState.InGame;
+        saveGameDataManager.saveName = gameName;
+            CurrentState = GameState.InGame;
         if (OnStateChanged != null)
             OnStateChanged(CurrentState);
         SceneManager.instance.SwitchScene(saveGameDataManager.loadedSceneName);
@@ -69,13 +70,12 @@ public class GameSaveStateManager : MonoBehaviour
     /// <summary>
     /// We call this method to save the current game state.
     /// </summary>
-    /// <param name="saveName">The wanted name for the savegame</param>
-    public void SaveGame(string saveName)
+    public void SaveGame()
     {
         if (CurrentState == GameState.InMainMenu)
             return; //if we are in the main menu, we dont save anything
         
         //we give the current data and the wanted save name to the SaveManger
-        SaveFileManager.TrySaveData(saveName, saveGameDataManager);
+        SaveFileManager.TrySaveData(saveGameDataManager.saveName, saveGameDataManager);
     }
 }

@@ -47,6 +47,7 @@ public class GeneratorUI : MonoBehaviour
     {
         if (generatorSlider.value > 0.9f)
         {
+            player.generatorIsActive = true;
             wheelOfFortune.SetActive(true);
             gameObject.SetActive(false);
         }

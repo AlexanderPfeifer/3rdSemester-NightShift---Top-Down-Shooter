@@ -780,6 +780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   saveGameDataManager:
+    saveName: 
     loadedSceneName: InGame
     collectedCollectiblesIdentifiers: []
     collectedWeaponsIdentifiers: []

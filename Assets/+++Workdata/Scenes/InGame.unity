@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 46728346}
   - component: {fileID: 46728347}
   m_Layer: 5
-  m_Name: QuickTimeEvent
+  m_Name: Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1279,10 +1279,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameInputManager: {fileID: 687495767}
   bulletPrefab: {fileID: -6321919331097459101, guid: 5ef65b34251e5d643b94a25fd672c588, type: 3}
+  playerSaveData:
+    lastOpenedScene: 
   moveSpeed: 55
   maxAbilityTime: 3
-  shootDelay: 0.1
+  assaultRifleAbilityShootingDelay: 0.1
   shootingSpread: 0.05
+  maxShootDelay: 0.3
   mainCamera: {fileID: 519420031}
   wheelOfFortuneLayer:
     serializedVersion: 2
@@ -1295,11 +1298,13 @@ MonoBehaviour:
     m_Bits: 256
   muzzleFlashVisual: {fileID: 890161654}
   weaponVisual: {fileID: 391756912}
-  fortuneWheel: {fileID: 540206087}
-  generator: {fileID: 46728345}
+  fortuneWheelUI: {fileID: 540206087}
+  generatorUI: {fileID: 46728345}
   weaponPosParent: {fileID: 1204094592}
   weaponEndPoint: {fileID: 8746414032821988007}
   isInteracting: 0
+  generatorIsActive: 0
+  fortuneWheelGotUsed: 0
 --- !u!4 &548305581
 Transform:
   m_ObjectHideFlags: 0
@@ -2804,8 +2809,11 @@ MonoBehaviour:
   minStopPower: 50
   maxStopPower: 150
   maxAngularVelocity: 1440
-  weaponPrizeList:
+  weaponPrizes:
   - {fileID: 11400000, guid: b7a03d4f2082fd4489dcb50ec82937c5, type: 2}
+  - {fileID: 11400000, guid: 3907bbb63c9485f45938965496b9e957, type: 2}
+  - {fileID: 11400000, guid: d2795f5b46a904f479762e5e886d7f63, type: 2}
+  - {fileID: 11400000, guid: df2bd934af3e5954eae70a5c617c13a7, type: 2}
   canGetPrize: 0
 --- !u!114 &1822746487
 MonoBehaviour:

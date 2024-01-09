@@ -11,7 +11,9 @@ public class FortuneWheelUI : MonoBehaviour
     [SerializeField] private float maxAngularVelocity = 1440;
 
     [Header("Weapon Prize List")]
-    [SerializeField] private List<WeaponObjectSO> weaponPrizeList;
+    [SerializeField] private List<WeaponObjectSO> weaponPrizes;
+
+    private const int FortuneWheelPieCount = 5;
 
     private Player player;
     private Rigidbody2D rb;
@@ -72,20 +74,22 @@ public class FortuneWheelUI : MonoBehaviour
     private void GetRewardPosition()
     {
         var rotationAngle = transform.eulerAngles.z;
-        var pieSize = (360f / weaponPrizeList.Count);
-        int priceIndex = Mathf.FloorToInt((rotationAngle+22.5f) / pieSize) % weaponPrizeList.Count;
-        GetPrize(weaponPrizeList[priceIndex]);
+        const float pieSize = (360f / FortuneWheelPieCount);
+        int priceIndex = Mathf.FloorToInt((rotationAngle+22.5f) / pieSize) % weaponPrizes.Count;
+        GetWeaponPrize(weaponPrizes[priceIndex]);
     }
 
-    private void GetPrize(WeaponObjectSO weapon)
+    private void GetWeaponPrize(WeaponObjectSO weapon)
     {
         player.bulletPrefab = weapon.bulletPrefab;
-        player.weaponVisual.GetComponent<SpriteRenderer>().sprite = weapon.weaponVisual;
+        player.weaponVisual.GetComponent<SpriteRenderer>().sprite = weapon.inGameWeaponVisual;
         player.weaponVisual.SetActive(true);
         canGetPrize = false;
         gameObject.transform.parent.gameObject.SetActive(false);
         GameSaveStateManager.instance.saveGameDataManager.AddWeapon(weapon.weaponName);
-        weaponPrizeList.Remove(weapon);
+        weaponPrizes.Remove(weapon);
+        player.fortuneWheelGotUsed = true;
+        //Assign ability to player
     }
 
     private void OnDisable()
