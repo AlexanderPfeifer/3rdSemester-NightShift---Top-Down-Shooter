@@ -1,5 +1,6 @@
-using System.Collections;
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [CreateAssetMenu()]
 public class WeaponObjectSO : ScriptableObject
@@ -12,9 +13,4 @@ public class WeaponObjectSO : ScriptableObject
     public int penetratingCount;
     public float damagePerBullet;
     public float activeAbilityGain;
-
-    public virtual void UseAbility()
-    {
-        
-    }
 }

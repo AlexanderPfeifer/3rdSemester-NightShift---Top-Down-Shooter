@@ -89,7 +89,7 @@ public class FortuneWheelUI : MonoBehaviour
         GameSaveStateManager.instance.saveGameDataManager.AddWeapon(weapon.weaponName);
         weaponPrizes.Remove(weapon);
         player.fortuneWheelGotUsed = true;
-        player.weaponSO = weapon;
+        //Assign ability to player
     }
 
     private void OnDisable()
