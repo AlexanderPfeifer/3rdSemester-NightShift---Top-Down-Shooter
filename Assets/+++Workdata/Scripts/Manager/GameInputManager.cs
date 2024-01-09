@@ -12,12 +12,13 @@ public class GameInputManager : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerInputActions.Enable();
         
-        playerInputActions.player.shoot.performed += OnPlayerShooting;
+        playerInputActions.player.shoot.started += OnPlayerShooting;
+        playerInputActions.player.shoot.canceled += OnPlayerShooting;
         playerInputActions.player.pause.performed += OnGamePaused;
         playerInputActions.player.interact.performed += OnPlayerInteracting;
         playerInputActions.player.ability.performed += OnPlayerUsingAbility;
     }
-    
+
     private void OnPlayerUsingAbility(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         OnUsingAbilityAction?.Invoke(this, EventArgs.Empty);

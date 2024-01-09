@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 [CreateAssetMenu()]
 public class WeaponObjectSO : ScriptableObject
@@ -9,8 +7,8 @@ public class WeaponObjectSO : ScriptableObject
     public Sprite inGameWeaponVisual;
     public string weaponName;
     public string weaponDescription;
-    public float fireRate;
-    public int penetratingCount;
-    public float damagePerBullet;
+    public float shootDelay;
+    public int penetrationCount;
+    public float bulletDamage;
     public float activeAbilityGain;
 }

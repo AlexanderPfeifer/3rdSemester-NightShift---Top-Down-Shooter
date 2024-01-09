@@ -19,13 +19,9 @@ public class FortuneWheelUI : MonoBehaviour
     private Rigidbody2D rb;
     [HideInInspector] public bool canGetPrize;
 
-    private void Awake()
-    {
-        player = FindObjectOfType<Player>();
-    }
-    
     private void OnEnable()
     {
+        player = FindObjectOfType<Player>();
         player.isInteracting = true;
     }
 
@@ -81,15 +77,36 @@ public class FortuneWheelUI : MonoBehaviour
 
     private void GetWeaponPrize(WeaponObjectSO weapon)
     {
-        player.bulletPrefab = weapon.bulletPrefab;
         player.weaponVisual.GetComponent<SpriteRenderer>().sprite = weapon.inGameWeaponVisual;
         player.weaponVisual.SetActive(true);
-        canGetPrize = false;
-        gameObject.transform.parent.gameObject.SetActive(false);
+        player.bulletDamage = weapon.bulletDamage;
+        player.maxPenetrationCount = weapon.penetrationCount;
+        player.maxShootDelay = weapon.shootDelay;
+        player.activeAbilityGain = weapon.activeAbilityGain;
+        
         GameSaveStateManager.instance.saveGameDataManager.AddWeapon(weapon.weaponName);
+
+        switch (weapon.weaponName)
+        {
+            case "Magnum" :
+                player.AbilityFunction = player.StartMagnumAbility;
+                break;
+            case "Assault Rifle" :
+                player.AbilityFunction = player.StartAssaultRifleAbility;
+                break;
+            case "Shotgun" :
+                player.AbilityFunction = player.StartShotgunAbility;
+                break;
+            case "Hunting Rifle" :
+                player.AbilityFunction = player.StartHuntingRifleAbility;
+                break;
+        }
+        
         weaponPrizes.Remove(weapon);
+
+        gameObject.transform.parent.gameObject.SetActive(false);
         player.fortuneWheelGotUsed = true;
-        //Assign ability to player
+        canGetPrize = false;
     }
 
     private void OnDisable()

@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59bfe808e7dd244fbdf92a6c7cab6b3, type: 3}
   m_Name: ShotgunSO
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 7897330312661411150, guid: 810acf628009e3f4d89194d96aad8b53, type: 3}
+  bulletPrefab: {fileID: 4414082024327953419, guid: b2337561ecc7f6f4ebfc245ce1201ee6, type: 3}
   inGameWeaponVisual: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   weaponName: Shotgun
   weaponDescription: A handy dandy baller machine.
-  fireRate: 0.75
-  penetratingCount: 1
-  damagePerBullet: 1
+  shootDelay: 2
+  penetrationCount: 0
+  bulletDamage: 0.5
   activeAbilityGain: 0.75

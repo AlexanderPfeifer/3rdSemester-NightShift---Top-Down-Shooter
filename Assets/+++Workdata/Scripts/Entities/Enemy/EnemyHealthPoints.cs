@@ -1,19 +1,16 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyHealthPoints : MonoBehaviour
 {
     [SerializeField] private int maximumHitPoints = 5;
-    [SerializeField] private int currentHitPoints;
+    [SerializeField] private float currentHitPoints;
 
     private void Start()
     {
         currentHitPoints = maximumHitPoints;
     }
 
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(float damageAmount)
     {
         currentHitPoints -= damageAmount;
         
