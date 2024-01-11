@@ -1261,7 +1261,7 @@ GameObject:
   - component: {fileID: 630425260}
   - component: {fileID: 630425261}
   m_Layer: 5
-  m_Name: Vertical Layout Group MainMenu
+  m_Name: Vertical Layout Group MainMenu Old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
