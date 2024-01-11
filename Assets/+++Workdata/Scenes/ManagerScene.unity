@@ -784,8 +784,8 @@ MonoBehaviour:
     loadedSceneName: InGame
     collectedCollectiblesIdentifiers: []
     collectedWeaponsIdentifiers: []
-    newPlayerSaveData:
-      lastOpenedScene: 
+    weaponsInInventoryIdentifiers: []
+    finishedRides: []
 --- !u!1 &1245599052
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,22 +5,19 @@ public class SaveGameDataManager
 {
     public string saveName;
     public string loadedSceneName = GameSaveStateManager.InGameSceneName;
-
     
-    /// <summary>
     /// A list of all unique identifiers for all collected collectibles 
-    /// </summary>
     public List<string> collectedCollectiblesIdentifiers = new List<string>();
     
     public List<string> collectedWeaponsIdentifiers = new List<string>();
     
     public List<string> weaponsInInventoryIdentifiers = new List<string>();
     
+    public List<string> finishedRides = new List<string>();
+    
     public Player.PlayerSaveData newPlayerSaveData;
 
-    /// <summary>
     /// Called whenever a collectible is collected
-    /// </summary>
     /// <param name="identifier">The identifier that is unique for every collectible</param>
     public void AddCollectible(string identifier)
     {
@@ -44,6 +41,13 @@ public class SaveGameDataManager
         weaponsInInventoryIdentifiers.Add(identifier);
     }
     
+    public void AddRide(string identifier)
+    {
+        if (finishedRides.Contains(identifier))
+            return;
+        finishedRides.Add(identifier);
+    }
+    
     /// <summary>
     /// Called when we try to find out if a collectible was already collected
     /// </summary>
@@ -62,5 +66,10 @@ public class SaveGameDataManager
     public bool HasWeaponInInventory(string identifier)
     {
         return weaponsInInventoryIdentifiers.Contains(identifier);
+    }
+    
+    public bool HasFinishedRide(string identifier)
+    {
+        return finishedRides.Contains(identifier);
     }
 }

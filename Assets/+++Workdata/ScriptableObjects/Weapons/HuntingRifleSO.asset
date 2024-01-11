@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59bfe808e7dd244fbdf92a6c7cab6b3, type: 3}
   m_Name: HuntingRifleSO
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 7897330312661411150, guid: 59c2b041e8f7cde4a8e1e29c2d0af2a6, type: 3}
-  inGameWeaponVisual: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
+  inGameWeaponVisual: {fileID: -253621731, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
   weaponName: Hunting Rifle
-  weaponDescription: A handy dandy baller machine.
+  weaponDescription: Some good penetration going on here, I wonder who made this
+    weapon.
   shootDelay: 2
   penetrationCount: 2
   bulletDamage: 3
   activeAbilityGain: 2
+  weaponSpread: 0.005
+  weaponScale: {x: 1, y: 1, z: 1}

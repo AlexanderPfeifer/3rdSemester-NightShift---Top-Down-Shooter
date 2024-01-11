@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Generator : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private RidesSO rideData;
+    public bool isInteractable = true;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        //When loading the scene, we destroy the collectible, if it was already saved as collected.
+        if (GameSaveStateManager.instance.saveGameDataManager.HasFinishedRide(rideData.rideName))
+        {
+            //Start Gen Animation
+            isInteractable = false;
+        }
     }
 }

@@ -15,8 +15,8 @@ TagManager:
   - Generator
   - Collectible
   - Ride
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 
@@ -40,6 +40,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 967400085
     locked: 0
   - name: Bullet
     uniqueID: 815170427

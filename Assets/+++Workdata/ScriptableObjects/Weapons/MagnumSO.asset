@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59bfe808e7dd244fbdf92a6c7cab6b3, type: 3}
   m_Name: MagnumSO
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 7897330312661411150, guid: 2ffc5b7fe09638843b4a2909ece86229, type: 3}
-  inGameWeaponVisual: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  inGameWeaponVisual: {fileID: -1145309252, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
   weaponName: Magnum
-  weaponDescription: A handy dandy baller machine.
+  weaponDescription: Hmmm...its finger licking good
   shootDelay: 1
   penetrationCount: 1
   bulletDamage: 2
   activeAbilityGain: 0.5
+  weaponSpread: 0.005
+  weaponScale: {x: 0.5, y: 0.5, z: 1}

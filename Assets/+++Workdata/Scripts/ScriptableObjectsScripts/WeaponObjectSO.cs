@@ -10,4 +10,6 @@ public class WeaponObjectSO : ScriptableObject
     public int penetrationCount;
     public float bulletDamage;
     public float activeAbilityGain;
+    public float weaponSpread;
+    public Vector3 weaponScale;
 }

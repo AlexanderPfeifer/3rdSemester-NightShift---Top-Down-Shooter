@@ -12,13 +12,17 @@ public class Enemy : MonoBehaviour
     [SerializeField] private LayerMask rideLayer;
     [SerializeField] private float searchRange;
     [SerializeField] private float moveSpeed;
+    private bool enemyCanMove;
 
     private int enemyAttackDelay;
     [SerializeField] private int maxEnemyAttackDelay = 1;
+
+    [SerializeField] private float enemyFreezeTime = 10f;
     
     private Ride ride;
 
     private bool isAttacking;
+    [SerializeField] private float maxEnemyFreezeTime = 10f;
 
     private void Start()
     {
@@ -33,14 +37,25 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        TargetRide();
+        if (enemyCanMove)
+        {
+            TargetRide();
+        }
+        else
+        {
+            enemyFreezeTime -= Time.deltaTime;
+        }
+        
         AttackRide();
+        
+        
     }
 
     private void TargetRide()
     {
         if (!CircleCastForRide(rideLayer) || isAttacking) 
             return;
+        Debug.Log("enemyMoving");
         Vector2.MoveTowards(transform.position, ride.transform.position, moveSpeed * Time.deltaTime);
     }
 
@@ -49,12 +64,26 @@ public class Enemy : MonoBehaviour
         if (isAttacking && enemyAttackDelay <= 0)
         {
             ride.currentRideHp -= 1;
-            enemyAttackDelay = maxEnemyAttackDelay;
+            
             if (ride.currentRideHp <= 0)
             {
                 ride.ResetRide();
             }
+            
+            enemyAttackDelay = maxEnemyAttackDelay;
         }
+    }
+
+    public void EnemyFreeze()
+    {
+        while (enemyFreezeTime <= 0)
+        {
+            enemyCanMove = false;
+            return;
+        }
+
+        enemyFreezeTime = maxEnemyFreezeTime;
+        enemyCanMove = true;
     }
     
     private Collider2D CircleCastForRide(LayerMask layer)
