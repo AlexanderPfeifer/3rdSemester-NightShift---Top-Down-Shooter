@@ -340,8 +340,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: 0ece0519519c8b94cbf6955bcc52c1d3, type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: ad33bd2f76dbeb74db802a0bdbea8499, type: 3}
+    m_HighlightedSprite: {fileID: 832939452, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
+    m_PressedSprite: {fileID: -2022613386, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -387,7 +387,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4b84eefd7156a224fb12c0cca0020130, type: 3}
+  m_Sprite: {fileID: 1780156399, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -749,7 +749,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -759,8 +759,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: -646724037, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
+    m_PressedSprite: {fileID: 926206951, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -794,7 +794,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4274d7509ceeaf145bc9aa8c13971d10, type: 3}
+  m_Sprite: {fileID: 1659286573, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2488,8 +2488,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: 7b19944e27ab0554ebe56a75b0038a07, type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: 08789be5c7d123b47a34dcf2e71a4b05, type: 3}
+    m_HighlightedSprite: {fileID: -1620316562, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
+    m_PressedSprite: {fileID: 942904938, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -2547,7 +2547,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 796c0ecbf86109f4292f9021016544e4, type: 3}
+  m_Sprite: {fileID: 861182069, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3164,8 +3164,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: 8bf84a32c77659f42b801b3835415ded, type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: 2f2a91db8476c3f46ab383f17ffb5b24, type: 3}
+    m_HighlightedSprite: {fileID: -677840270, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
+    m_PressedSprite: {fileID: 1848654615, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -3211,7 +3211,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 719b9b45da4fee24da505d0373b581f8, type: 3}
+  m_Sprite: {fileID: 904249759, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3450,8 +3450,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: 18b6cc72d07cccc428b20350d10077c8, type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: bfa5c23202c128b41905842d0799ad42, type: 3}
+    m_HighlightedSprite: {fileID: 1715342349, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
+    m_PressedSprite: {fileID: -964208304, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -3485,7 +3485,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0d2ebe4b355687c46b42167f4807ad9e, type: 3}
+  m_Sprite: {fileID: 1397407655, guid: 5df76f520fd0fd74f976f3c88c3c0689, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
