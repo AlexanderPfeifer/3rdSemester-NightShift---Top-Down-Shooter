@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
@@ -31,7 +30,7 @@ public class Player : MonoBehaviour
 
     [Header("Layers")]
     [SerializeField] private LayerMask wheelOfFortuneLayer;
-    [SerializeField] private LayerMask generatorLayer;
+    [SerializeField] public LayerMask generatorLayer;
     [SerializeField] private LayerMask collectibleLayer;
     [SerializeField] private LayerMask rideLayer;
     
@@ -52,9 +51,14 @@ public class Player : MonoBehaviour
     [SerializeField] public float activeAbilityGain;
     [SerializeField] public float bulletSpeed = 38f;
     [SerializeField] public float abilityProgress;
+    [SerializeField] public int bulletsPerShot;
 
-    private Animator anim;
+    [SerializeField] private Animator anim;
+    [SerializeField] private Animator animNoHand;
 
+    [SerializeField] public GameObject playerNoHandVisual;
+    [SerializeField] public GameObject playerVisual;
+    
     private Transform weaponVisualStartPos;
     private Vector3 weaponToMouse;
     private Vector3 mousePos;
@@ -69,16 +73,17 @@ public class Player : MonoBehaviour
     private bool isUsingAbility;
     [SerializeField] public List<WeaponObjectSO> allWeaponPrizes;
 
-    
+    private Vector2 moveDirection = Vector2.down;
+
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     
     public Action AbilityFunction;
 
-    [FormerlySerializedAs("freezeEnemies")] public bool freezeBullets;
+    public bool freezeBullets;
     public bool stickyBullets;
     public bool explosiveBullets;
-    [FormerlySerializedAs("endlessPenetration")] public bool endlessPenetrationBullets;
+    public bool endlessPenetrationBullets;
     public bool splitBullets;
     
     private bool weaponAbility;
@@ -141,8 +146,6 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
-        ride = FindObjectOfType<Ride>();
-        anim = GetComponentInChildren<Animator>();
         muzzleFlashVisual.SetActive(false);
         rouletteUI = fortuneWheelUI.GetComponentInChildren<FortuneWheelUI>();
     }
@@ -186,18 +189,22 @@ public class Player : MonoBehaviour
     {
         if (canShoot && shootDelay <= 0)
         {
-            Vector2 bulletDirection = Random.insideUnitCircle;
-            bulletDirection.Normalize();
+            for (int i = 0; i < bulletsPerShot; i++)
+            {
+                Vector2 bulletDirection = Random.insideUnitCircle;
+                bulletDirection.Normalize();
 
-            bulletDirection = Vector3.Slerp(bulletDirection, mousePos, 1.0f - shootingSpread);
+                bulletDirection = Vector3.Slerp(bulletDirection, mousePos, 1.0f - shootingSpread);
             
-            var newBullet = Instantiate(bulletPrefab, weaponEndPoint.position, Quaternion.identity);
+                var newBullet = Instantiate(bulletPrefab, weaponEndPoint.position, Quaternion.identity);
             
-            newBullet.Launch(this, bulletDirection);
+                newBullet.Launch(this, bulletDirection);
             
-            StartCoroutine(WeaponVisualCoroutine());
+                StartCoroutine(WeaponVisualCoroutine());
             
-            shootDelay = maxShootDelay;
+                shootDelay = maxShootDelay;    
+            }
+            
         }
     }
 
@@ -243,7 +250,7 @@ public class Player : MonoBehaviour
         {
             if(fortuneWheelGotUsed && generatorIsActive)
             {
-                ride.StartNextWave();
+                SearchInteractionObject(rideLayer).GetComponent<Ride>().StartNextWave();
             }
         }
 
@@ -265,7 +272,7 @@ public class Player : MonoBehaviour
     
     private void HandleAimingUpdate()
     {
-        if (InGameUI.instance.gameIsPaused || !weaponVisual.activeSelf) 
+        if (InGameUI.instance.gameIsPaused) 
             return;
         
         mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -286,14 +293,7 @@ public class Player : MonoBehaviour
         
         weaponPosParent.eulerAngles = new Vector3(0, 0, angle);
 
-        if (weaponPosParent.eulerAngles.z is > 135 and > -45)
-        {
-            sr.flipX = false;
-        }
-        else
-        {
-            sr.flipX = true;
-        }
+        if (!weaponVisual.activeSelf) return;
         
         if (weaponPosParent.eulerAngles.z is > 0 and < 180)
         {
@@ -414,7 +414,6 @@ public class Player : MonoBehaviour
         for (int i = 0; i < allWeaponPrizes.Count; i++)
         {
             if (GameSaveStateManager.instance.saveGameDataManager.HasWeaponInInventory(allWeaponPrizes[i].weaponName))
-
             {
                 weaponVisual.GetComponent<SpriteRenderer>().sprite = allWeaponPrizes[i].inGameWeaponVisual;
                 weaponVisual.SetActive(true);
@@ -424,6 +423,10 @@ public class Player : MonoBehaviour
                 activeAbilityGain = allWeaponPrizes[i].activeAbilityGain;
                 shootingSpread = allWeaponPrizes[i].weaponSpread;
                 weaponVisual.transform.localScale = allWeaponPrizes[i].weaponScale;
+                bulletsPerShot = allWeaponPrizes[i].bulletsPerShot;
+
+                playerVisual.SetActive(false);
+                playerNoHandVisual.SetActive(true);
 
                 switch (allWeaponPrizes[i].weaponName)
                 {
@@ -452,13 +455,30 @@ public class Player : MonoBehaviour
 
     private void SetAnimationParameterLateUpdate()
     {
-        anim.SetBool("LookUp", weaponPosParent.eulerAngles.z is < 45 or > 315);
-        anim.SetBool("LookDown", weaponPosParent.eulerAngles.z is > 135 and < 225);
-        anim.SetBool("LookSideWays", weaponPosParent.eulerAngles.z is > 45 and < 135 or > 225 and < 315);
+        if (playerVisual.activeSelf)
+        {
+            anim.SetFloat("MoveSpeed", rb.velocity.sqrMagnitude);
+
+            if (gameInputManager.GetMovementVectorNormalized().sqrMagnitude <= 0)
+            {
+                return;
+            }
         
-        anim.SetFloat("MoveSpeed", rb.velocity.sqrMagnitude);
+            moveDirection = gameInputManager.GetMovementVectorNormalized();
+            anim.SetFloat("MoveDirX", moveDirection.x);
+            anim.SetFloat("MoveDirY", moveDirection.y);
+        }
+        else
+        {
+            animNoHand.SetBool("MovingUp", weaponPosParent.eulerAngles.z is < 45 or > 315);
+            animNoHand.SetBool("MovingDown", weaponPosParent.eulerAngles.z is > 135 and < 225);
+            animNoHand.SetBool("MovingSideWaysHand", weaponPosParent.eulerAngles.z is > 45 and < 135);
+            animNoHand.SetBool("MovingSideWaysNoHand", weaponPosParent.eulerAngles.z is > 225 and < 315);
+        
+            animNoHand.SetFloat("MoveSpeed", rb.velocity.sqrMagnitude);
+        }
     }
-    
+
     private IEnumerator WeaponVisualCoroutine()
     {
         muzzleFlashVisual.SetActive(true);
@@ -474,7 +494,7 @@ public class Player : MonoBehaviour
         return interactionObjectInRange;
     }
     
-    private Collider2D SearchInteractionObject(LayerMask layer)
+    public Collider2D SearchInteractionObject(LayerMask layer)
     {
         var interactionObjectInRange = Physics2D.OverlapCircle(transform.position, interactRadius, layer);
         return interactionObjectInRange;

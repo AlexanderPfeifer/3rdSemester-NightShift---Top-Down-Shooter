@@ -20,5 +20,6 @@ MonoBehaviour:
   penetrationCount: 0
   bulletDamage: 0.5
   activeAbilityGain: 0.75
-  weaponSpread: 0.25
-  weaponScale: {x: 0.8, y: 0.8, z: 1}
+  weaponSpread: 0.025
+  weaponScale: {x: 1, y: 1, z: 1}
+  bulletsPerShot: 12

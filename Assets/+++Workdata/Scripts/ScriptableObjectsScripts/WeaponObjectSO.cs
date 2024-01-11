@@ -12,4 +12,5 @@ public class WeaponObjectSO : ScriptableObject
     public float activeAbilityGain;
     public float weaponSpread;
     public Vector3 weaponScale;
+    public int bulletsPerShot;
 }

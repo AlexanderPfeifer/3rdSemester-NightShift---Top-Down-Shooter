@@ -6,43 +6,43 @@
   <component name="ChangeListManager">
     <list default="true" id="be4aa387-2548-4626-ac0c-f4e71fe1232b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NightShift/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NightShift/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Enemies/EnemyBase.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Enemies/EnemyBase.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/AssaultRifleVisual.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/AssaultRifleVisual.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/HuntingRifleVisual.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/HuntingRifleVisual.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/MagnumVisual.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/MagnumVisual.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/ShotgunVisual.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/ShotgunVisual.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/StartWeaponVisual.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/StartWeaponVisual.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/WeaponVisualBase.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/WeaponVisual/WeaponVisualBase.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerVisual.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerVisual.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWays.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWays.anim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysIdle.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysIdle.anim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysNoHand.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysNoHand.anim" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/InGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/InGame.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/ManagerScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/ManagerScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/AssaultRifleSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/AssaultRifleSO.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/HuntingRifleSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/HuntingRifleSO.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/MagnumSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/MagnumSO.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/PistolSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/PistolSO.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/ShotgunSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/ShotgunSO.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/Enemy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/Enemy.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/SpawnPoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/SpawnPoint.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Bullet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Bullet.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Player.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Generator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Generator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Ride.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Ride.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/SaveGameDataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/SaveGameDataManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/ScriptableObjectsScripts/WeaponObjectSO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/ScriptableObjectsScripts/WeaponObjectSO.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/FortuneWheelUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/FortuneWheelUI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Fixed_Sideways_Stand.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Fixed_Sideways_Stand.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/GeneratorUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/GeneratorUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Fixed_Sideways_Stand.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Fixed_Sideways_Stand.png.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Player_Spritesheet_Down.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Player_Spritesheet_Down.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Player_Spritesheet_Down_nohand.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Player_Spritesheet_Down_nohand.png.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Player_Spritesheet_Side.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Player_Spritesheet_Side.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Player_Spritesheet_Side_nohand.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Player_Spritesheet_Side_nohand.png.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Player_Spritesheet_Up.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Player_Spritesheet_Up.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/Physics2DSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/Physics2DSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Player_Spritesheet_Up_nohand.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Player_Spritesheet_Up_nohand.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Standing_Ss_A.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Character/Standing_Ss_A.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Enemy/Mader_Front.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Enemy/Mader_Front.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/Tilemap_auseinander.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/Tilemap_auseinander.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/Tilemap_auseinander.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/Tilemap_auseinander.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/tree_fin_grun2.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/tree_fin_grun2.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/tree_fin_grun3.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/tree_fin_grun3.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/tree_fin_grun4.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/tree_fin_grun4.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/tree_fin_grun_an.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/tree_fin_grun_an.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/tree_fin_no_outline.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/tree_fin_no_outline.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Weapons/Weapons final.PNG.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Weapons/Weapons final.PNG.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/PlayerWalkingDownIdle.anim" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/PlayerWalkingDownIdle.anim.meta" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,10 +121,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="12536">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="9820">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="12536" />
+      <option name="pid" value="9820" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -178,6 +178,7 @@
       <workItem from="1704790945279" duration="18428000" />
       <workItem from="1704825332091" duration="7286000" />
       <workItem from="1704874888492" duration="25159000" />
+      <workItem from="1704968913961" duration="10252000" />
     </task>
     <servers />
   </component>
@@ -188,5 +189,24 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/Enemy.cs</url>
+          <line>56</line>
+          <properties documentPath="C:\Users\Alexander Pfeifer\Downloads\School\3.S.Project\NightShift\Assets\+++Workdata\Scripts\Entities\Enemy\Enemy.cs" initialLine="56" containingFunctionPresentation="Method 'TargetRide'">
+            <startOffsets>
+              <option value="1308" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1446" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

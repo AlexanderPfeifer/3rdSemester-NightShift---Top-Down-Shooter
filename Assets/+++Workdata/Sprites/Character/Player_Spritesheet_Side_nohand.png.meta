@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -117,15 +117,15 @@ TextureImporter:
         y: 14
         width: 25
         height: 46
-      alignment: 9
-      pivot: {x: 0.5, y: 0.48913044}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f233531247803f54eaa8229b6ec15136
-      internalID: -478855769
+      spriteID: 3e8aea529d4724a4581aced33ca52a5a
+      internalID: -1316350556
       vertices: []
       indices: 
       edges: []
@@ -139,14 +139,14 @@ TextureImporter:
         width: 25
         height: 45
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a82691298d56b594caed7741fda78d02
-      internalID: 1873978745
+      spriteID: b3364779bdd8a2749901ff286feb1c48
+      internalID: 1036616735
       vertices: []
       indices: 
       edges: []
@@ -162,8 +162,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Player_Spritesheet_Side_nohand_0: -478855769
-      Player_Spritesheet_Side_nohand_1: 1873978745
+      Player_Spritesheet_Side_nohand_0: -1316350556
+      Player_Spritesheet_Side_nohand_1: 1036616735
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

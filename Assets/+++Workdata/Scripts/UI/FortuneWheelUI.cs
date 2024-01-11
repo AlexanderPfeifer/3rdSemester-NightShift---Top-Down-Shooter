@@ -103,6 +103,10 @@ public class FortuneWheelUI : MonoBehaviour
         player.activeAbilityGain = weapon.activeAbilityGain;
         player.shootingSpread = weapon.weaponSpread;
         player.weaponVisual.transform.localScale = weapon.weaponScale;
+        player.bulletsPerShot = weapon.bulletsPerShot;
+        
+        player.playerVisual.SetActive(false);
+        player.playerNoHandVisual.SetActive(true);
         
         GameSaveStateManager.instance.saveGameDataManager.AddWeapon(weapon.weaponName);
         currentWeaponPrizes.Remove(weapon);

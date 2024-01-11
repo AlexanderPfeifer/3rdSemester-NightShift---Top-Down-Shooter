@@ -9,8 +9,8 @@ public class Ride : MonoBehaviour
     [SerializeField] private RidesSO rideData;
 
     [SerializeField] private List<GameObject> invisibleCollider;
-    [SerializeField] private List<int> enemyCount;
     [SerializeField] private List<int> enemySpawnPointCount;
+    [SerializeField] private List<GameObject> enemyList;
     
     [SerializeField] private int waveCount;
 
@@ -35,6 +35,11 @@ public class Ride : MonoBehaviour
     private void Start()
     {
         currentRideHp = maxRideHp;
+        
+        for (int i = 0; i < invisibleCollider.Count; i++)
+        {
+            invisibleCollider[i].SetActive(false);
+        }
     }
 
     private void Update()
@@ -71,16 +76,16 @@ public class Ride : MonoBehaviour
             switch (waveCount)
             {
                 case 0 :
-                    InstantiateEnemies(enemyCount[2], enemySpawnPointCount[0]);
+                    InstantiateEnemies(2, enemySpawnPointCount[0]);
                     break;
                 case 1 :
-                    InstantiateEnemies(enemyCount[2], enemySpawnPointCount[0]);
-                    InstantiateEnemies(enemyCount[2], enemySpawnPointCount[1]);
+                    InstantiateEnemies(2, enemySpawnPointCount[0]);
+                    InstantiateEnemies(2, enemySpawnPointCount[1]);
                     break;
                 case 2 :
-                    InstantiateEnemies(enemyCount[1], enemySpawnPointCount[0]);
-                    InstantiateEnemies(enemyCount[1], enemySpawnPointCount[2]);
-                    InstantiateEnemies(enemyCount[3], enemySpawnPointCount[1]);
+                    InstantiateEnemies(1, enemySpawnPointCount[0]);
+                    InstantiateEnemies(1, enemySpawnPointCount[2]);
+                    InstantiateEnemies(3, enemySpawnPointCount[1]);
                     break;
                 case 3 :
                     waveTimer = 0;
@@ -97,7 +102,8 @@ public class Ride : MonoBehaviour
     {
         for (int i = 0; i < enemies; i++)
         {
-            Instantiate(enemyPrefab, spawnPoints[enemySpawnPoint].transform.position, Quaternion.identity, transform);
+            var enemy = Instantiate(enemyPrefab, spawnPoints[enemySpawnPoint].transform.position, Quaternion.identity, transform);
+            enemyList.Add(enemy);
         }
     }
 
@@ -107,22 +113,28 @@ public class Ride : MonoBehaviour
 
         waveCount = 0;
         
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < enemyList.Count; i++)
         {
-            var enemy = transform.GetChild(0).transform.gameObject;
+            var enemy = enemyList[0].gameObject;
             Destroy(enemy);
         }
     }
 
     private void RideRepairs()
     {
-        GameSaveStateManager.instance.SaveGame();
-        
         for (int i = 0; i < invisibleCollider.Count; i++)
         {
             invisibleCollider[i].SetActive(false);
         }
         
+        for (int i = 0; i < enemyList.Count; i++)
+        {
+            var enemy = enemyList[0].gameObject;
+            Destroy(enemy);
+        }
+        
         GameSaveStateManager.instance.saveGameDataManager.AddRide(rideData.rideName);
+        
+        GameSaveStateManager.instance.SaveGame();
     }
 }

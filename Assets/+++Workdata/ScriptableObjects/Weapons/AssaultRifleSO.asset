@@ -20,4 +20,5 @@ MonoBehaviour:
   bulletDamage: 1
   activeAbilityGain: 1
   weaponSpread: 0.025
-  weaponScale: {x: 0.7, y: 0.7, z: 1}
+  weaponScale: {x: 1, y: 1, z: 1}
+  bulletsPerShot: 1

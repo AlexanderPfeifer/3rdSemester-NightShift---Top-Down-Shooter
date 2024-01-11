@@ -4,6 +4,7 @@ public class Generator : MonoBehaviour
 {
     [SerializeField] private RidesSO rideData;
     public bool isInteractable = true;
+    [SerializeField] private GameObject fortuneWheel;
 
     private void Awake()
     {
@@ -13,5 +14,10 @@ public class Generator : MonoBehaviour
             //Start Gen Animation
             isInteractable = false;
         }
+    }
+
+    public void SetFortuneWheel()
+    {
+        fortuneWheel.SetActive(true);
     }
 }

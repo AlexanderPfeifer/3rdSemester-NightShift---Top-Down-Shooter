@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private LayerMask rideLayer;
     [SerializeField] private float searchRange;
     [SerializeField] private float moveSpeed;
-    private bool enemyCanMove;
+    private bool enemyCanMove = true;
 
     private int enemyAttackDelay;
     [SerializeField] private int maxEnemyAttackDelay = 1;
@@ -31,32 +31,34 @@ public class Enemy : MonoBehaviour
         colliderEnemy = GetComponent<CapsuleCollider2D>();
 
         srEnemy = GetComponentInChildren<SpriteRenderer>();
-        
-        ride = FindObjectOfType<Ride>();
+
+        ride = GetComponentInParent<Ride>();
     }
 
     private void Update()
     {
-        if (enemyCanMove)
-        {
-            TargetRide();
-        }
-        else
+        if(!enemyCanMove)
         {
             enemyFreezeTime -= Time.deltaTime;
         }
         
         AttackRide();
-        
-        
+    }
+
+    private void FixedUpdate()
+    {
+        if (enemyCanMove)
+        {
+            TargetRide();
+        }
     }
 
     private void TargetRide()
     {
-        if (!CircleCastForRide(rideLayer) || isAttacking) 
+        if (isAttacking) 
             return;
-        Debug.Log("enemyMoving");
-        Vector2.MoveTowards(transform.position, ride.transform.position, moveSpeed * Time.deltaTime);
+        
+        rbEnemy.MovePosition(transform.position =  Vector2.MoveTowards(transform.position, ride.transform.position, moveSpeed * Time.deltaTime));
     }
 
     private void AttackRide()
@@ -85,18 +87,13 @@ public class Enemy : MonoBehaviour
         enemyFreezeTime = maxEnemyFreezeTime;
         enemyCanMove = true;
     }
-    
-    private Collider2D CircleCastForRide(LayerMask layer)
-    {
-        var interactionObjectInRange = Physics2D.OverlapCircle(transform.position, searchRange, layer);
-        return interactionObjectInRange;
-    }
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.layer == rideLayer)
+        if (col.gameObject.GetComponent<Ride>())
         {
             isAttacking = true;
+            Physics2D.IgnoreCollision(colliderEnemy, colliderEnemy);
         }
     }
 

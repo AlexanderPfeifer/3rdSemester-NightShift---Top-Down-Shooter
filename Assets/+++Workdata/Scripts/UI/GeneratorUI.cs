@@ -7,7 +7,6 @@ public class GeneratorUI : MonoBehaviour
     [Header("Acceleration")]
     [SerializeField] private AnimationCurve accelerationCurve;
     [SerializeField] private float acceleration = .375f;
-    [SerializeField] private GameObject wheelOfFortune;
 
     private float finalAcc;
     private Slider generatorSlider;
@@ -48,8 +47,8 @@ public class GeneratorUI : MonoBehaviour
         if (generatorSlider.value > 0.9f)
         {
             player.generatorIsActive = true;
-            wheelOfFortune.SetActive(true);
             gameObject.SetActive(false);
+            player.SearchInteractionObject(player.generatorLayer).GetComponent<Generator>().SetFortuneWheel();
         }
         else
         {
