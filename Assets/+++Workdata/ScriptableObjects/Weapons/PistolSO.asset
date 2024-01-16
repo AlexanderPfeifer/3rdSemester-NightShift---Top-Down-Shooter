@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: PistolSO
   m_EditorClassIdentifier: 
   inGameWeaponVisual: {fileID: 1141658156, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
-  weaponName: Pistol
-  weaponDescription: Popping like them animal heads hahaha
+  weaponName: Popcorn Pistol
+  weaponDescription: The trigger is buttery-smooth, but luckily this thing is more
+    bark than bite. The noise wakes me right up, though.
   shootDelay: 0.4
   penetrationCount: 0
   bulletDamage: 1
-  activeAbilityGain: 1
-  weaponSpread: 0.008
+  weaponSpread: 0.25
   weaponScale: {x: 0.8, y: 0.8, z: 1}
-  bulletsPerShot: 1
+  bulletsPerShot: 3
+  knockBack: 0.1
+  enemyKnockBack: 0

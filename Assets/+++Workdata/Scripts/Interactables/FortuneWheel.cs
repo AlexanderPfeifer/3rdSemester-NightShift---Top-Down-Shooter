@@ -2,13 +2,10 @@ using UnityEngine;
 
 public class FortuneWheel : MonoBehaviour
 {
-    private GameInputManager gameInputManager;
-
-    private void OnTriggerEnter2D(Collider2D col)
+    [SerializeField] public GameObject ride;
+    
+    public void DeactivateFortuneWheel()
     {
-        if (col.TryGetComponent<Player>(out var player))
-        {
-            
-        }
+        gameObject.SetActive(false);
     }
 }

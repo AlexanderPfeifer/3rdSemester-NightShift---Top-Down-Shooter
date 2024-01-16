@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -7,7 +10,12 @@ public class GameSaveStateManager : MonoBehaviour
     
     public const string MainMenuSceneName = "MainMenu";
     public const string InGameSceneName = "InGame";
-    
+
+    public bool startedNewGame;
+    private bool changeAlpha;
+    public TextMeshProUGUI gameSavingText; 
+    [SerializeField] private float textAlphaChangeSpeed = 1;
+
     public enum GameState
     {
         InMainMenu = 0,
@@ -38,7 +46,12 @@ public class GameSaveStateManager : MonoBehaviour
     {
         GoToMainMenu();
     }
-    
+
+    private void Update()
+    {
+        ChangeAlpha();
+    }
+
     public void GoToMainMenu()
     {
         CurrentState = GameState.InMainMenu;
@@ -49,6 +62,7 @@ public class GameSaveStateManager : MonoBehaviour
     
     public void StartNewGame(string gameName)
     {
+        startedNewGame = true;
         saveGameDataManager = new SaveGameDataManager();
         saveGameDataManager.saveName = gameName;
             CurrentState = GameState.InGame;
@@ -85,5 +99,24 @@ public class GameSaveStateManager : MonoBehaviour
         
         //we give the current data and the wanted save name to the SaveManger
         SaveFileManager.TrySaveData(saveGameDataManager.saveName, saveGameDataManager);
+
+        StartCoroutine(SetSaveGameText());
+    }
+
+    private IEnumerator SetSaveGameText()
+    {
+        gameSavingText.gameObject.SetActive(true);
+        changeAlpha = true;
+        yield return new WaitForSeconds(3);
+        gameSavingText.gameObject.SetActive(false);
+        changeAlpha = false;
+    }
+
+    private void ChangeAlpha()
+    {
+        if (changeAlpha)
+        {
+            gameSavingText.color = new Color(gameSavingText.color.r, gameSavingText.color.g, gameSavingText.color.b, Mathf.PingPong(textAlphaChangeSpeed * Time.time, 1));
+        }
     }
 }

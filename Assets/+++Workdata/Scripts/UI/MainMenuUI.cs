@@ -1,36 +1,67 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class MainMenuUI : MonoBehaviour
 {
-    [SerializeField] private GameObject mainMenu;
-    [SerializeField] private GameObject loadMenu;
-    
     [SerializeField] private GameObject loadLevelButtonPrefab;
     [SerializeField] private GameObject deleteSaveStateButtonPrefab;
 
     [SerializeField] private Transform saveStateLayoutGroup;
 
+    [SerializeField] private Animator stallShutterAnimator;
+
     private bool gameStateLoaded;
 
+    public AudioMixer audioMixer;
+    public AudioMixer audioSFXMixer;
+    public AudioMixer audioMusicMixer;
+
     private GameObject newLoadButton;
-    
     private GameObject newDeleteButton;
 
     [SerializeField] private List<GameObject> loadButtonsList;
+
+    [SerializeField] private GameObject loadScreen;
+    [SerializeField] private GameObject optionsScreen;
+    [SerializeField] private GameObject creditsScreen;
     
+    [SerializeField] private GameObject loadButton;
+    [SerializeField] private GameObject optionsButton;
+    [SerializeField] private GameObject creditsButton;
+
+
+    private void Start()
+    {
+        loadScreen.SetActive(false);
+        optionsScreen.SetActive(false);
+        creditsScreen.SetActive(false);
+    }
 
     public void StartNewGame()
     {
         DateTime dt = DateTime.Now;
-        GameSaveStateManager.instance.StartNewGame("SaveState            " + dt.ToString("yyyy-MM-ddTHH-mmZ"));
+        GameSaveStateManager.instance.StartNewGame("SaveState               " + dt.ToString("yyyy-MM-ddTHH-mm"));
         
         gameStateLoaded = false;
     }
 
+    public void OpenOptionsMenu()
+    {
+        StartCoroutine(SetScreen(false, true, false, true, false, true));
+
+    }
+    
+    public void OpenCreditsMenu()
+    {
+        StartCoroutine(SetScreen(false, false, true, true, true, false));
+
+    }
+    
     private void DeleteLoadMenuButtons()
     {
         loadButtonsList.ForEach(Destroy);
@@ -39,6 +70,8 @@ public class MainMenuUI : MonoBehaviour
     
     public void CreateLoadMenuButtons()
     {
+        StartCoroutine(SetScreen(true, false, false, false, true, true));
+        
         if (!gameStateLoaded)
         {
             string[] saveGameNames = SaveFileManager.GetAllSaveFileNames();
@@ -66,6 +99,26 @@ public class MainMenuUI : MonoBehaviour
         }
     }
 
+    public void SetFullscreen(bool isFullscreen)
+    {
+        Screen.fullScreen = isFullscreen;
+    }
+
+    public void SetVolume(float volume)
+    {
+        audioMixer.SetFloat("volume", volume);
+    }
+    
+    public void SetSfxVolume(float volume)
+    {
+        audioSFXMixer.SetFloat("volume", volume);
+    }
+    
+    public void SetMusicVolume(float volume)
+    {
+        audioMusicMixer.SetFloat("volume", volume);
+    }
+
     private void DeleteSaveState(string saveName)
     {
         SaveFileManager.DeleteSaveState(saveName);
@@ -76,21 +129,33 @@ public class MainMenuUI : MonoBehaviour
     private void LoadGame(string saveName)
     {
         GameSaveStateManager.instance.LoadFromSave(saveName);
-        ChangeMenu();
         gameStateLoaded = false;
     }
 
-    public void ChangeMenu()
+    private IEnumerator SetScreen(bool loadScreen, bool optionsScreen, bool creditsScreen, bool loadButton, bool optionsButton, bool creditsButton)
     {
-        if (mainMenu.activeSelf)
+        yield return new WaitForSeconds(0.7f);
+        this.loadScreen.SetActive(loadScreen);
+        this.optionsScreen.SetActive(optionsScreen);
+        this.creditsScreen.SetActive(creditsScreen);
+        
+        this.loadButton.GetComponent<Button>().interactable = loadButton;
+        this.optionsButton.GetComponent<Button>().interactable = optionsButton;
+        this.creditsButton.GetComponent<Button>().interactable = creditsButton;
+    }
+
+    public void SetAnimation()
+    {
+        if (stallShutterAnimator.GetBool("GoUp"))
         {
-            mainMenu.SetActive(false);
-            loadMenu.SetActive(true);
+            stallShutterAnimator.SetTrigger("ChangeScreen");
         }
-        else
-        {
-            mainMenu.SetActive(true);
-            loadMenu.SetActive(false);
-        }
+
+        stallShutterAnimator.SetBool("GoUp", true);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

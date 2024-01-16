@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
@@ -8,16 +8,27 @@ public class Enemy : MonoBehaviour
 {
     private Rigidbody2D rbEnemy;
     private CapsuleCollider2D colliderEnemy;
-    private SpriteRenderer srEnemy;
-    [SerializeField] private LayerMask rideLayer;
-    [SerializeField] private float searchRange;
-    [SerializeField] private float moveSpeed;
-    private bool enemyCanMove = true;
+    [SerializeField] private float otherEnemiesMoveSpeed;
+    public bool enemyCanMove = true;
+    [SerializeField] private GameObject enemyDeathMark;
+    
+    public float changeColorTime = .075f;
+
+    public float enemyKnockBack = 10;
+
+    public bool enemyWaiting;
+
+    private Color noAlpha;
+    [SerializeField] private bool isBunny;
+    [SerializeField] public bool bunnyCanJump;
+    [SerializeField] private float bunnyJumpSpeed;
 
     private int enemyAttackDelay;
     [SerializeField] private int maxEnemyAttackDelay = 1;
 
-    [SerializeField] private float enemyFreezeTime = 10f;
+    [SerializeField] private float enemyFreezeTime = 3.5f;
+
+    [SerializeField] private float enemyAbilityGain = 1;
     
     private Ride ride;
 
@@ -29,9 +40,7 @@ public class Enemy : MonoBehaviour
         rbEnemy = GetComponent<Rigidbody2D>();
 
         colliderEnemy = GetComponent<CapsuleCollider2D>();
-
-        srEnemy = GetComponentInChildren<SpriteRenderer>();
-
+        
         ride = GetComponentInParent<Ride>();
     }
 
@@ -57,48 +66,99 @@ public class Enemy : MonoBehaviour
     {
         if (isAttacking) 
             return;
-        
-        rbEnemy.MovePosition(transform.position =  Vector2.MoveTowards(transform.position, ride.transform.position, moveSpeed * Time.deltaTime));
-    }
 
-    private void AttackRide()
-    {
-        if (isAttacking && enemyAttackDelay <= 0)
+        if (!isBunny)
         {
-            ride.currentRideHp -= 1;
-            
-            if (ride.currentRideHp <= 0)
+            rbEnemy.MovePosition(transform.position =  Vector2.MoveTowards(transform.position, ride.transform.position, otherEnemiesMoveSpeed * Time.deltaTime));
+        }
+        else
+        {
+            if (bunnyCanJump)
             {
-                ride.ResetRide();
+                rbEnemy.MovePosition(transform.position =  Vector2.MoveTowards(transform.position, ride.transform.position, bunnyJumpSpeed * Time.deltaTime));
             }
-            
-            enemyAttackDelay = maxEnemyAttackDelay;
-        }
-    }
-
-    public void EnemyFreeze()
-    {
-        while (enemyFreezeTime <= 0)
-        {
-            enemyCanMove = false;
-            return;
         }
 
-        enemyFreezeTime = maxEnemyFreezeTime;
-        enemyCanMove = true;
-    }
-
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if (col.gameObject.GetComponent<Ride>())
+        if (Vector2.Distance(transform.position, ride.transform.position) < Mathf.Epsilon)
         {
             isAttacking = true;
             Physics2D.IgnoreCollision(colliderEnemy, colliderEnemy);
         }
     }
 
+    private void AttackRide()
+    {
+        if (isAttacking && enemyAttackDelay <= 0)
+        {
+            ride.currentWaveTimer -= 1;
+
+            enemyAttackDelay = maxEnemyAttackDelay;
+
+            StartCoroutine(ride.ChangeAlphaOnAttack());
+        }
+    }
+
+    public void EnemyFreeze()
+    {
+        enemyFreezeTime = maxEnemyFreezeTime;
+        
+        while (enemyFreezeTime <= 0)
+        {
+            enemyCanMove = false;
+            return;
+        }
+
+        enemyCanMove = true;
+    }
+
+    public void Stop(float duration)
+    {
+        if (enemyWaiting)
+        {
+            return;
+        }
+
+        noAlpha.r = 1;
+        noAlpha.g = 0;
+        noAlpha.b = 0;
+        noAlpha.a = 0.3f;
+        GetComponent<SpriteRenderer>().color = noAlpha;
+        
+        Time.timeScale = 0;
+
+        StartCoroutine(EnemyGotHit(duration));
+    }
+    
+    public IEnumerator EnemyGotHit(float duration)
+    {
+        enemyWaiting = true;
+
+        yield return new WaitForSecondsRealtime(duration);
+        
+        Time.timeScale = 1f;
+        noAlpha.r = 1;
+        noAlpha.g = 1;
+        noAlpha.b = 1;
+        noAlpha.a = 1;
+        GetComponent<SpriteRenderer>().color = noAlpha;
+        enemyWaiting = false;
+    }
+
+    public void BunnyCanJump()
+    {
+        bunnyCanJump = !bunnyCanJump;
+    }
+    
     private void OnDestroy()
     {
-        //play death anim
+        Time.timeScale = 1;
+        Instantiate(enemyDeathMark, transform.position, Quaternion.identity, FindObjectOfType<Player>().bullets.transform);
+        Player player = FindObjectOfType<Player>();
+        
+        if (player.canGetAbilityGain)
+        {
+            player.currentAbilityProgress += enemyAbilityGain;
+        }
+        //play death particles
     }
 }

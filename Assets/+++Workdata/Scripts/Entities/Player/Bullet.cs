@@ -1,31 +1,49 @@
-using UnityEditor.Experimental.GraphView;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using Random = UnityEngine.Random;
 
 public class Bullet : MonoBehaviour
 {
     private const float BulletDistanceUntilDestroy = 25;
     private Player player;
-
-    [SerializeField] private LayerMask enemyLayer;
-
     private Vector2 startPosition;
 
     [SerializeField] private float tickStickyBullet;
     [SerializeField] private float maxTickStickyBullet = 2;
     
-    private bool canGetAbilityGain;
+    [SerializeField] private float explosiveDamage = 3;
 
+    [SerializeField] private float tickDamage;
+
+    private float currentBulletDamage;
+
+    private bool bulletGotSplit;
+
+    private Vector2 travelDirection;
+
+    private Color noAlpha;
+
+    private void OnEnable()
+    {
+        player = FindObjectOfType<Player>();
+        currentBulletDamage = player.bulletDamage;
+    }
+    
     private void Update()
     {
-        if (player.abilityProgress <= 0)
-        {
-            canGetAbilityGain = true;
-        }
-
         if (player.stickyBullets)
         {
             tickStickyBullet -= Time.deltaTime;
+
+            if (tickStickyBullet <= 0)
+            {
+                var enemy = GetComponentInParent<Enemy>();
+                tickStickyBullet = maxTickStickyBullet;
+                enemy.GetComponent<EnemyHealthPoints>().TakeDamage(tickDamage);
+                enemy.Stop(enemy.changeColorTime);
+            }
         }
     }
 
@@ -37,105 +55,120 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void Launch(Player shooter, Vector2 targetedPosition)
+    public void LaunchInDirection(Player shooter, Vector2 shootDirection)
     {
-        player = FindObjectOfType<Player>();
+        startPosition = transform.position;
+        
+        GetComponent<Rigidbody2D>().AddForce(shootDirection * shooter.bulletSpeed, ForceMode2D.Impulse);
 
-        var direction = targetedPosition - (Vector2)shooter.weaponEndPoint.transform.position;
-        direction.Normalize();
-
-        var bulletTransform = transform;
-        bulletTransform.up = direction;
-        
-        startPosition = bulletTransform.position;
-        
-        Physics2D.IgnoreCollision(GetComponent<Collider2D>(), shooter.GetComponent<Collider2D>());
-        Physics2D.IgnoreCollision(GetComponent<Collider2D>(), GetComponent<Collider2D>());
-        
-        GetComponent<Rigidbody2D>().AddForce(direction * player.bulletSpeed, ForceMode2D.Impulse);
+        travelDirection = shootDirection;
     }
 
-    private void OnCollisionEnter2D(Collision2D col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.layer != enemyLayer)
+        if (!col.gameObject.GetComponent<Enemy>())
         {
             Destroy(gameObject);
         }
         
         var healthPointManager = col.gameObject.GetComponent<EnemyHealthPoints>();
+        
+        var enemyObject = col.gameObject.GetComponent<Enemy>();
+
         if (healthPointManager != null)
         {
             if (player.freezeBullets)
             {
-                canGetAbilityGain = false;
+                col.gameObject.GetComponent<Enemy>().EnemyFreeze();
+            }
 
-                col.gameObject.GetComponent<Enemy>().EnemyFreeze();    
+            if (player.endlessPenetrationBullets)
+            {
+                var probability = Random.Range(1, 10);
+                if (probability == 10)
+                {
+                    currentBulletDamage = Random.Range(10, 20);
+                }
             }
 
             if (player.explosiveBullets)
             {
-                canGetAbilityGain = false;
-
-                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, 4);
+                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, 3);
                 
                 foreach (var enemy in hitEnemies)
                 {
                     if (enemy.GetComponent<EnemyHealthPoints>())
                     {
-                        enemy.GetComponent<EnemyHealthPoints>().TakeDamage(player.bulletDamage);
+                        enemy.GetComponent<EnemyHealthPoints>().TakeDamage(explosiveDamage);
+                        enemy.GetComponent<Enemy>().Stop(enemyObject.changeColorTime);
                     }
                 }
             }
-
-            if (player.endlessPenetrationBullets)
+            
+            if (player.splitBullets && !bulletGotSplit)
             {
-                canGetAbilityGain = false;
-            }
-
-            if (player.splitBullets)
-            {
-                canGetAbilityGain = false;
-                
                 Vector2 bulletDirection = Random.insideUnitCircle;
                 bulletDirection.Normalize();
                 
                 var newBullet = Instantiate(player.bulletPrefab, transform.position, Quaternion.identity);
             
                 newBullet.GetComponent<Rigidbody2D>().AddForce(bulletDirection * player.bulletSpeed, ForceMode2D.Impulse);
+
+                newBullet.bulletGotSplit = true;
+
+                bulletGotSplit = true;
             }
 
             if (player.stickyBullets)
             {
-                canGetAbilityGain = false;
-                transform.position = col.gameObject.transform.position;
-                
-                if (tickStickyBullet <= 0)
-                {
-                    col.gameObject.GetComponent<EnemyHealthPoints>().TakeDamage(player.bulletDamage);
-                    tickStickyBullet = maxTickStickyBullet;
-                }
+                transform.SetParent(col.gameObject.transform);
             }
+            
+            if(player.explosiveBullets)
+                return;
+
+            enemyObject.Stop(enemyObject.changeColorTime);
+
+            if (bulletGotSplit)
+            {
+                healthPointManager.TakeDamage(player.bulletDamage);
+                Destroy(gameObject);
+            }
+
+            enemyObject.StartCoroutine(EnemyKnockBack(enemyObject));
             
             BulletBehaviour(healthPointManager);
         }
     }
+    
+    private IEnumerator EnemyKnockBack(Enemy enemy)
+    {
+        enemy.enemyCanMove = false;
+        
+        enemy.GetComponent<Rigidbody2D>().AddForce(travelDirection * enemy.enemyKnockBack, ForceMode2D.Impulse);
 
+        yield return new WaitForSecondsRealtime(0.15f);
+
+        enemy.enemyCanMove = true;
+    }
+    
     private void BulletBehaviour(EnemyHealthPoints enemyHealthPoints)
     {
         var bulletPenetrationCount = player.maxPenetrationCount;
+        
         if (!player.endlessPenetrationBullets)
         {
             bulletPenetrationCount -= 1;
         }
-        enemyHealthPoints.TakeDamage(player.bulletDamage);
-        if (canGetAbilityGain)
-        {
-            player.abilityProgress += player.activeAbilityGain;
-        }
         
-        if (bulletPenetrationCount <= 0)
+        enemyHealthPoints.TakeDamage(player.bulletDamage);
+
+        if (bulletPenetrationCount < 0)
         {
-            Destroy(gameObject);
+            if (!player.stickyBullets)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

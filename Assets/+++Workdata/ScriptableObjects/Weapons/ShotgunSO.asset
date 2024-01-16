@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: ShotgunSO
   m_EditorClassIdentifier: 
   inGameWeaponVisual: {fileID: -158313173, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
-  weaponName: Shotgun
-  weaponDescription: Now this is some real work of art, tell Dalhi he's done for
-    today
-  shootDelay: 2
+  weaponName: Lollipop Shotgun
+  weaponDescription: Although the grip is a little sticky, the smell is a nice change
+    of pace. Suck it, monsters!
+  shootDelay: 1
   penetrationCount: 0
   bulletDamage: 0.5
-  activeAbilityGain: 0.75
-  weaponSpread: 0.025
+  weaponSpread: 0.25
   weaponScale: {x: 1, y: 1, z: 1}
-  bulletsPerShot: 12
+  bulletsPerShot: 8
+  knockBack: 1
+  enemyKnockBack: 0

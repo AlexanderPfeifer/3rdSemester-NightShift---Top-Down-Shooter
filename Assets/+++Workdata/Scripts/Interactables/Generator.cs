@@ -3,7 +3,7 @@ using UnityEngine;
 public class Generator : MonoBehaviour
 {
     [SerializeField] private RidesSO rideData;
-    public bool isInteractable = true;
+    [HideInInspector] public bool isInteractable = true;
     [SerializeField] private GameObject fortuneWheel;
 
     private void Awake()
@@ -11,7 +11,6 @@ public class Generator : MonoBehaviour
         //When loading the scene, we destroy the collectible, if it was already saved as collected.
         if (GameSaveStateManager.instance.saveGameDataManager.HasFinishedRide(rideData.rideName))
         {
-            //Start Gen Animation
             isInteractable = false;
         }
     }
@@ -19,5 +18,7 @@ public class Generator : MonoBehaviour
     public void SetFortuneWheel()
     {
         fortuneWheel.SetActive(true);
+        isInteractable = false;
+        GetComponentInParent<Ride>().rideLight.SetActive(true);
     }
 }

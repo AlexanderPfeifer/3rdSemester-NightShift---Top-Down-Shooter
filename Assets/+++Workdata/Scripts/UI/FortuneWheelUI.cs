@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,11 +7,9 @@ public class FortuneWheelUI : MonoBehaviour
     [SerializeField] private float minSpinPower, maxSpinPower;
     [SerializeField] private float minStopPower, maxStopPower;
     [SerializeField] private float maxAngularVelocity = 1440;
-
-    [Header("Weapon Prize List")]
-    [SerializeField] public List<WeaponObjectSO> currentWeaponPrizes;
-
+    
     private const int FortuneWheelPieCount = 5;
+    private float randomRotation;
 
     private Player player;
     private Rigidbody2D rb;
@@ -23,24 +20,11 @@ public class FortuneWheelUI : MonoBehaviour
         player = FindObjectOfType<Player>();
         
         player.isInteracting = true;
-        
-        for (int i = 0; i < currentWeaponPrizes.Count; i++)
-        {
-            currentWeaponPrizes.RemoveAt(0);
-        }
-        
-        for (int i = 0; i < player.allWeaponPrizes.Count; i++)
-        {
-            currentWeaponPrizes.Add(player.allWeaponPrizes[i]);
-        }
-        
-        for (int i = 0; i < currentWeaponPrizes.Count; i++)
-        {
-            if (GameSaveStateManager.instance.saveGameDataManager.HasWeaponInInventory(currentWeaponPrizes[i].weaponName))
-            {
-                currentWeaponPrizes.Remove(currentWeaponPrizes[i]);
-            }
-        }
+
+        randomRotation = Random.Range(0, 360);
+        var transformEulerAngles = transform.eulerAngles;
+        transformEulerAngles.z = randomRotation;
+        transform.eulerAngles = transformEulerAngles;
     }
 
     private void Start()
@@ -89,50 +73,23 @@ public class FortuneWheelUI : MonoBehaviour
     {
         var rotationAngle = transform.eulerAngles.z;
         const float pieSize = (360f / FortuneWheelPieCount);
-        int priceIndex = Mathf.FloorToInt((rotationAngle+22.5f) / pieSize) % currentWeaponPrizes.Count;
-        GetWeaponPrize(currentWeaponPrizes[priceIndex]);
+        int priceIndex = Mathf.FloorToInt((rotationAngle + 40) / pieSize) % player.allWeaponPrizes.Count;
+        GetWeaponPrize(player.allWeaponPrizes[priceIndex]);
     }
     
     private void GetWeaponPrize(WeaponObjectSO weapon)
     {
-        player.weaponVisual.GetComponent<SpriteRenderer>().sprite = weapon.inGameWeaponVisual;
-        player.weaponVisual.SetActive(true);
-        player.bulletDamage = weapon.bulletDamage;
-        player.maxPenetrationCount = weapon.penetrationCount;
-        player.maxShootDelay = weapon.shootDelay;
-        player.activeAbilityGain = weapon.activeAbilityGain;
-        player.shootingSpread = weapon.weaponSpread;
-        player.weaponVisual.transform.localScale = weapon.weaponScale;
-        player.bulletsPerShot = weapon.bulletsPerShot;
-        
-        player.playerVisual.SetActive(false);
-        player.playerNoHandVisual.SetActive(true);
-        
-        GameSaveStateManager.instance.saveGameDataManager.AddWeapon(weapon.weaponName);
-        currentWeaponPrizes.Remove(weapon);
+        player.GetWeapon(weapon);
 
-        switch (weapon.weaponName)
-        {
-            case "Magnum" :
-                player.AbilityFunction = player.StartMagnumAbility;
-                break;
-            case "Assault Rifle" :
-                player.AbilityFunction = player.StartAssaultRifleAbility;
-                break;
-            case "Shotgun" :
-                player.AbilityFunction = player.StartShotgunAbility;
-                break;
-            case "Hunting Rifle" :
-                player.AbilityFunction = player.StartHuntingRifleAbility;
-                break;
-            case "Pistol" :
-                player.AbilityFunction = player.StartPistolAbility;
-                break;
-        }
+        GameSaveStateManager.instance.saveGameDataManager.AddWeapon(weapon.weaponName);
 
         gameObject.transform.parent.gameObject.SetActive(false);
         player.fortuneWheelGotUsed = true;
         canGetPrize = false;
+        
+        player.SearchInteractionObject(player.wheelOfFortuneLayer).GetComponent<FortuneWheel>().ride.GetComponent<Ride>().canActivateRide = true;
+
+        player.SearchInteractionObject(player.wheelOfFortuneLayer).GetComponent<FortuneWheel>().DeactivateFortuneWheel();
     }
 
     private void OnDisable()

@@ -17,8 +17,8 @@ TagManager:
   - Ride
   - Player
   - Enemy
-  - 
-  - 
+  - Trees
+  - Bullet
   - 
   - 
   - 
@@ -44,17 +44,23 @@ TagManager:
   - name: Ground
     uniqueID: 967400085
     locked: 0
+  - name: DeathMark
+    uniqueID: 4238810977
+    locked: 0
+  - name: EnvironmentBehindPlayer
+    uniqueID: 1047655867
+    locked: 0
   - name: Bullet
     uniqueID: 815170427
     locked: 0
   - name: Enemy
     uniqueID: 2395912417
     locked: 0
-  - name: InteractableEnvironment
-    uniqueID: 108529741
-    locked: 0
   - name: Player
     uniqueID: 2587523061
+    locked: 0
+  - name: EnvironmentInFrontOfPlayer
+    uniqueID: 3753171241
     locked: 0
   - name: MuzzleFlash
     uniqueID: 2718291729
