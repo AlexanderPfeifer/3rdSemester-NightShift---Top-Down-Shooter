@@ -13,7 +13,7 @@ public class PlayerCollision : MonoBehaviour
     {
         if (col.gameObject.GetComponent<Player>())
         {
-            if (!ride.GetComponentInChildren<Generator>().isInteractable)
+            if (!ride.GetComponentInChildren<Generator>().isInteractable && !ride.GetComponentInChildren<Generator>().arenaFightFinished)
             {
                 ride.ActivateInvisibleWalls(true);
                 ride.fightCam.Priority = 15;

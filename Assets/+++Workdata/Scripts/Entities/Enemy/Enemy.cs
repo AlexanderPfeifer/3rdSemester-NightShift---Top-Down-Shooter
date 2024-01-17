@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
@@ -11,10 +12,13 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float otherEnemiesMoveSpeed;
     public bool enemyCanMove = true;
     [SerializeField] private GameObject enemyDeathMark;
+
+    [SerializeField] private float rideAttackDamage = 1;
     
     public float changeColorTime = .075f;
 
-    public float enemyKnockBack = 10;
+    public float currentEnemyKnockBack;
+    public float maxEnemyKnockBack = 10;
 
     public bool enemyWaiting;
 
@@ -42,6 +46,8 @@ public class Enemy : MonoBehaviour
         colliderEnemy = GetComponent<CapsuleCollider2D>();
         
         ride = GetComponentInParent<Ride>();
+
+        currentEnemyKnockBack = maxEnemyKnockBack;
     }
 
     private void Update()
@@ -58,15 +64,22 @@ public class Enemy : MonoBehaviour
     {
         if (enemyCanMove)
         {
+            currentEnemyKnockBack = maxEnemyKnockBack;
             TargetRide();
+        }
+        else
+        {
+            currentEnemyKnockBack /= 2;
+        }
+
+        if (isAttacking)
+        {
+            currentEnemyKnockBack = 0;
         }
     }
 
     private void TargetRide()
     {
-        if (isAttacking) 
-            return;
-
         if (!isBunny)
         {
             rbEnemy.MovePosition(transform.position =  Vector2.MoveTowards(transform.position, ride.transform.position, otherEnemiesMoveSpeed * Time.deltaTime));
@@ -78,19 +91,13 @@ public class Enemy : MonoBehaviour
                 rbEnemy.MovePosition(transform.position =  Vector2.MoveTowards(transform.position, ride.transform.position, bunnyJumpSpeed * Time.deltaTime));
             }
         }
-
-        if (Vector2.Distance(transform.position, ride.transform.position) < Mathf.Epsilon)
-        {
-            isAttacking = true;
-            Physics2D.IgnoreCollision(colliderEnemy, colliderEnemy);
-        }
     }
 
     private void AttackRide()
     {
         if (isAttacking && enemyAttackDelay <= 0)
         {
-            ride.currentWaveTimer -= 1;
+            ride.currentRideHealth -= rideAttackDamage;
 
             enemyAttackDelay = maxEnemyAttackDelay;
 
@@ -148,13 +155,22 @@ public class Enemy : MonoBehaviour
     {
         bunnyCanJump = !bunnyCanJump;
     }
-    
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.GetComponent<Ride>())
+        {
+            isAttacking = true;
+        }
+    }
+
     private void OnDestroy()
     {
         Time.timeScale = 1;
         Instantiate(enemyDeathMark, transform.position, Quaternion.identity, FindObjectOfType<Player>().bullets.transform);
         Player player = FindObjectOfType<Player>();
-        
+        Physics2D.IgnoreCollision(colliderEnemy, colliderEnemy);
+
         if (player.canGetAbilityGain)
         {
             player.currentAbilityProgress += enemyAbilityGain;

@@ -35,8 +35,8 @@ public class Ride : MonoBehaviour
     [SerializeField] public CinemachineVirtualCamera fightCam;
 
     private Color noAlpha;
-    private float currentRideHealth;
-    private float maxRideHealth = 50;
+    public float currentRideHealth;
+    [SerializeField] private float maxRideHealth = 50;
 
     private void Awake()
     {
@@ -51,8 +51,6 @@ public class Ride : MonoBehaviour
     private void Start()
     {
         currentWaveTimer = 0;
-
-        currentRideHealth = maxRideHealth;
         
         ActivateInvisibleWalls(false);
     }
@@ -66,6 +64,7 @@ public class Ride : MonoBehaviour
     {
         InGameUI.instance.fightScene.SetActive(true);
         canActivateRide = false;
+        currentRideHealth = maxRideHealth;
 
         if (rideCount == 0)
         {
@@ -229,7 +228,7 @@ public class Ride : MonoBehaviour
                 StartFirstWave();
             }
             
-            if (currentWaveTimer >= 120 && !GameSaveStateManager.instance.saveGameDataManager.HasFinishedRide(rideData.rideName))
+            if (currentWaveTimer >= 120 && !GameSaveStateManager.instance.saveGameDataManager.HasFinishedRide(rideData.rideName) && !GetComponentInChildren<Generator>().arenaFightFinished)
             {
                 RideRepairs();
             }
@@ -307,6 +306,10 @@ public class Ride : MonoBehaviour
             Destroy(enemy);
         }
         
+        InGameUI.instance.fightScene.SetActive(false);
+
+        FindObjectOfType<Player>().currentAbilityProgress = 0;
+        
         fightCam.Priority = 5;
         
         rideCount++;
@@ -314,5 +317,7 @@ public class Ride : MonoBehaviour
         GameSaveStateManager.instance.saveGameDataManager.AddRide(rideData.rideName);
         
         GameSaveStateManager.instance.SaveGame();
+        
+        GetComponentInChildren<Generator>().arenaFightFinished = true;
     }
 }

@@ -143,13 +143,16 @@ public class Bullet : MonoBehaviour
     
     private IEnumerator EnemyKnockBack(Enemy enemy)
     {
-        enemy.enemyCanMove = false;
+        if (enemy.currentEnemyKnockBack != 0)
+        {
+            enemy.enemyCanMove = false;
         
-        enemy.GetComponent<Rigidbody2D>().AddForce(travelDirection * enemy.enemyKnockBack, ForceMode2D.Impulse);
+            enemy.GetComponent<Rigidbody2D>().AddForce(travelDirection * enemy.currentEnemyKnockBack, ForceMode2D.Impulse);
 
-        yield return new WaitForSecondsRealtime(0.15f);
+            yield return new WaitForSecondsRealtime(0.15f);
 
-        enemy.enemyCanMove = true;
+            enemy.enemyCanMove = true;
+        }
     }
     
     private void BulletBehaviour(EnemyHealthPoints enemyHealthPoints)

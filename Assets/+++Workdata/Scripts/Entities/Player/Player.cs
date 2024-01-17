@@ -93,6 +93,10 @@ public class Player : MonoBehaviour
     private Vignette playerVignette;
     private bool changeAlpha;
     private float vignetteAlphaChangeSpeed = 3;
+    
+    [SerializeField] private GameObject weaponDecisionUI;
+
+    private bool hasWeapon;
 
     private void Awake()
     {
@@ -183,22 +187,24 @@ public class Player : MonoBehaviour
     
     private void ChangeVignetteColor()
     {
+        if (changeAlpha)
+        {
+            vignetteColor = new Color(Mathf.PingPong(vignetteAlphaChangeSpeed * Time.time, 1), playerVignette.color.value.g, playerVignette.color.value.b);
+        }
+        
         if (currentAbilityProgress >= maxAbilityProgress)
         {
             playerVignette.active = true;
             vignetteColor = Color.red;
             playerVignette.color.value = vignetteColor;
             changeAlpha = true;
+            InGameUI.instance.pressSpace.SetActive(true);
         }
         else
         {
             changeAlpha = false;
             vignetteColor = new Color(1, playerVignette.color.value.g, playerVignette.color.value.b);
-        }
-        
-        if (changeAlpha)
-        {
-            vignetteColor = new Color(Mathf.PingPong(vignetteAlphaChangeSpeed * Time.time, 1), playerVignette.color.value.g, playerVignette.color.value.b);
+            InGameUI.instance.pressSpace.SetActive(false);
         }
     }
 
@@ -291,7 +297,16 @@ public class Player : MonoBehaviour
         {
             if (!fortuneWheelUI.activeSelf && !fortuneWheelGotUsed)
             {
-                fortuneWheelUI.SetActive(true);
+                foreach (var weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
+                {
+                    weaponDecisionUI.SetActive(true);
+                    hasWeapon = true;
+                }
+
+                if (!hasWeapon)
+                {
+                    fortuneWheelUI.SetActive(true);
+                }
             }
             else if(fortuneWheelUI.activeSelf && !rouletteUI.canGetPrize)
             {
@@ -327,6 +342,24 @@ public class Player : MonoBehaviour
         {
             SearchInteractionObject(collectibleLayer).GetComponent<Collectible>().Collect();
         }
+    }
+
+    public void KeepWeapon()
+    {
+        gameObject.transform.parent.gameObject.SetActive(false);
+        fortuneWheelGotUsed = true;
+        SearchInteractionObject(wheelOfFortuneLayer).GetComponent<FortuneWheel>().ride.GetComponent<Ride>().canActivateRide = true;
+        SearchInteractionObject(wheelOfFortuneLayer).GetComponent<FortuneWheel>().DeactivateFortuneWheel();
+    }
+    
+    public void ChangeWeapon()
+    {
+        foreach (var weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
+        {
+            GameSaveStateManager.instance.saveGameDataManager.collectedWeaponsIdentifiers.Remove(weapon.name);
+        }
+        
+        fortuneWheelUI.SetActive(true);
     }
     
     private void GameInputManagerOnUsingAbilityAction(object sender, EventArgs e)
@@ -504,7 +537,8 @@ public class Player : MonoBehaviour
 
         playerVisual.SetActive(false);
         playerNoHandVisual.SetActive(true);
-            
+        hasWeapon = true;
+
         InGameUI.instance.inventoryWeapon.GetComponent<Image>().sprite = weapon.inGameWeaponVisual;
         InGameUI.instance.inventoryWeapon.SetActive(true);
 

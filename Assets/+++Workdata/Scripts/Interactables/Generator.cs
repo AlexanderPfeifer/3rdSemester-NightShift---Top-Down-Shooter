@@ -4,6 +4,7 @@ public class Generator : MonoBehaviour
 {
     [SerializeField] private RidesSO rideData;
     [HideInInspector] public bool isInteractable = true;
+    public bool arenaFightFinished;
     [SerializeField] private GameObject fortuneWheel;
 
     private void Awake()
@@ -12,6 +13,7 @@ public class Generator : MonoBehaviour
         if (GameSaveStateManager.instance.saveGameDataManager.HasFinishedRide(rideData.rideName))
         {
             isInteractable = false;
+            arenaFightFinished = true;
         }
     }
 

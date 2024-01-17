@@ -56,6 +56,8 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private GameObject inGameUIScreen;
     [HideInInspector] public bool gameIsPaused;
     [SerializeField] private TextMeshProUGUI dialogueText;
+
+    [SerializeField] public GameObject pressSpace;
     
     private Player player;
     
@@ -111,8 +113,6 @@ public class InGameUI : MonoBehaviour
     {
         abilityProgress.GetComponent<Slider>().value =
             player.currentAbilityProgress / player.maxAbilityProgress;
-        
-        Debug.Log(player.currentAbilityProgress);
     }
     
     private void OnStateChange(GameSaveStateManager.GameState newState)
@@ -206,14 +206,14 @@ public class InGameUI : MonoBehaviour
 
     private void DisplayCollectedLetters()
     {
-        var text = "";
-        
-        var headerText = "";
-
         var collectedCollectibles = GameSaveStateManager.instance.saveGameDataManager.collectedCollectiblesIdentifiers;
 
         for (int index = 0; index < collectedCollectibles.Count; index++)
         {
+            var text = "";
+        
+            var headerText = "";
+            
             var collectible = collectedObjects.GetCollectibleDataByIdentifier(collectedCollectibles[index]);
             if (collectible == null)
                 return;

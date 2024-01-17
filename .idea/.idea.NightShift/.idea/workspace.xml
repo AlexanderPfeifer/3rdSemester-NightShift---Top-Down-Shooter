@@ -6,188 +6,20 @@
   <component name="ChangeListManager">
     <list default="true" id="be4aa387-2548-4626-ac0c-f4e71fe1232b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NightShift/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NightShift/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Animation.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerVisual.controller" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerVisual.controller.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerVisualNoHand.controller" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerVisualNoHand.controller.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingDown.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingDown.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingDownIdle.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingDownIdle.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingDownNoHand.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingDownNoHand.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingDownNoHandIdle.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingDownNoHandIdle.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWays.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWays.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysFlipped.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysFlipped.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysIdle.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysIdle.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysIdleFlipped.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysIdleFlipped.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysNoHand.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysNoHand.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysNoHandIdle.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingSideWaysNoHandIdle.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingUp.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingUp.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingUpIdle.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingUpIdle.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingUpNoHand.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingUpNoHand.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingUpNoHandIdle.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/PlayerWalkingUpNoHandIdle.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/UI.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Animation/UI.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/UI/BTN_Button.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Animation/UI/BTN_Button.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Animation/UI/BTN_Button.controller.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Animation/UI/BTN_Button.controller.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullet/BulletBase.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Bullet/BulletBase.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Enemies/Mader.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/Enemies/Mader.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/UI/[Button] Delete SaveState.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/UI/[Button] Delete SaveState.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/UI/[Button] Loading SaveState.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/PreFabs/UI/[Button] Loading SaveState.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scenes.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Font/nokiafc22 SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Font/nokiafc22 SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Input/PlayerInputActions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Input/PlayerInputActions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Input/PlayerInputActions.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Input/PlayerInputActions.inputactions" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/InGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/InGame.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/MainMenu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/MainMenu.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/ManagerScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/ManagerScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/UITest.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scenes/UITest.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Collectible/PauseMenuCollectibles.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Collectible/PauseMenuCollectibles.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Collectible/SomeLetterSO.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Collectible/SomeLetterSO.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Collectible/SomeOtherLetter.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Collectible/SomeOtherLetter.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/AssaultRifleSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/AssaultRifleSO.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/HuntingRifleSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/HuntingRifleSO.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/MagnumSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/MagnumSO.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/PistolSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/PistolSO.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/ShotgunSO.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/ScriptableObjects/Weapons/ShotgunSO.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/Enemy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Enemy/Enemy.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Bullet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Bullet.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Entities/Player/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/FortuneWheel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/FortuneWheel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Generator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Generator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/PlayerCollision.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/PlayerCollision.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Ride.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Interactables/Ride.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/GameSaveStateManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/Manager/Saving/GameSaveStateManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/ScriptableObjectsScripts/WeaponObjectSO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/ScriptableObjectsScripts/WeaponObjectSO.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/FortuneWheelUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/FortuneWheelUI.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/InGameUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/InGameUI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/MainMenuUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/MainMenuUI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/Tilemap_auseinander.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Environment/Tilemap_auseinander.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Player_Spritesheet_Side_nohand.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/Player_Spritesheet_Side_nohand.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/fortune-wheel-isolated-on-white-background-vector.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Sprites/fortune-wheel-isolated-on-white-background-vector.jpg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Ground.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Ground.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/TileMap_StoneMiddle.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/TileMap_StoneMiddle.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_AboveMiddle.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_AboveMiddle.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_AboveRight.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_AboveRight.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_DownMiddle.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_DownMiddle.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_DownRight.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_DownRight.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassAboveLeft.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassAboveLeft.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassAboveRight.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassAboveRight.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassCornerAboveRight.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassCornerAboveRight.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassCornerDownRight.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassCornerDownRight.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassCornerLeftDown.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassCornerLeftDown.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassCornerRightAbove.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassCornerRightAbove.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassDownLeft.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassDownLeft.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassDownMiddle.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassDownMiddle.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassDownRight.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassDownRight.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassEmptyOne.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassEmptyOne.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassEmptyThree.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassEmptyThree.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassEmptyTwo.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassEmptyTwo.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassLeftAbove.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassLeftAbove.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassLeftDown.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassLeftDown.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassLeftMiddle.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassLeftMiddle.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassMiddleAbove.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassMiddleAbove.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassRightAbove.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassRightAbove.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassRightDown.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassRightDown.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassRightMiddle.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_GrassRightMiddle.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_LeftAbove.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_LeftAbove.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_LeftDown.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_LeftDown.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_LeftMiddle.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_LeftMiddle.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_RightMiddle.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/+++Workdata/Tiles/Tilemap_RightMiddle.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/InGame.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/InGame/BTN_Button.controller" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/InGame/BTN_Button.controller.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/InGame/Button_Animation.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/InGame/Button_Animation.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/InGame/Elements 1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/InGame/Elements 1.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/InGame/Elements_02.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/InGame/Elements_02.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/InGame/night_shift_ingame_ui_generator_view.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/InGame/night_shift_ingame_ui_generator_view.PNG.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Beige_Hover.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Beige_Hover.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Beige_Normal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Beige_Normal.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Beige_OnClick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Beige_OnClick.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Blue_Hover.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Blue_Hover.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Blue_Normal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Blue_Normal.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Blue_OnClick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Blue_OnClick.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Green_Hover.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Green_Hover.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Green_Normal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Green_Normal.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Green_OnClick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Green_OnClick.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Pink_Hover.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Pink_Hover.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Pink_Normal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Pink_Normal.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Pink_OnClick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Pink_OnClick.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Yellow_Hover.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Yellow_Hover.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Yellow_Normal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Yellow_Normal.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Yellow_OnClick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Button_Yellow_OnClick.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Buttons.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/Buttons/Buttons.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_02.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_02.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Light_Green.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Light_Green.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Light_Pink.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Light_Pink.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Light_Red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Light_Red.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Light_Yellow.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Light_Yellow.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Railing.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Railing.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Sign_Pole.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Sign_Pole.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Stall_Front.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Stall_Front.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Vines.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MainMenu_Vines.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MeinMenu_Light_Blue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/MeinMenu_Light_Blue.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/_MainMenu_Stall_Shutter.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/_MainMenu_Stall_Shutter.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/main_menu_guide.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/+++Workdata/UI/MainMenu/main_menu_guide.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/PhysicsMaterial/Tilemap_fin.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/PhysicsMaterial/Tilemap_fin.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/PostProcessing/PostProcessing Profile.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/PostProcessing/PostProcessing Profile.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/UniversalRP.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/UniversalRP.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/Physics2DSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/Physics2DSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -214,6 +46,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/+++Workdata/Scripts/ScriptableObjectsScripts/InGameCollectedObjects.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/+++Workdata/Scripts/ScriptableObjectsScripts/RidesSO.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/+++Workdata/Scripts/UI/MainMenuUI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.7.0/InputSystem/Editor/Internal/AdvancedDropdown/AdvancedDropdownGUI.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.7.0/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/InputModules/BaseInput.cs" root0="SKIP_HIGHLIGHTING" />
@@ -275,10 +108,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="3736">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="3736" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -341,7 +174,9 @@
       <workItem from="1705238265100" duration="22151000" />
       <workItem from="1705305947950" duration="24280000" />
       <workItem from="1705337392528" duration="9036000" />
-      <workItem from="1705392764833" duration="14481000" />
+      <workItem from="1705392764833" duration="16745000" />
+      <workItem from="1705428821212" duration="3255000" />
+      <workItem from="1705478957550" duration="2477000" />
     </task>
     <servers />
   </component>

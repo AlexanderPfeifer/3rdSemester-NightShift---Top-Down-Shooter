@@ -47,9 +47,6 @@ TagManager:
   - name: DeathMark
     uniqueID: 4238810977
     locked: 0
-  - name: EnvironmentBehindPlayer
-    uniqueID: 1047655867
-    locked: 0
   - name: Bullet
     uniqueID: 815170427
     locked: 0
@@ -58,9 +55,6 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2587523061
-    locked: 0
-  - name: EnvironmentInFrontOfPlayer
-    uniqueID: 3753171241
     locked: 0
   - name: MuzzleFlash
     uniqueID: 2718291729

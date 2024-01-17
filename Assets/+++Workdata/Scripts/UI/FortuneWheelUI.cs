@@ -84,8 +84,8 @@ public class FortuneWheelUI : MonoBehaviour
         GameSaveStateManager.instance.saveGameDataManager.AddWeapon(weapon.weaponName);
 
         gameObject.transform.parent.gameObject.SetActive(false);
-        player.fortuneWheelGotUsed = true;
         canGetPrize = false;
+        player.fortuneWheelGotUsed = true;
         
         player.SearchInteractionObject(player.wheelOfFortuneLayer).GetComponent<FortuneWheel>().ride.GetComponent<Ride>().canActivateRide = true;
 
