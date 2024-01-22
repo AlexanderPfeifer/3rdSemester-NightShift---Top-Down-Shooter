@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 184496535588934277}
   - component: {fileID: 7899640093770807566}
+  - component: {fileID: -58872700573438042}
   m_Layer: 0
   m_Name: EnemyDeathMark
   m_TagString: Untagged
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: -56156319
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e752d35a20d889544bba2aafc8dcf3a4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4de8a26a181ad4f40844c30060b0d6bc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -84,3 +85,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-58872700573438042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4290859008780889418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe32564b60ea3fd4d892da7f44ff13bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

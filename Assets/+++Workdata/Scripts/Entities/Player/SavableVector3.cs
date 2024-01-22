@@ -26,7 +26,7 @@ public struct SavableVector3
         return new Vector3(x, y, z);
     }
 
-    //this code allows us to directly assign vector3 variables to a SaveableVector3 variable (and vice versa).
+    //this code allows us to directly assign vector3 variables to a Savable Vector3 variable (and vice versa).
     //it will automatically be converted.
     public static implicit operator SavableVector3(Vector3 origin) => new SavableVector3(origin);
     public static implicit operator Vector3(SavableVector3 origin) => origin.GetVector3();

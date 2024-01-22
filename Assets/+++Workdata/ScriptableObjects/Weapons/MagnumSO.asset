@@ -16,11 +16,14 @@ MonoBehaviour:
   weaponName: Magnum magnum
   weaponDescription: "Don\u2018t let the cool design fool you - this thing\u2018s
     packing some heat. "
-  shootDelay: 1
+  weaponAbilityDescription: Freezes enemies on bullet collision for 10 seconds.
+  shootDelay: 0.4
   penetrationCount: 2
-  bulletDamage: 2
+  bulletDamage: 3
   weaponSpread: 0.005
   weaponScale: {x: 0.8, y: 0.8, z: 1}
   bulletsPerShot: 1
-  knockBack: 0.75
-  enemyKnockBack: 0
+  knockBack: 1
+  enemyKnockBackPerBullet: 6
+  bulletSize: {x: 0.75, y: 0.75}
+  screenShake: 5

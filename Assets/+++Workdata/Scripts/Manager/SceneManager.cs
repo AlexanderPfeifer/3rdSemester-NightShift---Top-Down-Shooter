@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneManager : MonoBehaviour
 {
-    public static SceneManager instance;
+    public static SceneManager Instance;
     private string currentScene;
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     public void SwitchScene(string newScene)
@@ -17,10 +17,9 @@ public class SceneManager : MonoBehaviour
         StartCoroutine(LoadNewSceneCoroutine(newScene));
     }
 
+    //Switches scene and loads a new scene 
     private IEnumerator LoadNewSceneCoroutine(string newSceneName)
     {
-        UIManager.instance.ToggleLoadingScreen(true);
-        
         var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(currentScene);
         if (scene.isLoaded)
         {
@@ -37,12 +36,6 @@ public class SceneManager : MonoBehaviour
         newScene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(newSceneName);
         UnityEngine.SceneManagement.SceneManager.SetActiveScene(newScene);
         
-        UIManager.instance.ToggleLoadingScreen(false);
         currentScene = newSceneName;
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
     }
 }

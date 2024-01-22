@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - PopcornParticle
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Enemy
   - Trees
   - Bullet
-  - 
+  - Duck
   - 
   - 
   - 
@@ -56,6 +57,6 @@ TagManager:
   - name: Player
     uniqueID: 2587523061
     locked: 0
-  - name: MuzzleFlash
+  - name: Front
     uniqueID: 2718291729
     locked: 0

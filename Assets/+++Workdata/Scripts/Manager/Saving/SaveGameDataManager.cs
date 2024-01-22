@@ -58,16 +58,25 @@ public class SaveGameDataManager
         return collectedCollectiblesIdentifiers.Contains(identifier);
     }
     
+    /// <summary>
+    /// Called when we try to find out if a weapon was already collected
+    /// </summary>
     public bool HasWeapon(string identifier)
     {
         return collectedWeaponsIdentifiers.Contains(identifier);
     }
 
+    /// <summary>
+    /// Called when we try to find out if a weapon was already collected in the inventory
+    /// </summary>
     public bool HasWeaponInInventory(string identifier)
     {
         return weaponsInInventoryIdentifiers.Contains(identifier);
     }
     
+    /// <summary>
+    /// Called when we try to find out if a ride was already finished
+    /// </summary>
     public bool HasFinishedRide(string identifier)
     {
         return finishedRides.Contains(identifier);

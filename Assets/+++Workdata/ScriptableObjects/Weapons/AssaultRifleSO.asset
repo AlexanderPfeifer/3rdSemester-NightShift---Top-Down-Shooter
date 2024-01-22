@@ -13,14 +13,18 @@ MonoBehaviour:
   m_Name: AssaultRifleSO
   m_EditorClassIdentifier: 
   inGameWeaponVisual: {fileID: 1193635104, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
-  weaponName: French Fries Assault Rifle
+  weaponName: French Fries AR
   weaponDescription: Served hot and fresh. This thing is a whole new definition of
     fast food.
-  shootDelay: 0.1
-  penetrationCount: 1
-  bulletDamage: 1
+  weaponAbilityDescription: When bullets collide with enemies, they split off in
+    a random direction.
+  shootDelay: 0.15
+  penetrationCount: 0
+  bulletDamage: 1.5
   weaponSpread: 0.025
   weaponScale: {x: 1, y: 1, z: 1}
   bulletsPerShot: 1
-  knockBack: 0.2
-  enemyKnockBack: 0
+  knockBack: 0.25
+  enemyKnockBackPerBullet: 3
+  bulletSize: {x: 0.5, y: 0.5}
+  screenShake: 4

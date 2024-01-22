@@ -80,6 +80,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""c007af05-b4a2-4ef9-b02f-c2d463f8279c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -184,17 +193,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""8093d9ce-9b9b-4c58-a041-fb0fe5b06b5b"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""9df5376b-57ce-4f3c-a2bb-0d56fc161f3d"",
                     ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
@@ -208,6 +206,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""7382d56a-d8aa-49a2-9e23-578e2f5eb6ff"",
                     ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""237162ee-cb7e-4d8b-8d9c-b09ac669746a"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -251,11 +260,44 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""14c735b8-1e27-4fcf-a46e-9782f9397652"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ability"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8b1d120-00e0-497e-b9b6-d6ffab0aa3a7"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d829d28-ad8b-4f76-b679-0371b0a9fd3e"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e185161-5c85-42dc-8c97-ca05be97645c"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -272,6 +314,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_player_pause = m_player.FindAction("pause", throwIfNotFound: true);
         m_player_interact = m_player.FindAction("interact", throwIfNotFound: true);
         m_player_ability = m_player.FindAction("ability", throwIfNotFound: true);
+        m_player_sprint = m_player.FindAction("sprint", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -339,6 +382,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_player_pause;
     private readonly InputAction m_player_interact;
     private readonly InputAction m_player_ability;
+    private readonly InputAction m_player_sprint;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -349,6 +393,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @pause => m_Wrapper.m_player_pause;
         public InputAction @interact => m_Wrapper.m_player_interact;
         public InputAction @ability => m_Wrapper.m_player_ability;
+        public InputAction @sprint => m_Wrapper.m_player_sprint;
         public InputActionMap Get() { return m_Wrapper.m_player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -376,6 +421,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ability.started += instance.OnAbility;
             @ability.performed += instance.OnAbility;
             @ability.canceled += instance.OnAbility;
+            @sprint.started += instance.OnSprint;
+            @sprint.performed += instance.OnSprint;
+            @sprint.canceled += instance.OnSprint;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -398,6 +446,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ability.started -= instance.OnAbility;
             @ability.performed -= instance.OnAbility;
             @ability.canceled -= instance.OnAbility;
+            @sprint.started -= instance.OnSprint;
+            @sprint.performed -= instance.OnSprint;
+            @sprint.canceled -= instance.OnSprint;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -423,5 +474,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnAbility(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
     }
 }

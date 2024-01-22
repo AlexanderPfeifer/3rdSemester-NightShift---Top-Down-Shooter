@@ -16,11 +16,14 @@ MonoBehaviour:
   weaponName: Lollipop Shotgun
   weaponDescription: Although the grip is a little sticky, the smell is a nice change
     of pace. Suck it, monsters!
-  shootDelay: 1
+  weaponAbilityDescription: Bullets stick to enemies and deal damage over time.
+  shootDelay: 0.75
   penetrationCount: 0
-  bulletDamage: 0.5
-  weaponSpread: 0.25
+  bulletDamage: 1
+  weaponSpread: 0.1
   weaponScale: {x: 1, y: 1, z: 1}
-  bulletsPerShot: 8
-  knockBack: 1
-  enemyKnockBack: 0
+  bulletsPerShot: 12
+  knockBack: 1.75
+  enemyKnockBackPerBullet: 2
+  bulletSize: {x: 0.3, y: 0.3}
+  screenShake: 6

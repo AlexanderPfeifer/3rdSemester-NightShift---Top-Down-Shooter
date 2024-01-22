@@ -1,17 +1,22 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 
 public class InGameUI : MonoBehaviour
 {
-    public static InGameUI instance;
+    public static InGameUI Instance;
     
+    [Header("InventoryElements")]
     [SerializeField] private TextMeshProUGUI inventoryText;
     [SerializeField] private TextMeshProUGUI inventoryHeader;
     [SerializeField] private Image inventoryImage;
-    
+    [SerializeField] private InGameCollectedObjects collectedObjects;
+    [SerializeField] private GameObject inventory;
+
     [Header("Collectibles")]
     private string brokenLightsText;
     private string teddyText;
@@ -50,51 +55,60 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private GameObject cornDogHuntingRifle;
     [SerializeField] private GameObject lollipopShotgun;
     
-    [SerializeField] private InGameCollectedObjects collectedObjects;
+    [Header("Fight")]
+    public Animator loadingScreenAnim;
     [SerializeField] public GameObject fightScene;
-    [SerializeField] private GameObject inventory;
-    [SerializeField] private GameObject inGameUIScreen;
-    [HideInInspector] public bool gameIsPaused;
-    [SerializeField] private TextMeshProUGUI dialogueText;
-
     [SerializeField] public GameObject pressSpace;
-    
-    private Player player;
-    
     [SerializeField] private GameObject abilityProgress;
     [SerializeField] public GameObject rideTimeSlider;
     [SerializeField] public GameObject rideHpSlider;
     [SerializeField] public GameObject inventoryWeapon;
 
-    public bool textIsPlaying;
-    
-    public bool canEndDialogue;
-    
-    public float textDisplaySpeed = 0.04f;
+    [Header("Components")]
+    [SerializeField] private GameObject eIndicator;
+    [SerializeField] public GameObject inGameUIScreen;
+    [SerializeField] public GameObject firstInventorySelected;
+    [SerializeField] private GameObject whiteScreen;
+    [SerializeField] private GameObject inventoryButton; 
 
+    [Header("Booleans")]
+    private bool isPlayerNotNull;
+    [HideInInspector] public bool inventoryIsOpened;
+    private bool changeLight;
+
+    [Header("Dialogue")]
+    public float textDisplaySpeed = 0.04f;
+    [SerializeField] private List<string> dialogues;
+    [SerializeField] private List<string> dialogues2;
+    [SerializeField] private List<string> dialogues3;
+    [SerializeField] private List<string> dialogues4;
+    [SerializeField] private TextMeshProUGUI dialogueText;
+    private int dialogueTextCount;
+    public int dialogueCount;
+    public bool dialogueLeft;
+    public bool canPlayNext;
+    public bool textIsPlaying;
+    public bool canEndDialogue;
     [SerializeField] public Animator radioAnim;
     [SerializeField] private Animator dialogueBoxAnim;
-    
-    [SerializeField] GameObject eIndicator;
-    private bool isplayerNotNull;
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     private void Start()
     {
-        GameSaveStateManager.instance.OnStateChanged += OnStateChange;
+        dialogueLeft = true;
     }
 
     private void Update()
     {
-        if (player != null)
+        if (Player.Instance != null)
         {
             UpdateAbilityProgress();
 
-            if (player.playerCanInteract)
+            if (Player.Instance.playerCanInteract)
             {
                 var componentColor = eIndicator.GetComponent<Image>().color;
                 componentColor.a = 1;
@@ -106,33 +120,67 @@ public class InGameUI : MonoBehaviour
                 componentColor.a = 0.2156862745098039f;
                 eIndicator.GetComponent<Image>().color = componentColor;
             }
+
+            if (changeLight)
+            {
+                AudioManager.Instance.Stop("InGameMusic");
+                Player.Instance.globalLightObject.GetComponent<Light2D>().intensity =
+                    Mathf.MoveTowards(Player.Instance.globalLightObject.GetComponent<Light2D>().intensity, 5, Time.deltaTime);
+                if (Player.Instance.globalLightObject.GetComponent<Light2D>().intensity >= 3)
+                {
+                    whiteScreen.SetActive(true);
+                    whiteScreen.GetComponent<Image>().color =
+                        new Color(1, 1, 1, Mathf.MoveTowards(0, 1, Time.deltaTime));
+                    GameSaveStateManager.Instance.GoToMainMenu();
+                    whiteScreen.GetComponent<Image>().color =
+                        new Color(1, 1, 1, Mathf.MoveTowards(1, 0, Time.deltaTime));
+                    whiteScreen.SetActive(false);
+                }
+            }
         }
     }
+    
+    public void PressButtonSound()
+    {
+        AudioManager.Instance.Play("ButtonClick");
+    }
 
+    //Sets the current ability that was gained to the according slider
     private void UpdateAbilityProgress()
     {
         abilityProgress.GetComponent<Slider>().value =
-            player.currentAbilityProgress / player.maxAbilityProgress;
+            Player.Instance.currentAbilityTime / Player.Instance.maxAbilityTime;
     }
-    
-    private void OnStateChange(GameSaveStateManager.GameState newState)
-    {
-        //we toggle the availability of the inGame menu whenever the game state changes
-        //displayFirstDialogue = newState == GameSaveStateManager.GameState.InGame;
-    }
-    
+
+    //Sets everything inactive when in main menu and unpauses game
     public void GoToMainMenu()
     {
-        GameSaveStateManager.instance.GoToMainMenu();
+        brokenLights.SetActive(false);
+        newsPaper.SetActive(false);
+        teddy.SetActive(false);
+        magnumMagnum.SetActive(false);
+        cornDogHuntingRifle.SetActive(false);
+        popcornPistol.SetActive(false);
+        lollipopShotgun.SetActive(false);
+        frenchFriesAssaultRifle.SetActive(false);
+        inventoryWeapon.SetActive(false);
+        fightScene.SetActive(false);
+        
+        inventoryText.text = "";
+        inventoryHeader.text = "";
+        inventoryImage.gameObject.SetActive(false);
+        
+        GameSaveStateManager.Instance.GoToMainMenu();
         PauseGame();
     }
 
     //this is called via the "save game" button
     public void SaveGame()
     {
-        GameSaveStateManager.instance.SaveGame();
+        GameSaveStateManager.Instance.SaveGame();
     }
 
+    //Display nothing first to display something new
     private void DisplayNothing()
     {
         inventoryText.text = "";
@@ -204,9 +252,10 @@ public class InGameUI : MonoBehaviour
         inventoryImage.sprite = brokenLightsSprite;
     }
 
-    private void DisplayCollectedLetters()
+    //Goes through every collected collectibles and displays them in the inventory
+    private void DisplayCollectedCollectibles()
     {
-        var collectedCollectibles = GameSaveStateManager.instance.saveGameDataManager.collectedCollectiblesIdentifiers;
+        var collectedCollectibles = GameSaveStateManager.Instance.saveGameDataManager.collectedCollectiblesIdentifiers;
 
         for (int index = 0; index < collectedCollectibles.Count; index++)
         {
@@ -246,86 +295,115 @@ public class InGameUI : MonoBehaviour
         }
     }
     
+    //Goes through every collected weapons and displays them in the inventory
     private void DisplayCollectedWeapons()
     {
-        string text = "";
-        
-        string headerText = "";
-        
-        Sprite spriteWeapon = null;
-
-        var collectedCollectibles = GameSaveStateManager.instance.saveGameDataManager.collectedWeaponsIdentifiers;
+        var collectedCollectibles = GameSaveStateManager.Instance.saveGameDataManager.collectedWeaponsIdentifiers;
 
         for (int index = 0; index < collectedCollectibles.Count; index++)
         {
+            var headerText = "";
+            
+            var text = "";
+
             var weapon = collectedObjects.GetWeaponDataByIdentifier(collectedCollectibles[index]);
             if (weapon == null)
                 return;
             headerText += weapon.weaponName;
             text += weapon.weaponDescription;
-            spriteWeapon = weapon.inGameWeaponVisual;
-        }
-
-        var itemIdentifier = headerText;
-
-        switch (itemIdentifier)
-        {
-            case "Magnum magnum" :
-                magnumMagnum.SetActive(true);
-                magnumMagnumSprite = spriteWeapon;
-                magnumMagnumText = text;
-                magnumMagnumHeader = headerText;
-                break;
-            case "French Fries Assault Rifle" :
-                frenchFriesAssaultRifle.SetActive(true);
-                frenchFriesAssaultRifleSprite = spriteWeapon;
-                frenchFriesAssaultRifleText = text;
-                frenchFriesAssaultRifleHeader = headerText;
-                break;
-            case "Lollipop Shotgun" :
-                lollipopShotgun.SetActive(true);
-                lollipopShotgunSprite = spriteWeapon;
-                lollipopShotgunText = text;
-                lollipopShotgunHeader = headerText;
-                break;
-            case "Corn Dog Hunting Rifle" :
-                cornDogHuntingRifle.SetActive(true);
-                cornDogHuntingRifleSprite = spriteWeapon;
-                cornDogHuntingRifleText = text;
-                cornDogHuntingRifleHeader = headerText;
-                break;
-            case "Popcorn Pistol" :
-                popcornPistol.SetActive(true);
-                popcornPistolSprite = spriteWeapon;
-                popcornPistolText = text;
-                popcornPistolHeader = headerText;
-                break;
+            text += "\n" + "\n" + "Special Ability:" + "\n" + weapon.weaponAbilityDescription;
+            var spriteWeapon = weapon.inGameWeaponVisual;
+            
+            var itemIdentifier = headerText;
+            
+            switch (itemIdentifier)
+            {
+                case "Magnum magnum" :
+                    magnumMagnum.SetActive(true);
+                    magnumMagnumSprite = spriteWeapon;
+                    magnumMagnumText = text;
+                    magnumMagnumHeader = headerText;
+                    break;
+                case "French Fries AR" :
+                    frenchFriesAssaultRifle.SetActive(true);
+                    frenchFriesAssaultRifleSprite = spriteWeapon;
+                    frenchFriesAssaultRifleText = text;
+                    frenchFriesAssaultRifleHeader = headerText;
+                    break;
+                case "Lollipop Shotgun" :
+                    lollipopShotgun.SetActive(true);
+                    lollipopShotgunSprite = spriteWeapon;
+                    lollipopShotgunText = text;
+                    lollipopShotgunHeader = headerText;
+                    break;
+                case "Corn Dog Hunting Rifle" :
+                    cornDogHuntingRifle.SetActive(true);
+                    cornDogHuntingRifleSprite = spriteWeapon;
+                    cornDogHuntingRifleText = text;
+                    cornDogHuntingRifleHeader = headerText;
+                    break;
+                case "Popcorn Pistol" :
+                    popcornPistol.SetActive(true);
+                    popcornPistolSprite = spriteWeapon;
+                    popcornPistolText = text;
+                    popcornPistolHeader = headerText;
+                    break;
+            }
         }
     }
 
-    private IEnumerator DisplayFirstDialogue()
+    private void DisplayFirstDialogue()
     {
-        player.isPlayingDialogue = true;
+        if (dialogueTextCount == dialogues.Count - 1)
+        {
+            dialogueLeft = false;
+        }
         
-        var dialogue = "Hey Looser, pass auf, dass die rides gut funktionieren nech!";
-
-        yield return new WaitForSeconds(1);
-
-        radioAnim.SetTrigger("RadioOn");
-
-        yield return new WaitForSeconds(1);
+        StartCoroutine(LetterByLetterTextCoroutine(dialogueText, dialogues[dialogueTextCount]));
         
-        dialogueBoxAnim.SetTrigger("DialogueBoxOn");
-        
-        yield return new WaitForSeconds(0.24f);
-
-        StartCoroutine(LetterByLetterTextCoroutine(dialogueText, dialogue));
+        dialogueTextCount++;
     }
     
+    private void DisplaySecondDialogue()
+    {
+        if (dialogueTextCount == dialogues2.Count - 1)
+        {
+            dialogueLeft = false;
+        }
+        
+        StartCoroutine(LetterByLetterTextCoroutine(dialogueText, dialogues2[dialogueTextCount]));
+        
+        dialogueTextCount++;
+    }
+    
+    private void DisplayThirdDialogue()
+    {
+        if (dialogueTextCount == dialogues3.Count - 1)
+        {
+            dialogueLeft = false;
+        }
+        
+        StartCoroutine(LetterByLetterTextCoroutine(dialogueText, dialogues3[dialogueTextCount]));
+        
+        dialogueTextCount++;
+    }
+    
+    private void DisplayFourthDialogue()
+    {
+        if (dialogueTextCount == dialogues4.Count - 1)
+        {
+            dialogueLeft = false;
+        }
+        
+        StartCoroutine(LetterByLetterTextCoroutine(dialogueText, dialogues4[dialogueTextCount]));
+        
+        dialogueTextCount++;
+    }
+    
+    //an implementation for displaying a text letter by letter.
     private IEnumerator LetterByLetterTextCoroutine(TextMeshProUGUI textField, string text)
     {
-        //an implementation for displaying a text letter by letter.
-        string currentText = "";
+        var currentText = "";
 
         textIsPlaying = true;
         
@@ -337,49 +415,127 @@ public class InGameUI : MonoBehaviour
         }
 
         textIsPlaying = false;
-        textDisplaySpeed = 0.04f;
-        canEndDialogue = true;
-    }
 
-    public void EndDialogue()
-    {
-        dialogueText.text = "";
-        radioAnim.SetTrigger("RadioOff");
-        dialogueBoxAnim.SetTrigger("DialogueBoxOff");
-        canEndDialogue = false;
-        player.isPlayingDialogue = false;
-    }
-    
-    public void PauseGame()
-    {
-        if (gameIsPaused)
+        if (!dialogueLeft)
         {
-            gameIsPaused = false;
-            inventory.SetActive(false);
+            canEndDialogue = true;
         }
         else
         {
-            gameIsPaused = true;
-            inventory.SetActive(true);
-            DisplayCollectedLetters();
-            DisplayCollectedWeapons();
+            canPlayNext = true;
+        }
+    }
+    
+    //Activates everything needed to display a dialogue and starts the dialogue that is next in the story
+    public IEnumerator DisplayDialogueElements()
+    {
+        Player.Instance.isPlayingDialogue = true;
+        
+        yield return new WaitForSeconds(1);
+
+        radioAnim.SetTrigger("RadioOn");
+
+        yield return new WaitForSeconds(1);
+        
+        dialogueBoxAnim.SetTrigger("DialogueBoxOn");
+        
+        yield return new WaitForSeconds(0.24f);
+
+        Player.Instance.isInteracting = true;
+
+        GetDialogue();
+    }
+    
+    //Puts away everything that was displayed before and resets values 
+    public void EndDialogue()
+    {
+        canEndDialogue = false;
+        Player.Instance.isPlayingDialogue = false;
+        dialogueTextCount = 0;
+        dialogueCount++;
+        canPlayNext = false;
+        dialogueText.text = "";
+        dialogueLeft = true;
+        Player.Instance.isInteracting = false;
+        radioAnim.SetTrigger("RadioOff");
+        dialogueBoxAnim.SetTrigger("DialogueBoxOff");
+        
+        if (dialogueCount == 4)
+        {
+            Player.Instance.isPlayingDialogue = true;
+            Player.Instance.isInteracting = true;
+            AudioManager.Instance.Play("WalkieTalkie");
+            changeLight = true;
         }
     }
 
+    //Plays next dialogue when screen is clicked
+    public void PlayNext()
+    {
+        canPlayNext = false;
+
+        dialogueText.text = "";
+        
+        textDisplaySpeed = 0.04f;
+
+        GetDialogue();
+    }
+
+    //Gets dialogue that is next in the story
+    private void GetDialogue()
+    {
+        if (dialogueCount == 0)
+        {
+            DisplayFirstDialogue();
+        }
+        else if (dialogueCount == 1)
+        {
+            DisplaySecondDialogue();
+        }
+        else if (dialogueCount == 2)
+        {
+            DisplayThirdDialogue();
+        }
+        else if (dialogueCount == 3)
+        {
+            DisplayFourthDialogue();
+        }
+    }
+    
+    //Opens Inventory
+    public void PauseGame()
+    {
+        if (inventoryIsOpened)
+        {
+            inventoryButton.SetActive(true);
+            inventoryIsOpened = false;
+            inventory.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+        else
+        {
+            inventoryButton.SetActive(false);
+            inventoryIsOpened = true;
+            inventory.SetActive(true);
+            DisplayCollectedCollectibles();
+            DisplayCollectedWeapons();
+            EventSystem.current.SetSelectedGameObject(firstInventorySelected);
+        }
+    }
+
+    //Activates inGame ui and starts off with the first dialogue when a new was started
     public void ActivateInGameUI()
     {
         inGameUIScreen.SetActive(true);
-        player = FindObjectOfType<Player>();
-        if (GameSaveStateManager.instance.startedNewGame)
+        if (GameSaveStateManager.Instance.startedNewGame)
         {
-            StartCoroutine(DisplayFirstDialogue());
+            StartCoroutine(DisplayDialogueElements());
+        }
+        else
+        {
+            dialogueCount = 1;
         }
 
-        GameSaveStateManager.instance.startedNewGame = false;
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
+        GameSaveStateManager.Instance.startedNewGame = false;
     }
 }

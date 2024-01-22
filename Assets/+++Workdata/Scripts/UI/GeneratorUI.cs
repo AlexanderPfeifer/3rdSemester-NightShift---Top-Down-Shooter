@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GeneratorUI : MonoBehaviour
@@ -7,20 +7,16 @@ public class GeneratorUI : MonoBehaviour
     [Header("Acceleration")]
     [SerializeField] private AnimationCurve accelerationCurve;
     [SerializeField] private float acceleration = .375f;
+    [SerializeField] private GameObject firstGeneratorSelected;
 
     private float finalAcc;
     private Slider generatorSlider;
     private float fillTime;
-    private Player player;
-
-    private void Awake()
-    {
-        player = FindObjectOfType<Player>();
-    }
 
     private void OnEnable()
     {
-        player.isInteracting = true;
+        Player.Instance.isInteracting = true;
+        EventSystem.current.SetSelectedGameObject(firstGeneratorSelected);
     }
 
     private void Start()
@@ -30,10 +26,11 @@ public class GeneratorUI : MonoBehaviour
 
     private void Update()
     {
-        RandomSliderFill();   
+        SliderFillOverTime();   
     }
 
-    private void RandomSliderFill()
+    //Fills the slider over time and decreases it when maxed out
+    private void SliderFillOverTime()
     {
         finalAcc = acceleration * accelerationCurve.Evaluate(generatorSlider.value);
         
@@ -42,13 +39,16 @@ public class GeneratorUI : MonoBehaviour
         generatorSlider.value = Mathf.PingPong(fillTime, generatorSlider.maxValue);
     }
 
+    //Tries to start engine when button got clicked. When over 0.9f, can activate the ride
     public void StartGeneratorEngine()
     {
+        AudioManager.Instance.Play("GeneratorButtonClick");
+
         if (generatorSlider.value > 0.9f)
         {
-            player.generatorIsActive = true;
+            Player.Instance.generatorIsActive = true;
             gameObject.SetActive(false);
-            player.SearchInteractionObject(player.generatorLayer).GetComponent<Generator>().SetFortuneWheel();
+            Player.Instance.SearchInteractionObject(Player.Instance.generatorLayer).GetComponent<Generator>().SetFortuneWheel();
         }
         else
         {
@@ -58,9 +58,10 @@ public class GeneratorUI : MonoBehaviour
         }
     }
 
+    //When disabled, then resets every value
     private void OnDisable()
     {
-        player.isInteracting = false;
+        Player.Instance.isInteracting = false;
         fillTime = 0;
         generatorSlider.maxValue = 0;
         generatorSlider.maxValue = 1;

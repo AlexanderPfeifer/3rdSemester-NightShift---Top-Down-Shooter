@@ -1,35 +1,34 @@
+using System.Linq;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using UnityEngine.EventSystems;
 
 public class FortuneWheelUI : MonoBehaviour
 {
-    [Header("Velocity Floats")]
-    [SerializeField] private float minSpinPower, maxSpinPower;
+    [Header("Velocity Floats")] 
+    private const float SpinPower = 1250;
     [SerializeField] private float minStopPower, maxStopPower;
     [SerializeField] private float maxAngularVelocity = 1440;
     
     private const int FortuneWheelPieCount = 5;
-    private float randomRotation;
 
-    private Player player;
+    [SerializeField] private GameObject firstFortuneWheelSelected;
+
     private Rigidbody2D rb;
     [HideInInspector] public bool canGetPrize;
 
+    //Gets and Sets the fortune wheel to a random rotation
     private void OnEnable()
     {
-        player = FindObjectOfType<Player>();
+        Player.Instance.isInteracting = true;
         
-        player.isInteracting = true;
-
-        randomRotation = Random.Range(0, 360);
-        var transformEulerAngles = transform.eulerAngles;
-        transformEulerAngles.z = randomRotation;
-        transform.eulerAngles = transformEulerAngles;
+        EventSystem.current.SetSelectedGameObject(firstFortuneWheelSelected);
     }
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        transform.eulerAngles = new Vector3(0, 0, Random.Range(0, 360));
     }
 
     private void Update()
@@ -37,6 +36,7 @@ public class FortuneWheelUI : MonoBehaviour
         FortuneWheelUpdate();
     }
 
+    //Slows down the fortune wheel over time after being span
     private void FortuneWheelUpdate()
     {
         var angularVelocity = rb.angularVelocity;
@@ -61,39 +61,47 @@ public class FortuneWheelUI : MonoBehaviour
         GetRewardPosition();
     }
     
+    //Spins the fortune wheel by adding torque to it
     public void SpinWheel()
     {
         if (rb.angularVelocity > 0) 
             return;
         
-        rb.AddTorque(Random.Range(minSpinPower, maxSpinPower));
+        rb.AddTorque(SpinPower);
+        
+        foreach (var weapon in Player.Instance.allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
+        {
+            GameSaveStateManager.Instance.saveGameDataManager.weaponsInInventoryIdentifiers.Remove(weapon.name);
+        }
     }
 
+    //Gets the Rotation of where the fortune wheel stopped spinning
     private void GetRewardPosition()
     {
         var rotationAngle = transform.eulerAngles.z;
         const float pieSize = (360f / FortuneWheelPieCount);
-        int priceIndex = Mathf.FloorToInt((rotationAngle + 40) / pieSize) % player.allWeaponPrizes.Count;
-        GetWeaponPrize(player.allWeaponPrizes[priceIndex]);
+        int priceIndex = Mathf.FloorToInt((rotationAngle + 42.5f) / pieSize) % Player.Instance.allWeaponPrizes.Count;
+        GetWeaponPrize(Player.Instance.allWeaponPrizes[priceIndex]);
     }
     
+    //Gets the weapon prize and sets every weapon specification to the player
     private void GetWeaponPrize(WeaponObjectSO weapon)
     {
-        player.GetWeapon(weapon);
+        Player.Instance.GetWeapon(weapon);
 
-        GameSaveStateManager.instance.saveGameDataManager.AddWeapon(weapon.weaponName);
+        GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
 
         gameObject.transform.parent.gameObject.SetActive(false);
         canGetPrize = false;
-        player.fortuneWheelGotUsed = true;
         
-        player.SearchInteractionObject(player.wheelOfFortuneLayer).GetComponent<FortuneWheel>().ride.GetComponent<Ride>().canActivateRide = true;
+        Player.Instance.SearchInteractionObject(Player.Instance.wheelOfFortuneLayer).GetComponent<FortuneWheel>().ride.GetComponent<Ride>().canActivateRide = true;
 
-        player.SearchInteractionObject(player.wheelOfFortuneLayer).GetComponent<FortuneWheel>().DeactivateFortuneWheel();
+        Player.Instance.SearchInteractionObject(Player.Instance.wheelOfFortuneLayer).GetComponent<FortuneWheel>().DeactivateFortuneWheel();
     }
 
     private void OnDisable()
     {
-        player.isInteracting = false;
+        Player.Instance.isInteracting = false;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 }

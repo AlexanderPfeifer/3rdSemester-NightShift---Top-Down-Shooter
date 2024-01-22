@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1899054879
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0, g: 0.12746024, b: 1, a: 1}
@@ -194,13 +194,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f308e101e3c1c1c4c865e2fd7254695e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rideLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  searchRange: 20
-  moveSpeed: 5
-  maxEnemyAttackDelay: 1
+  otherEnemiesMoveSpeed: 0
+  enemyCanMove: 1
+  enemyDeathMark: {fileID: 4290859008780889418, guid: 5201ca6a6521a604e9dac64a9e5c9a82, type: 3}
+  rideAttackDamage: 1
+  changeColorTime: 0.075
+  currentEnemyKnockBack: 0
+  maxEnemyKnockBack: 10
+  enemyWaiting: 0
+  isBunny: 0
+  bunnyCanJump: 0
+  bunnyJumpSpeed: 0
   enemyFreezeTime: 10
+  enemyAbilityGain: 1
   maxEnemyFreezeTime: 10
 --- !u!114 &7295137754459367048
 MonoBehaviour:

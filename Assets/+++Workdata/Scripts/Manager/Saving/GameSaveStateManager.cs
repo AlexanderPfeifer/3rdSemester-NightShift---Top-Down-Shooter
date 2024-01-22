@@ -1,14 +1,14 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 
 public class GameSaveStateManager : MonoBehaviour
 {
-    public static GameSaveStateManager instance;
+    public static GameSaveStateManager Instance;
     
-    public const string MainMenuSceneName = "MainMenu";
+    private const string MainMenuSceneName = "MainMenu";
     public const string InGameSceneName = "InGame";
 
     public bool startedNewGame;
@@ -22,26 +22,25 @@ public class GameSaveStateManager : MonoBehaviour
         InGame = 1,
     }
     
-    public event System.Action<GameState> OnStateChanged;
-    
-    public GameState CurrentState { get; private set; } = GameState.InMainMenu;
+    private GameState CurrentState { get; set; } = GameState.InMainMenu;
     
     public SaveGameDataManager saveGameDataManager = new SaveGameDataManager();
     
     private void Awake()
     {
-        instance = this;
+        Instance = this;
         OnLoad();
     }
 
+    //changes the transparency sort mode of the sprites
     [RuntimeInitializeOnLoadMethod]
-    static void OnLoad()
+    private static void OnLoad()
     {
         GraphicsSettings.transparencySortMode = TransparencySortMode.CustomAxis;
         GraphicsSettings.transparencySortAxis = new Vector3(0.0f, 1.0f, 0.0f);
     }
 
-    
+    //Starts the game in the main menu
     private void Start()
     {
         GoToMainMenu();
@@ -52,46 +51,44 @@ public class GameSaveStateManager : MonoBehaviour
         ChangeAlpha();
     }
 
+    //goes to main menu
     public void GoToMainMenu()
     {
+        InGameUI.Instance.inGameUIScreen.SetActive(false);
         CurrentState = GameState.InMainMenu;
-        if (OnStateChanged != null)
-            OnStateChanged(CurrentState);
-        SceneManager.instance.SwitchScene(MainMenuSceneName);
+        SceneManager.Instance.SwitchScene(MainMenuSceneName);
     }
     
+    //Starts a fresh new game
     public void StartNewGame(string gameName)
     {
+        EventSystem.current.SetSelectedGameObject(null);
         startedNewGame = true;
         saveGameDataManager = new SaveGameDataManager();
         saveGameDataManager.saveName = gameName;
             CurrentState = GameState.InGame;
-        if (OnStateChanged != null)
-            OnStateChanged(CurrentState);
-        SceneManager.instance.SwitchScene(saveGameDataManager.loadedSceneName);
+            AudioManager.Instance.Stop("MainMenuMusic");
+        SceneManager.Instance.SwitchScene(saveGameDataManager.loadedSceneName);
     }
 
+    //Loads game from a specific game by string
     public void LoadFromSave(string saveName)
     {
         //first, we try to load the game from via the save manager.
         if (!SaveFileManager.TryLoadData<SaveGameDataManager>(saveName, out var loadedData))
             return; //if we cannot load the save, we cancel the action.
         
-        //after we successfuly loaded the save, we set the data correctly. 
+        //after we successfully loaded the save, we set the data correctly. 
         saveGameDataManager = loadedData;
         
         //we set the correct state (as we want to enter the inGame-State) and give out the callback
         CurrentState = GameState.InGame;
-        if (OnStateChanged != null)
-            OnStateChanged(CurrentState);
-        
+
         //we load the scene we last saved the game in, as it is set within the data.
-        SceneManager.instance.SwitchScene(saveGameDataManager.loadedSceneName);
+        SceneManager.Instance.SwitchScene(saveGameDataManager.loadedSceneName);
     }
     
-    /// <summary>
     /// We call this method to save the current game state.
-    /// </summary>
     public void SaveGame()
     {
         if (CurrentState == GameState.InMainMenu)
@@ -103,6 +100,7 @@ public class GameSaveStateManager : MonoBehaviour
         StartCoroutine(SetSaveGameText());
     }
 
+    //Sets save game text when game saves
     private IEnumerator SetSaveGameText()
     {
         gameSavingText.gameObject.SetActive(true);
@@ -112,6 +110,7 @@ public class GameSaveStateManager : MonoBehaviour
         changeAlpha = false;
     }
 
+    //Changes Alpha of the game save text
     private void ChangeAlpha()
     {
         if (changeAlpha)

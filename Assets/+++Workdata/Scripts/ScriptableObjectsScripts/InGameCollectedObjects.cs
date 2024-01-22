@@ -4,10 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new Collectibles List", menuName = "Create new Collectibles List", order = 0)]
 public class InGameCollectedObjects : ScriptableObject
 {
-    public List<CollectibleObjectSO> allCollectibles = new List<CollectibleObjectSO>();
+    public List<CollectibleObjectSO> allCollectibles;
     
-    public List<WeaponObjectSO> allWeapons = new List<WeaponObjectSO>();
+    public List<WeaponObjectSO> allWeapons;
 
+    //When called get every collectible by string name
     public CollectibleObjectSO GetCollectibleDataByIdentifier(string identifier)
     {
         for (int index = 0; index < allCollectibles.Count; index++)
@@ -19,6 +20,7 @@ public class InGameCollectedObjects : ScriptableObject
         return null;
     }
 
+    //When called gets every weapon by string name
     public WeaponObjectSO GetWeaponDataByIdentifier(string identifier)
     {
         for (int index = 0; index < allWeapons.Count; index++)
