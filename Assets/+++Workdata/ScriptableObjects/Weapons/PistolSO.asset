@@ -17,7 +17,7 @@ MonoBehaviour:
   weaponDescription: The trigger is buttery-smooth, but luckily this thing is more
     bark than bite. The noise wakes me right up, though.
   weaponAbilityDescription: Bullets explode and deal areal damage.
-  shootDelay: 0.3
+  shootDelay: 0.375
   penetrationCount: 0
   bulletDamage: 1
   weaponSpread: 0.05
@@ -25,5 +25,5 @@ MonoBehaviour:
   bulletsPerShot: 3
   knockBack: 0.25
   enemyKnockBackPerBullet: 2.5
-  bulletSize: {x: 0.5, y: 0.5}
+  bulletSize: {x: 0.6, y: 0.6}
   screenShake: 4

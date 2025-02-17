@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
     public float currentEnemyKnockBackResistanceDoubled;
     public float maxEnemyKnockBackResistance = 10;
     [SerializeField] private float bunnyJumpSpeed;
-    [SerializeField] public float enemyFreezeTime = 10f;
+    [SerializeField] public float enemyFreezeTime = 5f;
     [SerializeField] private float enemyAbilityGain = 1;
     
     private void Start()
@@ -115,8 +115,6 @@ public class Enemy : MonoBehaviour
         
         GetComponent<Animator>().SetTrigger("Hurt");
         
-        Time.timeScale = 0;
-
         StartCoroutine(EnemyGotHit(duration));
     }
     
@@ -127,8 +125,6 @@ public class Enemy : MonoBehaviour
         enemyWaiting = true;
 
         yield return new WaitForSecondsRealtime(duration);
-
-        Time.timeScale = 1f;
         
         AudioManager.Instance.Play("EnemyHit");
 

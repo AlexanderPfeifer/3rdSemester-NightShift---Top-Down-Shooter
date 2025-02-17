@@ -12,11 +12,12 @@ public class Bullet : MonoBehaviour
 
     [Header("Floats")]
     private const float BulletDistanceUntilDestroy = 25;
-    [SerializeField] private float tickStickyBullet;
-    [SerializeField] private float maxTickStickyBullet = 2;
+    [SerializeField] private float stickyBulletTimer;
+    [SerializeField] private float maxStickyBulletTimer = 2;
+    [SerializeField] private float tickStickyBulletDamage = 2;
     [SerializeField] private float explosiveDamage = 3;
-    [SerializeField] private float tickDamage;
     private float currentBulletDamage;
+    private int tickCount = 2;
 
     [Header("Booleans")]
     private bool popCornParticle;
@@ -32,13 +33,18 @@ public class Bullet : MonoBehaviour
     {
         if (Player.Instance.stickyBullets)
         {
-            tickStickyBullet -= Time.deltaTime;
+            stickyBulletTimer -= Time.deltaTime;
 
-            if (tickStickyBullet <= 0)
+            if (stickyBulletTimer <= 0)
             {
-                GetComponentInParent<EnemyHealthPoints>().TakeDamage(tickDamage);
+                tickCount--;
+                GetComponentInParent<EnemyHealthPoints>().TakeDamage(tickStickyBulletDamage);
                 GetComponentInParent<Enemy>().Stop(gameObject.GetComponentInParent<Enemy>().changeColorTime);
-                tickStickyBullet = maxTickStickyBullet;
+                stickyBulletTimer = maxStickyBulletTimer;
+                if (tickCount <= 0)
+                {
+                    Destroy(gameObject);
+                }
             }
         }
     }
@@ -80,7 +86,7 @@ public class Bullet : MonoBehaviour
         
         if (Player.Instance.freezeBullets)
         {
-            col.gameObject.GetComponent<Enemy>().enemyFreezeTime = 10f;
+            col.gameObject.GetComponent<Enemy>().enemyFreezeTime = 5f;
             col.gameObject.GetComponent<Enemy>().EnemyFreeze();
         }
 
@@ -89,7 +95,7 @@ public class Bullet : MonoBehaviour
             var probability = Random.Range(1, 10);
             if (probability == 10)
             {
-                currentBulletDamage = Random.Range(10, 20);
+                currentBulletDamage = Random.Range(Player.Instance.bulletDamage * 2, Player.Instance.bulletDamage * 3);
             }
         }
 
@@ -99,7 +105,7 @@ public class Bullet : MonoBehaviour
             {
                 transform.SetParent(col.gameObject.transform);
             }
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
         }
 
         if (Player.Instance.explosiveBullets)
@@ -155,14 +161,17 @@ public class Bullet : MonoBehaviour
     //the popcorn particle
     private void OnDestroy()
     {
-        var bulletImpactParticles = GetComponentInParent<Transform>().transform.GetChild(1).GetComponent<ParticleSystem>();
-        bulletImpactParticles.transform.position = gameObject.transform.position;
-        bulletImpactParticles.transform.rotation = gameObject.transform.rotation;
-            
-        bulletImpactParticles.Play();
-        if (!bulletImpactParticles.isEmitting)
+        if (!Player.Instance.stickyBullets || tickCount < 2)
         {
-            bulletImpactParticles.Stop();
+            var bulletImpactParticles = GetComponentInParent<Transform>().transform.GetChild(1).GetComponent<ParticleSystem>();
+            bulletImpactParticles.transform.position = gameObject.transform.position;
+            bulletImpactParticles.transform.rotation = gameObject.transform.rotation;
+            
+            bulletImpactParticles.Play();
+            if (!bulletImpactParticles.isEmitting)
+            {
+                bulletImpactParticles.Stop();
+            }
         }
 
         if (!popCornParticle) 

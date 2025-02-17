@@ -131,10 +131,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fede4ff0305701c4da575a4c199adb71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickStickyBullet: 0
-  maxTickStickyBullet: 2
+  stickyBulletTimer: 2
+  maxStickyBulletTimer: 2
+  tickStickyBulletDamage: 2
   explosiveDamage: 3
-  tickDamage: 0
 --- !u!70 &7744728890925311293
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

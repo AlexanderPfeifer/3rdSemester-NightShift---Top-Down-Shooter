@@ -68,11 +68,8 @@ public class FortuneWheelUI : MonoBehaviour
             return;
         
         rb.AddTorque(SpinPower);
-        
-        foreach (var weapon in Player.Instance.allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
-        {
-            GameSaveStateManager.Instance.saveGameDataManager.weaponsInInventoryIdentifiers.Remove(weapon.name);
-        }
+
+        Player.Instance.isInteracting = true;
     }
 
     //Gets the Rotation of where the fortune wheel stopped spinning
@@ -80,7 +77,7 @@ public class FortuneWheelUI : MonoBehaviour
     {
         var rotationAngle = transform.eulerAngles.z;
         const float pieSize = (360f / FortuneWheelPieCount);
-        int priceIndex = Mathf.FloorToInt((rotationAngle + 42.5f) / pieSize) % Player.Instance.allWeaponPrizes.Count;
+        int priceIndex = Mathf.FloorToInt((rotationAngle + 41f) / pieSize) % Player.Instance.allWeaponPrizes.Count;
         GetWeaponPrize(Player.Instance.allWeaponPrizes[priceIndex]);
     }
     
@@ -88,6 +85,8 @@ public class FortuneWheelUI : MonoBehaviour
     private void GetWeaponPrize(WeaponObjectSO weapon)
     {
         Player.Instance.GetWeapon(weapon);
+        
+        Player.Instance.isInteracting = false;
 
         GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
 

@@ -16,7 +16,7 @@ MonoBehaviour:
   weaponName: Magnum magnum
   weaponDescription: "Don\u2018t let the cool design fool you - this thing\u2018s
     packing some heat. "
-  weaponAbilityDescription: Freezes enemies on bullet collision for 10 seconds.
+  weaponAbilityDescription: Freezes enemies on bullet collision for 5 seconds.
   shootDelay: 0.4
   penetrationCount: 2
   bulletDamage: 3

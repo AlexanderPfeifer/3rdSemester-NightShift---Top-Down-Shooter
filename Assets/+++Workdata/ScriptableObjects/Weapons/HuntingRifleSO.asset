@@ -15,11 +15,11 @@ MonoBehaviour:
   inGameWeaponVisual: {fileID: -253621731, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
   weaponName: Corn Dog Hunting Rifle
   weaponDescription: "I\u2018ve had my fill of corny one-liners with this one. "
-  weaponAbilityDescription: On Activation has no enemy penetration limit and a 1
-    of 10 chance to triple the incoming damage.
+  weaponAbilityDescription: On Activation has no enemy penetration limit and every
+    shot doubles to triple the incoming damage.
   shootDelay: 0.75
   penetrationCount: 2
-  bulletDamage: 5
+  bulletDamage: 7
   weaponSpread: 0.005
   weaponScale: {x: 1.1, y: 1.1, z: 1}
   bulletsPerShot: 1

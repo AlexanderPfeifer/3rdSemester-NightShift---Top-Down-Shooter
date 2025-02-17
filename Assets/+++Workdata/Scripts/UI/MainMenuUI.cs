@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -23,6 +24,7 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private GameObject creditsScreen;
     [SerializeField] private GameObject keyboardControls;
     [SerializeField] private GameObject gamePadControls;
+    [SerializeField] private GameObject sunnyBackground;
     
     [Header("MainMenuButtons")]
     [SerializeField] private GameObject loadButton;
@@ -46,10 +48,23 @@ public class MainMenuUI : MonoBehaviour
         AudioManager.Instance.Play("MainMenuMusic");
     }
 
+    private void Update()
+    {
+        if (GameSaveStateManager.Instance.gameGotFinished)
+        {
+            sunnyBackground.SetActive(true);
+        }
+    }
+
     //The link to the programmers linked in for the button when clicked
     public void LinkedInAlexanderPfeifer()
     {
         Application.OpenURL("https://www.linkedin.com/in/alexander-pfeifer-5b858128b/");
+    }
+    
+    public void LinkedInMartinViegehls()
+    {
+        Application.OpenURL("https://www.linkedin.com/in/martin-viegehls-41a959279/");
     }
 
     public void SetControlsImage()

@@ -68,13 +68,19 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private GameObject eIndicator;
     [SerializeField] public GameObject inGameUIScreen;
     [SerializeField] public GameObject firstInventorySelected;
-    [SerializeField] private GameObject whiteScreen;
     [SerializeField] private GameObject inventoryButton; 
+    [SerializeField] public GameObject whiteScreen;
+    [SerializeField] private GameObject thanksForPlayingText;
+    [SerializeField] private GameObject nightShiftText;
+
 
     [Header("Booleans")]
     private bool isPlayerNotNull;
     [HideInInspector] public bool inventoryIsOpened;
     private bool changeLight;
+    private bool changeWhiteText;
+    private bool changeThanksForPlayingText;
+    private bool changeNightShiftText;
 
     [Header("Dialogue")]
     public float textDisplaySpeed = 0.04f;
@@ -92,6 +98,9 @@ public class InGameUI : MonoBehaviour
     [SerializeField] public Animator radioAnim;
     [SerializeField] private Animator dialogueBoxAnim;
 
+    static float t = 0.0f;
+
+    
     private void Awake()
     {
         Instance = this;
@@ -120,24 +129,90 @@ public class InGameUI : MonoBehaviour
                 componentColor.a = 0.2156862745098039f;
                 eIndicator.GetComponent<Image>().color = componentColor;
             }
-
-            if (changeLight)
-            {
-                AudioManager.Instance.Stop("InGameMusic");
-                Player.Instance.globalLightObject.GetComponent<Light2D>().intensity =
-                    Mathf.MoveTowards(Player.Instance.globalLightObject.GetComponent<Light2D>().intensity, 5, Time.deltaTime);
-                if (Player.Instance.globalLightObject.GetComponent<Light2D>().intensity >= 3)
-                {
-                    whiteScreen.SetActive(true);
-                    whiteScreen.GetComponent<Image>().color =
-                        new Color(1, 1, 1, Mathf.MoveTowards(0, 1, Time.deltaTime));
-                    GameSaveStateManager.Instance.GoToMainMenu();
-                    whiteScreen.GetComponent<Image>().color =
-                        new Color(1, 1, 1, Mathf.MoveTowards(1, 0, Time.deltaTime));
-                    whiteScreen.SetActive(false);
-                }
-            }
         }
+
+        t += 0.5f * Time.deltaTime;
+
+        if (changeLight)
+        {
+            Player.Instance.globalLightObject.gameObject.GetComponent<Light2D>().intensity
+                = Mathf.Lerp(0.05f, 1, t);
+        }
+
+        if (changeWhiteText)
+        {
+            whiteScreen.SetActive(true);
+            thanksForPlayingText.SetActive(true);
+            nightShiftText.SetActive(true);
+
+            whiteScreen.GetComponent<Image>().color =
+                new Color(1, 1, 1, Mathf.Lerp(0, 1, t));
+            thanksForPlayingText.GetComponent<TextMeshProUGUI>().color =
+                new Color(0.0196078431372549f, 0.0196078431372549f, 0.0196078431372549f, Mathf.Lerp(0, 1, t));
+        }
+
+        if (changeThanksForPlayingText)
+        {
+            thanksForPlayingText.GetComponent<TextMeshProUGUI>().color =
+                new Color(0.0196078431372549f, 0.0196078431372549f, 0.0196078431372549f, Mathf.MoveTowards(1, 0, t));
+        }
+
+        if (changeNightShiftText)
+        {
+            nightShiftText.GetComponent<TextMeshProUGUI>().color =
+                new Color(0.0196078431372549f, 0.0196078431372549f, 0.0196078431372549f, Mathf.MoveTowards(0, 1, t));
+        }
+    }
+
+    private IEnumerator EndScreen()
+    {
+        AudioManager.Instance.Stop("InGameMusic");
+
+        t = 0;
+        
+        inGameUIScreen.SetActive(false);
+        
+        Player.Instance.globalLightObject.gameObject.GetComponent<Light2D>().intensity = 0.05f;
+        changeLight = true;
+        
+        yield return new WaitForSeconds(2);
+
+        t = 0;
+        changeLight = false;
+
+        whiteScreen.GetComponent<Image>().color = new Color(1, 1, 1, 0);
+        thanksForPlayingText.GetComponent<TextMeshProUGUI>().color = new Color(0.0196078431372549f, 0.0196078431372549f, 0.0196078431372549f, 0);
+        
+        changeWhiteText = true;
+        
+        yield return new WaitForSeconds(2);
+
+        changeWhiteText = false;
+        t = 0;
+
+        changeThanksForPlayingText = true;
+        
+        yield return new WaitForSeconds(2);
+        
+        changeThanksForPlayingText = false;
+        t = 0;
+
+        nightShiftText.GetComponent<TextMeshProUGUI>().color = new Color(0.0196078431372549f,0.0196078431372549f,0.0196078431372549f,0);
+        
+        changeNightShiftText = true;
+
+        yield return new WaitForSeconds(4);
+        
+        changeNightShiftText = false;
+        t = 0;
+
+        thanksForPlayingText.SetActive(false);
+        nightShiftText.SetActive(false);
+        inGameUIScreen.SetActive(false);
+
+        GameSaveStateManager.Instance.gameGotFinished = true;
+        
+        GameSaveStateManager.Instance.GoToMainMenu();
     }
     
     public void PressButtonSound()
@@ -434,6 +509,8 @@ public class InGameUI : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         radioAnim.SetTrigger("RadioOn");
+        
+        AudioManager.Instance.Play("WalkieTalkie");
 
         yield return new WaitForSeconds(1);
         
@@ -464,8 +541,7 @@ public class InGameUI : MonoBehaviour
         {
             Player.Instance.isPlayingDialogue = true;
             Player.Instance.isInteracting = true;
-            AudioManager.Instance.Play("WalkieTalkie");
-            changeLight = true;
+            StartCoroutine(EndScreen());
         }
     }
 

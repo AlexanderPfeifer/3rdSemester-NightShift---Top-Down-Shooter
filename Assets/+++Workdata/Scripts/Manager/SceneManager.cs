@@ -37,5 +37,7 @@ public class SceneManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.SetActiveScene(newScene);
         
         currentScene = newSceneName;
+        
+        InGameUI.Instance.whiteScreen.SetActive(false);
     }
 }

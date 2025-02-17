@@ -234,11 +234,6 @@ public class Player : MonoBehaviour
         {
             StartPistolAbility();
         }
-
-        if (splitBullets)
-        {
-            shootDelay = 0.05f;
-        }
     }
 
     private void FixedUpdate()
@@ -325,8 +320,15 @@ public class Player : MonoBehaviour
                 var newBullet = Instantiate(bulletPrefab, weaponEndPoint.position, Quaternion.Euler(0, 0 ,weaponAngle), bullets.transform);
                 newBullet.LaunchInDirection(this, bulletDirection);
             }
-            
-            shootDelay = maxShootDelay;
+
+            if (!splitBullets)
+            {
+                shootDelay = maxShootDelay;
+            }
+            else
+            {
+                shootDelay = 0.075f;
+            }
 
             StartCoroutine(WeaponVisualCoroutine());
 
@@ -439,9 +441,10 @@ public class Player : MonoBehaviour
 
         foreach (var weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
         {
+            GameSaveStateManager.Instance.saveGameDataManager.weaponsInInventoryIdentifiers.Remove(weapon.name);
             InGameUI.Instance.inventoryWeapon.SetActive(true);
         }
-        
+
         weaponDecisionUI.SetActive(false);
         fortuneWheelUI.SetActive(true);
     }
@@ -523,7 +526,6 @@ public class Player : MonoBehaviour
         }
 
         Vector3 newUp = Vector3.Slerp(weaponPosParent.transform.up, weaponToMouse, Time.deltaTime * 10);
-
 
         weaponAngle = Vector3.SignedAngle(Vector3.up, newUp, Vector3.forward);
         
@@ -713,7 +715,7 @@ public class Player : MonoBehaviour
     {
         if (playerVisual.activeSelf && !isInteracting && !isPlayingDialogue)
         {
-            anim.SetFloat("MoveSpeed", rb.velocity.sqrMagnitude);
+            anim.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);
 
             if (gameInputManager.GetMovementVectorNormalized().sqrMagnitude <= 0)
             {
@@ -733,13 +735,16 @@ public class Player : MonoBehaviour
             animNoHand.SetBool("MovingSideWaysHand", eulerAngles.z is > 45 and < 135);
             animNoHand.SetBool("MovingSideWaysNoHand", eulerAngles.z is > 225 and < 315);
         
-            animNoHand.SetFloat("MoveSpeed", rb.velocity.sqrMagnitude);
+            animNoHand.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);
         }
 
-        if (playerNoHandVisual.activeSelf && isInteracting && isPlayingDialogue)
+        if (playerNoHandVisual.activeSelf)
         {
-            animNoHand.SetFloat("MoveSpeed", 0);
-            AudioManager.Instance.Stop("Walking");
+            if (isInteracting || isPlayingDialogue)
+            {
+                animNoHand.SetFloat("MoveSpeed", 0);
+                AudioManager.Instance.Stop("Walking");
+            }
         }
     }
 

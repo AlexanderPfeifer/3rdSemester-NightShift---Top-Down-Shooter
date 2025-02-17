@@ -426,13 +426,15 @@ public class Ride : MonoBehaviour
         {
             return;
         }
-
+        
         noAlpha.r = 1;
         noAlpha.g = 0;
         noAlpha.b = 0;
         noAlpha.a = 0.3f;
         GetComponent<SpriteRenderer>().color = noAlpha;
         
+        Time.timeScale = 0;
+
         StartCoroutine(RideGotHit(duration));
     }
     
@@ -443,6 +445,8 @@ public class Ride : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(duration);
         
+        Time.timeScale = 1f;
+
         noAlpha.r = 1;
         noAlpha.g = 1;
         noAlpha.b = 1;

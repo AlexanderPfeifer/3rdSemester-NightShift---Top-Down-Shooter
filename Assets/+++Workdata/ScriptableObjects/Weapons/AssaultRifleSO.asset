@@ -16,9 +16,8 @@ MonoBehaviour:
   weaponName: French Fries AR
   weaponDescription: Served hot and fresh. This thing is a whole new definition of
     fast food.
-  weaponAbilityDescription: When bullets collide with enemies, they split off in
-    a random direction.
-  shootDelay: 0.15
+  weaponAbilityDescription: Bullet Firerate increases.
+  shootDelay: 0.175
   penetrationCount: 0
   bulletDamage: 1.5
   weaponSpread: 0.025

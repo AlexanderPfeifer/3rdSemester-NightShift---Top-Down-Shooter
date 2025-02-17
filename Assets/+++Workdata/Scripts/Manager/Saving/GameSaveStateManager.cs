@@ -15,8 +15,9 @@ public class GameSaveStateManager : MonoBehaviour
     private bool changeAlpha;
     public TextMeshProUGUI gameSavingText; 
     [SerializeField] private float textAlphaChangeSpeed = 1;
+    public bool gameGotFinished;
 
-    public enum GameState
+    private enum GameState
     {
         InMainMenu = 0,
         InGame = 1,
