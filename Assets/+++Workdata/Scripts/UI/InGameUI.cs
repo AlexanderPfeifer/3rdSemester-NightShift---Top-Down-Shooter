@@ -9,6 +9,9 @@ using UnityEngine.Rendering.Universal;
 public class InGameUI : MonoBehaviour
 {
     public static InGameUI Instance;
+
+    [Header("Debugging")]
+    [SerializeField] private bool debugMode;
     
     [Header("InventoryElements")]
     [SerializeField] private TextMeshProUGUI inventoryText;
@@ -108,6 +111,9 @@ public class InGameUI : MonoBehaviour
 
     private void Start()
     {
+        if(debugMode)
+            return;
+        
         dialogueLeft = true;
     }
 

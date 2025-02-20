@@ -34,10 +34,11 @@ public class Player : MonoBehaviour
     [SerializeField] public GameObject playerVisual;
     [SerializeField] private Animator anim;
     [SerializeField] private Animator animNoHand;
-    private bool isSprinting;
     private bool walkingSound;
     private Vector2 moveDirection = Vector2.down;
     private Rigidbody2D rb;
+    private Vector2 knockBack;
+    private float knockBackDecay = 5f; 
 
     [Header("Camera")]
     [SerializeField] private Camera mainCamera;
@@ -87,6 +88,7 @@ public class Player : MonoBehaviour
     private bool hasWeapon;
     [SerializeField] private Animator weaponAnim;
     private float weaponScreenShake;
+    [SerializeField] private float weaponToMouseSmoothness = 8;
 
     [Header("Ability")]
     [SerializeField] public float maxAbilityTime;
@@ -167,7 +169,6 @@ public class Player : MonoBehaviour
         gameInputManager.OnInteractAction += GameInputManagerOnInteractAction;
         gameInputManager.OnUsingAbilityAction += GameInputManagerOnUsingAbilityAction;
         gameInputManager.OnSprintingAction += GameInputManagerOnSprintingAction;
-        gameInputManager.OnNotSprintingAction += GameInputManagerOnNotSprintingAction;
         AudioManager.Instance.Play("InGameMusic");
     }
 
@@ -180,7 +181,6 @@ public class Player : MonoBehaviour
         gameInputManager.OnInteractAction -= GameInputManagerOnInteractAction;
         gameInputManager.OnUsingAbilityAction -= GameInputManagerOnUsingAbilityAction;
         gameInputManager.OnSprintingAction -= GameInputManagerOnSprintingAction;
-        gameInputManager.OnNotSprintingAction -= GameInputManagerOnNotSprintingAction;
     }
 
     private void Start()
@@ -332,19 +332,14 @@ public class Player : MonoBehaviour
 
             StartCoroutine(WeaponVisualCoroutine());
 
-            rb.AddForce(-weaponToMouse * shootingKnockBack, ForceMode2D.Impulse);
+            knockBack = -weaponToMouse.normalized * shootingKnockBack;
         }
     }
-
+    
     //Changes movement speed when shift is being held down
     private void GameInputManagerOnSprintingAction(object sender, EventArgs e)
     {
-        moveSpeed = 55;
-    }
-    
-    private void GameInputManagerOnNotSprintingAction(object sender, EventArgs e)
-    {
-        moveSpeed = 40;
+        
     }
 
     //Opens inventory when pressed
@@ -525,9 +520,9 @@ public class Player : MonoBehaviour
             }
         }
 
-        Vector3 newUp = Vector3.Slerp(weaponPosParent.transform.up, weaponToMouse, Time.deltaTime * 10);
+        Vector3 _newUp = Vector3.Slerp(weaponPosParent.transform.up, weaponToMouse, Time.deltaTime * weaponToMouseSmoothness);
 
-        weaponAngle = Vector3.SignedAngle(Vector3.up, newUp, Vector3.forward);
+        weaponAngle = Vector3.SignedAngle(Vector3.up, _newUp, Vector3.forward);
         
         weaponPosParent.eulerAngles = new Vector3(0, 0, weaponAngle);
 
@@ -548,7 +543,11 @@ public class Player : MonoBehaviour
     {
         if (!isPlayingDialogue && !InGameUI.Instance.inventoryIsOpened && !isInteracting)
         { 
-            rb.AddForce(new Vector2(gameInputManager.GetMovementVectorNormalized().x, gameInputManager.GetMovementVectorNormalized().y) * moveSpeed, ForceMode2D.Force);
+            var _targetVelocity = gameInputManager.GetMovementVectorNormalized() * moveSpeed;
+            
+            rb.linearVelocity = _targetVelocity + knockBack;
+
+            knockBack = Vector2.Lerp(knockBack, Vector2.zero, Time.fixedDeltaTime * knockBackDecay);
             
             if (gameInputManager.GetMovementVectorNormalized().x != 0 ||
                 gameInputManager.GetMovementVectorNormalized().y != 0)

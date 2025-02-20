@@ -5,15 +5,14 @@ public class GameInputManager : MonoBehaviour
 {
     private PlayerInputActions playerInputActions;
 
-    public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnSprintingAction, OnNotShootingAction, OnNotSprintingAction;
+    public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnSprintingAction, OnNotShootingAction;
 
     private void Awake()
     {
         playerInputActions = new PlayerInputActions();
         playerInputActions.Enable();
 
-        playerInputActions.player.sprint.started += OnPlayerSprinting;
-        playerInputActions.player.sprint.canceled += OnPlayerNotSprinting;
+        playerInputActions.player.sprint.started += OnPlayerSliding;
         playerInputActions.player.shoot.started += OnPlayerShooting;
         playerInputActions.player.shoot.canceled += OnPlayerNotShooting;
         playerInputActions.player.pause.performed += OnGamePaused;
@@ -39,16 +38,11 @@ public class GameInputManager : MonoBehaviour
         OnNotShootingAction?.Invoke(this, EventArgs.Empty);
     }
     
-    private void OnPlayerSprinting(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    private void OnPlayerSliding(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         OnSprintingAction?.Invoke(this, EventArgs.Empty);
     }
-    
-    private void OnPlayerNotSprinting(UnityEngine.InputSystem.InputAction.CallbackContext context)
-    {
-        OnNotSprintingAction?.Invoke(this, EventArgs.Empty);
-    }
-    
+
     private void OnGamePaused(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         OnGamePausedAction?.Invoke(this, EventArgs.Empty);

@@ -10,18 +10,13 @@ public class GeneratorUI : MonoBehaviour
     [SerializeField] private GameObject firstGeneratorSelected;
 
     private float finalAcc;
-    private Slider generatorSlider;
+    [SerializeField] private Image generatorFillImage;
     private float fillTime;
 
     private void OnEnable()
     {
         Player.Instance.isInteracting = true;
         EventSystem.current.SetSelectedGameObject(firstGeneratorSelected);
-    }
-
-    private void Start()
-    {
-        generatorSlider = GetComponentInChildren<Slider>();
     }
 
     private void Update()
@@ -32,11 +27,11 @@ public class GeneratorUI : MonoBehaviour
     //Fills the slider over time and decreases it when maxed out
     private void SliderFillOverTime()
     {
-        finalAcc = acceleration * accelerationCurve.Evaluate(generatorSlider.value);
+        finalAcc = acceleration * accelerationCurve.Evaluate(generatorFillImage.fillAmount);
         
         fillTime += finalAcc * Time.deltaTime;
 
-        generatorSlider.value = Mathf.PingPong(fillTime, generatorSlider.maxValue);
+        generatorFillImage.fillAmount = Mathf.PingPong(fillTime, 1);
     }
 
     //Tries to start engine when button got clicked. When over 0.9f, can activate the ride
@@ -44,7 +39,7 @@ public class GeneratorUI : MonoBehaviour
     {
         AudioManager.Instance.Play("GeneratorButtonClick");
 
-        if (generatorSlider.value > 0.9f)
+        if (generatorFillImage.fillAmount > 0.9f)
         {
             Player.Instance.generatorIsActive = true;
             gameObject.SetActive(false);
@@ -53,8 +48,7 @@ public class GeneratorUI : MonoBehaviour
         else
         {
             fillTime = 0;
-            generatorSlider.maxValue = 0;
-            generatorSlider.maxValue = 1;
+            generatorFillImage.fillAmount = 0;
         }
     }
 
@@ -63,7 +57,6 @@ public class GeneratorUI : MonoBehaviour
     {
         Player.Instance.isInteracting = false;
         fillTime = 0;
-        generatorSlider.maxValue = 0;
-        generatorSlider.maxValue = 1;
+        generatorFillImage.fillAmount = 0;
     }
 }

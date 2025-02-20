@@ -23,7 +23,7 @@ MonoBehaviour:
   weaponSpread: 0.1
   weaponScale: {x: 1, y: 1, z: 1}
   bulletsPerShot: 12
-  knockBack: 1.75
+  knockBack: 5.25
   enemyKnockBackPerBullet: 2
   bulletSize: {x: 0.3, y: 0.3}
   screenShake: 6
