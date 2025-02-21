@@ -463,11 +463,10 @@ public class Ride : MonoBehaviour
         
         SetRide(true, false);
         rideGotDestroyed = true;
-        Player.Instance.playerVignette.active = false;
         
-        foreach (var objects in enemyList)
+        foreach (var _objects in enemyList)
         {
-            Destroy(objects);
+            Destroy(_objects);
         }
     }
 
@@ -476,8 +475,6 @@ public class Ride : MonoBehaviour
     {
         Player.Instance.isInteracting = true;
         Player.Instance.rideCount++;
-        Player.Instance.generatorIsActive = false;
-        Player.Instance.playerVignette.active = false;
         Player.Instance.isInteracting = false;
 
         GetComponentInChildren<Generator>().fightMusic.Stop();

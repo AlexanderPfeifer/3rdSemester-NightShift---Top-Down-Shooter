@@ -3,17 +3,17 @@ using UnityEngine;
 public class EnemyDeathMark : MonoBehaviour
 {
     private float alphaValue = 1;
+    private Color deathMarkColor;
 
-    //When death mark is spawned, it slowly disappears again and then destroys itself
+    private void Start() => deathMarkColor = GetComponent<SpriteRenderer>().color;
+
     private void Update()
     {
         alphaValue -= Time.deltaTime / 2;
         
-        GetComponent<SpriteRenderer>().color = new Color(GetComponent<SpriteRenderer>().color.r, 
-            GetComponent<SpriteRenderer>().color.g, GetComponent<SpriteRenderer>().color.b,
-            alphaValue);
+        deathMarkColor = new Color(deathMarkColor.r, deathMarkColor.g, deathMarkColor.b, alphaValue);
         
-        if (GetComponent<SpriteRenderer>().color.a == 0)
+        if (deathMarkColor.a == 0)
         {
             Destroy(gameObject);
         }

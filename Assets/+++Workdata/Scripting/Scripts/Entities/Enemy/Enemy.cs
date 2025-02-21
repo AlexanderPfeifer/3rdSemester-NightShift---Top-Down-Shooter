@@ -45,13 +45,9 @@ public class Enemy : MonoBehaviour
         currentEnemyKnockBackResistanceDoubled *= 2;
     }
 
-    //When EnemyFreeze is called, then it sets enemyCanMove to true, so it gets called in update while enemy cannot move
     private void Update()
     {
-        if(enemyFreeze)
-        {
-            EnemyFreeze();
-        }
+        EnemyFreeze();
     }
 
     private void FixedUpdate()
@@ -59,7 +55,7 @@ public class Enemy : MonoBehaviour
         if (enemyCanMove)
         {
             currentEnemyKnockBackResistance = maxEnemyKnockBackResistance;
-            TargetRide();
+            MoveToRide();
         }
         else
         {
@@ -67,11 +63,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    //I differentiated in isBunny and is not a bunny because the movement of the bunny is in jumps, not a consistent running
-    //I set bunnyCanJump on true in an animation event of the bunny
-    //Then I set the flip sprite according to the position of the ride in relation to this.
-    private void TargetRide()
+    private void MoveToRide()
     {
+        //I set bunnyCanJump on true in an animation because the movement of the bunny is in jumps, not a consistent running
         if (!isBunny)
         {
             rbEnemy.MovePosition(transform.position =  Vector2.MoveTowards(transform.position, ride.transform.position, otherEnemiesMoveSpeed * Time.deltaTime));
@@ -84,13 +78,16 @@ public class Enemy : MonoBehaviour
             }
         }
         
-        var relativePos = transform.InverseTransformPoint(ride.transform.position);
-        
-        sr.flipX = !(relativePos.x > 0);
+        sr.flipX = !(transform.InverseTransformPoint(ride.transform.position).x > 0);
     }
 
     public void EnemyFreeze()
     {
+        if (!enemyFreeze)
+        {
+            return;
+        }
+        
         if (enemyFreezeTime <= 0)
         {
             enemyCanMove = true;
@@ -105,8 +102,7 @@ public class Enemy : MonoBehaviour
         enemyFreezeTime -= Time.deltaTime;
     }
 
-    //Here I stop the time for a hit stop and set the hurt animation before that, then I start a coroutine which keeps going when time is 0
-    public void Stop(float duration)
+    public void HitStop(float duration)
     {
         if (enemyWaiting)
         {
@@ -118,8 +114,6 @@ public class Enemy : MonoBehaviour
         StartCoroutine(EnemyGotHit(duration));
     }
     
-    //Here I wait for seconds in realtime because that allows the yield to keep going when time is 0, then I set the time to 1 again
-    //After that I play every sound needed, if the sounds would be played before, they would sound choppy
     private IEnumerator EnemyGotHit(float duration)
     {
         enemyWaiting = true;
@@ -128,7 +122,7 @@ public class Enemy : MonoBehaviour
         
         AudioManager.Instance.Play("EnemyHit");
 
-        if (FindObjectOfType<Player>().explosiveBullets)
+        if (Player.Instance.explosiveBullets)
         {
             AudioManager.Instance.Play("PopCornExplosion");
         }
@@ -136,13 +130,12 @@ public class Enemy : MonoBehaviour
         enemyWaiting = false;
     }
 
-    //That's for the animation event
+    //Animation event
     public void BunnyCanJump()
     {
         bunnyCanJump = !bunnyCanJump;
     }
 
-    //If an enemy hits the ride, the ride looses and another hit stop gets played
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.GetComponent<Ride>())
@@ -155,9 +148,6 @@ public class Enemy : MonoBehaviour
     }
 
     //So the time doesnt freeze completely when the enemy dies, I switch it back to 1
-    //Then I only Instantiate a death mark when the player kills the enemy and make it bigger when being a big enemy
-    //For the confetti particles, I make them bigger when the enemy is bigger as well
-    //for the ability gain I made it per kill of enemy and again not when they run into a ride
     private void OnDestroy()
     {
         Time.timeScale = 1;
@@ -184,6 +174,11 @@ public class Enemy : MonoBehaviour
         if (Player.Instance.canGetAbilityGain && !rideDeath)
         {
             Player.Instance.currentAbilityTime += enemyAbilityGain;
+
+            if (Player.Instance.currentAbilityTime >= Player.Instance.maxAbilityTime)
+            {
+                InGameUI.Instance.pressSpace.SetActive(true);
+            }
         }
     }
 }

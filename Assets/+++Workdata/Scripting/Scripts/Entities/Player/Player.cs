@@ -7,8 +7,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -17,7 +15,7 @@ public class Player : MonoBehaviour
     [Serializable]
     public class PlayerSaveData
     {
-        public Dictionary<string, SavableVector3> PositionBySceneName = new Dictionary<string, SavableVector3>();
+        public Dictionary<string, SavableVector3> PositionBySceneName = new();
     }
     
     public static Player Instance;
@@ -26,7 +24,6 @@ public class Player : MonoBehaviour
     [SerializeField] private GameInputManager gameInputManager;
     [SerializeField] public Bullet bulletPrefab;
     [SerializeField] private PlayerSaveData playerSaveData;
-    private FortuneWheelUI rouletteUI;
 
     [Header("CharacterMovement")]
     [SerializeField] private float moveSpeed = 7f;
@@ -34,11 +31,11 @@ public class Player : MonoBehaviour
     [SerializeField] public GameObject playerVisual;
     [SerializeField] private Animator anim;
     [SerializeField] private Animator animNoHand;
+    [SerializeField] private float knockBackDecay = 5f; 
     private bool walkingSound;
     private Vector2 moveDirection = Vector2.down;
     private Rigidbody2D rb;
     private Vector2 knockBack;
-    private float knockBackDecay = 5f; 
 
     [Header("Camera")]
     [SerializeField] private Camera mainCamera;
@@ -47,36 +44,35 @@ public class Player : MonoBehaviour
     [Header("Layers")]
     [SerializeField] public LayerMask wheelOfFortuneLayer;
     [SerializeField] public LayerMask generatorLayer;
-    [SerializeField] private LayerMask collectibleLayer;
     [SerializeField] public LayerMask rideLayer;
     [SerializeField] public LayerMask duckLayer;
+    [SerializeField] private LayerMask collectibleLayer;
     
     [Header("GameObjects")]
+    [SerializeField] public GameObject bullets;
     [SerializeField] private GameObject muzzleFlashVisual;
     [SerializeField] private GameObject fortuneWheelUI;
     [SerializeField] private GameObject generatorUI;
-    [SerializeField] public GameObject bullets;
 
     [Header("Light")] 
     [SerializeField] public GameObject globalLightObject;
 
-    [Header(("Weapon"))]
+    [Header("Weapon")]
     [SerializeField] public GameObject weaponVisual;
     [SerializeField] public float bulletDamage;
     [SerializeField] public int maxPenetrationCount;
     [SerializeField] private float shootDelay;
     [SerializeField] private ParticleSystem bulletShellsParticle;
-    private float weaponAngle;
     [SerializeField] public float bulletSpeed = 38f;
     [SerializeField] public int bulletsPerShot;
     [SerializeField] private Transform weaponPosParent;
     [SerializeField] public Transform weaponEndPoint;
     [SerializeField] public float shootingSpread;
     [SerializeField] public float maxShootDelay;
-    private Vector3 weaponToMouse;
-    private Vector3 changingWeaponToMouse;
-    public Vector3 mousePos;
     [SerializeField] public List<WeaponObjectSO> allWeaponPrizes;
+    [SerializeField] private Animator weaponAnim;
+    [SerializeField] private float weaponToMouseSmoothness = 8;
+    public Vector3 mousePos;
     public bool freezeBullets;
     public bool stickyBullets;
     public bool explosiveBullets;
@@ -85,27 +81,17 @@ public class Player : MonoBehaviour
     public bool canShoot;
     public float shootingKnockBack = 2;
     public float enemyShootingKnockBack = 2;
+    private float weaponAngle;
+    private Vector3 weaponToMouse;
+    private Vector3 changingWeaponToMouse;
     private bool hasWeapon;
-    [SerializeField] private Animator weaponAnim;
     private float weaponScreenShake;
-    [SerializeField] private float weaponToMouseSmoothness = 8;
 
     [Header("Ability")]
     [SerializeField] public float maxAbilityTime;
-    [SerializeField] public Volume myVolume;
-    private Color vignetteColor;
-    [HideInInspector] public Vignette playerVignette;
-    private const float VignetteAlphaChangeSpeed = 3;
     public float currentAbilityTime;
     private bool isUsingAbility;
-    private Action abilityFunction;
     public bool canGetAbilityGain = true;
-    private bool isUsingAssaultRifleAbility;
-    private bool isUsingShotgunAbility;
-    private bool isUsingMagnumAbility;
-    private bool isUsingHuntingRifleAbility;
-    private bool isUsingPistolAbility;
-    private const float UseAbilitySpeed = 2.5f;
 
     [Header(("Interaction"))]
     [SerializeField] private float interactRadius = 2;
@@ -113,7 +99,6 @@ public class Player : MonoBehaviour
     public bool playerCanInteract;
     public bool isInteracting;
     public int rideCount;
-    public bool generatorIsActive;
 
     [Header("UI")]
     [SerializeField] private GameObject weaponDecisionUI;
@@ -122,45 +107,52 @@ public class Player : MonoBehaviour
     [SerializeField] private TextMeshProUGUI weaponDecisionWeaponName;
     [SerializeField] private GameObject firstSelectedWeaponDecision;
     
+    private MyWeapon myWeapon;
+    enum MyWeapon
+    {
+        AssaultRifle,
+        Shotgun,
+        Magnum,
+        Pistol,
+        HuntingRifle,
+    }
+    
     private void Awake()
     {
         Instance = this;
         
-        CheckForWeapons();
-
-        var currentPlayerSaveData = GameSaveStateManager.Instance.saveGameDataManager.newPlayerSaveData;
-        if (currentPlayerSaveData != null)
+        foreach (var _weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
         {
-            //if a set of exists, that means we loaded a save and can take over those values.
-            playerSaveData = currentPlayerSaveData;
+            GetWeapon(_weapon);
+        }
+        
+        var _currentPlayerSaveData = GameSaveStateManager.Instance.saveGameDataManager.newPlayerSaveData;
+        if (_currentPlayerSaveData != null)
+        {
+            playerSaveData = _currentPlayerSaveData;
             SetupFromData();
         }
         
         GameSaveStateManager.Instance.saveGameDataManager.newPlayerSaveData = playerSaveData;
     }
     
-    //because the player can move from scene to scene, we want to load the position for the scene we are currently in.
-    //if the player was never in this scene, we keep the default position the prefab is at.
     private void SetupFromData()
     {
-        if (playerSaveData.PositionBySceneName.TryGetValue(gameObject.scene.name, out var position))
-            transform.position = position;
+        if (playerSaveData.PositionBySceneName.TryGetValue(gameObject.scene.name, out var _position))
+            transform.position = _position;
     }
     
-    //we have to save the current position dependant on the scene the player is in.
-    //this way, the position can be retained across multiple scenes, and we can switch back and forth.
+    /*
+     we have to save the current position dependant on the scene the player is in.
+     this way, the position can be retained across multiple scenes, and we can switch back and forth.
+    */
     private void LateUpdate()
     {
-        var sceneName = gameObject.scene.name;
-        if (!playerSaveData.PositionBySceneName.ContainsKey(sceneName))
-            playerSaveData.PositionBySceneName.Add(sceneName, transform.position);
-        else
-            playerSaveData.PositionBySceneName[sceneName] = transform.position;
+        playerSaveData.PositionBySceneName[gameObject.scene.name] = transform.position;
         
         SetAnimationParameterLateUpdate();
     }
 
-    //Subscribes to events
     private void OnEnable()
     {
         gameInputManager.OnShootingAction += GameInputManagerOnShootingAction;
@@ -172,7 +164,6 @@ public class Player : MonoBehaviour
         AudioManager.Instance.Play("InGameMusic");
     }
 
-    //Unsubscribes events
     private void OnDisable()
     {
         gameInputManager.OnShootingAction -= GameInputManagerOnShootingAction;
@@ -188,10 +179,8 @@ public class Player : MonoBehaviour
         InGameUI.Instance.loadingScreenAnim.SetTrigger("End");
         rb = GetComponent<Rigidbody2D>();
         muzzleFlashVisual.SetActive(false);
-        rouletteUI = fortuneWheelUI.GetComponentInChildren<FortuneWheelUI>();
         InGameUI.Instance.dialogueCount = 0;
         InGameUI.Instance.ActivateInGameUI();
-        myVolume.profile.TryGet(out playerVignette);
     }
 
     private void Update()
@@ -199,41 +188,10 @@ public class Player : MonoBehaviour
         HandleAimingUpdate();
 
         WeaponTimerUpdate();
-
-        if (canShoot)
-        {
-            ShootAutomatic();
-        }
+        
+        ShootAutomatic();
 
         HandleInteractionIndicator();
-        
-        ChangeVignetteColor();
-
-        if (!canGetAbilityGain)
-        {
-            abilityFunction();
-        }
-
-        if(isUsingAssaultRifleAbility)
-        {
-            StartAssaultRifleAbility();
-        }
-        else if (isUsingShotgunAbility)
-        {
-            StartShotgunAbility();
-        }
-        else if (isUsingMagnumAbility)
-        {
-            StartMagnumAbility();
-        }
-        else if (isUsingHuntingRifleAbility)
-        {
-            StartHuntingRifleAbility();
-        }
-        else if (isUsingPistolAbility)
-        {
-            StartPistolAbility();
-        }
     }
 
     private void FixedUpdate()
@@ -241,32 +199,12 @@ public class Player : MonoBehaviour
         HandleMovementFixedUpdate();
     }
     
-    //Changes vignette color back and forth for a vivid effect
-    private void ChangeVignetteColor()
-    {
-        vignetteColor = new Color(Mathf.PingPong(VignetteAlphaChangeSpeed * Time.time, 1), playerVignette.color.value.g, playerVignette.color.value.b);
-
-        InGameUI.Instance.pressSpace.SetActive(currentAbilityTime >= maxAbilityTime);
-    }
-
-    //Handles Interaction Indicator for when the player can interact with something
     private void HandleInteractionIndicator()
     {
-        if (CanInteract(wheelOfFortuneLayer) || CanInteract(collectibleLayer))
-        {
-            playerCanInteract = true;
-        }
-        else if (CanInteract(rideLayer))
-        {
-            if (SearchInteractionObject(rideLayer).gameObject.GetComponent<Ride>() != null)
-            {
-                if (SearchInteractionObject(rideLayer).gameObject.GetComponent<Ride>().canActivateRide)
-                {
-                    playerCanInteract = true;
-                }
-            }
-        }
-        else if (CanInteract(generatorLayer) && SearchInteractionObject(generatorLayer).gameObject.GetComponent<Generator>().isInteractable)
+        if (GetInteractionObjectInRange(wheelOfFortuneLayer, out _) ||
+            GetInteractionObjectInRange(collectibleLayer, out _) ||
+            GetInteractionObjectInRange(rideLayer, out Collider2D _ride) && _ride.GetComponent<Ride>().canActivateRide ||
+            GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && _generator.GetComponent<Generator>().isInteractable)
         {
             playerCanInteract = true;
         }
@@ -312,13 +250,13 @@ public class Player : MonoBehaviour
         {
             for (int i = 0; i < bulletsPerShot; i++)
             {
-                Vector2 bulletDirection = Random.insideUnitCircle;
-                bulletDirection.Normalize();
+                Vector2 _bulletDirection = Random.insideUnitCircle;
+                _bulletDirection.Normalize();
 
-                bulletDirection = Vector3.Slerp(bulletDirection, weaponToMouse.normalized, 1.0f - shootingSpread);
+                _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - shootingSpread);
                 
                 var newBullet = Instantiate(bulletPrefab, weaponEndPoint.position, Quaternion.Euler(0, 0 ,weaponAngle), bullets.transform);
-                newBullet.LaunchInDirection(this, bulletDirection);
+                newBullet.LaunchInDirection(this, _bulletDirection);
             }
 
             if (!splitBullets)
@@ -335,7 +273,7 @@ public class Player : MonoBehaviour
             knockBack = -weaponToMouse.normalized * shootingKnockBack;
         }
     }
-    
+
     //Changes movement speed when shift is being held down
     private void GameInputManagerOnSprintingAction(object sender, EventArgs e)
     {
@@ -361,19 +299,19 @@ public class Player : MonoBehaviour
     //Then i made a method for getting the object in interaction range
     private void GameInputManagerOnInteractAction(object sender, EventArgs e)
     {
-        if (CanInteract(wheelOfFortuneLayer))
+        if (GetInteractionObjectInRange(wheelOfFortuneLayer, out Collider2D _wheelOfFortune))
         {
             if (!fortuneWheelUI.activeSelf)
             {
-                foreach (var weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
+                foreach (var _weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
                 {
                     weaponDecisionUI.SetActive(true);
                     EventSystem.current.SetSelectedGameObject(firstSelectedWeaponDecision);
                     weaponDecisionWeaponAbilityText.text = "";
                     weaponDecisionWeaponName.text = "";
-                    weaponDecisionWeaponImage.GetComponent<Image>().sprite = weapon.inGameWeaponVisual;
-                    weaponDecisionWeaponAbilityText.text += "Special Ability:" + "\n" + weapon.weaponAbilityDescription;
-                    weaponDecisionWeaponName.text += weapon.weaponName;
+                    weaponDecisionWeaponImage.GetComponent<Image>().sprite = _weapon.inGameWeaponVisual;
+                    weaponDecisionWeaponAbilityText.text += "Special Ability:" + "\n" + _weapon.weaponAbilityDescription;
+                    weaponDecisionWeaponName.text += _weapon.weaponName;
                     isInteracting = true;
                     hasWeapon = true;
                 }
@@ -385,11 +323,11 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (CanInteract(generatorLayer))
+        if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator))
         {
             if (!generatorUI.activeSelf)
             {
-                if (SearchInteractionObject(generatorLayer).gameObject.GetComponent<Generator>().isInteractable)
+                if (_generator.GetComponent<Generator>().isInteractable)
                 {
                     generatorUI.SetActive(true);
                     InGameUI.Instance.SaveGame();
@@ -397,25 +335,24 @@ public class Player : MonoBehaviour
             }
         }
         
-        if (CanInteract(duckLayer))
+        if (GetInteractionObjectInRange(duckLayer, out Collider2D _duckStand))
         {
             AudioManager.Instance.Play("DuckSound");
         }
         
-        if (CanInteract(rideLayer))
+        if (GetInteractionObjectInRange(rideLayer, out Collider2D _interactable))
         {
-            if (SearchInteractionObject(rideLayer).gameObject.GetComponent<Ride>() != null)
+            var _ride = _interactable.gameObject.GetComponent<Ride>();
+            
+            if (_ride.canActivateRide)
             {
-                if (SearchInteractionObject(rideLayer).gameObject.GetComponent<Ride>().canActivateRide)
-                {
-                    SearchInteractionObject(rideLayer).gameObject.GetComponent<Ride>().StartWave();
-                }
+                _ride.StartWave();
             }
         }
-
-        if (CanInteract(collectibleLayer))
+            
+        if (GetInteractionObjectInRange(collectibleLayer, out Collider2D _collectible))
         {
-            SearchInteractionObject(collectibleLayer).GetComponent<Collectible>().Collect();
+            _collectible.GetComponent<Collectible>().Collect();
         }
     }
 
@@ -423,8 +360,12 @@ public class Player : MonoBehaviour
     public void KeepWeapon()
     {
         EventSystem.current.SetSelectedGameObject(null);
-        SearchInteractionObject(wheelOfFortuneLayer).GetComponent<FortuneWheel>().ride.GetComponent<Ride>().canActivateRide = true;
-        SearchInteractionObject(wheelOfFortuneLayer).GetComponent<FortuneWheel>().DeactivateFortuneWheel();
+        if (GetInteractionObjectInRange(wheelOfFortuneLayer, out Collider2D _interactable))
+        {
+            var _fortuneWheel = _interactable.GetComponent<FortuneWheel>();
+            _fortuneWheel.ride.GetComponent<Ride>().canActivateRide = true;
+            _fortuneWheel.DeactivateFortuneWheel();   
+        }
         weaponDecisionUI.SetActive(false);
         isInteracting = false;
     }
@@ -434,9 +375,9 @@ public class Player : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(null);
 
-        foreach (var weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
+        foreach (var _weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
         {
-            GameSaveStateManager.Instance.saveGameDataManager.weaponsInInventoryIdentifiers.Remove(weapon.name);
+            GameSaveStateManager.Instance.saveGameDataManager.weaponsInInventoryIdentifiers.Remove(_weapon.name);
             InGameUI.Instance.inventoryWeapon.SetActive(true);
         }
 
@@ -450,34 +391,7 @@ public class Player : MonoBehaviour
     {
         if (currentAbilityTime >= maxAbilityTime && InGameUI.Instance.fightScene.activeSelf)
         {
-            currentAbilityTime = maxAbilityTime;
-
-            currentAbilityTime = maxAbilityTime;
-            
-            playerVignette.active = true;
-            vignetteColor = Color.red;
-            playerVignette.color.value = vignetteColor;
-            
-            if (abilityFunction == StartHuntingRifleAbility)
-            {
-                isUsingHuntingRifleAbility = true;
-            }
-            else if (abilityFunction == StartMagnumAbility)
-            {
-                isUsingMagnumAbility = true;
-            }
-            else if (abilityFunction == StartPistolAbility)
-            {
-                isUsingPistolAbility = true;
-            }
-            else if (abilityFunction == StartShotgunAbility)
-            {
-                isUsingShotgunAbility = true;
-            }
-            else if (abilityFunction == StartAssaultRifleAbility)
-            {
-                isUsingAssaultRifleAbility = true;
-            }
+            StartCoroutine(StartWeaponAbility());
         }
     }
     
@@ -501,17 +415,17 @@ public class Player : MonoBehaviour
             {
                 changingWeaponToMouse = mousePos - weaponEndPoint.transform.position;
 
-                Vector3 negativeMousePositionXY = changingWeaponToMouse * -2;
-                Vector3 positiveMousePositionXY = changingWeaponToMouse * 2;
+                Vector3 _negativeMousePositionXY = changingWeaponToMouse * -2;
+                Vector3 _positiveMousePositionXY = changingWeaponToMouse * 2;
             
                 if (weaponToMouse.x < 0)
                 {
-                    weaponToMouse = negativeMousePositionXY.normalized;
+                    weaponToMouse = _negativeMousePositionXY.normalized;
                 }
 
                 if (weaponToMouse.x > 0)
                 {
-                    weaponToMouse = positiveMousePositionXY.normalized;
+                    weaponToMouse = _positiveMousePositionXY.normalized;
                 }
             }
             else
@@ -566,105 +480,67 @@ public class Player : MonoBehaviour
         }
     }
 
-    #region AbilityRegion
+    #region Abilities
 
-    //These are methods for all the abilities and the timer update
-    private void WeaponTimerUpdate()
+    private IEnumerator StartWeaponAbility()
     {
-        if (!weaponVisual.activeSelf) 
-            return;
-        
-        shootDelay -= Time.deltaTime;
-    }
+        canGetAbilityGain = false;
+        InGameUI.Instance.pressSpace.SetActive(false);
 
-    private void StartAssaultRifleAbility()
-    {
-        currentAbilityTime -= Time.deltaTime * UseAbilitySpeed;
-        splitBullets = true;
-        canGetAbilityGain = false;
-
-        if (currentAbilityTime <= 0)
+        switch (myWeapon)
         {
-            canGetAbilityGain = true;
-            splitBullets = false;
-            playerVignette.active = false;
-            isUsingAssaultRifleAbility = false;
+            case MyWeapon.AssaultRifle:
+                splitBullets = true;
+                break;
+            case MyWeapon.Magnum:
+                freezeBullets = true;
+                break;
+            case MyWeapon.Pistol:
+                explosiveBullets = true;
+                break;
+            case MyWeapon.HuntingRifle:
+                endlessPenetrationBullets = true;
+                break;
+            case MyWeapon.Shotgun:
+                stickyBullets = true;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
+        
+        float _abilityTimer = maxAbilityTime;
+        while (_abilityTimer > 0)
+        {
+            _abilityTimer -= Time.deltaTime;
+            currentAbilityTime = _abilityTimer; 
+            yield return null; 
+        }
+        
+        splitBullets = false;
+        freezeBullets = false;
+        explosiveBullets = false;
+        endlessPenetrationBullets = false;
+        stickyBullets = false;
+        
+        canGetAbilityGain = true;
     }
     
-    private void StartMagnumAbility()
-    {
-        freezeBullets = true;
-        currentAbilityTime -= Time.deltaTime * UseAbilitySpeed;
-        canGetAbilityGain = false;
-        
-        if (currentAbilityTime <= 0)
-        {
-            canGetAbilityGain = true;
-            freezeBullets = false;
-            playerVignette.active = false;
-            isUsingMagnumAbility = false;
-        }
-    }
-    
-    private void StartHuntingRifleAbility()
-    {
-        endlessPenetrationBullets = true;
-        currentAbilityTime -= Time.deltaTime * UseAbilitySpeed;
-        canGetAbilityGain = false;
-        
-        if (currentAbilityTime <= 0)
-        {
-            canGetAbilityGain = true;
-            endlessPenetrationBullets = false;
-            playerVignette.active = false;
-            isUsingHuntingRifleAbility = false;
-        }
-    }
-    
-    private void StartShotgunAbility()
-    {
-        stickyBullets = true;
-        currentAbilityTime -= Time.deltaTime * UseAbilitySpeed;
-        canGetAbilityGain = false;
-        
-        if (currentAbilityTime <= 0)
-        {
-            canGetAbilityGain = true;
-            stickyBullets = false;
-            playerVignette.active = false;
-            isUsingShotgunAbility = false;
-        }
-    }
-    
-    private void StartPistolAbility()
-    {
-        explosiveBullets = true;
-        currentAbilityTime -= Time.deltaTime * UseAbilitySpeed;
-        canGetAbilityGain = false;
-        
-        if (currentAbilityTime <= 0)
-        {
-            canGetAbilityGain = true;
-            explosiveBullets = false;
-            playerVignette.active = false;
-            isUsingPistolAbility = false;
-        }
-    }
     #endregion
 
-    #region GetWeaponAtGameStart
-
-    //Checks for every weapon in the inventory of the player and gets the weapon 
-    private void CheckForWeapons()
+    #region Weapons
+    
+    private void WeaponTimerUpdate()
     {
-        foreach (var weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
+        if (weaponVisual.activeSelf)
         {
-            GetWeapon(weapon);
+            shootDelay -= Time.deltaTime;
         }
     }
-    
-    //This method sets every value of the weapon object so to the player witch ability, weapon perks etc.
+
+    /// <summary>
+    /// Sets every value of the weaponSO object to the player values.
+    /// </summary>
+    /// <param name="weapon"></param>
     public void GetWeapon(WeaponObjectSO weapon)
     {
         weaponVisual.SetActive(true);
@@ -687,77 +563,24 @@ public class Player : MonoBehaviour
         InGameUI.Instance.inventoryWeapon.GetComponent<Image>().sprite = weapon.inGameWeaponVisual;
         InGameUI.Instance.inventoryWeapon.SetActive(true);
 
-        switch (weapon.weaponName)
+        myWeapon = weapon.weaponName switch
         {
-            case "Magnum magnum" :
-                abilityFunction = StartMagnumAbility;
-                break;
-            case "French Fries AR" :
-                abilityFunction = StartAssaultRifleAbility;
-                break;
-            case "Lollipop Shotgun" :
-                abilityFunction = StartShotgunAbility;
-                break;
-            case "Corn Dog Hunting Rifle" :
-                abilityFunction = StartHuntingRifleAbility;
-                break;
-            case "Popcorn Pistol" :
-                abilityFunction = StartPistolAbility;
-                break;
-        }
+            "Magnum magnum" => MyWeapon.Magnum,
+            "French Fries AR" => MyWeapon.AssaultRifle,
+            "Lollipop Shotgun" => MyWeapon.Shotgun,
+            "Corn Dog Hunting Rifle" => MyWeapon.HuntingRifle,
+            "Popcorn Pistol" => MyWeapon.Pistol,
+            _ => myWeapon
+        };
     }
-
-    #endregion
-
-    //Handles animations for the player like walking speed, direction etc.
-    private void SetAnimationParameterLateUpdate()
-    {
-        if (playerVisual.activeSelf && !isInteracting && !isPlayingDialogue)
-        {
-            anim.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);
-
-            if (gameInputManager.GetMovementVectorNormalized().sqrMagnitude <= 0)
-            {
-                return;
-            }
-        
-            moveDirection = gameInputManager.GetMovementVectorNormalized();
-            anim.SetFloat("MoveDirX", moveDirection.x);
-            anim.SetFloat("MoveDirY", moveDirection.y);
-        }
-
-        if(playerNoHandVisual.activeSelf && !isInteracting && !isPlayingDialogue)
-        {
-            var eulerAngles = weaponPosParent.eulerAngles;
-            animNoHand.SetBool("MovingUp", eulerAngles.z is < 45 or > 315);
-            animNoHand.SetBool("MovingDown", eulerAngles.z is > 135 and < 225);
-            animNoHand.SetBool("MovingSideWaysHand", eulerAngles.z is > 45 and < 135);
-            animNoHand.SetBool("MovingSideWaysNoHand", eulerAngles.z is > 225 and < 315);
-        
-            animNoHand.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);
-        }
-
-        if (playerNoHandVisual.activeSelf)
-        {
-            if (isInteracting || isPlayingDialogue)
-            {
-                animNoHand.SetFloat("MoveSpeed", 0);
-                AudioManager.Instance.Stop("Walking");
-            }
-        }
-    }
-
-    //Every time a weapon shoots, the visual of it is called. In this method there is a muzzle flash, a sound, camera shake etc. which is delayed by wait for seconds
+    
     private IEnumerator WeaponVisualCoroutine()
     {
         muzzleFlashVisual.SetActive(true);
         
-        for (int i = 0; i < cameras.Count; i++)
+        foreach (var _cam in cameras.Where(cam => cam.GetComponent<CinemachineVirtualCamera>().Priority > 10))
         {
-            if (cameras[i].GetComponent<CinemachineVirtualCamera>().Priority > 10)
-            {
-                cameras[i].GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = weaponScreenShake;
-            }
+            _cam.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = weaponScreenShake;
         }
         
         bulletShellsParticle.Play();
@@ -772,37 +595,60 @@ public class Player : MonoBehaviour
 
         bulletShellsParticle.Stop();
 
-        for (int i = 0; i < cameras.Count; i++)
+        foreach (var _cam in cameras.Where(cam => cam.GetComponent<CinemachineVirtualCamera>().Priority > 10))
         {
-            if (cameras[i].GetComponent<CinemachineVirtualCamera>().Priority > 10)
-            {
-                cameras[i].GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
-            }
+            _cam.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
         }
 
         muzzleFlashVisual.SetActive(false);
     }
-
-    //The method for knowing if player is in reach of interaction objects
-    private bool CanInteract(LayerMask layer)
+    
+    #endregion
+    
+    private void SetAnimationParameterLateUpdate()
     {
-        var interactionObjectInRange = Physics2D.OverlapCircle(transform.position, interactRadius, layer);
-        return interactionObjectInRange;
+        if (!isInteracting && !isPlayingDialogue)
+        {
+            if (playerVisual.activeSelf)
+            {
+                anim.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);
+
+                if (gameInputManager.GetMovementVectorNormalized().sqrMagnitude <= 0)
+                {
+                    return;
+                }
+        
+                moveDirection = gameInputManager.GetMovementVectorNormalized();
+                anim.SetFloat("MoveDirX", moveDirection.x);
+                anim.SetFloat("MoveDirY", moveDirection.y);
+            }
+            else
+            {
+                var _eulerAngles = weaponPosParent.eulerAngles;
+                animNoHand.SetBool("MovingUp", _eulerAngles.z is < 45 or > 315);
+                animNoHand.SetBool("MovingDown", _eulerAngles.z is > 135 and < 225);
+                animNoHand.SetBool("MovingSideWaysHand", _eulerAngles.z is > 45 and < 135);
+                animNoHand.SetBool("MovingSideWaysNoHand", _eulerAngles.z is > 225 and < 315);
+        
+                animNoHand.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);   
+            }
+        }
+        else if (playerNoHandVisual.activeSelf)
+        {
+            animNoHand.SetFloat("MoveSpeed", 0);
+            AudioManager.Instance.Stop("Walking");
+        }
     }
     
-    //The method for getting the object in interaction range
-    public Collider2D SearchInteractionObject(LayerMask layer)
+    public bool GetInteractionObjectInRange(LayerMask layer, out Collider2D interactable)
     {
-        var interactionObjectInRange = Physics2D.OverlapCircle(transform.position, interactRadius, layer);
-        return interactionObjectInRange;
+        interactable = Physics2D.OverlapCircle(transform.position, interactRadius, layer);
+        return interactable != null;
     }
 
-    //Draws interaction gizmo
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(weaponEndPoint.transform.position, weaponToMouse);
-        
-        Gizmos.DrawWireCube(mousePos, new Vector3(1, 1, 1));
         
         Gizmos.DrawWireSphere(transform.position, interactRadius);
     }

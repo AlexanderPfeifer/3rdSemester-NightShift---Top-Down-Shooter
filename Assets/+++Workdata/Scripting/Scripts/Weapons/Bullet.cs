@@ -39,7 +39,7 @@ public class Bullet : MonoBehaviour
             {
                 tickCount--;
                 GetComponentInParent<EnemyHealthPoints>().TakeDamage(tickStickyBulletDamage);
-                GetComponentInParent<Enemy>().Stop(gameObject.GetComponentInParent<Enemy>().changeColorTime);
+                GetComponentInParent<Enemy>().HitStop(gameObject.GetComponentInParent<Enemy>().changeColorTime);
                 stickyBulletTimer = maxStickyBulletTimer;
                 if (tickCount <= 0)
                 {
@@ -92,8 +92,8 @@ public class Bullet : MonoBehaviour
 
         if (Player.Instance.endlessPenetrationBullets)
         {
-            var probability = Random.Range(1, 10);
-            if (probability == 10)
+            var _probability = Random.Range(1, 10);
+            if (_probability == 10)
             {
                 currentBulletDamage = Random.Range(Player.Instance.bulletDamage * 2, Player.Instance.bulletDamage * 3);
             }
@@ -161,16 +161,16 @@ public class Bullet : MonoBehaviour
     //the popcorn particle
     private void OnDestroy()
     {
-        if (!Player.Instance.stickyBullets || tickCount < 2)
+        if (!Player.Instance.stickyBullets)
         {
-            var bulletImpactParticles = GetComponentInParent<Transform>().transform.GetChild(1).GetComponent<ParticleSystem>();
-            bulletImpactParticles.transform.position = gameObject.transform.position;
-            bulletImpactParticles.transform.rotation = gameObject.transform.rotation;
+            var _bulletImpactParticles = GetComponentInParent<Transform>().transform.GetChild(1).GetComponent<ParticleSystem>();
+            _bulletImpactParticles.transform.position = gameObject.transform.position;
+            _bulletImpactParticles.transform.rotation = gameObject.transform.rotation;
             
-            bulletImpactParticles.Play();
-            if (!bulletImpactParticles.isEmitting)
+            _bulletImpactParticles.Play();
+            if (!_bulletImpactParticles.isEmitting)
             {
-                bulletImpactParticles.Stop();
+                _bulletImpactParticles.Stop();
             }
         }
 

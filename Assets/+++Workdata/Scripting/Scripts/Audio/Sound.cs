@@ -1,10 +1,10 @@
 using UnityEngine.Audio;
 using UnityEngine;
 
+//Holds everything that I need to play a sound effect
 [System.Serializable]
 public class Sound
 {
-    //This class is for the array in audio manager which holds everything that I need to play a sound effect
     public string name;
 
     public AudioClip clip;
