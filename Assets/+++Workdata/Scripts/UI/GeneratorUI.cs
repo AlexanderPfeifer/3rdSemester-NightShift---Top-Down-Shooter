@@ -37,7 +37,7 @@ public class GeneratorUI : MonoBehaviour
     //Tries to start engine when button got clicked. When over 0.9f, can activate the ride
     public void StartGeneratorEngine()
     {
-        AudioManager.Instance.Play("GeneratorButtonClick");
+        AudioManager.Instance.Play("GeneratorButtonClickDown");
 
         if (generatorFillImage.fillAmount > 0.9f)
         {
@@ -50,6 +50,11 @@ public class GeneratorUI : MonoBehaviour
             fillTime = 0;
             generatorFillImage.fillAmount = 0;
         }
+    }
+
+    public void GeneratorButtonUp()
+    {
+        AudioManager.Instance.Play("GeneratorButtonClickUp");
     }
 
     //When disabled, then resets every value
