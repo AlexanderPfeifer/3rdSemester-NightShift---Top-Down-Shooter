@@ -9326,6 +9326,10 @@ MonoBehaviour:
   fortuneWheelScreen: {fileID: 540206087}
   generatorScreen: {fileID: 590653168}
   weaponSwapScreen: {fileID: 237238742}
+  weaponDecisionWeaponImage: {fileID: 422200997}
+  weaponDecisionWeaponAbilityText: {fileID: 1120949595}
+  weaponDecisionWeaponName: {fileID: 452892413}
+  firstSelectedWeaponDecision: {fileID: 993900336}
 --- !u!1 &1696905317
 GameObject:
   m_ObjectHideFlags: 0
