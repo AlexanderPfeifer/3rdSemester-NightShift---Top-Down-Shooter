@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -26,7 +25,7 @@ public class FortuneWheelUI : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponentInChildren<Rigidbody2D>();
 
         transform.eulerAngles = new Vector3(0, 0, Random.Range(0, 360));
     }

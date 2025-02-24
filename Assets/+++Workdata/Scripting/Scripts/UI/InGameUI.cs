@@ -75,8 +75,7 @@ public class InGameUI : MonoBehaviour
     [SerializeField] public GameObject whiteScreen;
     [SerializeField] private GameObject thanksForPlayingText;
     [SerializeField] private GameObject nightShiftText;
-
-
+    
     [Header("Booleans")]
     private bool isPlayerNotNull;
     [HideInInspector] public bool inventoryIsOpened;
@@ -103,6 +102,10 @@ public class InGameUI : MonoBehaviour
 
     static float t = 0.0f;
 
+    [Header("InGame")] 
+    [SerializeField] public GameObject fortuneWheelScreen;
+    [SerializeField] public GameObject generatorScreen;
+    [SerializeField] public GameObject weaponSwapScreen;
     
     private void Awake()
     {

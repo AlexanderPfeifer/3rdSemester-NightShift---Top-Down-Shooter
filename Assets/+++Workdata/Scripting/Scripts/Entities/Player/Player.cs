@@ -50,8 +50,6 @@ public class Player : MonoBehaviour
     [Header("GameObjects")]
     [SerializeField] public GameObject bullets;
     [SerializeField] private GameObject muzzleFlashVisual;
-    [SerializeField] private GameObject fortuneWheelUI;
-    [SerializeField] private GameObject generatorUI;
 
     [Header("Light")] 
     [SerializeField] public GameObject globalLightObject;
@@ -92,7 +90,7 @@ public class Player : MonoBehaviour
     private bool isUsingAbility;
     public bool canGetAbilityGain = true;
 
-    [Header(("Interaction"))]
+    [Header("Interaction")]
     [SerializeField] private float interactRadius = 2;
     [HideInInspector] public bool isPlayingDialogue;
     public bool playerCanInteract;
@@ -100,7 +98,6 @@ public class Player : MonoBehaviour
     public int rideCount;
 
     [Header("UI")]
-    [SerializeField] private GameObject weaponDecisionUI;
     [SerializeField] private GameObject weaponDecisionWeaponImage;
     [SerializeField] private TextMeshProUGUI weaponDecisionWeaponAbilityText;
     [SerializeField] private TextMeshProUGUI weaponDecisionWeaponName;
@@ -273,25 +270,15 @@ public class Player : MonoBehaviour
         }
     }
 
-    //Changes movement speed when shift is being held down
     private void GameInputManagerOnSprintingAction(object sender, EventArgs e)
     {
         
     }
 
-    //Opens inventory when pressed
     private void GameInputManagerOnGamePausedAction(object sender, EventArgs e)
     {
-        if (InGameUI.Instance.isActiveAndEnabled)
-        {
+        if(!isPlayingDialogue)
             InGameUI.Instance.PauseGame();
-        }
-    }
-
-    //Closes Generator ui 
-    public void CloseGen()
-    {
-        generatorUI.SetActive(false);
     }
 
     //Handles every interaction with objects, for this i made a method with an overlap circle which returns a bool if player can interact
@@ -300,11 +287,11 @@ public class Player : MonoBehaviour
     {
         if (GetInteractionObjectInRange(wheelOfFortuneLayer, out Collider2D _wheelOfFortune))
         {
-            if (!fortuneWheelUI.activeSelf)
+            if (!InGameUI.Instance.fortuneWheelScreen.activeSelf)
             {
                 foreach (var _weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
                 {
-                    weaponDecisionUI.SetActive(true);
+                    InGameUI.Instance.weaponSwapScreen.SetActive(true);
                     EventSystem.current.SetSelectedGameObject(firstSelectedWeaponDecision);
                     weaponDecisionWeaponAbilityText.text = "";
                     weaponDecisionWeaponName.text = "";
@@ -317,18 +304,18 @@ public class Player : MonoBehaviour
 
                 if (!hasWeapon)
                 {
-                    fortuneWheelUI.SetActive(true);
+                    InGameUI.Instance.fortuneWheelScreen.SetActive(true);
                 }
             }
         }
 
         if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator))
         {
-            if (!generatorUI.activeSelf)
+            if (!InGameUI.Instance.generatorScreen.activeSelf)
             {
                 if (_generator.GetComponent<Generator>().isInteractable)
                 {
-                    generatorUI.SetActive(true);
+                    InGameUI.Instance.generatorScreen.SetActive(true);
                     InGameUI.Instance.SaveGame();
                 }
             }
@@ -355,37 +342,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    //For the decision of keeping a weapon, just closes down the weapon picking ui and goes on with the fight
-    public void KeepWeapon()
-    {
-        EventSystem.current.SetSelectedGameObject(null);
-        if (GetInteractionObjectInRange(wheelOfFortuneLayer, out Collider2D _interactable))
-        {
-            var _fortuneWheel = _interactable.GetComponent<FortuneWheel>();
-            _fortuneWheel.ride.GetComponent<Ride>().canActivateRide = true;
-            _fortuneWheel.DeactivateFortuneWheel();   
-        }
-        weaponDecisionUI.SetActive(false);
-        isInteracting = false;
-    }
-    
-    //For the decision of changing the weapon, searches through every weapon and removes in from inventory list
-    public void ChangeWeapon()
-    {
-        EventSystem.current.SetSelectedGameObject(null);
-
-        foreach (var _weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
-        {
-            GameSaveStateManager.Instance.saveGameDataManager.weaponsInInventoryIdentifiers.Remove(_weapon.name);
-            InGameUI.Instance.inventoryWeapon.SetActive(true);
-        }
-
-        weaponDecisionUI.SetActive(false);
-        fortuneWheelUI.SetActive(true);
-    }
-    
-    //Handles everything for the ability, I set the abilityFunction according to the methods of the weapons and when ability is ready it can be 
-    //called with the vignette setting active and a timer going down
     private void GameInputManagerOnUsingAbilityAction(object sender, EventArgs e)
     {
         if (currentAbilityTime >= maxAbilityTime && InGameUI.Instance.fightScene.activeSelf)
@@ -394,37 +350,32 @@ public class Player : MonoBehaviour
         }
     }
     
-    //handles everything for aiming, I set the screen to world point for the mouse position, the I made a code block for when 
-    //the player goes near the character with the mouse, so it wouldn't start glitching around when values of weapon position and
-    //mouse position meet each other.
-    
-    //Then I set the weapon parent to look in the direction where the mouse is and when the weapon is behind the head of the character
-    //then the sprite order changes
     private void HandleAimingUpdate()
     {
-        if (InGameUI.Instance.inventoryIsOpened) 
+        if (InGameUI.Instance.inventoryIsOpened || !weaponVisual.activeSelf) 
             return;
         
         mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         mousePos.z = 0;
 
+        /*
+         Check for the distance of mouse to the character and 
+         increase the actual mouse position so it does not start glitching.
+         */
         if (Vector3.Distance(transform.position, mousePos) >= 1.35f)
         {
             if (Vector3.Distance(weaponEndPoint.position, mousePos) <= 2f)
             {
                 changingWeaponToMouse = mousePos - weaponEndPoint.transform.position;
-
-                Vector3 _negativeMousePositionXY = changingWeaponToMouse * -2;
-                Vector3 _positiveMousePositionXY = changingWeaponToMouse * 2;
-            
+                
                 if (weaponToMouse.x < 0)
                 {
-                    weaponToMouse = _negativeMousePositionXY.normalized;
+                    weaponToMouse = (changingWeaponToMouse * -2).normalized;
                 }
-
-                if (weaponToMouse.x > 0)
+                
+                if(weaponToMouse.x > 0)
                 {
-                    weaponToMouse = _positiveMousePositionXY.normalized;
+                    weaponToMouse = (changingWeaponToMouse * 2).normalized;
                 }
             }
             else
@@ -438,8 +389,6 @@ public class Player : MonoBehaviour
         weaponAngle = Vector3.SignedAngle(Vector3.up, _newUp, Vector3.forward);
         
         weaponPosParent.eulerAngles = new Vector3(0, 0, weaponAngle);
-
-        if (!weaponVisual.activeSelf) return;
         
         if (weaponPosParent.eulerAngles.z is > 0 and < 180)
         {

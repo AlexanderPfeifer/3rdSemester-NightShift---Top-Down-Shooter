@@ -111,6 +111,9 @@ public class AudioManager : MonoBehaviour
             return;
         }
         
+        if(_s.audioSource.isPlaying)
+            _s.audioSource.Stop();
+        
         _s.audioSource.Play();
     }
 }
