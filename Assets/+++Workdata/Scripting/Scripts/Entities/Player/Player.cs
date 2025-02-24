@@ -32,7 +32,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private Animator animNoHand;
     [SerializeField] private float knockBackDecay = 5f; 
-    private bool walkingSound;
     private Vector2 moveDirection = Vector2.down;
     private Rigidbody2D rb;
     private Vector2 knockBack;
@@ -455,29 +454,12 @@ public class Player : MonoBehaviour
     //Handles movement from game input read value. Also handles sound when the player is moving
     private void HandleMovementFixedUpdate()
     {
-        if (!isPlayingDialogue && !InGameUI.Instance.inventoryIsOpened && !isInteracting)
-        { 
-            var _targetVelocity = gameInputManager.GetMovementVectorNormalized() * moveSpeed;
-            
-            rb.linearVelocity = _targetVelocity + knockBack;
+        if (isPlayingDialogue || InGameUI.Instance.inventoryIsOpened || isInteracting) 
+            return;
+        
+        rb.linearVelocity = gameInputManager.GetMovementVectorNormalized() * moveSpeed + knockBack;
 
-            knockBack = Vector2.Lerp(knockBack, Vector2.zero, Time.fixedDeltaTime * knockBackDecay);
-            
-            if (gameInputManager.GetMovementVectorNormalized().x != 0 ||
-                gameInputManager.GetMovementVectorNormalized().y != 0)
-            {
-                if (!walkingSound)
-                {
-                    AudioManager.Instance.Play("Walking");
-                    walkingSound = true;
-                }
-            }
-            else
-            {
-                AudioManager.Instance.Stop("Walking");
-                walkingSound = false;
-            }
-        }
+        knockBack = Vector2.Lerp(knockBack, Vector2.zero, Time.fixedDeltaTime * knockBackDecay);
     }
 
     #region Abilities
@@ -640,11 +622,15 @@ public class Player : MonoBehaviour
         }
     }
     
+    #region Interaction
+    
     public bool GetInteractionObjectInRange(LayerMask layer, out Collider2D interactable)
     {
         interactable = Physics2D.OverlapCircle(transform.position, interactRadius, layer);
         return interactable != null;
     }
+    
+    #endregion
 
     private void OnDrawGizmos()
     {

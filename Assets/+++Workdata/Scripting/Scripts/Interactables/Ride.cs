@@ -461,7 +461,7 @@ public class Ride : MonoBehaviour
     private void ResetRide()
     {
         GetComponentInChildren<Generator>().fightMusic.Stop();
-        AudioManager.Instance.Play("RideLoose");
+        AudioManager.Instance.Play("FightMusicLoss");
         
         SetRide(true, false);
         rideGotDestroyed = true;
@@ -480,7 +480,7 @@ public class Ride : MonoBehaviour
         Player.Instance.isInteracting = false;
 
         GetComponentInChildren<Generator>().fightMusic.Stop();
-        AudioManager.Instance.Play("FightMusicEnd");
+        AudioManager.Instance.Play("FightMusicWon");
         GetComponent<Animator>().SetTrigger("StartRide");
         
         ActivateInvisibleWalls(false);
