@@ -5631,7 +5631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37cb5fbb05db274984df7ea4fca28da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
+  debugMode: 1
   inventoryText: {fileID: 950976627}
   inventoryHeader: {fileID: 75838877}
   inventoryImage: {fileID: 631215903}

@@ -125,15 +125,15 @@ public class InGameUI : MonoBehaviour
 
             if (Player.Instance.playerCanInteract)
             {
-                var componentColor = eIndicator.GetComponent<Image>().color;
-                componentColor.a = 1;
-                eIndicator.GetComponent<Image>().color = componentColor;
+                var _componentColor = eIndicator.GetComponent<Image>().color;
+                _componentColor.a = 1;
+                eIndicator.GetComponent<Image>().color = _componentColor;
             }
             else
             {
-                var componentColor = eIndicator.GetComponent<Image>().color;
-                componentColor.a = 0.2156862745098039f;
-                eIndicator.GetComponent<Image>().color = componentColor;
+                var _componentColor = eIndicator.GetComponent<Image>().color;
+                _componentColor.a = 0.2156862745098039f;
+                eIndicator.GetComponent<Image>().color = _componentColor;
             }
         }
 
@@ -229,8 +229,7 @@ public class InGameUI : MonoBehaviour
     //Sets the current ability that was gained to the according slider
     private void UpdateAbilityProgress()
     {
-        abilityProgress.GetComponent<Slider>().value =
-            Player.Instance.currentAbilityTime / Player.Instance.maxAbilityTime;
+        abilityProgress.GetComponent<Slider>().value = Player.Instance.currentAbilityTime / Player.Instance.maxAbilityTime;
     }
 
     //Sets everything inactive when in main menu and unpauses game

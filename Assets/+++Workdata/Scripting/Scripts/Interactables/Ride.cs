@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +18,7 @@ public class Ride : MonoBehaviour
     [SerializeField] private RidesSO rideData;
     [SerializeField] private List<GameObject> invisibleCollider;
     [SerializeField] private List<GameObject> enemyList;
-    [SerializeField] public CinemachineVirtualCamera fightCam;
+    [HideInInspector] public CinemachineCamera fightCam;
     private Color noAlpha;
 
     [Header("Boolean")]
@@ -53,6 +53,8 @@ public class Ride : MonoBehaviour
             GetComponent<Animator>().SetTrigger("StartRide");
             Player.Instance.rideCount++;
         }
+
+        fightCam = GetComponentInChildren<CinemachineCamera>();
         
         ActivateInvisibleWalls(false);
     }

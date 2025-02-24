@@ -92,10 +92,13 @@ public class FortuneWheelUI : MonoBehaviour
 
         gameObject.transform.parent.gameObject.SetActive(false);
         canGetPrize = false;
-        
-        Player.Instance.SearchInteractionObject(Player.Instance.wheelOfFortuneLayer).GetComponent<FortuneWheel>().ride.GetComponent<Ride>().canActivateRide = true;
 
-        Player.Instance.SearchInteractionObject(Player.Instance.wheelOfFortuneLayer).GetComponent<FortuneWheel>().DeactivateFortuneWheel();
+        if (Player.Instance.GetInteractionObjectInRange(Player.Instance.wheelOfFortuneLayer, out Collider2D _interactable))
+        {
+            var _wheelOfFortune = _interactable.GetComponent<FortuneWheel>();
+            _wheelOfFortune.ride.GetComponent<Ride>().canActivateRide = true;
+            _wheelOfFortune.DeactivateFortuneWheel();
+        }
     }
 
     private void OnDisable()

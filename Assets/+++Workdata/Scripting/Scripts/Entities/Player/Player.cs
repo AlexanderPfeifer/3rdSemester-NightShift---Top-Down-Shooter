@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Cinemachine;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -578,9 +578,9 @@ public class Player : MonoBehaviour
     {
         muzzleFlashVisual.SetActive(true);
         
-        foreach (var _cam in cameras.Where(cam => cam.GetComponent<CinemachineVirtualCamera>().Priority > 10))
+        foreach (var _cam in cameras.Where(cam => cam.GetComponent<CinemachineCamera>().Priority > 10))
         {
-            _cam.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = weaponScreenShake;
+            _cam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = weaponScreenShake;
         }
         
         bulletShellsParticle.Play();
@@ -595,9 +595,9 @@ public class Player : MonoBehaviour
 
         bulletShellsParticle.Stop();
 
-        foreach (var _cam in cameras.Where(cam => cam.GetComponent<CinemachineVirtualCamera>().Priority > 10))
+        foreach (var _cam in cameras.Where(cam => cam.GetComponent<CinemachineCamera>().Priority > 10))
         {
-            _cam.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
+            _cam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
         }
 
         muzzleFlashVisual.SetActive(false);

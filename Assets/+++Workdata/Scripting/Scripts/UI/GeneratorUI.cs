@@ -41,9 +41,11 @@ public class GeneratorUI : MonoBehaviour
 
         if (generatorFillImage.fillAmount > 0.9f)
         {
-            Player.Instance.generatorIsActive = true;
             gameObject.SetActive(false);
-            Player.Instance.SearchInteractionObject(Player.Instance.generatorLayer).GetComponent<Generator>().SetFortuneWheel();
+            if (Player.Instance.GetInteractionObjectInRange(Player.Instance.generatorLayer, out Collider2D _generator))
+            {            
+                _generator.GetComponent<Generator>().SetFortuneWheel();
+            }
         }
         else
         {
