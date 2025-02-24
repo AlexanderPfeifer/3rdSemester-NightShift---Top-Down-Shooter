@@ -7,6 +7,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -22,86 +23,81 @@ public class Player : MonoBehaviour
 
     [Header("Scripts")]
     [SerializeField] private GameInputManager gameInputManager;
-    [SerializeField] public Bullet bulletPrefab;
+    [SerializeField] private Bullet bulletPrefab;
     [SerializeField] private PlayerSaveData playerSaveData;
 
     [Header("CharacterMovement")]
     [SerializeField] private float moveSpeed = 7f;
-    [SerializeField] public GameObject playerNoHandVisual;
-    [SerializeField] public GameObject playerVisual;
-    [SerializeField] private Animator anim;
-    [SerializeField] private Animator animNoHand;
     [SerializeField] private float knockBackDecay = 5f; 
     private Vector2 moveDirection = Vector2.down;
-    private Rigidbody2D rb;
     private Vector2 knockBack;
-
+    private Rigidbody2D rb;
+    [SerializeField] private GameObject playerVisual;
+    [SerializeField] private Animator anim;
+    [SerializeField] private GameObject playerNoHandVisual;
+    [SerializeField] private Animator animNoHand;
+    
     [Header("Camera")]
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private List<GameObject> cameras;
+    [FormerlySerializedAs("cameras")] [SerializeField] private List<GameObject> fightAreaCams;
 
-    [Header("Layers")]
+    [Header("Light")] 
+    [SerializeField] public GameObject globalLightObject;
+
+    [Header("Bullets")]
+    [SerializeField] public GameObject bulletParent;
+    [SerializeField] private ParticleSystem bulletShellsParticle;
+    [HideInInspector] public float bulletDamage;
+    [HideInInspector] public float bulletSpeed = 38f;
+    [HideInInspector] public int maxPenetrationCount;
+    private int bulletsPerShot;
+
+    [Header("Weapon")]
+    [SerializeField] public List<WeaponObjectSO> allWeaponPrizes;
+    [SerializeField] public GameObject weaponVisual;
+    [SerializeField] private Transform weaponPosParent;
+    [SerializeField] public Transform weaponEndPoint;
+    [SerializeField] private Animator weaponAnim;
+    [SerializeField] private float weaponToMouseSmoothness = 8;
+    [SerializeField] private GameObject muzzleFlashVisual;
+    [HideInInspector] public bool freezeBullets;
+    [HideInInspector] public bool stickyBullets;
+    [HideInInspector] public bool explosiveBullets;
+    [HideInInspector] public bool endlessPenetrationBullets;
+    [HideInInspector] public bool fastBullets;
+    public float enemyShootingKnockBack = 2;
+    private float maxShootingDelay;
+    private float currentShootingDelay;
+    private float weaponSpread;
+    private Vector3 changingWeaponToMouse;
+    private Vector3 weaponToMouse;
+    private Vector3 mousePos;
+    private float weaponAngle;
+    private float shootingKnockBack;
+    private float weaponScreenShake;
+    private bool shoot;
+    private bool hasWeapon;
+
+    [Header("Ability")]
+    [SerializeField] public float maxAbilityTime;
+    [SerializeField] private float fastBulletsDelay = 0.075f;
+    [HideInInspector] public float currentAbilityTime;
+    [HideInInspector] public bool canGetAbilityGain = true;
+    private bool isUsingAbility;
+
+    [Header("Interaction")]
+    [SerializeField] private float interactRadius = 2;
+    [HideInInspector] public bool canInteract = true;
+    [HideInInspector] public bool isInteracting;
     [SerializeField] public LayerMask wheelOfFortuneLayer;
     [SerializeField] public LayerMask generatorLayer;
     [SerializeField] public LayerMask rideLayer;
     [SerializeField] public LayerMask duckLayer;
     [SerializeField] private LayerMask collectibleLayer;
-    
-    [Header("GameObjects")]
-    [SerializeField] public GameObject bullets;
-    [SerializeField] private GameObject muzzleFlashVisual;
-
-    [Header("Light")] 
-    [SerializeField] public GameObject globalLightObject;
-
-    [Header("Weapon")]
-    [SerializeField] public GameObject weaponVisual;
-    [SerializeField] public float bulletDamage;
-    [SerializeField] public int maxPenetrationCount;
-    [SerializeField] private float shootDelay;
-    [SerializeField] private ParticleSystem bulletShellsParticle;
-    [SerializeField] public float bulletSpeed = 38f;
-    [SerializeField] public int bulletsPerShot;
-    [SerializeField] private Transform weaponPosParent;
-    [SerializeField] public Transform weaponEndPoint;
-    [SerializeField] public float shootingSpread;
-    [SerializeField] public float maxShootDelay;
-    [SerializeField] public List<WeaponObjectSO> allWeaponPrizes;
-    [SerializeField] private Animator weaponAnim;
-    [SerializeField] private float weaponToMouseSmoothness = 8;
-    public Vector3 mousePos;
-    public bool freezeBullets;
-    public bool stickyBullets;
-    public bool explosiveBullets;
-    public bool endlessPenetrationBullets;
-    public bool splitBullets;
-    public bool canShoot;
-    public float shootingKnockBack = 2;
-    public float enemyShootingKnockBack = 2;
-    private float weaponAngle;
-    private Vector3 weaponToMouse;
-    private Vector3 changingWeaponToMouse;
-    private bool hasWeapon;
-    private float weaponScreenShake;
-
-    [Header("Ability")]
-    [SerializeField] public float maxAbilityTime;
-    public float currentAbilityTime;
-    private bool isUsingAbility;
-    public bool canGetAbilityGain = true;
-
-    [Header("Interaction")]
-    [SerializeField] private float interactRadius = 2;
-    [HideInInspector] public bool isPlayingDialogue;
-    public bool playerCanInteract;
-    public bool isInteracting;
     public int rideCount;
 
     [Header("UI")]
-    [SerializeField] private GameObject weaponDecisionWeaponImage;
-    [SerializeField] private TextMeshProUGUI weaponDecisionWeaponAbilityText;
-    [SerializeField] private TextMeshProUGUI weaponDecisionWeaponName;
-    [SerializeField] private GameObject firstSelectedWeaponDecision;
+    [HideInInspector] public bool isPlayingDialogue;
     
     private MyWeapon myWeapon;
     enum MyWeapon
@@ -138,17 +134,6 @@ public class Player : MonoBehaviour
             transform.position = _position;
     }
     
-    /*
-     we have to save the current position dependant on the scene the player is in.
-     this way, the position can be retained across multiple scenes, and we can switch back and forth.
-    */
-    private void LateUpdate()
-    {
-        playerSaveData.PositionBySceneName[gameObject.scene.name] = transform.position;
-        
-        SetAnimationParameterLateUpdate();
-    }
-
     private void OnEnable()
     {
         gameInputManager.OnShootingAction += GameInputManagerOnShootingAction;
@@ -173,10 +158,8 @@ public class Player : MonoBehaviour
     private void Start()
     {
         InGameUI.Instance.loadingScreenAnim.SetTrigger("End");
-        rb = GetComponent<Rigidbody2D>();
-        muzzleFlashVisual.SetActive(false);
-        InGameUI.Instance.dialogueCount = 0;
         InGameUI.Instance.ActivateInGameUI();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
@@ -185,7 +168,7 @@ public class Player : MonoBehaviour
 
         WeaponTimerUpdate();
         
-        ShootAutomatic();
+        ShootAutomaticUpdate();
 
         HandleInteractionIndicator();
     }
@@ -195,79 +178,45 @@ public class Player : MonoBehaviour
         HandleMovementFixedUpdate();
     }
     
-    private void HandleInteractionIndicator()
+    /*
+     we have to save the current position dependant on the scene the player is in.
+     this way, the position can be retained across multiple scenes, and we can switch back and forth.
+    */
+    private void LateUpdate()
     {
-        if (GetInteractionObjectInRange(wheelOfFortuneLayer, out _) ||
-            GetInteractionObjectInRange(collectibleLayer, out _) ||
-            GetInteractionObjectInRange(rideLayer, out Collider2D _ride) && _ride.GetComponent<Ride>().canActivateRide ||
-            GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && _generator.GetComponent<Generator>().isInteractable)
-        {
-            playerCanInteract = true;
-        }
-        else
-        {
-            playerCanInteract = false;
-        }
+        playerSaveData.PositionBySceneName[gameObject.scene.name] = transform.position;
+        
+        SetAnimationParameterLateUpdate();
     }
+    
+    #region Input
 
-    //Manages shooting action for multiple things like skipping dialogue
     private void GameInputManagerOnShootingAction(object sender, EventArgs e)
     {
         if (!InGameUI.Instance.inventoryIsOpened && !isUsingAbility && weaponVisual.activeSelf && !isInteracting && !isPlayingDialogue)
         {
-            canShoot = true;
+            shoot = true;
         }
-
-        if (InGameUI.Instance.textIsPlaying)
+        else
         {
-            InGameUI.Instance.textDisplaySpeed = 0;
-        }
-        
-        if (InGameUI.Instance.canPlayNext)
-        {
-            InGameUI.Instance.PlayNext();
-        }
-
-        if (InGameUI.Instance.canEndDialogue)
-        {
-            InGameUI.Instance.EndDialogue();
+            if (InGameUI.Instance.textIsPlaying)
+            {
+                InGameUI.Instance.textDisplaySpeed = 0.025f;
+            }
+            else if (InGameUI.Instance.canPlayNext)
+            {
+                InGameUI.Instance.PlayNext();
+            }
+            else if (InGameUI.Instance.canEndDialogue)
+            {
+                InGameUI.Instance.EndDialogue();
+            }   
         }
     }
 
     private void GameInputManagerOnNotShootingAction(object sender, EventArgs e)
     {
-        canShoot = false;
-    }
-
-    //With this method, you can hold down shoot button and it shoots automatically
-    private void ShootAutomatic()
-    {
-        if (canShoot && shootDelay <= 0)
-        {
-            for (int i = 0; i < bulletsPerShot; i++)
-            {
-                Vector2 _bulletDirection = Random.insideUnitCircle;
-                _bulletDirection.Normalize();
-
-                _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - shootingSpread);
-                
-                var newBullet = Instantiate(bulletPrefab, weaponEndPoint.position, Quaternion.Euler(0, 0 ,weaponAngle), bullets.transform);
-                newBullet.LaunchInDirection(this, _bulletDirection);
-            }
-
-            if (!splitBullets)
-            {
-                shootDelay = maxShootDelay;
-            }
-            else
-            {
-                shootDelay = 0.075f;
-            }
-
-            StartCoroutine(WeaponVisualCoroutine());
-
-            knockBack = -weaponToMouse.normalized * shootingKnockBack;
-        }
+        shoot = false;
     }
 
     private void GameInputManagerOnSprintingAction(object sender, EventArgs e)
@@ -281,52 +230,45 @@ public class Player : MonoBehaviour
             InGameUI.Instance.PauseGame();
     }
 
-    //Handles every interaction with objects, for this i made a method with an overlap circle which returns a bool if player can interact
-    //Then i made a method for getting the object in interaction range
     private void GameInputManagerOnInteractAction(object sender, EventArgs e)
     {
-        if (GetInteractionObjectInRange(wheelOfFortuneLayer, out Collider2D _wheelOfFortune))
+        if (GetInteractionObjectInRange(collectibleLayer, out Collider2D _collectible))
         {
-            if (!InGameUI.Instance.fortuneWheelScreen.activeSelf)
+            _collectible.GetComponent<Collectible>().Collect();
+        }
+        else if (GetInteractionObjectInRange(wheelOfFortuneLayer, out _) && !InGameUI.Instance.fortuneWheelScreen.activeSelf)
+        {
+            foreach (var _weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
             {
-                foreach (var _weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
-                {
-                    InGameUI.Instance.weaponSwapScreen.SetActive(true);
-                    EventSystem.current.SetSelectedGameObject(firstSelectedWeaponDecision);
-                    weaponDecisionWeaponAbilityText.text = "";
-                    weaponDecisionWeaponName.text = "";
-                    weaponDecisionWeaponImage.GetComponent<Image>().sprite = _weapon.inGameWeaponVisual;
-                    weaponDecisionWeaponAbilityText.text += "Special Ability:" + "\n" + _weapon.weaponAbilityDescription;
-                    weaponDecisionWeaponName.text += _weapon.weaponName;
-                    isInteracting = true;
-                    hasWeapon = true;
-                }
+                InGameUI.Instance.weaponSwapScreen.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(InGameUI.Instance.firstSelectedWeaponDecision);
+                InGameUI.Instance.weaponDecisionWeaponAbilityText.text = "";
+                InGameUI.Instance.weaponDecisionWeaponName.text = "";
+                InGameUI.Instance.weaponDecisionWeaponImage.GetComponent<Image>().sprite = _weapon.inGameWeaponVisual;
+                InGameUI.Instance.weaponDecisionWeaponAbilityText.text += "Special Ability:" + "\n" + _weapon.weaponAbilityDescription;
+                InGameUI.Instance.weaponDecisionWeaponName.text += _weapon.weaponName;
+                isInteracting = true;
+                hasWeapon = true;
+            }
 
-                if (!hasWeapon)
-                {
-                    InGameUI.Instance.fortuneWheelScreen.SetActive(true);
-                }
+            if (!hasWeapon)
+            {
+                InGameUI.Instance.fortuneWheelScreen.SetActive(true);
             }
         }
-
-        if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator))
+        else if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && !InGameUI.Instance.generatorScreen.activeSelf)
         {
-            if (!InGameUI.Instance.generatorScreen.activeSelf)
+            if (_generator.GetComponent<Generator>().isInteractable)
             {
-                if (_generator.GetComponent<Generator>().isInteractable)
-                {
-                    InGameUI.Instance.generatorScreen.SetActive(true);
-                    InGameUI.Instance.SaveGame();
-                }
+                InGameUI.Instance.generatorScreen.SetActive(true);
+                InGameUI.Instance.SaveGame();
             }
         }
-        
-        if (GetInteractionObjectInRange(duckLayer, out Collider2D _duckStand))
+        else if (GetInteractionObjectInRange(duckLayer, out _))
         {
             AudioManager.Instance.Play("DuckSound");
         }
-        
-        if (GetInteractionObjectInRange(rideLayer, out Collider2D _interactable))
+        else if (GetInteractionObjectInRange(rideLayer, out Collider2D _interactable))
         {
             var _ride = _interactable.gameObject.GetComponent<Ride>();
             
@@ -334,11 +276,6 @@ public class Player : MonoBehaviour
             {
                 _ride.StartWave();
             }
-        }
-            
-        if (GetInteractionObjectInRange(collectibleLayer, out Collider2D _collectible))
-        {
-            _collectible.GetComponent<Collectible>().Collect();
         }
     }
 
@@ -349,7 +286,11 @@ public class Player : MonoBehaviour
             StartCoroutine(StartWeaponAbility());
         }
     }
-    
+
+    #endregion
+
+    #region Shooting
+
     private void HandleAimingUpdate()
     {
         if (InGameUI.Instance.inventoryIsOpened || !weaponVisual.activeSelf) 
@@ -399,8 +340,33 @@ public class Player : MonoBehaviour
             weaponPosParent.GetComponentInChildren<SpriteRenderer>().sortingOrder = + 1;
         }
     }
+    
+    private void ShootAutomaticUpdate()
+    {
+        if (shoot && currentShootingDelay <= 0)
+        {
+            for (int _i = 0; _i < bulletsPerShot; _i++)
+            {
+                Vector2 _bulletDirection = Random.insideUnitCircle.normalized;
 
-    //Handles movement from game input read value. Also handles sound when the player is moving
+                _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - weaponSpread);
+                
+                var _newBullet = Instantiate(bulletPrefab, weaponEndPoint.position, Quaternion.Euler(0, 0 ,weaponAngle), bulletParent.transform);
+                _newBullet.LaunchInDirection(this, _bulletDirection);
+            }
+
+            currentShootingDelay = fastBullets ? fastBulletsDelay : maxShootingDelay;
+
+            StartCoroutine(WeaponVisualCoroutine());
+
+            knockBack = -weaponToMouse.normalized * shootingKnockBack;
+        }
+    }
+
+    #endregion
+
+    #region Movement
+
     private void HandleMovementFixedUpdate()
     {
         if (isPlayingDialogue || InGameUI.Instance.inventoryIsOpened || isInteracting) 
@@ -410,131 +376,6 @@ public class Player : MonoBehaviour
 
         knockBack = Vector2.Lerp(knockBack, Vector2.zero, Time.fixedDeltaTime * knockBackDecay);
     }
-
-    #region Abilities
-
-    private IEnumerator StartWeaponAbility()
-    {
-        canGetAbilityGain = false;
-        InGameUI.Instance.pressSpace.SetActive(false);
-
-        switch (myWeapon)
-        {
-            case MyWeapon.AssaultRifle:
-                splitBullets = true;
-                break;
-            case MyWeapon.Magnum:
-                freezeBullets = true;
-                break;
-            case MyWeapon.Pistol:
-                explosiveBullets = true;
-                break;
-            case MyWeapon.HuntingRifle:
-                endlessPenetrationBullets = true;
-                break;
-            case MyWeapon.Shotgun:
-                stickyBullets = true;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-        
-        float _abilityTimer = maxAbilityTime;
-        while (_abilityTimer > 0)
-        {
-            _abilityTimer -= Time.deltaTime;
-            currentAbilityTime = _abilityTimer; 
-            yield return null; 
-        }
-        
-        splitBullets = false;
-        freezeBullets = false;
-        explosiveBullets = false;
-        endlessPenetrationBullets = false;
-        stickyBullets = false;
-        
-        canGetAbilityGain = true;
-    }
-    
-    #endregion
-
-    #region Weapons
-    
-    private void WeaponTimerUpdate()
-    {
-        if (weaponVisual.activeSelf)
-        {
-            shootDelay -= Time.deltaTime;
-        }
-    }
-
-    /// <summary>
-    /// Sets every value of the weaponSO object to the player values.
-    /// </summary>
-    /// <param name="weapon"></param>
-    public void GetWeapon(WeaponObjectSO weapon)
-    {
-        weaponVisual.SetActive(true);
-        weaponVisual.GetComponent<SpriteRenderer>().sprite = weapon.inGameWeaponVisual;
-        bulletDamage = weapon.bulletDamage;
-        maxPenetrationCount = weapon.penetrationCount;
-        maxShootDelay = weapon.shootDelay;
-        shootingSpread = weapon.weaponSpread;
-        weaponVisual.transform.localScale = weapon.weaponScale;
-        bulletsPerShot = weapon.bulletsPerShot;
-        shootingKnockBack = weapon.knockBack;
-        bulletPrefab.transform.localScale = weapon.bulletSize;
-        weaponScreenShake = weapon.screenShake;
-        enemyShootingKnockBack = weapon.enemyKnockBackPerBullet;
-
-        playerVisual.SetActive(false);
-        playerNoHandVisual.SetActive(true);
-        hasWeapon = true;
-
-        InGameUI.Instance.inventoryWeapon.GetComponent<Image>().sprite = weapon.inGameWeaponVisual;
-        InGameUI.Instance.inventoryWeapon.SetActive(true);
-
-        myWeapon = weapon.weaponName switch
-        {
-            "Magnum magnum" => MyWeapon.Magnum,
-            "French Fries AR" => MyWeapon.AssaultRifle,
-            "Lollipop Shotgun" => MyWeapon.Shotgun,
-            "Corn Dog Hunting Rifle" => MyWeapon.HuntingRifle,
-            "Popcorn Pistol" => MyWeapon.Pistol,
-            _ => myWeapon
-        };
-    }
-    
-    private IEnumerator WeaponVisualCoroutine()
-    {
-        muzzleFlashVisual.SetActive(true);
-        
-        foreach (var _cam in cameras.Where(cam => cam.GetComponent<CinemachineCamera>().Priority > 10))
-        {
-            _cam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = weaponScreenShake;
-        }
-        
-        bulletShellsParticle.Play();
-
-        weaponAnim.SetTrigger("ShootGun");
-        
-        AudioManager.Instance.Play("Shooting");
-        
-        yield return new WaitForSeconds(.1f);
-        
-        weaponAnim.SetTrigger("GunStartPos");
-
-        bulletShellsParticle.Stop();
-
-        foreach (var _cam in cameras.Where(cam => cam.GetComponent<CinemachineCamera>().Priority > 10))
-        {
-            _cam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
-        }
-
-        muzzleFlashVisual.SetActive(false);
-    }
-    
-    #endregion
     
     private void SetAnimationParameterLateUpdate()
     {
@@ -570,6 +411,134 @@ public class Player : MonoBehaviour
             AudioManager.Instance.Stop("Walking");
         }
     }
+
+
+    #endregion
+    
+    #region Abilities
+
+    private IEnumerator StartWeaponAbility()
+    {
+        canGetAbilityGain = false;
+        InGameUI.Instance.pressSpace.SetActive(false);
+
+        switch (myWeapon)
+        {
+            case MyWeapon.AssaultRifle:
+                fastBullets = true;
+                break;
+            case MyWeapon.Magnum:
+                freezeBullets = true;
+                break;
+            case MyWeapon.Pistol:
+                explosiveBullets = true;
+                break;
+            case MyWeapon.HuntingRifle:
+                endlessPenetrationBullets = true;
+                break;
+            case MyWeapon.Shotgun:
+                stickyBullets = true;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+        
+        float _abilityTimer = maxAbilityTime;
+        while (_abilityTimer > 0)
+        {
+            _abilityTimer -= Time.deltaTime;
+            currentAbilityTime = _abilityTimer; 
+            yield return null; 
+        }
+        
+        fastBullets = false;
+        freezeBullets = false;
+        explosiveBullets = false;
+        endlessPenetrationBullets = false;
+        stickyBullets = false;
+        
+        canGetAbilityGain = true;
+    }
+    
+    #endregion
+
+    #region Weapons
+    
+    private void WeaponTimerUpdate()
+    {
+        if (weaponVisual.activeSelf)
+        {
+            currentShootingDelay -= Time.deltaTime;
+        }
+    }
+
+    /// <summary>
+    /// Sets every value of the weaponSO object to the player values.
+    /// </summary>
+    /// <param name="weapon"></param>
+    public void GetWeapon(WeaponObjectSO weapon)
+    {
+        weaponVisual.SetActive(true);
+        weaponVisual.GetComponent<SpriteRenderer>().sprite = weapon.inGameWeaponVisual;
+        bulletDamage = weapon.bulletDamage;
+        maxPenetrationCount = weapon.penetrationCount;
+        maxShootingDelay = weapon.shootDelay;
+        weaponSpread = weapon.weaponSpread;
+        weaponVisual.transform.localScale = weapon.weaponScale;
+        bulletsPerShot = weapon.bulletsPerShot;
+        shootingKnockBack = weapon.knockBack;
+        bulletPrefab.transform.localScale = weapon.bulletSize;
+        weaponScreenShake = weapon.screenShake;
+        enemyShootingKnockBack = weapon.enemyKnockBackPerBullet;
+
+        playerVisual.SetActive(false);
+        playerNoHandVisual.SetActive(true);
+        hasWeapon = true;
+
+        InGameUI.Instance.inventoryWeapon.GetComponent<Image>().sprite = weapon.inGameWeaponVisual;
+        InGameUI.Instance.inventoryWeapon.SetActive(true);
+
+        myWeapon = weapon.weaponName switch
+        {
+            "Magnum magnum" => MyWeapon.Magnum,
+            "French Fries AR" => MyWeapon.AssaultRifle,
+            "Lollipop Shotgun" => MyWeapon.Shotgun,
+            "Corn Dog Hunting Rifle" => MyWeapon.HuntingRifle,
+            "Popcorn Pistol" => MyWeapon.Pistol,
+            _ => myWeapon
+        };
+    }
+    
+    private IEnumerator WeaponVisualCoroutine()
+    {
+        muzzleFlashVisual.SetActive(true);
+        
+        foreach (var _cam in fightAreaCams.Where(cam => cam.GetComponent<CinemachineCamera>().Priority > 10))
+        {
+            _cam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = weaponScreenShake;
+        }
+        
+        bulletShellsParticle.Play();
+
+        weaponAnim.SetTrigger("ShootGun");
+        
+        AudioManager.Instance.Play("Shooting");
+        
+        yield return new WaitForSeconds(.1f);
+        
+        weaponAnim.SetTrigger("GunStartPos");
+
+        bulletShellsParticle.Stop();
+
+        foreach (var _cam in fightAreaCams.Where(cam => cam.GetComponent<CinemachineCamera>().Priority > 10))
+        {
+            _cam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
+        }
+
+        muzzleFlashVisual.SetActive(false);
+    }
+    
+    #endregion
     
     #region Interaction
     
@@ -579,6 +548,21 @@ public class Player : MonoBehaviour
         return interactable != null;
     }
     
+    private void HandleInteractionIndicator()
+    {
+        if (GetInteractionObjectInRange(wheelOfFortuneLayer, out _) ||
+            GetInteractionObjectInRange(collectibleLayer, out _) ||
+            GetInteractionObjectInRange(rideLayer, out Collider2D _ride) && _ride.GetComponent<Ride>().canActivateRide ||
+            GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && _generator.GetComponent<Generator>().isInteractable)
+        {
+            canInteract = true;
+        }
+        else
+        {
+            canInteract = false;
+        }
+    }
+
     #endregion
 
     private void OnDrawGizmos()

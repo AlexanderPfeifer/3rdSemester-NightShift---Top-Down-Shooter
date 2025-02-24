@@ -154,7 +154,7 @@ public class Enemy : MonoBehaviour
 
         if (!rideDeath)
         {
-            var deathMark = Instantiate(enemyDeathMark, transform.position, Quaternion.identity, Player.Instance.bullets.transform);
+            var deathMark = Instantiate(enemyDeathMark, transform.position, Quaternion.identity, Player.Instance.bulletParent.transform);
             
             if (bigEnemy)
             {

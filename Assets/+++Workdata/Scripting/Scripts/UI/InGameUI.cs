@@ -100,12 +100,17 @@ public class InGameUI : MonoBehaviour
     [SerializeField] public Animator radioAnim;
     [SerializeField] private Animator dialogueBoxAnim;
 
-    static float t = 0.0f;
+    static float t;
 
     [Header("InGame")] 
     [SerializeField] public GameObject fortuneWheelScreen;
     [SerializeField] public GameObject generatorScreen;
     [SerializeField] public GameObject weaponSwapScreen;
+    
+    public GameObject weaponDecisionWeaponImage;
+    public TextMeshProUGUI weaponDecisionWeaponAbilityText;
+    public TextMeshProUGUI weaponDecisionWeaponName;
+    public GameObject firstSelectedWeaponDecision;
     
     private void Awake()
     {
@@ -126,7 +131,7 @@ public class InGameUI : MonoBehaviour
         {
             UpdateAbilityProgress();
 
-            if (Player.Instance.playerCanInteract)
+            if (Player.Instance.canInteract)
             {
                 var _componentColor = eIndicator.GetComponent<Image>().color;
                 _componentColor.a = 1;
@@ -611,6 +616,7 @@ public class InGameUI : MonoBehaviour
     public void ActivateInGameUI()
     {
         inGameUIScreen.SetActive(true);
+        
         if (GameSaveStateManager.Instance.startedNewGame)
         {
             StartCoroutine(DisplayDialogueElements());
