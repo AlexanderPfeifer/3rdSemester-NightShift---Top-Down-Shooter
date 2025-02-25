@@ -1,16 +1,16 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class PlayerCollision : MonoBehaviour
+public class PlayerArenaEnter : MonoBehaviour
 {
     private Ride ride;
-    public bool canPutAway = true;
+    [HideInInspector] public bool canPutAwayWalkieTalkie = true;
     
     private void Start()
     {
         ride = GetComponentInParent<Ride>();
     }
 
-    //When the player enters the fight area the camera is changed and the walkie-talkie is put away
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (!col.gameObject.GetComponent<Player>()) 
@@ -20,13 +20,14 @@ public class PlayerCollision : MonoBehaviour
             ride.GetComponentInChildren<Generator>().arenaFightFinished) 
             return;
         
-        ride.ActivateInvisibleWalls(true);
+        ride.ActivationStatusInvisibleWalls(true);
         ride.fightCam.Priority = 15;
         
-        if (canPutAway)
+        //Set a bool for the PutAway Animation because the player can leave and enter the collider still inside the fight
+        if (canPutAwayWalkieTalkie)
         {
-            InGameUI.Instance.radioAnim.SetTrigger("PutAway");
+            InGameUIManager.Instance.radioAnim.SetTrigger("PutAway");
         }
-        canPutAway = false;
+        canPutAwayWalkieTalkie = false;
     }
 }

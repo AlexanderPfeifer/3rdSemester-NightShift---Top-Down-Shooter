@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -19,39 +19,34 @@ public static class SaveFileManager
     /// <param name="data">The actual object that we want to save</param>
     /// <typeparam name="T">"The type of serialized object we want to be saved"</typeparam>
     /// <returns>If saving works, returns true. If anything fails, this returns false</returns>
-    public static bool TrySaveData<T>(string fileName, T data)
+    public static void TrySaveData<T>(string fileName, T data)
     {
-        var path = GetFilePath(fileName);
-
-        //if a try block encounters an error, instead of canceling the execution of the code,
-        //it goes to the catch-block
+        var _path = GetFilePath(fileName);
+        
         try 
         {
             if(!Directory.Exists(SaveFolderPath))
             {	
-                //if the folder structure does not exist yet, create it
                 Directory.CreateDirectory(SaveFolderPath);
             }
             
-            if (File.Exists(path))
+            if (File.Exists(_path))
             {
                 //if the file already exists, we delete it, so that we can create it anew
-                File.Delete(path);
+                File.Delete(_path);
             }
+            
             //we create the new file
-            using FileStream stream = File.Create(path);
-            stream.Close();
+            using FileStream _stream = File.Create(_path);
+            _stream.Close();
 
             //then we fill the file with the created json text
-            string jsonConvertedData = JsonConvert.SerializeObject(data, Formatting.Indented);
-            File.WriteAllText(path, jsonConvertedData);
-            return true;
+            string _jsonConvertedData = JsonConvert.SerializeObject(data, Formatting.Indented);
+            File.WriteAllText(_path, _jsonConvertedData);
         }
-        catch (Exception e)
+        catch (Exception _e)
         {
-            //if anything goes wrong, we give out an error and return false
-            Debug.LogError($"Data cannot be saved due to: {e.Message} {e.StackTrace}");
-            return false;
+            Debug.LogError($"Data cannot be saved due to: {_e.Message} {_e.StackTrace}");
         }
     }
     
@@ -64,59 +59,46 @@ public static class SaveFileManager
     /// <returns>If the file can be loaded, we return true, otherwise we return false</returns>
     public static bool TryLoadData<T>(string fileName, out T data)
     {
-        var path = GetFilePath(fileName);
-        //we have to create a default data, so that in case the loading goes wrong, we can give out anything.
-        //without this, c# would not compile.
+        var _path = GetFilePath(fileName);
+        /*
+            We have to create a default data, so that in case the loading goes wrong, 
+            we can give out anything. Without this, c# would not compile.
+         */
         data = default;
 
-        if (!File.Exists(path))
+        if (!File.Exists(_path))
         {
-            //if the file we try to load does not exist, we throw a warning and return false.
-            Debug.LogWarning($"File cannot be loaded at \"{path}\".");
+            Debug.LogWarning($"File cannot be loaded at \"{_path}\".");
             return false;
         }
 
         try
         {
             //we then read the file and convert it into the object type we try to load
-            data = JsonConvert.DeserializeObject<T>(File.ReadAllText(path));
+            data = JsonConvert.DeserializeObject<T>(File.ReadAllText(_path));
             return true;
         }
-        catch (Exception e)
+        catch (Exception _e)
         {
-            //if anything with the loading goes wrong, we throw an error
-            Debug.LogError($"Data cannot be loaded due to: {e.Message} {e.StackTrace}");
+            Debug.LogError($"Data cannot be loaded due to: {_e.Message} {_e.StackTrace}");
             return false;
         }
     }
     
-    /// <summary>
-    /// We don't use this in this example, but with this we can get all file names that exist.
-    /// We could use this to allow to save and load a number of files, not just one.
-    /// </summary>
     /// <returns>An array of strings representing all save file names.</returns>
     public static string[] GetAllSaveFileNames()
     {
-        var info = new DirectoryInfo(SaveFolderPath);
-        var fileInfo = info.GetFiles();
+        var _info = new DirectoryInfo(SaveFolderPath);
+        var _fileInfo = _info.GetFiles();
 
-        List<string> fileNames = new List<string>();
-        foreach (var file in fileInfo)
-        {
-            if (!file.Name.EndsWith(".json"))
-                continue;
-            fileNames.Add(file.Name.Replace(".json", ""));
-        }
-
-        return fileNames.ToArray();
+        return (from _file in _fileInfo where _file.Name.EndsWith(".json") 
+            select _file.Name.Replace(".json", "")).ToArray();
     }
 
     public static void DeleteSaveState(string saveState)
     {
-        var path = GetFilePath(saveState);
-
-        //if a try block encounters an error, instead of canceling the execution of the code,
-        //it goes to the catch-block
+        var _path = GetFilePath(saveState);
+        
         try 
         {
             if(!Directory.Exists(SaveFolderPath))
@@ -124,16 +106,14 @@ public static class SaveFileManager
                 return;
             }
             
-            if (File.Exists(path))
+            if (File.Exists(_path))
             {
-                //if the file already exists, we delete it, so that we can create it anew
-                File.Delete(path);
+                File.Delete(_path);
             }
         }
-        catch (Exception e)
+        catch (Exception _e)
         {
-            //if anything goes wrong, we give out an error and return false
-            Debug.LogError($"Data cannot be saved due to: {e.Message} {e.StackTrace}");
+            Debug.LogError($"Data cannot be saved due to: {_e.Message} {_e.StackTrace}");
         }
     }
 }

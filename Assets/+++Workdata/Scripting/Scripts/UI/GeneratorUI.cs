@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,11 +9,14 @@ public class GeneratorUI : MonoBehaviour
     [SerializeField] private AnimationCurve accelerationCurve;
     [SerializeField] private float acceleration = .375f;
     [SerializeField] private GameObject firstGeneratorSelected;
-
     private float finalAcc;
+
+    [Header("Fill")]
+    [SerializeField] private float activateGeneratorFillAmount;
     [SerializeField] private Image generatorFillImage;
     private float fillTime;
-
+    private bool resetDone;
+    
     private void OnEnable()
     {
         Player.Instance.isInteracting = true;
@@ -24,34 +28,57 @@ public class GeneratorUI : MonoBehaviour
         SliderFillOverTime();   
     }
 
-    //Fills the slider over time and decreases it when maxed out
     private void SliderFillOverTime()
     {
-        finalAcc = acceleration * accelerationCurve.Evaluate(generatorFillImage.fillAmount);
-        
-        fillTime += finalAcc * Time.deltaTime;
+        if (resetDone)
+        {
+            finalAcc = acceleration * accelerationCurve.Evaluate(generatorFillImage.fillAmount);
+            fillTime += finalAcc * Time.deltaTime;
 
-        generatorFillImage.fillAmount = Mathf.PingPong(fillTime, 1);
+            generatorFillImage.fillAmount = Mathf.PingPong(fillTime, 1);
+        }
     }
 
-    //Tries to start engine when button got clicked. When over 0.9f, can activate the ride
     public void StartGeneratorEngine()
     {
         AudioManager.Instance.Play("GeneratorButtonClickDown");
 
-        if (generatorFillImage.fillAmount > 0.9f)
+        if (generatorFillImage.fillAmount > activateGeneratorFillAmount)
         {
             gameObject.SetActive(false);
             if (Player.Instance.GetInteractionObjectInRange(Player.Instance.generatorLayer, out Collider2D _generator))
             {            
-                _generator.GetComponent<Generator>().SetFortuneWheel();
+                _generator.GetComponent<Generator>().SetUpFightArena();
             }
         }
         else
         {
-            fillTime = 0;
-            generatorFillImage.fillAmount = 0;
+            StartCoroutine(SmoothlyReduceFill(1f)); // Adjust duration as needed
         }
+    }
+    
+    IEnumerator SmoothlyReduceFill(float duration)
+    {
+        resetDone = false;
+
+        float _startFillTime = fillTime;
+        float _startFillAmount = generatorFillImage.fillAmount;
+        float _elapsedTime = 0f;
+
+        while (_elapsedTime < duration)
+        {
+            _elapsedTime += Time.deltaTime;
+            float _t = _elapsedTime / duration; // Normalized time (0 to 1)
+
+            fillTime = Mathf.Lerp(_startFillTime, 0, _t);
+            generatorFillImage.fillAmount = Mathf.Lerp(_startFillAmount, 0, _t);
+
+            yield return null; 
+        }
+
+        fillTime = 0;
+        generatorFillImage.fillAmount = 0;
+        resetDone = true;
     }
 
     public void GeneratorButtonUp()
@@ -59,7 +86,6 @@ public class GeneratorUI : MonoBehaviour
         AudioManager.Instance.Play("GeneratorButtonClickUp");
     }
 
-    //When disabled, then resets every value
     private void OnDisable()
     {
         Player.Instance.isInteracting = false;

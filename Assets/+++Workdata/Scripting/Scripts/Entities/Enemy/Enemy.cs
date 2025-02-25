@@ -81,7 +81,7 @@ public class Enemy : MonoBehaviour
         sr.flipX = !(transform.InverseTransformPoint(ride.transform.position).x > 0);
     }
 
-    public void EnemyFreeze()
+    private void EnemyFreeze()
     {
         if (!enemyFreeze)
         {
@@ -141,7 +141,7 @@ public class Enemy : MonoBehaviour
         if (col.gameObject.GetComponent<Ride>())
         {
             col.gameObject.GetComponent<Ride>().currentRideHealth -= rideAttackDamage;
-            ride.HitRide(changeColorTime);
+            ride.StartRideHitVisual(changeColorTime);
             Destroy(gameObject);
             rideDeath = true;
         }
@@ -177,7 +177,7 @@ public class Enemy : MonoBehaviour
 
             if (Player.Instance.currentAbilityTime >= Player.Instance.maxAbilityTime)
             {
-                InGameUI.Instance.pressSpace.SetActive(true);
+                InGameUIManager.Instance.pressSpace.SetActive(true);
             }
         }
     }

@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class LoadScreenNewGame : MonoBehaviour
 {
-    //When new game is created, the game is saved after the time it was created
+    //When new game is created in the loading screen animation, the game is saved with an animation event
     public void StartNewGame()
     {
-        DateTime dt = DateTime.Now;
-        GameSaveStateManager.Instance.StartNewGame("SaveState               " + dt.ToString("yyyy-MM-ddTHH-mm"));
+        DateTime _dt = DateTime.Now;
+        GameSaveStateManager.Instance.StartNewGame("SaveState               " + _dt.ToString("yyyy-MM-ddTHH-mm"));
         
-        FindObjectOfType<MainMenuUI>().gameStateLoaded = false;
+        MainMenuUIManager.Instance.gameStateLoaded = false;
     }
 }

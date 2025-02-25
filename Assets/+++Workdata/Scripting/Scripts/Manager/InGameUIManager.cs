@@ -6,10 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 
-public class InGameUI : MonoBehaviour
+public class InGameUIManager : MonoBehaviour
 {
-    public static InGameUI Instance;
-
     [Header("Debugging")]
     [SerializeField] private bool debugMode;
     
@@ -111,6 +109,8 @@ public class InGameUI : MonoBehaviour
     public TextMeshProUGUI weaponDecisionWeaponAbilityText;
     public TextMeshProUGUI weaponDecisionWeaponName;
     public GameObject firstSelectedWeaponDecision;
+    
+    public static InGameUIManager Instance;
     
     private void Awake()
     {
@@ -612,7 +612,6 @@ public class InGameUI : MonoBehaviour
         }
     }
 
-    //Activates inGame ui and starts off with the first dialogue when a new was started
     public void ActivateInGameUI()
     {
         inGameUIScreen.SetActive(true);

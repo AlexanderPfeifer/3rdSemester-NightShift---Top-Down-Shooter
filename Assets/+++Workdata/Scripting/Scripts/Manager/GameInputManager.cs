@@ -19,10 +19,7 @@ public class GameInputManager : MonoBehaviour
         playerInputActions.player.interact.performed += OnPlayerInteracting;
         playerInputActions.player.ability.performed += OnPlayerUsingAbility;
     }
-    /// <summary>
-    /// Saves every player input as an event to fire off when performed
-    /// </summary>
-    /// <param name="context"></param>
+
     private void OnPlayerUsingAbility(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         OnUsingAbilityAction?.Invoke(this, EventArgs.Empty);
@@ -53,12 +50,11 @@ public class GameInputManager : MonoBehaviour
         OnInteractAction?.Invoke(this, EventArgs.Empty);
     }
 
-    //Reads movement vector for every direction from the input
     public Vector2 GetMovementVectorNormalized()
     {
-        var inputVector = playerInputActions.player.move.ReadValue<Vector2>();
+        var _inputVector = playerInputActions.player.move.ReadValue<Vector2>();
 
-        inputVector = inputVector.normalized;
-        return inputVector;
+        _inputVector = _inputVector.normalized;
+        return _inputVector;
     }
 }

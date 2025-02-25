@@ -2348,8 +2348,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Roulette, Assembly-CSharp
+      - m_Target: {fileID: 540206091}
+        m_TargetAssemblyTypeName: FortuneWheelUI, Assembly-CSharp
         m_MethodName: SpinWheel
         m_Mode: 1
         m_Arguments:
@@ -3525,8 +3525,8 @@ MonoBehaviour:
   minStopPower: 75
   maxStopPower: 125
   maxAngularVelocity: 1440
-  firstFortuneWheelSelected: {fileID: 404747152}
-  canGetPrize: 0
+  firstFortuneWheelButtonSelected: {fileID: 404747152}
+  wheelGotSpinned: 0
 --- !u!1 &551687367
 GameObject:
   m_ObjectHideFlags: 0
@@ -3889,6 +3889,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   acceleration: 0.375
   firstGeneratorSelected: {fileID: 2047534556}
+  activateGeneratorFillAmount: 0.941
   generatorFillImage: {fileID: 1296695489}
 --- !u!1 &630885737
 GameObject:
@@ -5404,9 +5405,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7810c496ba27194ea49ca28999ba948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startedNewGame: 0
   gameSavingText: {fileID: 1838202616}
   textAlphaChangeSpeed: 3
+  startedNewGame: 0
   gameGotFinished: 0
   saveGameDataManager:
     saveName: 
@@ -5414,7 +5415,7 @@ MonoBehaviour:
     collectedCollectiblesIdentifiers: []
     collectedWeaponsIdentifiers: []
     weaponsInInventoryIdentifiers: []
-    finishedRides: []
+    finishedRidesIdentifiers: []
 --- !u!1 &950976625
 GameObject:
   m_ObjectHideFlags: 0
@@ -9316,7 +9317,7 @@ MonoBehaviour:
   - "I think it\u2018s about damn time for you to tell me what\u2018s going on here. "
   - "Boss: Fine. You know what? Come to the entrance I'm gonna be there\u2026 "
   dialogueText: {fileID: 163291304}
-  dialogueCount: 3
+  dialogueCount: 0
   dialogueLeft: 0
   canPlayNext: 0
   textIsPlaying: 0

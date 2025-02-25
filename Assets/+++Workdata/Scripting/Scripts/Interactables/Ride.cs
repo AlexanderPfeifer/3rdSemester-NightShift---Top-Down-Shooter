@@ -6,104 +6,183 @@ using UnityEngine.UI;
 
 public class Ride : MonoBehaviour
 {
-    [Header("Components")]
+    [Header("Enemies")]
     [SerializeField] private GameObject enemyMaderPrefab;
-    [SerializeField] private GameObject bigMaderPrefab;
     [SerializeField] private GameObject enemyBunnyPrefab;
-    [SerializeField] private GameObject bigBunnyPrefab;
     [SerializeField] private GameObject enemyRacoonPrefab;
+    [SerializeField] private GameObject bigMaderPrefab;
+    [SerializeField] private GameObject bigBunnyPrefab;
     [SerializeField] private GameObject bigRacoonPrefab;
+    
+    [Header("Spawning")]
     [SerializeField] private List<SpawnPoint> spawnPoints;
-    [SerializeField] public GameObject rideLight;
-    [SerializeField] private RidesSO rideData;
-    [SerializeField] private List<GameObject> invisibleCollider;
-    [SerializeField] private List<GameObject> enemyList;
-    [HideInInspector] public CinemachineCamera fightCam;
-    private Color noAlpha;
-
-    [Header("Boolean")]
-    private bool rideGotHit;
-    [SerializeField] private bool waveStarted;
-    private bool enemyHasSpawned;
-    private bool rideGotDestroyed;
-    public bool canActivateRide;
-
-    [Header("Ints")]
-    [SerializeField] private int waveCount;
-
-    [Header("Floats")]
-    [SerializeField] private float timeBetweenSpawns;
+    private readonly List<GameObject> currentEnemies = new();
     [SerializeField] private float maxTimeBetweenSpawns = 20;
-    [SerializeField] public float currentWaveTimer;
-    [SerializeField] private float maxWaveTimer = 120f;
-    public float currentRideHealth;
+    private float currentTimeBetweenSpawns;
+    private bool enemyHasSpawned;
+    
+    [Header("Ride")]
+    [SerializeField] private RidesSO rideData;
     [SerializeField] private float maxRideHealth = 50;
+    public GameObject rideLight;
+    [HideInInspector] public bool canActivateRide;
+    [HideInInspector] public float currentRideHealth;
+    private bool rideGotHit;
+    private bool rideGotDestroyed;
+    
+    [Header("Arena")]
+    [SerializeField] private List<GameObject> invisibleCollider;
+    [HideInInspector] public CinemachineCamera fightCam;
+
+    [Header("Wave")]
+    [SerializeField] private float maxWaveTimer = 120f;
+    private bool waveStarted;
+    private int waveCount;
+    private float currentWaveTimer;
     private float currentTime;
     private float currentTime2;
     private float currentTime3;
-
-    //If Ride was already finished, it turns on. Ride and dialogue count goes up, so the game knows which wave and which dialogue has to be played
+    
     private void Start()
     {
         if (GameSaveStateManager.Instance.saveGameDataManager.HasFinishedRide(rideData.rideName))
         {
-            canActivateRide = false;
-            InGameUI.Instance.dialogueCount++;
-            GetComponent<Animator>().SetTrigger("LightOn");
+            //Ride and dialogue count goes up, so the game knows which wave and which dialogue has to be played
+            InGameUIManager.Instance.dialogueCount++;
+            Player.Instance.enemyWave++;
             GetComponent<Animator>().SetTrigger("StartRide");
-            Player.Instance.rideCount++;
+            GetComponent<Animator>().SetTrigger("LightOn");
         }
+        
+        currentTimeBetweenSpawns = maxTimeBetweenSpawns;
 
         fightCam = GetComponentInChildren<CinemachineCamera>();
-        
-        ActivateInvisibleWalls(false);
+        ActivationStatusInvisibleWalls(false);
     }
 
-    //Updates everything time specific
     private void Update()
     {
         TimerUpdate();
 
-        if (waveStarted)
-        {
-            if (Player.Instance.rideCount == 0)
-            {
-                StartFirstWave();
-            }
-            else if (Player.Instance.rideCount == 1)
-            {
-                StartSecondWave();
-            }
-            else if(Player.Instance.rideCount == 2)
-            {
-                StartThirdWave();
-            }
-        }
-    }
-
-    //Starts the waves and its ui. Also sets timer and health of ride accordingly
-    public void StartWave()
-    {
-        InGameUI.Instance.fightScene.SetActive(true);
-        SetRide(false, true);
-        
-        if (rideGotDestroyed)
-        {
-            GetComponentInChildren<Generator>().fightMusic.Play();
-        }
-    }
-
-    private void SetRide(bool setRideActivation, bool waveStart)
-    {
-        currentWaveTimer = 0;
-        waveCount = 0;
-        currentRideHealth = maxRideHealth;
-        canActivateRide = setRideActivation;
-        waveStarted = waveStart;
+        CheckAndStartWaveUpdate();
     }
     
-    #region Waves
-    //The first waves with its enemies and spawn times
+    private void TimerUpdate()
+    {
+        if (!waveStarted) 
+            return;
+        
+        InGameUIManager.Instance.rideHpSlider.GetComponentInChildren<Slider>().value = currentRideHealth / maxRideHealth;
+        InGameUIManager.Instance.rideTimeSlider.GetComponent<Slider>().value = currentWaveTimer / maxWaveTimer;
+        currentWaveTimer += Time.deltaTime;
+        currentTimeBetweenSpawns -= Time.deltaTime;
+            
+        if (currentTimeBetweenSpawns <= 0)
+        {
+            waveCount++;
+            currentTimeBetweenSpawns = maxTimeBetweenSpawns;
+            currentTime = 0;
+            currentTime2 = 0;
+            currentTime3 = 0;
+        }
+            
+        if (currentWaveTimer >= 120 && 
+            !GameSaveStateManager.Instance.saveGameDataManager.HasFinishedRide(rideData.rideName) && 
+            !GetComponentInChildren<Generator>().arenaFightFinished)
+        {
+            WonWave();
+        }
+        else if (currentRideHealth <= 0)
+        {
+            LostWave();
+        }
+    }
+    
+    public void ActivationStatusInvisibleWalls(bool activationStatus)
+    {
+        foreach (var _invisibleWalls in invisibleCollider)
+        {
+            _invisibleWalls.SetActive(activationStatus);
+        }
+    }
+
+    #region WaveSetup
+
+    public void SetWave()
+    {
+        InGameUIManager.Instance.fightScene.SetActive(true);
+        SetRide(false, true);
+        
+        //Check if rideGotDestroyed because at the start the music already plays when turning on the generator
+        if (rideGotDestroyed)
+            GetComponentInChildren<Generator>().fightMusic.Play();
+    }
+
+    private void CheckAndStartWaveUpdate()
+    {
+        if (waveStarted)
+        {
+            switch (Player.Instance.enemyWave)
+            {
+                case 0:
+                    StartFirstWave();
+                    break;
+                case 1:
+                    StartSecondWave();
+                    break;
+                case 2:
+                    StartThirdWave();
+                    break;
+            }
+        }
+    }
+    
+    private void LostWave()
+    {
+        GetComponentInChildren<Generator>().fightMusic.Stop();
+        AudioManager.Instance.Play("FightMusicLoss");
+        
+        SetRide(true, false);
+        rideGotDestroyed = true;
+        
+        foreach (var _enemy in currentEnemies)
+        {
+            Destroy(_enemy);
+        }
+    }
+
+    private void WonWave()
+    {
+        Player.Instance.enemyWave++;
+
+        GetComponentInChildren<Generator>().fightMusic.Stop();
+        AudioManager.Instance.Play("FightMusicWon");
+        GetComponent<Animator>().SetTrigger("StartRide");
+        
+        ActivationStatusInvisibleWalls(false);
+
+        foreach (var _enemy in currentEnemies)
+        {
+            Destroy(_enemy);
+        }
+        
+        GetComponentInChildren<PlayerArenaEnter>().canPutAwayWalkieTalkie = true;
+        currentTimeBetweenSpawns = maxTimeBetweenSpawns;
+        waveStarted = false;
+        fightCam.Priority = 5;
+        InGameUIManager.Instance.fightScene.SetActive(false);
+        InGameUIManager.Instance.radioAnim.SetTrigger("PutOn");
+        StartCoroutine(InGameUIManager.Instance.DisplayDialogueElements());
+        GetComponentInChildren<Generator>().arenaFightFinished = true;
+        GameSaveStateManager.Instance.saveGameDataManager.AddRide(rideData.rideName);
+        GameSaveStateManager.Instance.SaveGame();
+        AudioManager.Instance.Play("InGameMusic");
+    }
+
+    #endregion
+    
+    #region enemyWaves
+
     private void StartFirstWave()
     {
         switch (waveCount)
@@ -187,7 +266,6 @@ public class Ride : MonoBehaviour
         }
     }
 
-    //The second waves with its enemies and spawn times
     private void StartSecondWave()
     {
         switch (waveCount)
@@ -271,7 +349,6 @@ public class Ride : MonoBehaviour
         }
     }
     
-    //The third waves with its enemies and spawn times
     private void StartThirdWave()
     {
         switch (waveCount)
@@ -361,145 +438,56 @@ public class Ride : MonoBehaviour
                 break;
         }
     }
+    
+    private void SpawnEnemies(GameObject enemyType, int enemyCount)
+    {
+        for (int _i = 0; _i < enemyCount; _i++)
+        {
+            var _enemy = Instantiate(enemyType, spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position, 
+                Quaternion.identity, transform); 
+            
+            currentEnemies.Add(_enemy);
+        }
+    }
+
     #endregion
-
-    //Sets the spawn times of enemies to zero
-    private void SetCurrentTimeZero()
-    {
-        currentTime = 0;
-        currentTime2 = 0;
-        currentTime3 = 0;
-    }
     
-    //Here every slider and timer is updated. When wave timer hits its limit the player wins, if hp of the ride hits zero, the ride resets
-    private void TimerUpdate()
-    {
-        if (!waveStarted) 
-            return;
-        
-        Slider slider = InGameUI.Instance.rideHpSlider.GetComponentInChildren<Slider>();
-        slider.value = currentRideHealth / maxRideHealth;
-        Slider timeSlider = InGameUI.Instance.rideTimeSlider.GetComponent<Slider>();
-        timeSlider.value = currentWaveTimer / maxWaveTimer;
-        currentWaveTimer += Time.deltaTime;
-        timeBetweenSpawns -= Time.deltaTime;
-            
-        if (timeBetweenSpawns <= 0)
-        {
-            waveCount++;
-            timeBetweenSpawns = maxTimeBetweenSpawns;
-            SetCurrentTimeZero();
-        }
-            
-        if (currentWaveTimer >= 120 && !GameSaveStateManager.Instance.saveGameDataManager.HasFinishedRide(rideData.rideName) && !GetComponentInChildren<Generator>().arenaFightFinished)
-        {
-            RideRepairs();
-        }
-
-        if (currentRideHealth <= 0)
-        {
-            ResetRide();
-        }
-    }
+    #region Ride
     
-    //Activates or deactivates invisible walls for the player
-    public void ActivateInvisibleWalls(bool activationStatus)
+    private void SetRide(bool setRideActivation, bool waveStart)
     {
-        foreach (var invisibleWalls in invisibleCollider)
-        {
-            invisibleWalls.SetActive(activationStatus);
-        }
+        currentWaveTimer = 0;
+        waveCount = 0;
+        currentRideHealth = maxRideHealth;
+        canActivateRide = setRideActivation;
+        waveStarted = waveStart;
     }
 
-    //Spawns a specific number of a specific enemy type on a random spawn point
-    private void SpawnEnemies(GameObject enemyType, int enemies)
-    {
-        for (int i = 0; i < enemies; i++)
-        {
-            var enemy = Instantiate(enemyType, spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position, Quaternion.identity, transform);
-            enemyList.Add(enemy);
-        }
-    }
-
-    //When ride got hit, it changes color 
-    public void HitRide(float duration)
+    public void StartRideHitVisual(float duration)
     {
         if (rideGotHit)
-        {
             return;
-        }
-        
-        noAlpha.r = 1;
-        noAlpha.g = 0;
-        noAlpha.b = 0;
-        noAlpha.a = 0.3f;
-        GetComponent<SpriteRenderer>().color = noAlpha;
-        
-        Time.timeScale = 0;
 
-        StartCoroutine(RideGotHit(duration));
-    }
-    
-    //Here it changes color to normal
-    private IEnumerator RideGotHit(float duration)
-    {
         rideGotHit = true;
 
+        SpriteRenderer _rideRenderer = GetComponent<SpriteRenderer>();
+        _rideRenderer.color = Color.red;
+
+        Time.timeScale = 0.1f;
+        
+        StartCoroutine(StopRideHitVisual(duration, _rideRenderer));
+    }
+    
+    private IEnumerator StopRideHitVisual(float duration, SpriteRenderer rideRenderer)
+    {
         yield return new WaitForSecondsRealtime(duration);
         
         Time.timeScale = 1f;
-
-        noAlpha.r = 1;
-        noAlpha.g = 1;
-        noAlpha.b = 1;
-        noAlpha.a = 1;
-        GetComponent<SpriteRenderer>().color = noAlpha;
+        
+        rideRenderer.color = Color.white;
+        
         rideGotHit = false;
     }
 
-    //Resets ride when enemies get the hp to zero, can be activated by player then
-    private void ResetRide()
-    {
-        GetComponentInChildren<Generator>().fightMusic.Stop();
-        AudioManager.Instance.Play("FightMusicLoss");
-        
-        SetRide(true, false);
-        rideGotDestroyed = true;
-        
-        foreach (var _objects in enemyList)
-        {
-            Destroy(_objects);
-        }
-    }
-
-    //Starts everything that is needed to end the ride and get back to normal
-    private void RideRepairs()
-    {
-        Player.Instance.isInteracting = true;
-        Player.Instance.rideCount++;
-        Player.Instance.isInteracting = false;
-
-        GetComponentInChildren<Generator>().fightMusic.Stop();
-        AudioManager.Instance.Play("FightMusicWon");
-        GetComponent<Animator>().SetTrigger("StartRide");
-        
-        ActivateInvisibleWalls(false);
-
-        foreach (var objects in enemyList)
-        {
-            Destroy(objects);
-        }
-
-        GetComponentInChildren<PlayerCollision>().canPutAway = true;
-        timeBetweenSpawns = maxTimeBetweenSpawns;
-        waveStarted = false;
-        fightCam.Priority = 5;
-        InGameUI.Instance.fightScene.SetActive(false);
-        InGameUI.Instance.radioAnim.SetTrigger("PutOn");
-        StartCoroutine(InGameUI.Instance.DisplayDialogueElements());
-        GameSaveStateManager.Instance.saveGameDataManager.AddRide(rideData.rideName);
-        GameSaveStateManager.Instance.SaveGame();
-        GetComponentInChildren<Generator>().arenaFightFinished = true;
-        AudioManager.Instance.Play("InGameMusic");
-    }
+    #endregion
 }

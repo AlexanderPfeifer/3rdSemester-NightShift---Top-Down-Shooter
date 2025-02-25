@@ -2,17 +2,18 @@ using UnityEngine;
 
 public class Generator : MonoBehaviour
 {
+    [Header("Interactable")]
     [SerializeField] private RidesSO rideData;
     [SerializeField] private GameObject fortuneWheel;
+    
+    [Header("Music")]
     [SerializeField] public AudioSource fightMusic;
     
     [HideInInspector] public bool isInteractable = true;
     public bool arenaFightFinished;
 
-    //If the ride was already finished, the generator cannot be interacted with, so no fight can be started
     private void Awake()
     {
-        //When loading the scene, we destroy the collectible, if it was already saved as collected.
         if (GameSaveStateManager.Instance.saveGameDataManager.HasFinishedRide(rideData.rideName))
         {
             isInteractable = false;
@@ -20,8 +21,7 @@ public class Generator : MonoBehaviour
         }
     }
 
-    //When the Generator got activated, everything for the fight is made ready
-    public void SetFortuneWheel()
+    public void SetUpFightArena()
     {
         fightMusic.Play();
         AudioManager.Instance.Stop("InGameMusic");

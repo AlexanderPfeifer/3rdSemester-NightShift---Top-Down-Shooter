@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu]
 public class WeaponObjectSO : ScriptableObject
 {
     //Scriptable Object for every unique weapon with unique perks

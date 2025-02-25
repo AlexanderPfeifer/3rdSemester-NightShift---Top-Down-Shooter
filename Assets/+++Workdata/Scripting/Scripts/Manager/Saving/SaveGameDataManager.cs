@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class SaveGameDataManager
@@ -6,18 +8,14 @@ public class SaveGameDataManager
     public string saveName;
     public string loadedSceneName = GameSaveStateManager.InGameSceneName;
     
-    /// A list of all unique identifiers for all collected collectibles 
-    public List<string> collectedCollectiblesIdentifiers = new List<string>();
-    
-    public List<string> collectedWeaponsIdentifiers = new List<string>();
-    
-    public List<string> weaponsInInventoryIdentifiers = new List<string>();
-    
-    public List<string> finishedRides = new List<string>();
+    [Header("Collectibles Identifier")]
+    public List<string> collectedCollectiblesIdentifiers = new();
+    public List<string> collectedWeaponsIdentifiers = new();
+    public List<string> weaponsInInventoryIdentifiers = new();
+    [FormerlySerializedAs("finishedRides")] public List<string> finishedRidesIdentifiers = new();
     
     public Player.PlayerSaveData newPlayerSaveData;
 
-    /// Called whenever a collectible is collected
     /// <param name="identifier">The identifier that is unique for every collectible</param>
     public void AddCollectible(string identifier)
     {
@@ -25,10 +23,7 @@ public class SaveGameDataManager
             return;
         collectedCollectiblesIdentifiers.Add(identifier);
     }
-
-    /// <summary>
-    /// Called whenever a collectible is collected
-    /// </summary>
+    
     /// <param name="identifier">The identifier that is unique for every collectible</param>
     public void AddWeapon(string identifier)
     {
@@ -41,44 +36,35 @@ public class SaveGameDataManager
         weaponsInInventoryIdentifiers.Add(identifier);
     }
     
+    /// <param name="identifier">The identifier that is unique for every collectible</param>
     public void AddRide(string identifier)
     {
-        if (finishedRides.Contains(identifier))
+        if (finishedRidesIdentifiers.Contains(identifier))
             return;
-        finishedRides.Add(identifier);
+        finishedRidesIdentifiers.Add(identifier);
     }
     
-    /// <summary>
-    /// Called when we try to find out if a collectible was already collected
-    /// </summary>
     /// <param name="identifier">The identifier that is unique for every collectible</param>
-    /// <returns>Returns true if collectible is collected, otherwise returns false</returns>
     public bool HasCollectible(string identifier)
     {
         return collectedCollectiblesIdentifiers.Contains(identifier);
     }
     
-    /// <summary>
-    /// Called when we try to find out if a weapon was already collected
-    /// </summary>
+    /// <param name="identifier">The identifier that is unique for every collectible</param>
     public bool HasWeapon(string identifier)
     {
         return collectedWeaponsIdentifiers.Contains(identifier);
     }
-
-    /// <summary>
-    /// Called when we try to find out if a weapon was already collected in the inventory
-    /// </summary>
+    
+    /// <param name="identifier">The identifier that is unique for every collectible</param>
     public bool HasWeaponInInventory(string identifier)
     {
         return weaponsInInventoryIdentifiers.Contains(identifier);
     }
     
-    /// <summary>
-    /// Called when we try to find out if a ride was already finished
-    /// </summary>
+    /// <param name="identifier">The identifier that is unique for every collectible</param>
     public bool HasFinishedRide(string identifier)
     {
-        return finishedRides.Contains(identifier);
+        return finishedRidesIdentifiers.Contains(identifier);
     }
 }

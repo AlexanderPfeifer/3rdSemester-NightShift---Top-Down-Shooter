@@ -53,8 +53,8 @@ public class Player : MonoBehaviour
     private int bulletsPerShot;
 
     [Header("Weapon")]
-    [SerializeField] public List<WeaponObjectSO> allWeaponPrizes;
-    [SerializeField] public GameObject weaponVisual;
+    public List<WeaponObjectSO> allWeaponPrizes;
+    public GameObject weaponVisual;
     [SerializeField] private Transform weaponPosParent;
     [SerializeField] public Transform weaponEndPoint;
     [SerializeField] private Animator weaponAnim;
@@ -86,15 +86,15 @@ public class Player : MonoBehaviour
     private bool isUsingAbility;
 
     [Header("Interaction")]
-    [SerializeField] private float interactRadius = 2;
     [HideInInspector] public bool canInteract = true;
     [HideInInspector] public bool isInteracting;
+    [HideInInspector] public int enemyWave;
+    [SerializeField] private float interactRadius = 2;
     [SerializeField] public LayerMask wheelOfFortuneLayer;
     [SerializeField] public LayerMask generatorLayer;
     [SerializeField] public LayerMask rideLayer;
     [SerializeField] public LayerMask duckLayer;
     [SerializeField] private LayerMask collectibleLayer;
-    public int rideCount;
 
     [Header("UI")]
     [HideInInspector] public bool isPlayingDialogue;
@@ -157,8 +157,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        InGameUI.Instance.loadingScreenAnim.SetTrigger("End");
-        InGameUI.Instance.ActivateInGameUI();
+        InGameUIManager.Instance.loadingScreenAnim.SetTrigger("End");
+        InGameUIManager.Instance.ActivateInGameUI();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -193,23 +193,23 @@ public class Player : MonoBehaviour
 
     private void GameInputManagerOnShootingAction(object sender, EventArgs e)
     {
-        if (!InGameUI.Instance.inventoryIsOpened && !isUsingAbility && weaponVisual.activeSelf && !isInteracting && !isPlayingDialogue)
+        if (!InGameUIManager.Instance.inventoryIsOpened && !isUsingAbility && weaponVisual.activeSelf && !isInteracting && !isPlayingDialogue)
         {
             shoot = true;
         }
         else
         {
-            if (InGameUI.Instance.textIsPlaying)
+            if (InGameUIManager.Instance.textIsPlaying)
             {
-                InGameUI.Instance.textDisplaySpeed = 0.025f;
+                InGameUIManager.Instance.textDisplaySpeed = 0.00025f;
             }
-            else if (InGameUI.Instance.canPlayNext)
+            else if (InGameUIManager.Instance.canPlayNext)
             {
-                InGameUI.Instance.PlayNext();
+                InGameUIManager.Instance.PlayNext();
             }
-            else if (InGameUI.Instance.canEndDialogue)
+            else if (InGameUIManager.Instance.canEndDialogue)
             {
-                InGameUI.Instance.EndDialogue();
+                InGameUIManager.Instance.EndDialogue();
             }   
         }
     }
@@ -227,7 +227,7 @@ public class Player : MonoBehaviour
     private void GameInputManagerOnGamePausedAction(object sender, EventArgs e)
     {
         if(!isPlayingDialogue)
-            InGameUI.Instance.PauseGame();
+            InGameUIManager.Instance.PauseGame();
     }
 
     private void GameInputManagerOnInteractAction(object sender, EventArgs e)
@@ -236,32 +236,32 @@ public class Player : MonoBehaviour
         {
             _collectible.GetComponent<Collectible>().Collect();
         }
-        else if (GetInteractionObjectInRange(wheelOfFortuneLayer, out _) && !InGameUI.Instance.fortuneWheelScreen.activeSelf)
+        else if (GetInteractionObjectInRange(wheelOfFortuneLayer, out _) && !InGameUIManager.Instance.fortuneWheelScreen.activeSelf)
         {
             foreach (var _weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
             {
-                InGameUI.Instance.weaponSwapScreen.SetActive(true);
-                EventSystem.current.SetSelectedGameObject(InGameUI.Instance.firstSelectedWeaponDecision);
-                InGameUI.Instance.weaponDecisionWeaponAbilityText.text = "";
-                InGameUI.Instance.weaponDecisionWeaponName.text = "";
-                InGameUI.Instance.weaponDecisionWeaponImage.GetComponent<Image>().sprite = _weapon.inGameWeaponVisual;
-                InGameUI.Instance.weaponDecisionWeaponAbilityText.text += "Special Ability:" + "\n" + _weapon.weaponAbilityDescription;
-                InGameUI.Instance.weaponDecisionWeaponName.text += _weapon.weaponName;
+                InGameUIManager.Instance.weaponSwapScreen.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(InGameUIManager.Instance.firstSelectedWeaponDecision);
+                InGameUIManager.Instance.weaponDecisionWeaponAbilityText.text = "";
+                InGameUIManager.Instance.weaponDecisionWeaponName.text = "";
+                InGameUIManager.Instance.weaponDecisionWeaponImage.GetComponent<Image>().sprite = _weapon.inGameWeaponVisual;
+                InGameUIManager.Instance.weaponDecisionWeaponAbilityText.text += "Special Ability:" + "\n" + _weapon.weaponAbilityDescription;
+                InGameUIManager.Instance.weaponDecisionWeaponName.text += _weapon.weaponName;
                 isInteracting = true;
                 hasWeapon = true;
             }
 
             if (!hasWeapon)
             {
-                InGameUI.Instance.fortuneWheelScreen.SetActive(true);
+                InGameUIManager.Instance.fortuneWheelScreen.SetActive(true);
             }
         }
-        else if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && !InGameUI.Instance.generatorScreen.activeSelf)
+        else if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && !InGameUIManager.Instance.generatorScreen.activeSelf)
         {
             if (_generator.GetComponent<Generator>().isInteractable)
             {
-                InGameUI.Instance.generatorScreen.SetActive(true);
-                InGameUI.Instance.SaveGame();
+                InGameUIManager.Instance.generatorScreen.SetActive(true);
+                InGameUIManager.Instance.SaveGame();
             }
         }
         else if (GetInteractionObjectInRange(duckLayer, out _))
@@ -274,14 +274,14 @@ public class Player : MonoBehaviour
             
             if (_ride.canActivateRide)
             {
-                _ride.StartWave();
+                _ride.SetWave();
             }
         }
     }
 
     private void GameInputManagerOnUsingAbilityAction(object sender, EventArgs e)
     {
-        if (currentAbilityTime >= maxAbilityTime && InGameUI.Instance.fightScene.activeSelf)
+        if (currentAbilityTime >= maxAbilityTime && InGameUIManager.Instance.fightScene.activeSelf)
         {
             StartCoroutine(StartWeaponAbility());
         }
@@ -293,7 +293,7 @@ public class Player : MonoBehaviour
 
     private void HandleAimingUpdate()
     {
-        if (InGameUI.Instance.inventoryIsOpened || !weaponVisual.activeSelf) 
+        if (InGameUIManager.Instance.inventoryIsOpened || !weaponVisual.activeSelf) 
             return;
         
         mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -369,7 +369,7 @@ public class Player : MonoBehaviour
 
     private void HandleMovementFixedUpdate()
     {
-        if (isPlayingDialogue || InGameUI.Instance.inventoryIsOpened || isInteracting) 
+        if (isPlayingDialogue || InGameUIManager.Instance.inventoryIsOpened || isInteracting) 
             return;
         
         rb.linearVelocity = gameInputManager.GetMovementVectorNormalized() * moveSpeed + knockBack;
@@ -408,7 +408,6 @@ public class Player : MonoBehaviour
         else if (playerNoHandVisual.activeSelf)
         {
             animNoHand.SetFloat("MoveSpeed", 0);
-            AudioManager.Instance.Stop("Walking");
         }
     }
 
@@ -420,7 +419,7 @@ public class Player : MonoBehaviour
     private IEnumerator StartWeaponAbility()
     {
         canGetAbilityGain = false;
-        InGameUI.Instance.pressSpace.SetActive(false);
+        InGameUIManager.Instance.pressSpace.SetActive(false);
 
         switch (myWeapon)
         {
@@ -495,8 +494,8 @@ public class Player : MonoBehaviour
         playerNoHandVisual.SetActive(true);
         hasWeapon = true;
 
-        InGameUI.Instance.inventoryWeapon.GetComponent<Image>().sprite = weapon.inGameWeaponVisual;
-        InGameUI.Instance.inventoryWeapon.SetActive(true);
+        InGameUIManager.Instance.inventoryWeapon.GetComponent<Image>().sprite = weapon.inGameWeaponVisual;
+        InGameUIManager.Instance.inventoryWeapon.SetActive(true);
 
         myWeapon = weapon.weaponName switch
         {

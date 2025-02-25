@@ -14,7 +14,7 @@ public class WeaponSwapUI : MonoBehaviour
             _fortuneWheel.ride.GetComponent<Ride>().canActivateRide = true;
             _fortuneWheel.DeactivateFortuneWheel();   
         }
-        InGameUI.Instance.weaponSwapScreen.SetActive(false);
+        InGameUIManager.Instance.weaponSwapScreen.SetActive(false);
         Player.Instance.isInteracting = false;
     }
     
@@ -25,10 +25,10 @@ public class WeaponSwapUI : MonoBehaviour
         foreach (var _weapon in Player.Instance.allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
         {
             GameSaveStateManager.Instance.saveGameDataManager.weaponsInInventoryIdentifiers.Remove(_weapon.name);
-            InGameUI.Instance.inventoryWeapon.SetActive(true);
+            InGameUIManager.Instance.inventoryWeapon.SetActive(true);
         }
 
-        InGameUI.Instance.weaponSwapScreen.SetActive(false);
-        InGameUI.Instance.fortuneWheelScreen.SetActive(true);
+        InGameUIManager.Instance.weaponSwapScreen.SetActive(false);
+        InGameUIManager.Instance.fortuneWheelScreen.SetActive(true);
     }
 }

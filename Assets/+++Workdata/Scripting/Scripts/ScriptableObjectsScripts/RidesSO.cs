@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu]
 public class RidesSO : ScriptableObject
 {
     //Scriptable Object for every unique ride, that got finished

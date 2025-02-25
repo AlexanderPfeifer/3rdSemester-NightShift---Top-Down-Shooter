@@ -3,31 +3,30 @@ using UnityEngine.EventSystems;
 
 public class FortuneWheelUI : MonoBehaviour
 {
-    [Header("Velocity Floats")] 
+    [Header("SpinPower")] 
     private const float SpinPower = 1250;
     [SerializeField] private float minStopPower, maxStopPower;
     [SerializeField] private float maxAngularVelocity = 1440;
     
     private const int FortuneWheelPieCount = 5;
 
-    [SerializeField] private GameObject firstFortuneWheelSelected;
+    [SerializeField] private GameObject firstFortuneWheelButtonSelected;
 
     private Rigidbody2D rb;
-    [HideInInspector] public bool canGetPrize;
+    [HideInInspector] public bool wheelGotSpinned;
 
-    //Gets and Sets the fortune wheel to a random rotation
     private void OnEnable()
     {
         Player.Instance.isInteracting = true;
         
-        EventSystem.current.SetSelectedGameObject(firstFortuneWheelSelected);
+        EventSystem.current.SetSelectedGameObject(firstFortuneWheelButtonSelected);
     }
 
     private void Start()
     {
         rb = GetComponentInChildren<Rigidbody2D>();
 
-        transform.eulerAngles = new Vector3(0, 0, Random.Range(0, 360));
+        rb.transform.eulerAngles = new Vector3(0, 0, Random.Range(0, 360));
     }
 
     private void Update()
@@ -35,62 +34,48 @@ public class FortuneWheelUI : MonoBehaviour
         FortuneWheelUpdate();
     }
 
-    //Slows down the fortune wheel over time after being span
     private void FortuneWheelUpdate()
     {
-        var angularVelocity = rb.angularVelocity;
+        var _angularVelocity = rb.angularVelocity;
 
-        if (angularVelocity > 0)
+        if (_angularVelocity > 0)
         {
-            angularVelocity -= Random.Range(minStopPower, maxStopPower) * Time.deltaTime;
-            if (angularVelocity < 5)
-            {
-                angularVelocity = 0;
-            }
-            rb.angularVelocity = angularVelocity;
+            _angularVelocity -= Random.Range(minStopPower, maxStopPower) * Time.deltaTime;
 
-            rb.angularVelocity = Mathf.Clamp(angularVelocity, 0, maxAngularVelocity);
+            rb.angularVelocity = Mathf.Clamp(_angularVelocity, 0, maxAngularVelocity);
 
-            canGetPrize = true;
+            wheelGotSpinned = true;
         }
 
-        if (angularVelocity > 0 || !canGetPrize) 
+        if (_angularVelocity > 0 || !wheelGotSpinned) 
             return;
         
         GetRewardPosition();
     }
     
-    //Spins the fortune wheel by adding torque to it
     public void SpinWheel()
     {
         if (rb.angularVelocity > 0) 
             return;
         
         rb.AddTorque(SpinPower);
-
-        Player.Instance.isInteracting = true;
     }
 
-    //Gets the Rotation of where the fortune wheel stopped spinning
     private void GetRewardPosition()
     {
-        var rotationAngle = transform.eulerAngles.z;
-        const float pieSize = (360f / FortuneWheelPieCount);
-        int priceIndex = Mathf.FloorToInt((rotationAngle + 41f) / pieSize) % Player.Instance.allWeaponPrizes.Count;
-        GetWeaponPrize(Player.Instance.allWeaponPrizes[priceIndex]);
+        const float pieSize = 360f / FortuneWheelPieCount;
+        //Do not know anymore why I put +41 right now, but it works
+        int _priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + 36f) / pieSize) % Player.Instance.allWeaponPrizes.Count;
+        GetWeaponPrize(Player.Instance.allWeaponPrizes[_priceIndex]);
     }
     
-    //Gets the weapon prize and sets every weapon specification to the player
     private void GetWeaponPrize(WeaponObjectSO weapon)
     {
         Player.Instance.GetWeapon(weapon);
-        
-        Player.Instance.isInteracting = false;
-
         GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
 
-        gameObject.transform.parent.gameObject.SetActive(false);
-        canGetPrize = false;
+        gameObject.SetActive(false);
+        wheelGotSpinned = false;
 
         if (Player.Instance.GetInteractionObjectInRange(Player.Instance.wheelOfFortuneLayer, out Collider2D _interactable))
         {
