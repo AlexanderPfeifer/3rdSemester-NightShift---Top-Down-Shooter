@@ -25,7 +25,7 @@ public class WeaponSwapUI : MonoBehaviour
         foreach (var _weapon in Player.Instance.allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
         {
             GameSaveStateManager.Instance.saveGameDataManager.weaponsInInventoryIdentifiers.Remove(_weapon.name);
-            InGameUIManager.Instance.inventoryWeapon.SetActive(true);
+            InGameUIManager.Instance.equippedWeapon.SetActive(true);
         }
 
         InGameUIManager.Instance.weaponSwapScreen.SetActive(false);

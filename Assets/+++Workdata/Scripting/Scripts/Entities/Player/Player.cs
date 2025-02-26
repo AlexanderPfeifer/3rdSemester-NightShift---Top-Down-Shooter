@@ -96,9 +96,6 @@ public class Player : MonoBehaviour
     [SerializeField] public LayerMask duckLayer;
     [SerializeField] private LayerMask collectibleLayer;
 
-    [Header("UI")]
-    [HideInInspector] public bool isPlayingDialogue;
-    
     private MyWeapon myWeapon;
     enum MyWeapon
     {
@@ -193,21 +190,21 @@ public class Player : MonoBehaviour
 
     private void GameInputManagerOnShootingAction(object sender, EventArgs e)
     {
-        if (!InGameUIManager.Instance.inventoryIsOpened && !isUsingAbility && weaponVisual.activeSelf && !isInteracting && !isPlayingDialogue)
+        if (!InGameUIManager.Instance.inventoryIsOpened && !isUsingAbility && weaponVisual.activeSelf && !isInteracting && InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueNotPlaying)
         {
             shoot = true;
         }
         else
         {
-            if (InGameUIManager.Instance.textIsPlaying)
+            if (InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialoguePlaying)
             {
-                InGameUIManager.Instance.textDisplaySpeed = 0.00025f;
+                InGameUIManager.Instance.textDisplaySpeed = InGameUIManager.Instance.maxTextDisplaySpeed;
             }
-            else if (InGameUIManager.Instance.canPlayNext)
+            else if (InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueAbleToGoNext)
             {
-                InGameUIManager.Instance.PlayNext();
+                InGameUIManager.Instance.PlayNextDialogue();
             }
-            else if (InGameUIManager.Instance.canEndDialogue)
+            else if (InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueAbleToEnd)
             {
                 InGameUIManager.Instance.EndDialogue();
             }   
@@ -226,8 +223,8 @@ public class Player : MonoBehaviour
 
     private void GameInputManagerOnGamePausedAction(object sender, EventArgs e)
     {
-        if(!isPlayingDialogue)
-            InGameUIManager.Instance.PauseGame();
+        if(InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueNotPlaying)
+            InGameUIManager.Instance.OpenInventory();
     }
 
     private void GameInputManagerOnInteractAction(object sender, EventArgs e)
@@ -261,7 +258,7 @@ public class Player : MonoBehaviour
             if (_generator.GetComponent<Generator>().isInteractable)
             {
                 InGameUIManager.Instance.generatorScreen.SetActive(true);
-                InGameUIManager.Instance.SaveGame();
+                GameSaveStateManager.Instance.SaveGame();
             }
         }
         else if (GetInteractionObjectInRange(duckLayer, out _))
@@ -369,7 +366,7 @@ public class Player : MonoBehaviour
 
     private void HandleMovementFixedUpdate()
     {
-        if (isPlayingDialogue || InGameUIManager.Instance.inventoryIsOpened || isInteracting) 
+        if (InGameUIManager.Instance.dialogueState != InGameUIManager.DialogueState.DialogueNotPlaying || InGameUIManager.Instance.inventoryIsOpened || isInteracting) 
             return;
         
         rb.linearVelocity = gameInputManager.GetMovementVectorNormalized() * moveSpeed + knockBack;
@@ -379,7 +376,7 @@ public class Player : MonoBehaviour
     
     private void SetAnimationParameterLateUpdate()
     {
-        if (!isInteracting && !isPlayingDialogue)
+        if (!isInteracting && InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueNotPlaying)
         {
             if (playerVisual.activeSelf)
             {
@@ -494,8 +491,8 @@ public class Player : MonoBehaviour
         playerNoHandVisual.SetActive(true);
         hasWeapon = true;
 
-        InGameUIManager.Instance.inventoryWeapon.GetComponent<Image>().sprite = weapon.inGameWeaponVisual;
-        InGameUIManager.Instance.inventoryWeapon.SetActive(true);
+        InGameUIManager.Instance.equippedWeapon.GetComponent<Image>().sprite = weapon.inGameWeaponVisual;
+        InGameUIManager.Instance.equippedWeapon.SetActive(true);
 
         myWeapon = weapon.weaponName switch
         {

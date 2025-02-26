@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [System.Serializable]
 public class SaveGameDataManager
@@ -12,7 +11,7 @@ public class SaveGameDataManager
     public List<string> collectedCollectiblesIdentifiers = new();
     public List<string> collectedWeaponsIdentifiers = new();
     public List<string> weaponsInInventoryIdentifiers = new();
-    [FormerlySerializedAs("finishedRides")] public List<string> finishedRidesIdentifiers = new();
+    public List<string> finishedRidesIdentifiers = new();
     
     public Player.PlayerSaveData newPlayerSaveData;
 

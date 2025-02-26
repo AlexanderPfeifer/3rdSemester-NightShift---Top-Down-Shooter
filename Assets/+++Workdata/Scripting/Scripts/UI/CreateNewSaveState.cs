@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class LoadScreenNewGame : MonoBehaviour
+public class CreateNewSaveState : MonoBehaviour
 {
     //When new game is created in the loading screen animation, the game is saved with an animation event
     public void StartNewGame()

@@ -475,7 +475,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1681847468}
         m_TargetAssemblyTypeName: InGameUI, Assembly-CSharp
-        m_MethodName: PauseGame
+        m_MethodName: OpenInventory
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -705,8 +705,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -15.5756, y: 8.75}
+  m_SizeDelta: {x: 907.0699, y: 105.0737}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &163291304
 MonoBehaviour:
@@ -793,7 +793,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -370.39667, y: -37.21689, z: -337.61035, w: -37.216873}
+  m_margin: {x: -0.023010254, y: 0.44171143, z: 0.002319336, w: -0.47047806}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2072,7 +2072,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &355295547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2123,12 +2123,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2008812083}
+  m_Father: {fileID: 1787699097}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1820, y: 980}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &387705893
 GameObject:
@@ -3370,7 +3370,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1681847468}
         m_TargetAssemblyTypeName: InGameUI, Assembly-CSharp
-        m_MethodName: PauseGame
+        m_MethodName: OpenInventory
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5959,6 +5959,7 @@ GameObject:
   - component: {fileID: 1046655513}
   - component: {fileID: 1046655512}
   - component: {fileID: 1046655514}
+  - component: {fileID: 1046655515}
   m_Layer: 5
   m_Name: IMG_Radio_On
   m_TagString: Untagged
@@ -6046,6 +6047,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1046655515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046655510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5f61f22603bf94899592074d974095, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1057738072
 GameObject:
   m_ObjectHideFlags: 0
@@ -6983,6 +6996,7 @@ GameObject:
   - component: {fileID: 1181395886}
   - component: {fileID: 1181395885}
   - component: {fileID: 1181395887}
+  - component: {fileID: 1181395888}
   m_Layer: 5
   m_Name: IMG_Dialog_Box
   m_TagString: Untagged
@@ -7070,6 +7084,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1181395888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181395883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91662482ee69c6843ad1c241c5c2cb7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1245599052
 GameObject:
   m_ObjectHideFlags: 0
@@ -7793,7 +7819,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1431673662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7905,7 +7931,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2008812083}
+  m_Father: {fileID: 1787699097}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8956,7 +8982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1631629825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9068,7 +9094,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2008812083}
+  m_Father: {fileID: 1787699097}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9256,11 +9282,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
+  inventory: {fileID: 257483467}
+  inventoryIsOpened: 0
   inventoryText: {fileID: 950976627}
   inventoryHeader: {fileID: 75838877}
   inventoryImage: {fileID: 631215903}
   collectedObjects: {fileID: 11400000, guid: fa73a1117e1d3094ba8e37d8ee4a2636, type: 2}
-  inventory: {fileID: 257483467}
   brokenLights: {fileID: 1083643690}
   teddy: {fileID: 1883376355}
   newsPaper: {fileID: 194801963}
@@ -9269,22 +9296,23 @@ MonoBehaviour:
   magnumMagnum: {fileID: 2031220323}
   cornDogHuntingRifle: {fileID: 775953482}
   lollipopShotgun: {fileID: 1029645976}
-  loadingScreenAnim: {fileID: 1245599056}
   fightScene: {fileID: 559663715}
   pressSpace: {fileID: 467741167}
   abilityProgress: {fileID: 573094197}
   rideTimeSlider: {fileID: 1460599977}
   rideHpSlider: {fileID: 331087143}
-  inventoryWeapon: {fileID: 1992656932}
+  equippedWeapon: {fileID: 1992656932}
   eIndicator: {fileID: 422605668}
   inGameUIScreen: {fileID: 1057738072}
   firstInventorySelected: {fileID: 110417813}
   inventoryButton: {fileID: 512101827}
-  whiteScreen: {fileID: 355295546}
-  thanksForPlayingText: {fileID: 1431673661}
-  nightShiftText: {fileID: 1631629824}
-  inventoryIsOpened: 0
-  textDisplaySpeed: 0.05
+  fortuneWheelScreen: {fileID: 540206087}
+  generatorScreen: {fileID: 590653168}
+  changeLight: 0
+  loadingScreenAnim: {fileID: 1245599056}
+  radioAnim: {fileID: 1046655514}
+  dialogueBoxAnim: {fileID: 1181395887}
+  endScreen: {fileID: 1787699098}
   dialogues:
   - "???: Evening Boss, I\u2018m right in front of the entrance gate now."
   - "Now, I\u2018m gonna be honest with you - I imagined the park to be a lot smaller.
@@ -9317,20 +9345,16 @@ MonoBehaviour:
   - "I think it\u2018s about damn time for you to tell me what\u2018s going on here. "
   - "Boss: Fine. You know what? Come to the entrance I'm gonna be there\u2026 "
   dialogueText: {fileID: 163291304}
+  standardTextDisplaySpeed: 0.05
+  textDisplaySpeed: 0.05
   dialogueCount: 0
-  dialogueLeft: 0
-  canPlayNext: 0
-  textIsPlaying: 0
-  canEndDialogue: 0
-  radioAnim: {fileID: 1046655514}
-  dialogueBoxAnim: {fileID: 1181395887}
-  fortuneWheelScreen: {fileID: 540206087}
-  generatorScreen: {fileID: 590653168}
-  weaponSwapScreen: {fileID: 237238742}
+  maxTextDisplaySpeed: 0.0005
   weaponDecisionWeaponImage: {fileID: 422200997}
   weaponDecisionWeaponAbilityText: {fileID: 1120949595}
   weaponDecisionWeaponName: {fileID: 452892413}
   firstSelectedWeaponDecision: {fileID: 993900336}
+  weaponSwapScreen: {fileID: 237238742}
+  dialogueState: 0
 --- !u!1 &1696905317
 GameObject:
   m_ObjectHideFlags: 0
@@ -9970,6 +9994,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1786222818}
   m_CullTransparentMesh: 1
+--- !u!1 &1787699096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1787699097}
+  - component: {fileID: 1787699098}
+  - component: {fileID: 1787699099}
+  m_Layer: 5
+  m_Name: EndScreen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1787699097
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787699096}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 355295549}
+  - {fileID: 1431673664}
+  - {fileID: 1631629827}
+  m_Father: {fileID: 2008812083}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &1787699098
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787699096}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3a0f7e2f3fcb0894e83e6d93b92d0446, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1787699099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787699096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0cd3f0812abaee42bfe22b4fa0a27a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1813628122
 GameObject:
   m_ObjectHideFlags: 0
@@ -11516,10 +11614,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 355295549}
-  - {fileID: 1431673664}
-  - {fileID: 1631629827}
-  - {fileID: 1838202615}
+  - {fileID: 1787699097}
   - {fileID: 559663716}
   - {fileID: 1057738073}
   - {fileID: 257483470}
@@ -11527,6 +11622,7 @@ RectTransform:
   - {fileID: 590653169}
   - {fileID: 540206088}
   - {fileID: 237238743}
+  - {fileID: 1838202615}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

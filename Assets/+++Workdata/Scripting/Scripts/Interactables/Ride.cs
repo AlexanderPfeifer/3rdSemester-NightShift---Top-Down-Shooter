@@ -172,7 +172,7 @@ public class Ride : MonoBehaviour
         fightCam.Priority = 5;
         InGameUIManager.Instance.fightScene.SetActive(false);
         InGameUIManager.Instance.radioAnim.SetTrigger("PutOn");
-        StartCoroutine(InGameUIManager.Instance.DisplayDialogueElements());
+        InGameUIManager.Instance.ActivateRadio();
         GetComponentInChildren<Generator>().arenaFightFinished = true;
         GameSaveStateManager.Instance.saveGameDataManager.AddRide(rideData.rideName);
         GameSaveStateManager.Instance.SaveGame();
