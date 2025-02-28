@@ -119,6 +119,9 @@ public class InGameUIManager : MonoBehaviour
             { "Corn Dog Hunting Rifle", (cornDogHuntingRifle, cornDogHuntingRifleSprite, cornDogHuntingRifleText, cornDogHuntingRifleHeader) },
             { "Popcorn Pistol", (popcornPistol, popcornPistolSprite, popcornPistolText, popcornPistolHeader) }
         };
+        
+        if(debugMode)
+            loadingScreenAnim.SetTrigger("Start");
     }
 
     private void Update()
@@ -179,7 +182,7 @@ public class InGameUIManager : MonoBehaviour
         }
     }
 
-    public void EndScreen()
+    private void EndScreen()
     {
         AudioManager.Instance.Stop("InGameMusic"); 
         inGameUIScreen.SetActive(false);
@@ -231,50 +234,66 @@ public class InGameUIManager : MonoBehaviour
     
     public void DisplayPopCornPistol()
     {
+        var _itemInformation = collectedItems["Popcorn Pistol"];
+        
         ResetDisplayInformation();
-        DisplayItem(popcornPistolSprite, popcornPistolText, popcornPistolHeader);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
     }
     
     public void DisplayMagnumMagnum()
     {
+        var _itemInformation = collectedItems["Magnum magnum"];
+
         ResetDisplayInformation();
-        DisplayItem(magnumMagnumSprite, magnumMagnumText, magnumMagnumHeader);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
     }
     
     public void DisplayFrenchFriesAssaultRifle()
     {
+        var _itemInformation = collectedItems["French Fries AR"];
+
         ResetDisplayInformation();
-        DisplayItem(frenchFriesAssaultRifleSprite, frenchFriesAssaultRifleText, frenchFriesAssaultRifleHeader);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
     }
     
     public void DisplayCornDogHuntingRifle()
     {
+        var _itemInformation = collectedItems["Corn Dog Hunting Rifle"];
+
         ResetDisplayInformation();
-        DisplayItem(cornDogHuntingRifleSprite, cornDogHuntingRifleText, cornDogHuntingRifleHeader);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
     }
     
     public void DisplayLollipopShotgun()
     {
+        var _itemInformation = collectedItems["Lollipop Shotgun"];
+
         ResetDisplayInformation();
-        DisplayItem(lollipopShotgunSprite, lollipopShotgunText, lollipopShotgunHeader);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
     }
     
     public void DisplayTeddy()
     {
+        var _itemInformation = collectedItems["Stuffed Animal"];
+
         ResetDisplayInformation();
-        DisplayItem(teddySprite, teddyText, teddyHeader);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
     }
     
     public void DisplayNewspaper()
     {
+        var _itemInformation = collectedItems["News Paper"];
+
         ResetDisplayInformation();
-        DisplayItem(newsPaperSprite, newsPaperText, newsPaperHeader);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
     }
     
     public void DisplayLights()
     {
+        var _itemInformation = collectedItems["Broken Lights"];
+
         ResetDisplayInformation();
-        DisplayItem(brokenLightsSprite, brokenLightsText, brokenLightsHeader);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
     }
 
     #endregion
@@ -321,13 +340,13 @@ public class InGameUIManager : MonoBehaviour
             switch (_headerText)
             {
                 case "Broken Lights" :
-                    ActivateCollectible(collectedItems, _headerText, _spriteCollectible, _text);
+                    ActivateCollectible(_headerText, _spriteCollectible, _text);
                     break;
                 case "News Paper" :
-                    ActivateCollectible(collectedItems, _headerText, _spriteCollectible, _text);
+                    ActivateCollectible(_headerText, _spriteCollectible, _text);
                     break;
                 case "Stuffed Animal" :
-                    ActivateCollectible(collectedItems, _headerText, _spriteCollectible, _text);
+                    ActivateCollectible(_headerText, _spriteCollectible, _text);
                     break;
             }
         }
@@ -356,33 +375,30 @@ public class InGameUIManager : MonoBehaviour
             switch (_itemIdentifier)
             {
                 case "Magnum magnum" :
-                    ActivateCollectible(collectedItems, _headerText, _spriteWeapon, _text);
+                    ActivateCollectible(_headerText, _spriteWeapon, _text);
                     break;
                 case "French Fries AR" :
-                    ActivateCollectible(collectedItems, _headerText, _spriteWeapon, _text);
+                    ActivateCollectible(_headerText, _spriteWeapon, _text);
                     break;
                 case "Lollipop Shotgun" :
-                    ActivateCollectible(collectedItems, _headerText, _spriteWeapon, _text);
+                    ActivateCollectible(_headerText, _spriteWeapon, _text);
                     break;
                 case "Corn Dog Hunting Rifle" :
-                    ActivateCollectible(collectedItems, _headerText, _spriteWeapon, _text);
+                    ActivateCollectible(_headerText, _spriteWeapon, _text);
                     break;
                 case "Popcorn Pistol" :
-                    ActivateCollectible(collectedItems, _headerText, _spriteWeapon, _text);
+                    ActivateCollectible(_headerText, _spriteWeapon, _text);
                     break;
             }
         }
     }
 
-    private void ActivateCollectible(Dictionary<string, (GameObject obj, Sprite sprite, string text, string header)> dictionary, 
-        string headerText, 
-        Sprite spriteCollectible, 
-        string text)
+    private void ActivateCollectible(string headerText, Sprite spriteCollectible, string text)
     {
-        if (dictionary.TryGetValue(headerText, out var _collectedObject))
+        if (collectedItems.TryGetValue(headerText, out var _collectedObject))
         {
             _collectedObject.obj.SetActive(true);
-            dictionary[headerText] = (_collectedObject.obj, spriteCollectible, text, headerText);
+            collectedItems[headerText] = (_collectedObject.obj, spriteCollectible, text, headerText);
         }
     }
 

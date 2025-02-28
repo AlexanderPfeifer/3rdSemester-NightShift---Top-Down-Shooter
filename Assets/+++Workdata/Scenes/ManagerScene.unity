@@ -992,7 +992,7 @@ GameObject:
   - component: {fileID: 194801965}
   - component: {fileID: 194801967}
   m_Layer: 5
-  m_Name: IMG_Collectable02
+  m_Name: '[Button] IMG_Collectable02'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1566,7 +1566,7 @@ GameObject:
   - component: {fileID: 268103844}
   - component: {fileID: 268103846}
   m_Layer: 5
-  m_Name: IMG_Weapon05
+  m_Name: '[Button] IMG_Weapon05'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3155,7 +3155,7 @@ GameObject:
   - component: {fileID: 501134662}
   - component: {fileID: 501134664}
   m_Layer: 5
-  m_Name: IMG_Weapon01
+  m_Name: '[Button] IMG_Weapon01'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4606,7 +4606,7 @@ GameObject:
   - component: {fileID: 775953484}
   - component: {fileID: 775953486}
   m_Layer: 5
-  m_Name: IMG_Weapon03
+  m_Name: '[Button] IMG_Weapon03'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5816,7 +5816,7 @@ GameObject:
   - component: {fileID: 1029645978}
   - component: {fileID: 1029645980}
   m_Layer: 5
-  m_Name: IMG_Weapon04
+  m_Name: '[Button] IMG_Weapon04'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6197,7 +6197,7 @@ GameObject:
   - component: {fileID: 1083643692}
   - component: {fileID: 1083643694}
   m_Layer: 5
-  m_Name: IMG_Collectable01
+  m_Name: '[Button] IMG_Collectable01'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10531,7 +10531,7 @@ GameObject:
   - component: {fileID: 1883376357}
   - component: {fileID: 1883376359}
   m_Layer: 5
-  m_Name: IMG_Collectable03
+  m_Name: '[Button] IMG_Collectable03'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11643,7 +11643,7 @@ GameObject:
   - component: {fileID: 2031220325}
   - component: {fileID: 2031220327}
   m_Layer: 5
-  m_Name: IMG_Weapon02
+  m_Name: '[Button] IMG_Weapon02'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

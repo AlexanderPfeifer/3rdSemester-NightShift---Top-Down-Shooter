@@ -47,7 +47,6 @@ public class GameSaveStateManager : MonoBehaviour
     {
         InGameUIManager.Instance.inGameUIScreen.SetActive(false);
         CurrentState = GameState.InMainMenu;
-        InGameUIManager.Instance.loadingScreenAnim.SetTrigger("Start");
         SceneManager.Instance.SwitchScene(MainMenuSceneName);
     }
     
