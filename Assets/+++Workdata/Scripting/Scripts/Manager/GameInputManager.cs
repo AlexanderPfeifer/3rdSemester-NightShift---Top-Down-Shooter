@@ -5,7 +5,7 @@ public class GameInputManager : MonoBehaviour
 {
     private PlayerInputActions playerInputActions;
 
-    public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnSprintingAction, OnNotShootingAction;
+    public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnSprintingAction, OnNotShootingAction, OnReloadAction;
 
     private void Awake()
     {
@@ -18,6 +18,7 @@ public class GameInputManager : MonoBehaviour
         playerInputActions.player.pause.performed += OnGamePaused;
         playerInputActions.player.interact.performed += OnPlayerInteracting;
         playerInputActions.player.ability.performed += OnPlayerUsingAbility;
+        playerInputActions.player.reload.performed += OnPlayerReloading;
     }
 
     private void OnPlayerUsingAbility(UnityEngine.InputSystem.InputAction.CallbackContext context)
@@ -48,6 +49,11 @@ public class GameInputManager : MonoBehaviour
     private void OnPlayerInteracting(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         OnInteractAction?.Invoke(this, EventArgs.Empty);
+    }
+    
+    private void OnPlayerReloading(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        OnReloadAction?.Invoke(this, EventArgs.Empty);
     }
 
     public Vector2 GetMovementVectorNormalized()

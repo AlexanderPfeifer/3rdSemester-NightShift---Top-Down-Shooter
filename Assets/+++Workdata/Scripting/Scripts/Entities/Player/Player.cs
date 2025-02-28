@@ -50,6 +50,9 @@ public class Player : MonoBehaviour
     [HideInInspector] public float bulletSpeed = 38f;
     [HideInInspector] public int maxPenetrationCount;
     private int bulletsPerShot;
+    private int maxClipSize;
+    private int clipSize;
+    private int availableAmmunition;
 
     [Header("Weapon")]
     public List<WeaponObjectSO> allWeaponPrizes;
@@ -59,6 +62,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator weaponAnim;
     [SerializeField] private float weaponToMouseSmoothness = 8;
     [SerializeField] private GameObject muzzleFlashVisual;
+    [SerializeField] private float reloadTime = 2;
     [HideInInspector] public bool freezeBullets;
     [HideInInspector] public bool stickyBullets;
     [HideInInspector] public bool explosiveBullets;
@@ -139,6 +143,7 @@ public class Player : MonoBehaviour
         gameInputManager.OnInteractAction += GameInputManagerOnInteractAction;
         gameInputManager.OnUsingAbilityAction += GameInputManagerOnUsingAbilityAction;
         gameInputManager.OnSprintingAction += GameInputManagerOnSprintingAction;
+        gameInputManager.OnReloadAction += GameInputManagerOnReloadingAction;
         AudioManager.Instance.Play("InGameMusic");
     }
 
@@ -283,6 +288,11 @@ public class Player : MonoBehaviour
             StartCoroutine(StartWeaponAbility());
         }
     }
+    
+    private void GameInputManagerOnReloadingAction(object sender, EventArgs e)
+    {
+        
+    }
 
     #endregion
 
@@ -355,11 +365,31 @@ public class Player : MonoBehaviour
                 _bullet.LaunchInDirection(this, _bulletDirection);
             }
 
+            clipSize--;
+
             currentShootingDelay = fastBullets ? fastBulletsDelay : maxShootingDelay;
 
             StartCoroutine(WeaponVisualCoroutine());
 
             knockBack = -weaponToMouse.normalized * shootingKnockBack;
+        }
+    }
+
+    private IEnumerator ReloadCoroutine()
+    {
+        if (availableAmmunition <= 0 || maxClipSize - clipSize == maxClipSize)
+        {
+            //return and make some vfx
+            yield break;
+        }
+        
+        yield return new WaitForSeconds(reloadTime);
+        
+        availableAmmunition -= maxClipSize - clipSize;
+
+        if (availableAmmunition < 0)
+        {
+            clipSize = maxClipSize - Mathf.Abs(availableAmmunition);
         }
     }
 

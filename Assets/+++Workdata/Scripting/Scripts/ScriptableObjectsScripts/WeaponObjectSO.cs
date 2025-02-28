@@ -17,5 +17,6 @@ public class WeaponObjectSO : ScriptableObject
     public float knockBack;
     public float enemyKnockBackPerBullet;
     public Vector2 bulletSize;
+    public int clipSize;
     public float screenShake;
 }
