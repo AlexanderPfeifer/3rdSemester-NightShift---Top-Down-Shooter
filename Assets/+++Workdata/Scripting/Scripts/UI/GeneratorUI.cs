@@ -14,8 +14,9 @@ public class GeneratorUI : MonoBehaviour
     [Header("Fill")]
     [SerializeField] private float activateGeneratorFillAmount;
     [SerializeField] private Image generatorFillImage;
+    [SerializeField] private float reduceFillSpeedMultiplier;
     private float fillTime;
-    private bool resetDone;
+    private bool resetDone = true;
     
     private void OnEnable()
     {
@@ -67,8 +68,8 @@ public class GeneratorUI : MonoBehaviour
 
         while (_elapsedTime < duration)
         {
-            _elapsedTime += Time.deltaTime;
-            float _t = _elapsedTime / duration; // Normalized time (0 to 1)
+            _elapsedTime += Time.deltaTime * reduceFillSpeedMultiplier;
+            float _t = _elapsedTime / duration; 
 
             fillTime = Mathf.Lerp(_startFillTime, 0, _t);
             generatorFillImage.fillAmount = Mathf.Lerp(_startFillAmount, 0, _t);

@@ -23,7 +23,6 @@ public class Player : MonoBehaviour
 
     [Header("Scripts")]
     [SerializeField] private GameInputManager gameInputManager;
-    [SerializeField] private Bullet bulletPrefab;
     [SerializeField] private PlayerSaveData playerSaveData;
 
     [Header("CharacterMovement")]
@@ -72,7 +71,8 @@ public class Player : MonoBehaviour
     private Vector3 changingWeaponToMouse;
     private Vector3 weaponToMouse;
     private Vector3 mousePos;
-    private float weaponAngle;
+    private float weaponAngleSmoothed;
+    private float weaponAngleUnSmoothed;
     private float shootingKnockBack;
     private float weaponScreenShake;
     private bool shoot;
@@ -324,9 +324,10 @@ public class Player : MonoBehaviour
 
         Vector3 _newUp = Vector3.Slerp(weaponPosParent.transform.up, weaponToMouse, Time.deltaTime * weaponToMouseSmoothness);
 
-        weaponAngle = Vector3.SignedAngle(Vector3.up, _newUp, Vector3.forward);
+        weaponAngleSmoothed = Vector3.SignedAngle(Vector3.up, _newUp, Vector3.forward);
+        weaponAngleUnSmoothed = Vector3.SignedAngle(Vector3.up, weaponToMouse, Vector3.forward);
         
-        weaponPosParent.eulerAngles = new Vector3(0, 0, weaponAngle);
+        weaponPosParent.eulerAngles = new Vector3(0, 0, weaponAngleSmoothed);
         
         if (weaponPosParent.eulerAngles.z is > 0 and < 180)
         {
@@ -347,9 +348,11 @@ public class Player : MonoBehaviour
                 Vector2 _bulletDirection = Random.insideUnitCircle.normalized;
 
                 _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - weaponSpread);
-                
-                var _newBullet = Instantiate(bulletPrefab, weaponEndPoint.position, Quaternion.Euler(0, 0 ,weaponAngle), bulletParent.transform);
-                _newBullet.LaunchInDirection(this, _bulletDirection);
+
+                var _bullet = BulletPoolingManager.Instance.GetInactiveBullet();
+                _bullet.transform.SetPositionAndRotation(weaponEndPoint.position, Quaternion.Euler(0, 0 ,weaponAngleUnSmoothed));
+                _bullet.gameObject.SetActive(true);
+                _bullet.LaunchInDirection(this, _bulletDirection);
             }
 
             currentShootingDelay = fastBullets ? fastBulletsDelay : maxShootingDelay;
@@ -483,7 +486,10 @@ public class Player : MonoBehaviour
         weaponVisual.transform.localScale = weapon.weaponScale;
         bulletsPerShot = weapon.bulletsPerShot;
         shootingKnockBack = weapon.knockBack;
-        bulletPrefab.transform.localScale = weapon.bulletSize;
+        foreach (var _bullet in BulletPoolingManager.Instance.GetBulletList())
+        {
+            _bullet.transform.localScale = weapon.bulletSize;
+        }
         weaponScreenShake = weapon.screenShake;
         enemyShootingKnockBack = weapon.enemyKnockBackPerBullet;
 

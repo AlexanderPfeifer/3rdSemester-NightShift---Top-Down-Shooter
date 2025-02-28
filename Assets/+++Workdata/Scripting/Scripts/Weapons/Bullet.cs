@@ -26,12 +26,12 @@ public class Bullet : MonoBehaviour
     [Header("Enemy")] 
     [SerializeField] private float knockBackTime = .15f;
     
-    private float critialDamage;
+    private float criticalDamage;
 
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
-        critialDamage = Player.Instance.bulletDamage;
+        criticalDamage = Player.Instance.bulletDamage;
     }
     
     private void Update()
@@ -45,7 +45,7 @@ public class Bullet : MonoBehaviour
     {
         if (Vector2.Distance(startPosition, transform.position) >= BulletDistanceUntilDestroy)
         {
-            Destroy(gameObject);
+            DeactivateBullet();
         }
     }
 
@@ -64,7 +64,7 @@ public class Bullet : MonoBehaviour
                 
                 if (tickCount <= 0)
                 {
-                    Destroy(gameObject);
+                    DeactivateBullet();
                 }
             }
         }
@@ -84,7 +84,7 @@ public class Bullet : MonoBehaviour
         if (!col.gameObject.TryGetComponent(out EnemyHealthPoints _enemyHealthPoints) ||
             !col.gameObject.TryGetComponent(out Enemy _enemy))
         {
-            Destroy(gameObject); 
+            DeactivateBullet();
         }
         else
         {
@@ -108,12 +108,12 @@ public class Bullet : MonoBehaviour
             
             if (_probability == criticalHuntingRifleDamageProbability - 1)
             {
-                critialDamage = Random.Range(Player.Instance.bulletDamage * minCriticalHuntingRifleDamageMultiplier, 
+                criticalDamage = Random.Range(Player.Instance.bulletDamage * minCriticalHuntingRifleDamageMultiplier, 
                     Player.Instance.bulletDamage * maxCriticalHuntingRifleDamageMultiplier);
             }
             else
             {
-                critialDamage = Player.Instance.bulletDamage;
+                criticalDamage = Player.Instance.bulletDamage;
             }
         }
         else if (Player.Instance.stickyBullets)
@@ -154,7 +154,7 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            enemyHealthPoints.TakeDamage(critialDamage);
+            enemyHealthPoints.TakeDamage(criticalDamage);
         }
         
         if (_bulletPenetrationCount >= 0) 
@@ -162,16 +162,15 @@ public class Bullet : MonoBehaviour
         
         if (!Player.Instance.stickyBullets)
         {
-            Destroy(gameObject);
+            DeactivateBullet();
         }
     }
 
-    private void OnDestroy()
+    private void DeactivateBullet()
     {
         if (!Player.Instance.stickyBullets)
         {
-            var _bulletImpactParticles =
-                GetComponentInParent<Transform>().transform.GetChild(1).GetComponent<ParticleSystem>();
+            var _bulletImpactParticles = BulletPoolingManager.Instance.impactParticles;
             _bulletImpactParticles.transform.SetPositionAndRotation(gameObject.transform.position, gameObject.transform.rotation);
 
             _bulletImpactParticles.Play();
@@ -179,7 +178,7 @@ public class Bullet : MonoBehaviour
 
         if (popCornParticle)
         {
-            var _popCornParticles = GetComponentInParent<Transform>().transform.GetChild(0).GetComponent<ParticleSystem>();
+            var _popCornParticles = BulletPoolingManager.Instance.popcornParticles;
             _popCornParticles.transform.position = gameObject.transform.position;
             _popCornParticles.Play();
             Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(transform.position, 3);
@@ -192,5 +191,7 @@ public class Bullet : MonoBehaviour
                 }
             }
         }
+        
+        gameObject.SetActive(false);
     }
 }

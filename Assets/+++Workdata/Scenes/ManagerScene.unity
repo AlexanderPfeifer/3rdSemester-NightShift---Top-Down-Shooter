@@ -3891,6 +3891,7 @@ MonoBehaviour:
   firstGeneratorSelected: {fileID: 2047534556}
   activateGeneratorFillAmount: 0.941
   generatorFillImage: {fileID: 1296695489}
+  reduceFillSpeedMultiplier: 3
 --- !u!1 &630885737
 GameObject:
   m_ObjectHideFlags: 0
