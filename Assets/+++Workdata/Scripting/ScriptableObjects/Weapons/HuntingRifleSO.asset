@@ -26,4 +26,5 @@ MonoBehaviour:
   knockBack: 5.25
   enemyKnockBackPerBullet: 8
   bulletSize: {x: 1, y: 1}
+  clipSize: 4
   screenShake: 6

@@ -50,24 +50,20 @@ public class Player : MonoBehaviour
     [HideInInspector] public float bulletSpeed = 38f;
     [HideInInspector] public int maxPenetrationCount;
     private int bulletsPerShot;
+    
+    [Header("Ammo/Reload")]
     private int maxClipSize;
-    private int clipSize;
-    private int availableAmmunition;
+    private int ammunitionInClip;
+    private int ammunitionInBackUp;
+    private bool isReloading;
+    private Coroutine currentReloadCoroutine;
+    [SerializeField] private float reloadTime = 2;
+    [SerializeField] private Image reloadProgress;
 
     [Header("Weapon")]
     public List<WeaponObjectSO> allWeaponPrizes;
-    public GameObject weaponVisual;
     [SerializeField] private Transform weaponPosParent;
     [SerializeField] public Transform weaponEndPoint;
-    [SerializeField] private Animator weaponAnim;
-    [SerializeField] private float weaponToMouseSmoothness = 8;
-    [SerializeField] private GameObject muzzleFlashVisual;
-    [SerializeField] private float reloadTime = 2;
-    [HideInInspector] public bool freezeBullets;
-    [HideInInspector] public bool stickyBullets;
-    [HideInInspector] public bool explosiveBullets;
-    [HideInInspector] public bool endlessPenetrationBullets;
-    [HideInInspector] public bool fastBullets;
     public float enemyShootingKnockBack = 2;
     private float maxShootingDelay;
     private float currentShootingDelay;
@@ -75,20 +71,31 @@ public class Player : MonoBehaviour
     private Vector3 changingWeaponToMouse;
     private Vector3 weaponToMouse;
     private Vector3 mousePos;
-    private float weaponAngleSmoothed;
-    private float weaponAngleUnSmoothed;
     private float shootingKnockBack;
-    private float weaponScreenShake;
-    private bool shoot;
+    private bool isShooting;
     private bool hasWeapon;
-
-    [Header("Ability")]
+    
+    [Header("Weapon Ability")]
+    [HideInInspector] public bool freezeBullets;
+    [HideInInspector] public bool stickyBullets;
+    [HideInInspector] public bool explosiveBullets;
+    [HideInInspector] public bool endlessPenetrationBullets;
+    [HideInInspector] public bool fastBullets;
     [SerializeField] public float maxAbilityTime;
     [SerializeField] private float fastBulletsDelay = 0.075f;
     [HideInInspector] public float currentAbilityTime;
     [HideInInspector] public bool canGetAbilityGain = true;
     private bool isUsingAbility;
-
+    
+    [Header("WeaponVisuals")]
+    public GameObject weaponVisual;
+    [SerializeField] private GameObject muzzleFlashVisual;
+    [SerializeField] private Animator weaponAnim;
+    [SerializeField] private float weaponToMouseSmoothness = 8;
+    private float weaponAngleSmoothed;
+    private float weaponAngleUnSmoothed;
+    private float weaponScreenShake;
+    
     [Header("Interaction")]
     [HideInInspector] public bool canInteract = true;
     [HideInInspector] public bool isInteracting;
@@ -197,28 +204,32 @@ public class Player : MonoBehaviour
     {
         if (!InGameUIManager.Instance.inventoryIsOpened && !isUsingAbility && weaponVisual.activeSelf && !isInteracting && InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueNotPlaying)
         {
-            shoot = true;
+            isShooting = true;
         }
         else
         {
-            if (InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialoguePlaying)
+            switch (InGameUIManager.Instance.dialogueState)
             {
-                InGameUIManager.Instance.textDisplaySpeed = InGameUIManager.Instance.maxTextDisplaySpeed;
+                case InGameUIManager.DialogueState.DialoguePlaying:
+                    InGameUIManager.Instance.textDisplaySpeed = InGameUIManager.Instance.maxTextDisplaySpeed;
+                    break;
+                case InGameUIManager.DialogueState.DialogueAbleToGoNext:
+                    InGameUIManager.Instance.PlayNextDialogue();
+                    break;
+                case InGameUIManager.DialogueState.DialogueAbleToEnd:
+                    InGameUIManager.Instance.EndDialogue();
+                    break;
+                case InGameUIManager.DialogueState.DialogueNotPlaying:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            else if (InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueAbleToGoNext)
-            {
-                InGameUIManager.Instance.PlayNextDialogue();
-            }
-            else if (InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueAbleToEnd)
-            {
-                InGameUIManager.Instance.EndDialogue();
-            }   
         }
     }
 
     private void GameInputManagerOnNotShootingAction(object sender, EventArgs e)
     {
-        shoot = false;
+        isShooting = false;
     }
 
     private void GameInputManagerOnSprintingAction(object sender, EventArgs e)
@@ -291,7 +302,10 @@ public class Player : MonoBehaviour
     
     private void GameInputManagerOnReloadingAction(object sender, EventArgs e)
     {
-        
+        if (!isReloading)
+        {
+            currentReloadCoroutine = StartCoroutine(ReloadCoroutine());
+        }
     }
 
     #endregion
@@ -351,46 +365,89 @@ public class Player : MonoBehaviour
     
     private void ShootAutomaticUpdate()
     {
-        if (shoot && currentShootingDelay <= 0)
+        if (isShooting && currentShootingDelay <= 0)
         {
-            for (int _i = 0; _i < bulletsPerShot; _i++)
+            if (ammunitionInClip > 0)
             {
-                Vector2 _bulletDirection = Random.insideUnitCircle.normalized;
+                if (isReloading)
+                {
+                    StopCoroutine(currentReloadCoroutine);
+                    isReloading = false;
+                    reloadProgress.fillAmount = 0f;                
+                }
+                
+                for (int _i = 0; _i < bulletsPerShot; _i++)
+                {
+                    Vector2 _bulletDirection = Random.insideUnitCircle.normalized;
 
-                _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - weaponSpread);
+                    _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - weaponSpread);
 
-                var _bullet = BulletPoolingManager.Instance.GetInactiveBullet();
-                _bullet.transform.SetPositionAndRotation(weaponEndPoint.position, Quaternion.Euler(0, 0 ,weaponAngleUnSmoothed));
-                _bullet.gameObject.SetActive(true);
-                _bullet.LaunchInDirection(this, _bulletDirection);
+                    var _bullet = BulletPoolingManager.Instance.GetInactiveBullet();
+                    _bullet.transform.SetPositionAndRotation(weaponEndPoint.position, Quaternion.Euler(0, 0 ,weaponAngleUnSmoothed));
+                    _bullet.gameObject.SetActive(true);
+                    _bullet.LaunchInDirection(this, _bulletDirection);
+                }
+                
+                currentShootingDelay = fastBullets ? fastBulletsDelay : maxShootingDelay;
+
+                StartCoroutine(WeaponVisualCoroutine());
+
+                knockBack = -weaponToMouse.normalized * shootingKnockBack;
+            
+                ammunitionInClip--;
             }
-
-            clipSize--;
-
-            currentShootingDelay = fastBullets ? fastBulletsDelay : maxShootingDelay;
-
-            StartCoroutine(WeaponVisualCoroutine());
-
-            knockBack = -weaponToMouse.normalized * shootingKnockBack;
+            else
+            {
+                if (!isReloading)
+                {
+                    currentReloadCoroutine = StartCoroutine(ReloadCoroutine());
+                }
+            }
         }
     }
 
     private IEnumerator ReloadCoroutine()
     {
-        if (availableAmmunition <= 0 || maxClipSize - clipSize == maxClipSize)
+        Debug.Log("Try Reload");
+        //If statement translation: no ammo overall or weapon already full
+        if (ammunitionInBackUp <= 0 || maxClipSize - ammunitionInClip == maxClipSize || !weaponVisual.activeSelf)
         {
             //return and make some vfx
             yield break;
         }
-        
-        yield return new WaitForSeconds(reloadTime);
-        
-        availableAmmunition -= maxClipSize - clipSize;
 
-        if (availableAmmunition < 0)
+        if (isReloading)
         {
-            clipSize = maxClipSize - Mathf.Abs(availableAmmunition);
+            yield break;
         }
+
+        isReloading = true;
+        
+        Debug.Log("Reloading");
+
+        reloadProgress.gameObject.SetActive(true);
+
+        float _elapsedTime = 0f; 
+
+        while (_elapsedTime < reloadTime)
+        {
+            _elapsedTime += Time.deltaTime;
+
+            reloadProgress.fillAmount = Mathf.Clamp01(_elapsedTime / reloadTime);
+
+            yield return null;
+        }
+
+        reloadProgress.gameObject.SetActive(false);
+        
+        ammunitionInBackUp -= maxClipSize - ammunitionInClip;
+
+        if (ammunitionInBackUp < 0)
+        {
+            ammunitionInClip = maxClipSize - Mathf.Abs(ammunitionInBackUp);
+        }
+
+        isReloading = false;
     }
 
     #endregion
