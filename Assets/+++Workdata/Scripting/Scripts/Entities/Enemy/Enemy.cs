@@ -154,11 +154,11 @@ public class Enemy : MonoBehaviour
 
         if (!rideDeath)
         {
-            var deathMark = Instantiate(enemyDeathMark, transform.position, Quaternion.identity, Player.Instance.bulletParent.transform);
+            var _deathMark = Instantiate(enemyDeathMark, transform.position, Quaternion.identity, Player.Instance.bulletParent.transform);
             
             if (bigEnemy)
             {
-                deathMark.transform.localScale = new Vector3(2f, 2f, 2f);
+                _deathMark.transform.localScale = new Vector3(2f, 2f, 2f);
                 ride.gameObject.GetComponentInChildren<ParticleSystem>().transform.position = transform.position;
                 ride.gameObject.GetComponentInChildren<ParticleSystem>().transform.localScale = new Vector3(1f, 1f, 1f);
                 ride.gameObject.GetComponentInChildren<ParticleSystem>().Play();
