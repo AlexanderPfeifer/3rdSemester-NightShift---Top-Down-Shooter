@@ -15,6 +15,8 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private GameObject loadLevelButtonPrefab;
     [SerializeField] private GameObject deleteSaveStateButtonPrefab;
     [SerializeField] private Transform saveStateLayoutGroup;
+    [SerializeField] private Button deleteSaveStateCheckButton;
+    [SerializeField] private GameObject deleteSaveStateCheckPanel;
     [HideInInspector] public bool gameStateLoaded;
 
     [Header("MainMenuScreens")]
@@ -108,6 +110,37 @@ public class MainMenuUIManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(loadButton);
     }
+
+    public void OpenCreditsMenu()
+    {
+        StartCoroutine(SetScreen(false, false, true, true, true, false));
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(optionsButton);
+    }
+    
+    public void QuitGame()
+    {
+        AudioManager.Instance.Stop("MainMenuMusic");
+        Application.Quit();
+    }
+
+    #endregion
+    
+    #region SaveStates
+
+    private void DeleteLoadMenuButtons()
+    {
+        loadButtonsList.ForEach(Destroy);
+        gameStateLoaded = false;
+    }
+
+    private void DeleteSaveState(string saveName)
+    {
+        SaveFileManager.DeleteSaveState(saveName);
+        DeleteLoadMenuButtons();
+        CreateLoadMenuButtons();
+        deleteSaveStateCheckButton.onClick.RemoveListener(() => DeleteSaveState(saveName));
+    }
     
     public void CreateLoadMenuButtons()
     {
@@ -137,41 +170,17 @@ public class MainMenuUIManager : MonoBehaviour
                 
                 var _deleteButton = newDeleteButton.GetComponent<Button>();
                 _deleteButton.onClick.AddListener(PressButtonSound);
-                _deleteButton.onClick.AddListener(() => DeleteSaveState(_saveStateName));
+                _deleteButton.onClick.AddListener(delegate{SetDeleteSaveStateCheck(_saveStateName);});
             }
 
             gameStateLoaded = true;
         }
     }
-    
-    public void OpenCreditsMenu()
-    {
-        StartCoroutine(SetScreen(false, false, true, true, true, false));
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(optionsButton);
-    }
-    
-    public void QuitGame()
-    {
-        AudioManager.Instance.Stop("MainMenuMusic");
-        Application.Quit();
-    }
 
-    #endregion
-    
-    #region SaveStates
-
-    private void DeleteLoadMenuButtons()
+    private void SetDeleteSaveStateCheck(string saveStateName)
     {
-        loadButtonsList.ForEach(Destroy);
-        gameStateLoaded = false;
-    }
-
-    private void DeleteSaveState(string saveName)
-    {
-        SaveFileManager.DeleteSaveState(saveName);
-        DeleteLoadMenuButtons();
-        CreateLoadMenuButtons();
+        deleteSaveStateCheckPanel.SetActive(true);
+        deleteSaveStateCheckButton.onClick.AddListener(() => DeleteSaveState(saveStateName));
     }
     
     private void LoadGame(string saveName)

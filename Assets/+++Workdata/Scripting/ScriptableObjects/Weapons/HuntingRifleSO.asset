@@ -27,4 +27,6 @@ MonoBehaviour:
   enemyKnockBackPerBullet: 8
   bulletSize: {x: 1, y: 1}
   clipSize: 4
+  ammunitionInClip: 4
+  ammunitionInBackUp: 24
   screenShake: 6

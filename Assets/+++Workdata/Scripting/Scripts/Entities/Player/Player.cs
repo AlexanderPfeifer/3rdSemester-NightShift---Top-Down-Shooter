@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,9 +24,11 @@ public class Player : MonoBehaviour
     [SerializeField] private GameInputManager gameInputManager;
     [SerializeField] private PlayerSaveData playerSaveData;
 
-    [Header("CharacterMovement")]
-    [SerializeField] private float moveSpeed = 7f;
+    [Header("CharacterMovement")] 
+    [SerializeField] private float baseMoveSpeed = 6.25f;
+    [SerializeField] private float slowDownSpeed;
     [SerializeField] private float knockBackDecay = 5f; 
+    private float currentMoveSpeed;
     private Vector2 moveDirection = Vector2.down;
     private Vector2 knockBack;
     private Rigidbody2D rb;
@@ -55,7 +56,6 @@ public class Player : MonoBehaviour
     private int maxClipSize;
     private int ammunitionInClip;
     private int ammunitionInBackUp;
-    private bool isReloading;
     private Coroutine currentReloadCoroutine;
     [SerializeField] private float reloadTime = 2;
     [SerializeField] private Image reloadProgress;
@@ -117,6 +117,14 @@ public class Player : MonoBehaviour
         HuntingRifle,
     }
     
+    private void SetupFromData()
+    {
+        if (playerSaveData.PositionBySceneName.TryGetValue(gameObject.scene.name, out var _position))
+            transform.position = _position;
+    }
+
+    #region MonoBehaviourMethods
+
     private void Awake()
     {
         Instance = this;
@@ -135,13 +143,7 @@ public class Player : MonoBehaviour
         
         GameSaveStateManager.Instance.saveGameDataManager.newPlayerSaveData = playerSaveData;
     }
-    
-    private void SetupFromData()
-    {
-        if (playerSaveData.PositionBySceneName.TryGetValue(gameObject.scene.name, out var _position))
-            transform.position = _position;
-    }
-    
+
     private void OnEnable()
     {
         gameInputManager.OnShootingAction += GameInputManagerOnShootingAction;
@@ -169,6 +171,15 @@ public class Player : MonoBehaviour
         InGameUIManager.Instance.loadingScreenAnim.SetTrigger("End");
         InGameUIManager.Instance.ActivateInGameUI();
         rb = GetComponent<Rigidbody2D>();
+        currentMoveSpeed = baseMoveSpeed;
+
+        if (DebugMode.Instance.debugMode)
+        {
+            foreach (var _generator in FindObjectsByType<Generator>(FindObjectsSortMode.None))
+            {
+                _generator.GetComponent<Generator>().SetUpFightArena();
+            }
+        }
     }
 
     private void Update()
@@ -187,17 +198,19 @@ public class Player : MonoBehaviour
         HandleMovementFixedUpdate();
     }
     
-    /*
-     we have to save the current position dependant on the scene the player is in.
-     this way, the position can be retained across multiple scenes, and we can switch back and forth.
-    */
     private void LateUpdate()
     {
+        /*
+        we have to save the current position dependant on the scene the player is in.
+        this way, the position can be retained across multiple scenes, and we can switch back and forth.
+        */
         playerSaveData.PositionBySceneName[gameObject.scene.name] = transform.position;
         
         SetAnimationParameterLateUpdate();
     }
-    
+
+    #endregion
+
     #region Input
 
     private void GameInputManagerOnShootingAction(object sender, EventArgs e)
@@ -302,10 +315,7 @@ public class Player : MonoBehaviour
     
     private void GameInputManagerOnReloadingAction(object sender, EventArgs e)
     {
-        if (!isReloading)
-        {
-            currentReloadCoroutine = StartCoroutine(ReloadCoroutine());
-        }
+        currentReloadCoroutine ??= StartCoroutine(ReloadCoroutine());
     }
 
     #endregion
@@ -365,70 +375,60 @@ public class Player : MonoBehaviour
     
     private void ShootAutomaticUpdate()
     {
-        if (isShooting && currentShootingDelay <= 0)
+        if (!isShooting || currentShootingDelay > 0) 
+            return;
+        
+        if (ammunitionInClip > 0)
         {
-            if (ammunitionInClip > 0)
+            if (currentReloadCoroutine != null)
             {
-                if (isReloading)
-                {
-                    StopCoroutine(currentReloadCoroutine);
-                    isReloading = false;
-                    reloadProgress.fillAmount = 0f;                
-                }
+                StopCoroutine(currentReloadCoroutine);
+                currentReloadCoroutine = null;
+                reloadProgress.fillAmount = 0f;           
+                currentMoveSpeed = baseMoveSpeed;
+            }
                 
-                for (int _i = 0; _i < bulletsPerShot; _i++)
-                {
-                    Vector2 _bulletDirection = Random.insideUnitCircle.normalized;
+            for (int _i = 0; _i < bulletsPerShot; _i++)
+            {
+                Vector2 _bulletDirection = Random.insideUnitCircle.normalized;
 
-                    _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - weaponSpread);
+                _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - weaponSpread);
 
-                    var _bullet = BulletPoolingManager.Instance.GetInactiveBullet();
-                    _bullet.transform.SetPositionAndRotation(weaponEndPoint.position, Quaternion.Euler(0, 0 ,weaponAngleUnSmoothed));
-                    _bullet.gameObject.SetActive(true);
-                    _bullet.LaunchInDirection(this, _bulletDirection);
-                }
+                var _bullet = BulletPoolingManager.Instance.GetInactiveBullet();
+                _bullet.transform.SetPositionAndRotation(weaponEndPoint.position, Quaternion.Euler(0, 0 ,weaponAngleUnSmoothed));
+                _bullet.gameObject.SetActive(true);
+                _bullet.LaunchInDirection(this, _bulletDirection);
+            }
                 
-                currentShootingDelay = fastBullets ? fastBulletsDelay : maxShootingDelay;
+            currentShootingDelay = fastBullets ? fastBulletsDelay : maxShootingDelay;
 
-                StartCoroutine(WeaponVisualCoroutine());
+            StartCoroutine(WeaponVisualCoroutine());
 
-                knockBack = -weaponToMouse.normalized * shootingKnockBack;
+            knockBack = -weaponToMouse.normalized * shootingKnockBack;
             
-                ammunitionInClip--;
-            }
-            else
-            {
-                if (!isReloading)
-                {
-                    currentReloadCoroutine = StartCoroutine(ReloadCoroutine());
-                }
-            }
+            ammunitionInClip--;
+                
+            SetAmmunitionText(ammunitionInClip.ToString(), ammunitionInBackUp.ToString());
+        }
+        else
+        {
+            currentReloadCoroutine ??= StartCoroutine(ReloadCoroutine());
         }
     }
 
     private IEnumerator ReloadCoroutine()
     {
-        Debug.Log("Try Reload");
-        //If statement translation: no ammo overall or weapon already full
-        if (ammunitionInBackUp <= 0 || maxClipSize - ammunitionInClip == maxClipSize || !weaponVisual.activeSelf)
+        //If statement translation: no ammo overall or weapon already full or no weapon is equipped
+        if (ammunitionInBackUp <= 0 || ammunitionInClip == maxClipSize || !weaponVisual.activeSelf)
         {
             //return and make some vfx
             yield break;
         }
-
-        if (isReloading)
-        {
-            yield break;
-        }
-
-        isReloading = true;
         
-        Debug.Log("Reloading");
-
         reloadProgress.gameObject.SetActive(true);
+        currentMoveSpeed = slowDownSpeed;
 
-        float _elapsedTime = 0f; 
-
+        float _elapsedTime = 0f;
         while (_elapsedTime < reloadTime)
         {
             _elapsedTime += Time.deltaTime;
@@ -439,15 +439,34 @@ public class Player : MonoBehaviour
         }
 
         reloadProgress.gameObject.SetActive(false);
-        
-        ammunitionInBackUp -= maxClipSize - ammunitionInClip;
+        reloadProgress.fillAmount = 0;
+        currentMoveSpeed = baseMoveSpeed;
 
+        //Calculates difference between the clipSize and how much is inside the clip (how much ammo we need for our reload)
+        ammunitionInBackUp -= maxClipSize - ammunitionInClip;
+        
+        //If true, we do not have enough ammo for a full reload
         if (ammunitionInBackUp < 0)
         {
-            ammunitionInClip = maxClipSize - Mathf.Abs(ammunitionInBackUp);
+            //Calculates difference between the maxClipSize and how much we have for backup (how ammo can be inside the clip)
+            var _ammoFromBackUpForClip = maxClipSize - Mathf.Abs(ammunitionInBackUp);
+            ammunitionInClip = _ammoFromBackUpForClip;
+            ammunitionInBackUp = 0;
+            SetAmmunitionText(ammunitionInClip.ToString(), ammunitionInBackUp.ToString());
+        }
+        else
+        {
+            ammunitionInClip = maxClipSize;
+            SetAmmunitionText(ammunitionInClip.ToString(), ammunitionInBackUp.ToString());
         }
 
-        isReloading = false;
+        currentReloadCoroutine = null;
+    }
+
+    private void SetAmmunitionText(string clipAmmo, string backUpAmmo)
+    {
+        InGameUIManager.Instance.ammunitionInClipText.text = clipAmmo;
+        InGameUIManager.Instance.ammunitionInBackUpText.text = "/" + backUpAmmo;
     }
 
     #endregion
@@ -459,7 +478,7 @@ public class Player : MonoBehaviour
         if (InGameUIManager.Instance.dialogueState != InGameUIManager.DialogueState.DialogueNotPlaying || InGameUIManager.Instance.inventoryIsOpened || isInteracting) 
             return;
         
-        rb.linearVelocity = gameInputManager.GetMovementVectorNormalized() * moveSpeed + knockBack;
+        rb.linearVelocity = gameInputManager.GetMovementVectorNormalized() * currentMoveSpeed + knockBack;
 
         knockBack = Vector2.Lerp(knockBack, Vector2.zero, Time.fixedDeltaTime * knockBackDecay);
     }
@@ -573,6 +592,10 @@ public class Player : MonoBehaviour
         weaponVisual.transform.localScale = weapon.weaponScale;
         bulletsPerShot = weapon.bulletsPerShot;
         shootingKnockBack = weapon.knockBack;
+        maxClipSize = weapon.clipSize;
+        ammunitionInBackUp = weapon.ammunitionInBackUp;
+        ammunitionInClip = weapon.ammunitionInClip;
+        SetAmmunitionText(weapon.ammunitionInClip.ToString(), weapon.ammunitionInBackUp.ToString());
         foreach (var _bullet in BulletPoolingManager.Instance.GetBulletList())
         {
             _bullet.transform.localScale = weapon.bulletSize;

@@ -9,9 +9,6 @@ using UnityEngine.Serialization;
 
 public class InGameUIManager : MonoBehaviour
 {
-    [Header("Debugging")]
-    [SerializeField] private bool debugMode;
-    
     [Header("Inventory")]
     [SerializeField] private GameObject inventory;
     [HideInInspector] public bool inventoryIsOpened;
@@ -27,7 +24,9 @@ public class InGameUIManager : MonoBehaviour
     private string brokenLightsHeader, teddyHeader, newsPaperHeader;
     private Sprite brokenLightsSprite, teddySprite, newsPaperSprite;
 
-    [Header("Weapons")]
+    [Header("Weapons")] 
+    public TextMeshProUGUI ammunitionInClipText;
+    public TextMeshProUGUI ammunitionInBackUpText;
     private string popcornPistolText, frenchFriesAssaultRifleText, magnumMagnumText, cornDogHuntingRifleText, lollipopShotgunText;
     private string popcornPistolHeader, frenchFriesAssaultRifleHeader, magnumMagnumHeader, cornDogHuntingRifleHeader, lollipopShotgunHeader;
     private Sprite popcornPistolSprite, frenchFriesAssaultRifleSprite, magnumMagnumSprite, cornDogHuntingRifleSprite, lollipopShotgunSprite;
@@ -120,7 +119,7 @@ public class InGameUIManager : MonoBehaviour
             { "Popcorn Pistol", (popcornPistol, popcornPistolSprite, popcornPistolText, popcornPistolHeader) }
         };
         
-        if(debugMode)
+        if(DebugMode.Instance.debugMode)
             loadingScreenAnim.SetTrigger("Start");
     }
 
@@ -457,7 +456,7 @@ public class InGameUIManager : MonoBehaviour
 
     public void ActivateRadio()
     {
-        if(debugMode)
+        if(DebugMode.Instance.debugMode)
             return;
         
         radioAnim.SetTrigger("RadioOn");
