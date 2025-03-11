@@ -44,20 +44,20 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private GameObject lollipopShotgun;
     
     [Header("Fight")]
-    [SerializeField] public GameObject fightScene;
-    [SerializeField] public GameObject pressSpace;
-    [SerializeField] private GameObject abilityProgress;
-    [SerializeField] public GameObject rideTimeSlider;
-    [SerializeField] public GameObject rideHpSlider;
-    [FormerlySerializedAs("inventoryWeapon")] [SerializeField] public GameObject equippedWeapon;
+    [FormerlySerializedAs("inventoryWeapon")] public GameObject equippedWeapon;
+    public GameObject fightScene;
+    public GameObject pressSpace;
+    public GameObject rideTimeSlider;
+    public GameObject rideHpSlider;
+    public GameObject abilityProgress;
     
     [Header("Player UI")]
     [SerializeField] private GameObject eIndicator;
-    [SerializeField] public GameObject inGameUIScreen;
-    [SerializeField] public GameObject firstInventorySelected;
     [SerializeField] private GameObject inventoryButton; 
-    [SerializeField] public GameObject fortuneWheelScreen;
-    [SerializeField] public GameObject generatorScreen;
+    public GameObject inGameUIScreen;
+    public GameObject firstInventorySelected;
+    public GameObject fortuneWheelScreen;
+    public GameObject generatorScreen;
     
     [Header("End Sequence")]
     [HideInInspector] public bool changeLight;
@@ -127,8 +127,6 @@ public class InGameUIManager : MonoBehaviour
     {
         if (Player.Instance != null)
         {
-            UpdateAbilityProgress();
-
             if (Player.Instance.canInteract)
             {
                 ShowInteractionIndicator(1);
@@ -197,12 +195,7 @@ public class InGameUIManager : MonoBehaviour
         _componentColor.a = alpha;
         eIndicator.GetComponent<Image>().color = _componentColor;
     }
-    
-    private void UpdateAbilityProgress()
-    {
-        abilityProgress.GetComponent<Slider>().value = Player.Instance.currentAbilityTime / Player.Instance.maxAbilityTime;
-    }
-    
+
     public void ActivateInGameUI()
     {
         inGameUIScreen.SetActive(true);

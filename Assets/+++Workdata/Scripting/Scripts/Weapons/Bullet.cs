@@ -59,7 +59,7 @@ public class Bullet : MonoBehaviour
             {
                 tickCount--;
                 GetComponentInParent<EnemyHealthPoints>().TakeDamage(tickStickyBulletDamage);
-                GetComponentInParent<Enemy>().HitStop(gameObject.GetComponentInParent<Enemy>().changeColorTime);
+                GetComponentInParent<EnemyBase>().HitVisual();
                 stickyBulletTimer = maxStickyBulletTimer;
                 
                 if (tickCount <= 0)
@@ -82,7 +82,7 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (!col.gameObject.TryGetComponent(out EnemyHealthPoints _enemyHealthPoints) ||
-            !col.gameObject.TryGetComponent(out Enemy _enemy))
+            !col.gameObject.TryGetComponent(out EnemyBase _enemy))
         {
             DeactivateBullet();
         }
@@ -96,11 +96,11 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    private void ApplyAbilities(Enemy enemy)
+    private void ApplyAbilities(EnemyBase enemyBase)
     {
         if (Player.Instance.freezeBullets)
         {
-            enemy.enemyFreezeTime = enemyFreezeTime;
+            enemyBase.enemyFreezeTime = enemyFreezeTime;
         }
         else if(Player.Instance.endlessPenetrationBullets)
         {
@@ -118,7 +118,7 @@ public class Bullet : MonoBehaviour
         }
         else if (Player.Instance.stickyBullets)
         {
-            transform.SetParent(enemy.transform);
+            transform.SetParent(enemyBase.transform);
             rb.linearVelocity = Vector2.zero;
         }
         else if (Player.Instance.explosiveBullets)
@@ -127,19 +127,18 @@ public class Bullet : MonoBehaviour
         }
     }
     
-    private IEnumerator EnemyKnockBack(Enemy enemy)
+    private IEnumerator EnemyKnockBack(EnemyBase enemyBase)
     {
-        if (enemy.currentEnemyKnockBackResistance != 0)
+        if (enemyBase.knockBackResistance != 0)
         {
-            enemy.enemyCanMove = false;
-        
-            enemy.GetComponent<Rigidbody2D>().
-                AddForce(travelDirection * (Player.Instance.enemyShootingKnockBack / enemy.currentEnemyKnockBackResistance), 
-                    ForceMode2D.Impulse);
+            enemyBase.enemyCanMove = false;
 
-            yield return new WaitForSecondsRealtime(knockBackTime);
+            float _knockBackWithEnemyResistance = Mathf.Max(Player.Instance.enemyShootingKnockBack - enemyBase.knockBackResistance, 0);
+            enemyBase.GetComponent<Rigidbody2D>().AddForce(travelDirection * _knockBackWithEnemyResistance, ForceMode2D.Impulse);
 
-            enemy.enemyCanMove = true;
+            yield return new WaitForSeconds(knockBackTime);
+
+            enemyBase.enemyCanMove = true;
         }
     }
     

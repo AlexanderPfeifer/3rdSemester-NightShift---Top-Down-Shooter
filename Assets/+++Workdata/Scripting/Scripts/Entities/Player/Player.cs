@@ -39,13 +39,12 @@ public class Player : MonoBehaviour
     
     [Header("Camera")]
     [SerializeField] private Camera mainCamera;
-    [FormerlySerializedAs("cameras")] [SerializeField] private List<GameObject> fightAreaCams;
+    [FormerlySerializedAs("fightAreaCams")] public CinemachineCamera fightAreaCam;
 
     [Header("Light")] 
     [SerializeField] public GameObject globalLightObject;
 
     [Header("Bullets")]
-    [SerializeField] public GameObject bulletParent;
     [SerializeField] private ParticleSystem bulletShellsParticle;
     [HideInInspector] public float bulletDamage;
     [HideInInspector] public float bulletSpeed = 38f;
@@ -179,6 +178,8 @@ public class Player : MonoBehaviour
             {
                 _generator.GetComponent<Generator>().SetUpFightArena();
             }
+
+            transform.position = new Vector3(38, 4, 0);
         }
     }
 
@@ -625,9 +626,9 @@ public class Player : MonoBehaviour
     {
         muzzleFlashVisual.SetActive(true);
         
-        foreach (var _cam in fightAreaCams.Where(cam => cam.GetComponent<CinemachineCamera>().Priority > 10))
+        if (fightAreaCam.Priority > 10)
         {
-            _cam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = weaponScreenShake;
+            fightAreaCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = weaponScreenShake;
         }
         
         bulletShellsParticle.Play();
@@ -642,9 +643,9 @@ public class Player : MonoBehaviour
 
         bulletShellsParticle.Stop();
 
-        foreach (var _cam in fightAreaCams.Where(cam => cam.GetComponent<CinemachineCamera>().Priority > 10))
+        if (fightAreaCam.Priority > 10)
         {
-            _cam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
+            fightAreaCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
         }
 
         muzzleFlashVisual.SetActive(false);

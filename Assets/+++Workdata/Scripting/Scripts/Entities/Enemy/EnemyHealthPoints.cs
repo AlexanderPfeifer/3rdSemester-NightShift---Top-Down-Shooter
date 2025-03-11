@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyHealthPoints : MonoBehaviour
 {
     [SerializeField] private int maximumHitPoints = 5;
-    [SerializeField] private float currentHitPoints;
+    private float currentHitPoints;
 
     private void Start()
     {
@@ -14,9 +14,8 @@ public class EnemyHealthPoints : MonoBehaviour
     {
         currentHitPoints -= damageAmount;
         
-        var _enemy = gameObject.GetComponent<Enemy>();
-        
-        _enemy.HitStop(_enemy.changeColorTime);
+        var _enemy = gameObject.GetComponent<EnemyBase>();
+        _enemy.HitVisual();
 
         if(currentHitPoints <= 0)
             Destroy(gameObject);

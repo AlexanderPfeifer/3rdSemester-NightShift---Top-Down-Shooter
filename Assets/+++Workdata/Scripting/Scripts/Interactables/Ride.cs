@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,23 +15,26 @@ public class Ride : MonoBehaviour
     
     [Header("Spawning")]
     [SerializeField] private List<SpawnPoint> spawnPoints;
-    private readonly List<GameObject> currentEnemies = new();
     [SerializeField] private float maxTimeBetweenSpawns = 20;
+    [SerializeField] private GameObject enemyParent;
+    private readonly List<GameObject> currentEnemies = new();
     private float currentTimeBetweenSpawns;
     private bool enemyHasSpawned;
     
-    [Header("Ride")]
-    [SerializeField] private RidesSO rideData;
+    [Header("Health")]
     [SerializeField] private float maxRideHealth = 50;
-    public GameObject rideLight;
-    [HideInInspector] public bool canActivateRide;
+    [SerializeField]private float hitVisualTime = .05f;
     [HideInInspector] public float currentRideHealth;
     private bool rideGotHit;
     private bool rideGotDestroyed;
     
+    [Header("Activation")]
+    [SerializeField] private RidesSO rideData;
+    public GameObject rideLight;
+    [HideInInspector] public bool canActivateRide;
+    
     [Header("Arena")]
-    [SerializeField] private List<GameObject> invisibleCollider;
-    [HideInInspector] public CinemachineCamera fightCam;
+    [SerializeField] private GameObject invisibleCollider;
 
     [Header("Wave")]
     [SerializeField] private float maxWaveTimer = 120f;
@@ -56,7 +58,6 @@ public class Ride : MonoBehaviour
         
         currentTimeBetweenSpawns = maxTimeBetweenSpawns;
 
-        fightCam = GetComponentInChildren<CinemachineCamera>();
         ActivationStatusInvisibleWalls(false);
     }
 
@@ -100,10 +101,7 @@ public class Ride : MonoBehaviour
     
     public void ActivationStatusInvisibleWalls(bool activationStatus)
     {
-        foreach (var _invisibleWalls in invisibleCollider)
-        {
-            _invisibleWalls.SetActive(activationStatus);
-        }
+        invisibleCollider.SetActive(activationStatus);
     }
 
     #region WaveSetup
@@ -166,10 +164,10 @@ public class Ride : MonoBehaviour
             Destroy(_enemy);
         }
         
-        GetComponentInChildren<PlayerArenaEnter>().canPutAwayWalkieTalkie = true;
+        GetComponentInChildren<Generator>().canPutAwayWalkieTalkie = true;
         currentTimeBetweenSpawns = maxTimeBetweenSpawns;
         waveStarted = false;
-        fightCam.Priority = 5;
+        Player.Instance.fightAreaCam.Priority = 5;
         InGameUIManager.Instance.fightScene.SetActive(false);
         InGameUIManager.Instance.radioAnim.SetTrigger("PutOn");
         InGameUIManager.Instance.ActivateRadio();
@@ -443,10 +441,8 @@ public class Ride : MonoBehaviour
     {
         for (int _i = 0; _i < enemyCount; _i++)
         {
-            var _enemy = Instantiate(enemyType, spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position, 
-                Quaternion.identity, transform); 
-            
-            currentEnemies.Add(_enemy);
+            currentEnemies.Add(Instantiate(enemyType, spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position, 
+                Quaternion.identity, enemyParent.transform));
         }
     }
 
@@ -463,7 +459,7 @@ public class Ride : MonoBehaviour
         waveStarted = waveStart;
     }
 
-    public void StartRideHitVisual(float duration)
+    public void StartRideHitVisual()
     {
         if (rideGotHit)
             return;
@@ -475,7 +471,7 @@ public class Ride : MonoBehaviour
 
         Time.timeScale = 0.1f;
         
-        StartCoroutine(StopRideHitVisual(duration, _rideRenderer));
+        StartCoroutine(StopRideHitVisual(hitVisualTime, _rideRenderer));
     }
     
     private IEnumerator StopRideHitVisual(float duration, SpriteRenderer rideRenderer)
