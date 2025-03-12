@@ -49,8 +49,20 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: ammunitionAmountDropRange.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: ammunitionAmountDropRange.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: maxEnemyKnockBackResistance
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: ammunitionDropChancePercentage
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 2257984013469163083, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: m_Size.x

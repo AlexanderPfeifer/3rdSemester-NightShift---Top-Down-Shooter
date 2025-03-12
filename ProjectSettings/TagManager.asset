@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags:
   - PopcornParticle
   layers:
@@ -18,10 +18,10 @@ TagManager:
   - Ride
   - Player
   - Enemy
-  - Trees
+  - Deco
   - Bullet
   - Duck
-  - 
+  - AmmoDrop
   - 
   - 
   - 
@@ -60,3 +60,5 @@ TagManager:
   - name: Front
     uniqueID: 2718291729
     locked: 0
+  m_RenderingLayers:
+  - Default

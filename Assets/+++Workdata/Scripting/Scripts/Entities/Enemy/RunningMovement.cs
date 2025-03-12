@@ -5,7 +5,12 @@ public class RunningMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float moveSpeed;
     private EnemyBase enemyBase;
-    
+
+    private void Start()
+    {
+        enemyBase = GetComponent<EnemyBase>();
+    }
+
     private void FixedUpdate()
     {
         MoveToRide();

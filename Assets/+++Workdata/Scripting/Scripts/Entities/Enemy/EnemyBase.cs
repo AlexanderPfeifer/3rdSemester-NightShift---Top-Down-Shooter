@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CapsuleCollider2D))]
@@ -9,13 +11,13 @@ public class EnemyBase : MonoBehaviour
     [Header("Movement")]
     [FormerlySerializedAs("maxEnemyKnockBackResistance")] public float knockBackResistance = 10;
     [HideInInspector] public bool enemyCanMove = true;
-    [HideInInspector] public float enemyFreezeTime;
+    [NonSerialized] public float EnemyFreezeTime;
     [HideInInspector] public Rigidbody2D rbEnemy;
+    [HideInInspector] public SpriteRenderer sr;
 
-    [Header("Health")]
+    [Header("Death")]
     [SerializeField] private GameObject enemyDeathMark;
     [SerializeField] private GameObject enemyConfetti;
-    [HideInInspector] public SpriteRenderer sr;
     
     [Header("Ride")]
     [SerializeField] private float rideAttackDamage = 1;
@@ -23,7 +25,10 @@ public class EnemyBase : MonoBehaviour
     [HideInInspector] public Ride ride;
     
     [Header("Drops")]
+    [SerializeField] private GameObject ammoDropPrefab;
     [FormerlySerializedAs("enemyAbilityGain")] [SerializeField] private float enemyAbilityGainForPlayer = 1;
+    [SerializeField] private Vector2Int ammunitionAmountDropRange;
+    [Range(0,1), SerializeField] private float ammunitionDropChancePercentage;
 
     private void Start()
     {
@@ -39,10 +44,10 @@ public class EnemyBase : MonoBehaviour
 
     private void EnemyFreezeUpdate()
     {
-        enemyCanMove = enemyFreezeTime <= 0;
+        enemyCanMove = EnemyFreezeTime <= 0;
 
-        if(enemyFreezeTime > 0)
-            enemyFreezeTime -= Time.deltaTime;
+        if(EnemyFreezeTime > 0)
+            EnemyFreezeTime -= Time.deltaTime;
     }
     
     public void HitVisual()
@@ -70,25 +75,32 @@ public class EnemyBase : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (!gotKilledFromRide)
+        if(!gameObject.scene.isLoaded || gotKilledFromRide) 
+            return;
+        
+        var _transform = transform;
+        Instantiate(enemyDeathMark, _transform.position, Quaternion.identity, _transform.parent);
+            
+        var _confetti = Instantiate(enemyConfetti, _transform.position, Quaternion.identity, _transform.parent);
+        _confetti.GetComponent<ParticleSystem>().Play();
+            
+        if (Player.Instance.canGetAbilityGain)
         {
-            var _transform = transform;
-            Instantiate(enemyDeathMark, _transform.position, Quaternion.identity, _transform.parent);
-            
-            var _confetti = Instantiate(enemyConfetti, _transform.position, Quaternion.identity, _transform.parent);
-            _confetti.GetComponent<ParticleSystem>().Play();
-            
-            if (Player.Instance.canGetAbilityGain)
-            {
-                var _player = Player.Instance;
-                _player.currentAbilityTime += enemyAbilityGainForPlayer;
-                InGameUIManager.Instance.abilityProgress.GetComponent<Slider>().value = _player.currentAbilityTime / _player.maxAbilityTime;
+            var _player = Player.Instance;
+            _player.currentAbilityTime += enemyAbilityGainForPlayer;
+            InGameUIManager.Instance.abilityProgress.GetComponent<Slider>().value = _player.currentAbilityTime / _player.maxAbilityTime;
 
-                if (_player.currentAbilityTime >= _player.maxAbilityTime)
-                {
-                    InGameUIManager.Instance.pressSpace.SetActive(true);
-                }
+            if (_player.currentAbilityTime >= _player.maxAbilityTime)
+            {
+                InGameUIManager.Instance.pressSpace.SetActive(true);
             }
+        }
+            
+        if (Random.value <= ammunitionDropChancePercentage)
+        {
+            int _ammoAmount = Random.Range(ammunitionAmountDropRange.x, ammunitionAmountDropRange.y + 1);
+            GameObject _ammoDrop = Instantiate(ammoDropPrefab, transform.position, Quaternion.identity);
+            _ammoDrop.GetComponent<AmmoDrop>().ammoCount = _ammoAmount;
         }
     }
 }

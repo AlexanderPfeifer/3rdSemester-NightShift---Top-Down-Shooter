@@ -100,7 +100,7 @@ public class Bullet : MonoBehaviour
     {
         if (Player.Instance.freezeBullets)
         {
-            enemyBase.enemyFreezeTime = enemyFreezeTime;
+            enemyBase.EnemyFreezeTime = enemyFreezeTime;
         }
         else if(Player.Instance.endlessPenetrationBullets)
         {

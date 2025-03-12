@@ -23,11 +23,12 @@ public class Ride : MonoBehaviour
     
     [Header("Health")]
     [SerializeField] private float maxRideHealth = 50;
-    [SerializeField]private float hitVisualTime = .05f;
+    [SerializeField] private float hitVisualTime = .05f;
+    [SerializeField] private ParticleSystem hitParticles;
     [HideInInspector] public float currentRideHealth;
     private bool rideGotHit;
     private bool rideGotDestroyed;
-    
+
     [Header("Activation")]
     [SerializeField] private RidesSO rideData;
     public GameObject rideLight;
@@ -468,15 +469,16 @@ public class Ride : MonoBehaviour
 
         SpriteRenderer _rideRenderer = GetComponent<SpriteRenderer>();
         _rideRenderer.color = Color.red;
+        hitParticles.Play();
 
         Time.timeScale = 0.1f;
         
-        StartCoroutine(StopRideHitVisual(hitVisualTime, _rideRenderer));
+        StartCoroutine(StopRideHitVisual(_rideRenderer));
     }
     
-    private IEnumerator StopRideHitVisual(float duration, SpriteRenderer rideRenderer)
+    private IEnumerator StopRideHitVisual(SpriteRenderer rideRenderer)
     {
-        yield return new WaitForSecondsRealtime(duration);
+        yield return new WaitForSecondsRealtime(hitVisualTime);
         
         Time.timeScale = 1f;
         

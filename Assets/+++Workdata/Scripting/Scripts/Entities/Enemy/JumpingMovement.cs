@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class JumpingMovement : MonoBehaviour
@@ -6,6 +7,11 @@ public class JumpingMovement : MonoBehaviour
     private bool bunnyCanJump;
     [SerializeField] private float bunnyJumpSpeed;
     private EnemyBase enemyBase;
+
+    private void Start()
+    {
+        enemyBase = GetComponent<EnemyBase>();
+    }
 
     private void FixedUpdate()
     {

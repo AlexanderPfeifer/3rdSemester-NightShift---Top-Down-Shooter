@@ -39,7 +39,7 @@ public class Generator : MonoBehaviour
         GetComponentInParent<Ride>().rideLight.SetActive(true);
         GetComponentInParent<Ride>().gameObject.GetComponent<Animator>().SetTrigger("LightOn");
         
-        if (isInteractable || arenaFightFinished) 
+        if (arenaFightFinished) 
             return;
         
         ride.ActivationStatusInvisibleWalls(true);

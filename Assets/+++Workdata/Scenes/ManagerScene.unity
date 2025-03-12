@@ -9601,16 +9601,16 @@ MonoBehaviour:
   magnumMagnum: {fileID: 2031220323}
   cornDogHuntingRifle: {fileID: 775953482}
   lollipopShotgun: {fileID: 1029645976}
+  equippedWeapon: {fileID: 1992656932}
   fightScene: {fileID: 559663715}
   pressSpace: {fileID: 467741167}
-  abilityProgress: {fileID: 573094197}
   rideTimeSlider: {fileID: 1460599977}
   rideHpSlider: {fileID: 331087143}
-  equippedWeapon: {fileID: 1992656932}
+  abilityProgress: {fileID: 573094197}
   eIndicator: {fileID: 422605668}
+  inventoryButton: {fileID: 512101827}
   inGameUIScreen: {fileID: 1057738072}
   firstInventorySelected: {fileID: 110417813}
-  inventoryButton: {fileID: 512101827}
   fortuneWheelScreen: {fileID: 540206087}
   generatorScreen: {fileID: 590653168}
   changeLight: 0

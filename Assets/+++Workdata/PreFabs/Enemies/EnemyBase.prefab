@@ -49,6 +49,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -122,7 +125,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &6641996682267424595
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -133,8 +136,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 10
-  m_AngularDrag: 0.05
+  m_LinearDamping: 10
+  m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -155,6 +158,7 @@ CapsuleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6977436177281883007}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -178,7 +182,8 @@ CapsuleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
@@ -194,20 +199,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f308e101e3c1c1c4c865e2fd7254695e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  otherEnemiesMoveSpeed: 0
+  knockBackResistance: 10
   enemyCanMove: 1
-  enemyDeathMark: {fileID: 4290859008780889418, guid: 5201ca6a6521a604e9dac64a9e5c9a82, type: 3}
-  rideAttackDamage: 1
-  changeColorTime: 0.075
-  currentEnemyKnockBack: 0
-  maxEnemyKnockBack: 10
-  enemyWaiting: 0
-  isBunny: 0
-  bunnyCanJump: 0
-  bunnyJumpSpeed: 0
   enemyFreezeTime: 10
-  enemyAbilityGain: 1
-  maxEnemyFreezeTime: 10
+  rbEnemy: {fileID: 0}
+  sr: {fileID: 0}
+  enemyDeathMark: {fileID: 4290859008780889418, guid: 5201ca6a6521a604e9dac64a9e5c9a82, type: 3}
+  enemyConfetti: {fileID: 0}
+  rideAttackDamage: 1
+  ride: {fileID: 0}
+  ammoDropPrefab: {fileID: 8691116015789563686, guid: 9e37250a8dcc9164b9ea5add047e4f9b, type: 3}
+  enemyAbilityGainForPlayer: 1
+  ammunitionAmountDropRange: {x: 0, y: 0}
+  ammunitionDropChancePercentage: 0
 --- !u!114 &7295137754459367048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,4 +225,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maximumHitPoints: 5
-  currentHitPoints: 0

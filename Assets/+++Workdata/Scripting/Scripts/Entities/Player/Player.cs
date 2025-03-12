@@ -40,6 +40,12 @@ public class Player : MonoBehaviour
     [Header("Camera")]
     [SerializeField] private Camera mainCamera;
     [FormerlySerializedAs("fightAreaCams")] public CinemachineCamera fightAreaCam;
+    [Range(2, 10)] [SerializeField] private float cameraTargetLookAheadDivider;
+    [SerializeField] private float fightCamOrthoSize = 8f;
+    [SerializeField] private float orthoSizeSmoothSpeed = 2f;
+    [SerializeField] private float lookAheadSmoothTime = 0.2f;
+    private Vector3 smoothedLookAhead;
+    private Vector3 lookAheadVelocity;
 
     [Header("Light")] 
     [SerializeField] public GameObject globalLightObject;
@@ -96,15 +102,15 @@ public class Player : MonoBehaviour
     private float weaponScreenShake;
     
     [Header("Interaction")]
-    [HideInInspector] public bool canInteract = true;
-    [HideInInspector] public bool isInteracting;
-    [HideInInspector] public int enemyWave;
     [SerializeField] private float interactRadius = 2;
     [SerializeField] public LayerMask wheelOfFortuneLayer;
     [SerializeField] public LayerMask generatorLayer;
     [SerializeField] public LayerMask rideLayer;
     [SerializeField] public LayerMask duckLayer;
     [SerializeField] private LayerMask collectibleLayer;
+    [HideInInspector] public bool canInteract = true;
+    [HideInInspector] public bool isInteracting;
+    [HideInInspector] public int enemyWave;
 
     private MyWeapon myWeapon;
     enum MyWeapon
@@ -174,11 +180,8 @@ public class Player : MonoBehaviour
 
         if (DebugMode.Instance.debugMode)
         {
-            foreach (var _generator in FindObjectsByType<Generator>(FindObjectsSortMode.None))
-            {
-                _generator.GetComponent<Generator>().SetUpFightArena();
-            }
-
+            FindAnyObjectByType<Generator>().GetComponent<Generator>().SetUpFightArena();
+            
             transform.position = new Vector3(38, 4, 0);
         }
     }
@@ -329,6 +332,31 @@ public class Player : MonoBehaviour
             return;
         
         mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        
+        //Do cam lookahead before we zero out the mousePos.z so we do not divide by 0
+        if (fightAreaCam.Priority > 10)
+        {
+            if(!Mathf.Approximately(fightAreaCam.Lens.OrthographicSize, fightCamOrthoSize))
+            {
+                fightAreaCam.Lens.OrthographicSize = Mathf.Lerp(fightAreaCam.Lens.OrthographicSize, fightCamOrthoSize, Time.deltaTime * orthoSizeSmoothSpeed);
+            }
+
+            var _fightCamTransform = fightAreaCam.transform;
+            var _fightCamZPos = _fightCamTransform.position.z;
+            var _targetLookAhead = (mousePos + (cameraTargetLookAheadDivider - 1) * transform.position) / cameraTargetLookAheadDivider;
+            
+            //check for vector zero because otherwise the cam would jump in positions when starting 
+            if (smoothedLookAhead == Vector3.zero)
+            {
+                smoothedLookAhead = _targetLookAhead;
+            }
+            smoothedLookAhead = Vector3.SmoothDamp(smoothedLookAhead, _targetLookAhead, ref lookAheadVelocity, lookAheadSmoothTime);
+
+            // Reset the Z Pos because otherwise the cam is below the floor
+            smoothedLookAhead.z = _fightCamZPos;
+            _fightCamTransform.position = smoothedLookAhead;
+        }
+        
         mousePos.z = 0;
 
         /*
@@ -466,8 +494,11 @@ public class Player : MonoBehaviour
 
     private void SetAmmunitionText(string clipAmmo, string backUpAmmo)
     {
-        InGameUIManager.Instance.ammunitionInClipText.text = clipAmmo;
-        InGameUIManager.Instance.ammunitionInBackUpText.text = "/" + backUpAmmo;
+        if(clipAmmo != null)
+            InGameUIManager.Instance.ammunitionInClipText.text = clipAmmo;
+        
+        if(backUpAmmo != null)
+            InGameUIManager.Instance.ammunitionInBackUpText.text = "/" + backUpAmmo;
     }
 
     #endregion
@@ -677,6 +708,26 @@ public class Player : MonoBehaviour
     }
 
     #endregion
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.TryGetComponent(out AmmoDrop _ammoDrop))
+        {
+            ammunitionInBackUp += myWeapon switch
+            {
+                MyWeapon.AssaultRifle => _ammoDrop.ammoCount * 5,
+                MyWeapon.Magnum => _ammoDrop.ammoCount * 2,
+                MyWeapon.Pistol => _ammoDrop.ammoCount * 3,
+                MyWeapon.HuntingRifle => Mathf.RoundToInt(_ammoDrop.ammoCount * 1.5f),
+                MyWeapon.Shotgun => _ammoDrop.ammoCount,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            
+            SetAmmunitionText(null, ammunitionInBackUp.ToString());
+            
+            Destroy(other.gameObject);
+        }
+    }
 
     private void OnDrawGizmos()
     {
