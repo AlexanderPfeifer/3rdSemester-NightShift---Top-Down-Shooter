@@ -61,14 +61,14 @@ public class InGameUIManager : MonoBehaviour
     
     [Header("End Sequence")]
     [HideInInspector] public bool changeLight;
-
-    [Header("Animation")]
-    public Animator loadingScreenAnim;
-    public Animator radioAnim;
-    public Animator dialogueBoxAnim;
     public Animator endScreen;
 
+    [Header("LoadingScreen")]
+    public Animator loadingScreenAnim;
+
     [Header("Dialogue")]
+    public Animator radioAnim;
+    public Animator dialogueBoxAnim;
     [SerializeField] private List<string> dialogues;
     [SerializeField] private List<string> dialogues2;
     [SerializeField] private List<string> dialogues3;
@@ -154,11 +154,18 @@ public class InGameUIManager : MonoBehaviour
         inventoryText.text = "";
         inventoryHeader.text = "";
         inventoryImage.gameObject.SetActive(false);
-        
+
+        dialogueCount = 0;
+        dialogueTextCount = 0;
+        dialogueText.text = "";
+        radioAnim.Rebind();
+        dialogueBoxAnim.Rebind();
+        dialogueState = DialogueState.DialogueNotPlaying;
+        StopAllCoroutines();
+
         equippedWeapon.SetActive(false);
         
         fightScene.SetActive(false);
-        
         
         GameSaveStateManager.Instance.GoToMainMenu();
         OpenInventory();

@@ -8206,7 +8206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d76e3bcc8841e84cbe8d03bbc591a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
+  debugMode: 0
 --- !u!1 &1456861940
 GameObject:
   m_ObjectHideFlags: 0
@@ -9614,10 +9614,10 @@ MonoBehaviour:
   fortuneWheelScreen: {fileID: 540206087}
   generatorScreen: {fileID: 590653168}
   changeLight: 0
+  endScreen: {fileID: 1787699098}
   loadingScreenAnim: {fileID: 1245599056}
   radioAnim: {fileID: 1046655514}
   dialogueBoxAnim: {fileID: 1181395887}
-  endScreen: {fileID: 1787699098}
   dialogues:
   - "???: Evening Boss, I\u2018m right in front of the entrance gate now."
   - "Now, I\u2018m gonna be honest with you - I imagined the park to be a lot smaller.

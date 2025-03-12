@@ -36,7 +36,7 @@
                     "name": "pause",
                     "type": "Button",
                     "id": "88c9602f-6ee3-478c-bb85-98165776752a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -180,17 +180,6 @@
                 },
                 {
                     "name": "",
-                    "id": "9df5376b-57ce-4f3c-a2bb-0d56fc161f3d",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "7382d56a-d8aa-49a2-9e23-578e2f5eb6ff",
                     "path": "<Gamepad>/start",
                     "interactions": "",
@@ -204,6 +193,28 @@
                     "name": "",
                     "id": "237162ee-cb7e-4d8b-8d9c-b09ac669746a",
                     "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a63400b8-04d8-403d-9af6-51d5e104a534",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a94eb10a-708a-4ce2-ac5d-560c79fccd3a",
+                    "path": "<Keyboard>/i",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
