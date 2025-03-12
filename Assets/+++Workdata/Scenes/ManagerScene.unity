@@ -8206,7 +8206,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d76e3bcc8841e84cbe8d03bbc591a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
+  debugMode: 1
+  choosableWeapons: 0
 --- !u!1 &1456861940
 GameObject:
   m_ObjectHideFlags: 0

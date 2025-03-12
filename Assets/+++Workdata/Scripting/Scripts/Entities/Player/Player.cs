@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public float bulletSpeed = 38f;
     [HideInInspector] public int maxPenetrationCount;
     private int bulletsPerShot;
+    [Range(.1f, .3f), SerializeField] private float bulletSpread = .2f;
     
     [Header("Ammo/Reload")]
     private int maxClipSize;
@@ -72,7 +73,7 @@ public class Player : MonoBehaviour
     public float enemyShootingKnockBack = 2;
     private float maxShootingDelay;
     private float currentShootingDelay;
-    private float weaponSpread;
+    private float weaponAccuracy;
     private Vector3 changingWeaponToMouse;
     private Vector3 weaponToMouse;
     private Vector3 mousePos;
@@ -183,6 +184,8 @@ public class Player : MonoBehaviour
             FindAnyObjectByType<Generator>().GetComponent<Generator>().SetUpFightArena();
             
             transform.position = new Vector3(38, 4, 0);
+            
+            DebugMode.Instance.GetDebugWeapon();
         }
     }
 
@@ -420,11 +423,15 @@ public class Player : MonoBehaviour
             for (int _i = 0; _i < bulletsPerShot; _i++)
             {
                 Vector2 _bulletDirection = Random.insideUnitCircle.normalized;
+                _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - weaponAccuracy);
 
-                _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - weaponSpread);
-
+                Vector2 _perpendicularOffset = new Vector2(-_bulletDirection.y, _bulletDirection.x);
+                // This calculation is a perfect spread of bullets(ask ChatGPT) 
+                float _spreadOffset = (_i - (bulletsPerShot - 1) / 2f) * bulletSpread;
+                Vector3 _spawnPosition = weaponEndPoint.position + (Vector3)(_perpendicularOffset * _spreadOffset);
+    
                 var _bullet = BulletPoolingManager.Instance.GetInactiveBullet();
-                _bullet.transform.SetPositionAndRotation(weaponEndPoint.position, Quaternion.Euler(0, 0 ,weaponAngleUnSmoothed));
+                _bullet.transform.SetPositionAndRotation(_spawnPosition, Quaternion.Euler(0, 0, weaponAngleUnSmoothed));
                 _bullet.gameObject.SetActive(true);
                 _bullet.LaunchInDirection(this, _bulletDirection);
             }
@@ -620,7 +627,7 @@ public class Player : MonoBehaviour
         bulletDamage = weapon.bulletDamage;
         maxPenetrationCount = weapon.penetrationCount;
         maxShootingDelay = weapon.shootDelay;
-        weaponSpread = weapon.weaponSpread;
+        weaponAccuracy = weapon.weaponSpread;
         weaponVisual.transform.localScale = weapon.weaponScale;
         bulletsPerShot = weapon.bulletsPerShot;
         shootingKnockBack = weapon.knockBack;
