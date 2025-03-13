@@ -5503,7 +5503,7 @@ MonoBehaviour:
     collectedCollectiblesIdentifiers: []
     collectedWeaponsIdentifiers: []
     weaponsInInventoryIdentifiers: []
-    finishedRidesIdentifiers: []
+    finishedWavesCount: 
 --- !u!1 &950976625
 GameObject:
   m_ObjectHideFlags: 0
@@ -9591,7 +9591,7 @@ MonoBehaviour:
   inventoryText: {fileID: 950976627}
   inventoryHeader: {fileID: 75838877}
   inventoryImage: {fileID: 631215903}
-  collectedObjects: {fileID: 11400000, guid: fa73a1117e1d3094ba8e37d8ee4a2636, type: 2}
+  collectedWeaponsSO: {fileID: 11400000, guid: fa73a1117e1d3094ba8e37d8ee4a2636, type: 2}
   ammunitionInClipText: {fileID: 2005890519}
   ammunitionInBackUpText: {fileID: 1002136009}
   brokenLights: {fileID: 1083643690}

@@ -8,12 +8,6 @@ public class WeaponSwapUI : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(null);
         
-        if (Player.Instance.GetInteractionObjectInRange(Player.Instance.wheelOfFortuneLayer, out Collider2D _interactable))
-        {
-            var _fortuneWheel = _interactable.GetComponent<FortuneWheel>();
-            _fortuneWheel.ride.GetComponent<Ride>().canActivateRide = true;
-            _fortuneWheel.DeactivateFortuneWheel();   
-        }
         InGameUIManager.Instance.weaponSwapScreen.SetActive(false);
         Player.Instance.isInteracting = false;
     }

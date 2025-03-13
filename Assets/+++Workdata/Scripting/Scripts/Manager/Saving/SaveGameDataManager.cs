@@ -11,7 +11,7 @@ public class SaveGameDataManager
     public List<string> collectedCollectiblesIdentifiers = new();
     public List<string> collectedWeaponsIdentifiers = new();
     public List<string> weaponsInInventoryIdentifiers = new();
-    public List<string> finishedRidesIdentifiers = new();
+    public List<int> finishedWavesCount = new();
     
     public Player.PlayerSaveData newPlayerSaveData;
 
@@ -35,12 +35,12 @@ public class SaveGameDataManager
         weaponsInInventoryIdentifiers.Add(identifier);
     }
     
-    /// <param name="identifier">The identifier that is unique for every collectible</param>
-    public void AddRide(string identifier)
+    public void AddWaveCount(int count)
     {
-        if (finishedRidesIdentifiers.Contains(identifier))
+        if (finishedWavesCount.Contains(count))
             return;
-        finishedRidesIdentifiers.Add(identifier);
+        
+        finishedWavesCount.Add(count);
     }
     
     /// <param name="identifier">The identifier that is unique for every collectible</param>
@@ -61,9 +61,8 @@ public class SaveGameDataManager
         return weaponsInInventoryIdentifiers.Contains(identifier);
     }
     
-    /// <param name="identifier">The identifier that is unique for every collectible</param>
-    public bool HasFinishedRide(string identifier)
+    public int HasWavesFinished()
     {
-        return finishedRidesIdentifiers.Contains(identifier);
+        return finishedWavesCount[finishedWavesCount.Count];
     }
 }

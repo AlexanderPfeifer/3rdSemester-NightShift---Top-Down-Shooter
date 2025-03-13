@@ -76,13 +76,8 @@ public class FortuneWheelUI : MonoBehaviour
 
         gameObject.SetActive(false);
         wheelGotSpinned = false;
-
-        if (Player.Instance.GetInteractionObjectInRange(Player.Instance.wheelOfFortuneLayer, out Collider2D _interactable))
-        {
-            var _wheelOfFortune = _interactable.GetComponent<FortuneWheel>();
-            _wheelOfFortune.ride.GetComponent<Ride>().canActivateRide = true;
-            _wheelOfFortune.DeactivateFortuneWheel();
-        }
+        
+        //Shop the getPrizeVisual
     }
 
     private void OnDisable()

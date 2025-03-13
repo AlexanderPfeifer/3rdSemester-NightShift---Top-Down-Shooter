@@ -104,14 +104,13 @@ public class Player : MonoBehaviour
     
     [Header("Interaction")]
     [SerializeField] private float interactRadius = 2;
-    [SerializeField] public LayerMask wheelOfFortuneLayer;
+    [FormerlySerializedAs("wheelOfFortuneLayer")] [SerializeField] public LayerMask shopLayer;
     [SerializeField] public LayerMask generatorLayer;
     [SerializeField] public LayerMask rideLayer;
     [SerializeField] public LayerMask duckLayer;
     [SerializeField] private LayerMask collectibleLayer;
     [HideInInspector] public bool canInteract = true;
     [HideInInspector] public bool isInteracting;
-    [HideInInspector] public int enemyWave;
 
     private MyWeapon myWeapon;
     enum MyWeapon
@@ -269,7 +268,7 @@ public class Player : MonoBehaviour
         {
             _collectible.GetComponent<Collectible>().Collect();
         }
-        else if (GetInteractionObjectInRange(wheelOfFortuneLayer, out _) && !InGameUIManager.Instance.fortuneWheelScreen.activeSelf)
+        else if (GetInteractionObjectInRange(shopLayer, out _) && !InGameUIManager.Instance.fortuneWheelScreen.activeSelf)
         {
             foreach (var _weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
             {
@@ -291,7 +290,7 @@ public class Player : MonoBehaviour
         }
         else if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && !InGameUIManager.Instance.generatorScreen.activeSelf)
         {
-            if (_generator.GetComponent<Generator>().isInteractable)
+            if (_generator.GetComponent<Generator>().genInactive)
             {
                 InGameUIManager.Instance.generatorScreen.SetActive(true);
                 GameSaveStateManager.Instance.SaveGame();
@@ -300,15 +299,6 @@ public class Player : MonoBehaviour
         else if (GetInteractionObjectInRange(duckLayer, out _))
         {
             AudioManager.Instance.Play("DuckSound");
-        }
-        else if (GetInteractionObjectInRange(rideLayer, out Collider2D _interactable))
-        {
-            var _ride = _interactable.gameObject.GetComponent<Ride>();
-            
-            if (_ride.canActivateRide)
-            {
-                _ride.SetWave();
-            }
         }
     }
 
@@ -701,10 +691,9 @@ public class Player : MonoBehaviour
     
     private void HandleInteractionIndicator()
     {
-        if (GetInteractionObjectInRange(wheelOfFortuneLayer, out _) ||
+        if (GetInteractionObjectInRange(shopLayer, out _) ||
             GetInteractionObjectInRange(collectibleLayer, out _) ||
-            GetInteractionObjectInRange(rideLayer, out Collider2D _ride) && _ride.GetComponent<Ride>().canActivateRide ||
-            GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && _generator.GetComponent<Generator>().isInteractable)
+            GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && _generator.GetComponent<Generator>().genInactive)
         {
             canInteract = true;
         }
