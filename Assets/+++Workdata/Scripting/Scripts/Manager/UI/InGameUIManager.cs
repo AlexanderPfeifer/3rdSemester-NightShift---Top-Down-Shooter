@@ -56,7 +56,7 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private GameObject inventoryButton; 
     public GameObject inGameUIScreen;
     public GameObject firstInventorySelected;
-    public GameObject fortuneWheelScreen;
+    public GameObject shopScreen;
     public GameObject generatorScreen;
     
     [Header("End Sequence")]

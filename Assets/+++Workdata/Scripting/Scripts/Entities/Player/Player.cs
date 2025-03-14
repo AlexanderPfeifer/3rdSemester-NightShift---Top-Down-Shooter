@@ -104,7 +104,7 @@ public class Player : MonoBehaviour
     
     [Header("Interaction")]
     [SerializeField] private float interactRadius = 2;
-    [FormerlySerializedAs("wheelOfFortuneLayer")] [SerializeField] public LayerMask shopLayer;
+    [SerializeField] public LayerMask shopLayer;
     [SerializeField] public LayerMask generatorLayer;
     [SerializeField] public LayerMask rideLayer;
     [SerializeField] public LayerMask duckLayer;
@@ -268,7 +268,7 @@ public class Player : MonoBehaviour
         {
             _collectible.GetComponent<Collectible>().Collect();
         }
-        else if (GetInteractionObjectInRange(shopLayer, out _) && !InGameUIManager.Instance.fortuneWheelScreen.activeSelf)
+        else if (GetInteractionObjectInRange(shopLayer, out _) && !InGameUIManager.Instance.shopScreen.activeSelf)
         {
             foreach (var _weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
             {
@@ -285,7 +285,7 @@ public class Player : MonoBehaviour
 
             if (!hasWeapon)
             {
-                InGameUIManager.Instance.fortuneWheelScreen.SetActive(true);
+                InGameUIManager.Instance.shopScreen.SetActive(true);
             }
         }
         else if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && !InGameUIManager.Instance.generatorScreen.activeSelf)

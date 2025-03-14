@@ -23,6 +23,6 @@ public class WeaponSwapUI : MonoBehaviour
         }
 
         InGameUIManager.Instance.weaponSwapScreen.SetActive(false);
-        InGameUIManager.Instance.fortuneWheelScreen.SetActive(true);
+        InGameUIManager.Instance.shopScreen.SetActive(true);
     }
 }
