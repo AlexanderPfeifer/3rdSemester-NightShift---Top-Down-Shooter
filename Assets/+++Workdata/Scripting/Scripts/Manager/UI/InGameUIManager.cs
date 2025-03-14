@@ -47,9 +47,9 @@ public class InGameUIManager : MonoBehaviour
     [FormerlySerializedAs("inventoryWeapon")] public GameObject equippedWeapon;
     public GameObject fightScene;
     public GameObject pressSpace;
-    public GameObject rideTimeSlider;
-    public GameObject rideHpSlider;
-    public GameObject abilityProgress;
+    public Image rideTimeImage;
+    public Image rideHpImage;
+    public Image abilityProgressImage;
     
     [Header("Player UI")]
     [SerializeField] private GameObject eIndicator;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -21,7 +22,6 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float maxCriticalHuntingRifleDamageMultiplier = 4;
     [SerializeField] private float minCriticalHuntingRifleDamageMultiplier = 2;
     private int tickCount = 2;
-    private bool popCornParticle;
 
     [Header("Enemy")] 
     [SerializeField] private float knockBackTime = .15f;
@@ -36,12 +36,12 @@ public class Bullet : MonoBehaviour
     
     private void Update()
     {
-        DestroyBulletTooFarAwayUpdate();
+        DeactivateBulletTooFarAwayUpdate();
         
         StickyBulletsTickDamageUpdate();
     }
 
-    private void DestroyBulletTooFarAwayUpdate()
+    private void DeactivateBulletTooFarAwayUpdate()
     {
         if (Vector2.Distance(startPosition, transform.position) >= BulletDistanceUntilDestroy)
         {
@@ -51,7 +51,7 @@ public class Bullet : MonoBehaviour
 
     private void StickyBulletsTickDamageUpdate()
     {
-        if (Player.Instance.stickyBullets)
+        if (Player.Instance.currentActiveAbility == Player.CurrentAbility.StickyBullets)
         {
             stickyBulletTimer -= Time.deltaTime;
 
@@ -98,32 +98,42 @@ public class Bullet : MonoBehaviour
 
     private void ApplyAbilities(EnemyBase enemyBase)
     {
-        if (Player.Instance.freezeBullets)
+        switch (Player.Instance.currentActiveAbility)
         {
-            enemyBase.EnemyFreezeTime = enemyFreezeTime;
-        }
-        else if(Player.Instance.endlessPenetrationBullets)
-        {
-            var _probability = Random.Range(1, criticalHuntingRifleDamageProbability);
+            case Player.CurrentAbility.FreezeBullets:
+                enemyBase.EnemyFreezeTime = enemyFreezeTime;
+                break;
             
-            if (_probability == criticalHuntingRifleDamageProbability - 1)
-            {
-                criticalDamage = Random.Range(Player.Instance.bulletDamage * minCriticalHuntingRifleDamageMultiplier, 
-                    Player.Instance.bulletDamage * maxCriticalHuntingRifleDamageMultiplier);
-            }
-            else
-            {
-                criticalDamage = Player.Instance.bulletDamage;
-            }
-        }
-        else if (Player.Instance.stickyBullets)
-        {
-            transform.SetParent(enemyBase.transform);
-            rb.linearVelocity = Vector2.zero;
-        }
-        else if (Player.Instance.explosiveBullets)
-        {
-            popCornParticle = true;
+            case Player.CurrentAbility.PenetrationBullets:
+                var _probability = Random.Range(1, criticalHuntingRifleDamageProbability);
+            
+                if (_probability == criticalHuntingRifleDamageProbability - 1)
+                {
+                    criticalDamage = Random.Range(Player.Instance.bulletDamage * minCriticalHuntingRifleDamageMultiplier, 
+                        Player.Instance.bulletDamage * maxCriticalHuntingRifleDamageMultiplier);
+                }
+                else
+                {
+                    criticalDamage = Player.Instance.bulletDamage;
+                }
+                break;
+            
+            case Player.CurrentAbility.StickyBullets:
+                transform.position = enemyBase.transform.position;
+                rb.linearVelocity = Vector2.zero;
+                break;
+
+            case Player.CurrentAbility.FastBullets:
+                break;
+            
+            case Player.CurrentAbility.ExplosiveBullets:
+                break;
+            
+            case Player.CurrentAbility.None:
+                break;
+            
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
     
@@ -146,7 +156,7 @@ public class Bullet : MonoBehaviour
     {
         var _bulletPenetrationCount = Player.Instance.maxPenetrationCount;
         
-        if (!Player.Instance.endlessPenetrationBullets)
+        if (Player.Instance.currentActiveAbility != Player.CurrentAbility.PenetrationBullets)
         {
             _bulletPenetrationCount -= 1;
             enemyHealthPoints.TakeDamage(Player.Instance.bulletDamage);
@@ -159,7 +169,7 @@ public class Bullet : MonoBehaviour
         if (_bulletPenetrationCount >= 0) 
             return;
         
-        if (!Player.Instance.stickyBullets)
+        if (Player.Instance.currentActiveAbility != Player.CurrentAbility.StickyBullets)
         {
             DeactivateBullet();
         }
@@ -167,7 +177,7 @@ public class Bullet : MonoBehaviour
 
     private void DeactivateBullet()
     {
-        if (!Player.Instance.stickyBullets)
+        if (Player.Instance.currentActiveAbility != Player.CurrentAbility.StickyBullets)
         {
             var _bulletImpactParticles = BulletPoolingManager.Instance.impactParticles;
             _bulletImpactParticles.transform.SetPositionAndRotation(gameObject.transform.position, gameObject.transform.rotation);
@@ -175,8 +185,10 @@ public class Bullet : MonoBehaviour
             _bulletImpactParticles.Play();
         }
 
-        if (popCornParticle)
+        if (Player.Instance.currentActiveAbility == Player.CurrentAbility.ExplosiveBullets)
         {
+            AudioManager.Instance.Play("PopCornExplosion");
+
             var _popCornParticles = BulletPoolingManager.Instance.popcornParticles;
             _popCornParticles.transform.position = gameObject.transform.position;
             _popCornParticles.Play();

@@ -82,12 +82,7 @@ public class Player : MonoBehaviour
     private bool hasWeapon;
     
     [Header("Weapon Ability")]
-    [HideInInspector] public bool freezeBullets;
-    [HideInInspector] public bool stickyBullets;
-    [HideInInspector] public bool explosiveBullets;
-    [HideInInspector] public bool endlessPenetrationBullets;
-    [HideInInspector] public bool fastBullets;
-    [SerializeField] public float maxAbilityTime;
+    public float maxAbilityTime;
     [SerializeField] private float fastBulletsDelay = 0.075f;
     [HideInInspector] public float currentAbilityTime;
     [HideInInspector] public bool canGetAbilityGain = true;
@@ -120,6 +115,17 @@ public class Player : MonoBehaviour
         Magnum,
         Pistol,
         HuntingRifle,
+    }
+    
+    [HideInInspector] public CurrentAbility currentActiveAbility = CurrentAbility.None;
+    public enum CurrentAbility
+    {
+        FastBullets,
+        StickyBullets,
+        FreezeBullets,
+        ExplosiveBullets,
+        PenetrationBullets,
+        None,
     }
     
     private void SetupFromData()
@@ -425,8 +431,8 @@ public class Player : MonoBehaviour
                 _bullet.gameObject.SetActive(true);
                 _bullet.LaunchInDirection(this, _bulletDirection);
             }
-                
-            currentShootingDelay = fastBullets ? fastBulletsDelay : maxShootingDelay;
+
+            currentShootingDelay = currentActiveAbility == CurrentAbility.FastBullets ? fastBulletsDelay : maxShootingDelay;
 
             StartCoroutine(WeaponVisualCoroutine());
 
@@ -556,41 +562,25 @@ public class Player : MonoBehaviour
         canGetAbilityGain = false;
         InGameUIManager.Instance.pressSpace.SetActive(false);
 
-        switch (myWeapon)
+        currentActiveAbility = myWeapon switch
         {
-            case MyWeapon.AssaultRifle:
-                fastBullets = true;
-                break;
-            case MyWeapon.Magnum:
-                freezeBullets = true;
-                break;
-            case MyWeapon.Pistol:
-                explosiveBullets = true;
-                break;
-            case MyWeapon.HuntingRifle:
-                endlessPenetrationBullets = true;
-                break;
-            case MyWeapon.Shotgun:
-                stickyBullets = true;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-        
-        float _abilityTimer = maxAbilityTime;
-        while (_abilityTimer > 0)
+            MyWeapon.AssaultRifle => CurrentAbility.FastBullets,
+            MyWeapon.Magnum => CurrentAbility.FreezeBullets,
+            MyWeapon.Pistol => CurrentAbility.ExplosiveBullets,
+            MyWeapon.HuntingRifle => CurrentAbility.PenetrationBullets,
+            MyWeapon.Shotgun => CurrentAbility.StickyBullets,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        while (currentAbilityTime > 0)
         {
-            _abilityTimer -= Time.deltaTime;
-            currentAbilityTime = _abilityTimer; 
+            currentAbilityTime -= Time.deltaTime;
+            InGameUIManager.Instance.abilityProgressImage.fillAmount = currentAbilityTime / maxAbilityTime;
             yield return null; 
         }
         
-        fastBullets = false;
-        freezeBullets = false;
-        explosiveBullets = false;
-        endlessPenetrationBullets = false;
-        stickyBullets = false;
-        
+        currentActiveAbility = CurrentAbility.None;
+
         canGetAbilityGain = true;
     }
     

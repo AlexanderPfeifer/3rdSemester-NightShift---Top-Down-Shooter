@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -55,11 +54,6 @@ public class EnemyBase : MonoBehaviour
         GetComponent<Animator>().SetTrigger("Hurt");
         
         AudioManager.Instance.Play("EnemyHit");
-
-        if (Player.Instance.explosiveBullets)
-        {
-            AudioManager.Instance.Play("PopCornExplosion");
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D col)
@@ -88,7 +82,7 @@ public class EnemyBase : MonoBehaviour
         {
             var _player = Player.Instance;
             _player.currentAbilityTime += enemyAbilityGainForPlayer;
-            InGameUIManager.Instance.abilityProgress.GetComponent<Slider>().value = _player.currentAbilityTime / _player.maxAbilityTime;
+            InGameUIManager.Instance.abilityProgressImage.fillAmount = _player.currentAbilityTime / _player.maxAbilityTime;
 
             if (_player.currentAbilityTime >= _player.maxAbilityTime)
             {
