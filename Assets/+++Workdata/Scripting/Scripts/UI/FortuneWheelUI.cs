@@ -75,9 +75,14 @@ public class FortuneWheelUI : MonoBehaviour
         GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
 
         gameObject.SetActive(false);
-        wheelGotSpinned = false;
+        wheelGotSpinned = false; 
         
-        //Shop the getPrizeVisual
+        PrizeHighlight();
+    }
+
+    private void PrizeHighlight()
+    {
+        
     }
 
     private void OnDisable()

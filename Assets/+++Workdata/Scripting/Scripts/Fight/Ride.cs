@@ -8,10 +8,14 @@ public class Ride : MonoBehaviour
     public Wave[] waves;
     [HideInInspector] public bool waveStarted;
     private float waveTimer;
-    [SerializeField] private List<SpawnPoint> spawnPoints;
     [SerializeField] private GameObject enemyParent;
     private readonly List<GameObject> currentEnemies = new();
     
+    [Header("Square Spawn Point")]
+    [SerializeField] private Transform spawnCenter; 
+    [SerializeField] private float squareSizeY; 
+    [SerializeField] private float squareSizeX; 
+
     [Header("Health")]
     [SerializeField] private float maxRideHealth = 50;
     [SerializeField] private float hitVisualTime = .05f;
@@ -76,11 +80,35 @@ public class Ride : MonoBehaviour
             for (int _enemyIndex = 0; _enemyIndex < enemyCluster.spawnCount; _enemyIndex++)
             {
                 currentEnemies.Add(Instantiate(enemyCluster.enemyPrefab,
-                    spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position, Quaternion.identity, enemyParent.transform));
+                    GetRandomEdgePosition(), Quaternion.identity, enemyParent.transform));
             }
             
             yield return new WaitForSeconds(enemyCluster.timeBetweenSpawns);
         }
+    }
+    
+    private Vector3 GetRandomEdgePosition()
+    {
+        float _halfSizeY = squareSizeY / 2f;
+        float _halfSizeX = squareSizeX / 2f;
+        Vector3 _spawnPos = spawnCenter.position;
+
+        switch (Random.Range(0, 4))
+        {
+            case 0: // Top Edge
+                _spawnPos += new Vector3(Random.Range(-_halfSizeY, _halfSizeY), _halfSizeY, 0);
+                break;
+            case 1: // Right Edge
+                _spawnPos += new Vector3(_halfSizeX, Random.Range(-_halfSizeX, _halfSizeX), 0);
+                break;
+            case 2: // Bottom Edge
+                _spawnPos += new Vector3(Random.Range(-_halfSizeY, _halfSizeY), -_halfSizeY, 0);
+                break;
+            case 3: // Left Edge
+                _spawnPos += new Vector3(-_halfSizeX, Random.Range(-_halfSizeX, _halfSizeX), 0);
+                break;
+        }
+        return _spawnPos;
     }
 
     #endregion
@@ -179,5 +207,26 @@ public class Ride : MonoBehaviour
                 _cluster.UpdateClusterName();
             }
         }
+    }
+    
+    private void OnDrawGizmos()
+    {
+        if (spawnCenter == null) 
+            return;
+
+        Vector3 _center = spawnCenter.position;
+        float _halfSizeY = squareSizeY / 2;
+        float _halfSizeX = squareSizeX / 2;
+
+        Vector3 _topLeft = _center + new Vector3(-_halfSizeX, _halfSizeY, 0);
+        Vector3 _topRight = _center + new Vector3(_halfSizeX, _halfSizeY, 0);
+        Vector3 _bottomRight = _center + new Vector3(_halfSizeX, -_halfSizeY, 0);
+        Vector3 _bottomLeft = _center + new Vector3(-_halfSizeX, -_halfSizeY, -0);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(_topLeft, _topRight);
+        Gizmos.DrawLine(_topRight, _bottomRight);
+        Gizmos.DrawLine(_bottomRight, _bottomLeft);
+        Gizmos.DrawLine(_bottomLeft, _topLeft);
     }
 }
