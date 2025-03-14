@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 [Serializable]
 public class EnemyClusterData
 {
+    [SerializeField, ReadOnly] private string clusterBeginTime;
+
     [Header("WHO")]
     public GameObject enemyPrefab;
     
@@ -12,7 +15,7 @@ public class EnemyClusterData
     [Min(0)] public float timeToSpawn;
     
     [Header("HOW MANY")]
-    [Min(0)] public int spawnCount;
+    [Min(1)] public int spawnCount;
     
     [Header("HOW MANY REPETITIONS")]
     [Min(0)] public int repeatCount;
@@ -20,21 +23,18 @@ public class EnemyClusterData
     [Header("AT WHAT INTERVAL")]
     [Min(0)] public float timeBetweenSpawns;
     
-    public void ValidateValues()
+    public void UpdateClusterName()
     {
-        spawnCount = Mathf.Max(1, spawnCount);
+        clusterBeginTime = timeToSpawn.ToString(CultureInfo.CurrentCulture);
     }
 }
 
 [Serializable]
 public class Wave
 {
+    [ReadOnly] public string waveName;
+
     [Min(1)] public float maxWaveTime = 120f;
 
     public List<EnemyClusterData> enemyClusters = new();
-
-    public void ValidateValues()
-    {
-        maxWaveTime = Mathf.Max(1, maxWaveTime);
-    }
 }

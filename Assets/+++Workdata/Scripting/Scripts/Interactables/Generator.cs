@@ -3,7 +3,6 @@ using UnityEngine;
 public class Generator : MonoBehaviour
 {
     [Header("Interactable")]
-    [SerializeField] private GameObject fortuneWheel;
     private Ride ride;
     
     [Header("WalkieTalkie")]
@@ -14,11 +13,15 @@ public class Generator : MonoBehaviour
     
     [HideInInspector] public bool genInactive = true;
 
+    private void Start()
+    {
+        ride = GetComponentInParent<Ride>();
+    }
+
     public void SetUpFightArena()
     {
         fightMusic.Play();
         AudioManager.Instance.Stop("InGameMusic");
-        fortuneWheel.SetActive(true);
         genInactive = false;
         GetComponentInParent<Ride>().rideLight.SetActive(true);
         GetComponentInParent<Ride>().gameObject.GetComponent<Animator>().SetTrigger("LightOn");

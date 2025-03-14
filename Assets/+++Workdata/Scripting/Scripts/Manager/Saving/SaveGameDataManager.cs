@@ -11,7 +11,7 @@ public class SaveGameDataManager
     public List<string> collectedCollectiblesIdentifiers = new();
     public List<string> collectedWeaponsIdentifiers = new();
     public List<string> weaponsInInventoryIdentifiers = new();
-    public List<int> finishedWavesCount = new();
+    public int finishedWavesCount;
     
     public Player.PlayerSaveData newPlayerSaveData;
 
@@ -35,12 +35,9 @@ public class SaveGameDataManager
         weaponsInInventoryIdentifiers.Add(identifier);
     }
     
-    public void AddWaveCount(int count)
+    public void AddWaveCount()
     {
-        if (finishedWavesCount.Contains(count))
-            return;
-        
-        finishedWavesCount.Add(count);
+        finishedWavesCount++;
     }
     
     /// <param name="identifier">The identifier that is unique for every collectible</param>
@@ -63,6 +60,6 @@ public class SaveGameDataManager
     
     public int HasWavesFinished()
     {
-        return finishedWavesCount[finishedWavesCount.Count];
+        return finishedWavesCount;
     }
 }

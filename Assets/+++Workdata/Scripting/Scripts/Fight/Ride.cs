@@ -5,18 +5,13 @@ using UnityEngine.UI;
 
 public class Ride : MonoBehaviour
 {
-    [Header("Waves")] 
+    [Header("Spawning")]
     public Wave[] waves;
     private bool waveStarted;
     private float waveTimer;
-
-    [Header("Spawning")]
     [SerializeField] private List<SpawnPoint> spawnPoints;
-    [SerializeField] private float maxTimeBetweenSpawns = 20;
     [SerializeField] private GameObject enemyParent;
     private readonly List<GameObject> currentEnemies = new();
-    private float currentTimeBetweenSpawns;
-    private bool enemyHasSpawned;
     
     [Header("Health")]
     [SerializeField] private float maxRideHealth = 50;
@@ -36,8 +31,6 @@ public class Ride : MonoBehaviour
     {
         InGameUIManager.Instance.dialogueCount = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
         
-        currentTimeBetweenSpawns = maxTimeBetweenSpawns;
-
         ActivationStatusInvisibleWalls(false);
     }
 
@@ -52,15 +45,9 @@ public class Ride : MonoBehaviour
             return;
         
         InGameUIManager.Instance.rideHpSlider.GetComponentInChildren<Slider>().value = currentRideHealth / maxRideHealth;
-        //InGameUIManager.Instance.rideTimeSlider.GetComponent<Slider>().value = currentWaveTimer / maxWaveTimer;
+        InGameUIManager.Instance.rideTimeSlider.GetComponent<Slider>().value = waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].maxWaveTime / waveTimer;
         waveTimer += Time.deltaTime;
-        currentTimeBetweenSpawns -= Time.deltaTime;
-            
-        if (currentTimeBetweenSpawns <= 0)
-        {
-            currentTimeBetweenSpawns = maxTimeBetweenSpawns;
-        }
-            
+
         if (waveTimer >= waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].maxWaveTime)
         {
             WonWave();
@@ -102,7 +89,13 @@ public class Ride : MonoBehaviour
     private IEnumerator SpawnEnemyCluster(EnemyClusterData enemyCluster)
     {
         yield return new WaitForSeconds(enemyCluster.timeToSpawn);
-        SpawnEnemies(enemyCluster.enemyPrefab, enemyCluster.spawnCount);
+
+        for (int _i = 0; _i < enemyCluster.repeatCount; _i++)
+        {
+            SpawnEnemies(enemyCluster.enemyPrefab, enemyCluster.spawnCount);
+            
+            yield return new WaitForSeconds(enemyCluster.timeBetweenSpawns);
+        }
     }
     
     private void LostWave()
@@ -133,14 +126,13 @@ public class Ride : MonoBehaviour
         }
         
         GetComponentInChildren<Generator>().canPutAwayWalkieTalkie = true;
-        currentTimeBetweenSpawns = maxTimeBetweenSpawns;
         waveStarted = false;
         Player.Instance.fightAreaCam.Priority = 5;
         InGameUIManager.Instance.fightScene.SetActive(false);
         InGameUIManager.Instance.radioAnim.SetTrigger("PutOn");
         InGameUIManager.Instance.ActivateRadio();
         GetComponentInChildren<Generator>().genInactive = true;
-        GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount(GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() + 1);
+        GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount();
         GameSaveStateManager.Instance.SaveGame();
         AudioManager.Instance.Play("InGameMusic");
     }
@@ -189,4 +181,17 @@ public class Ride : MonoBehaviour
     }
 
     #endregion
+    
+    private void OnValidate()
+    {
+        for (var _i = 0; _i < waves.Length; _i++)
+        {
+            waves[_i].waveName = "Wave " + _i;
+
+            foreach (var _cluster in waves[_i].enemyClusters)
+            {
+                _cluster.UpdateClusterName();
+            }
+        }
+    }
 }
