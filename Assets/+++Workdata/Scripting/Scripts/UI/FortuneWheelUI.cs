@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class FortuneWheelUI : MonoBehaviour
 {
@@ -15,11 +17,15 @@ public class FortuneWheelUI : MonoBehaviour
     private Rigidbody2D rb;
     [HideInInspector] public bool wheelGotSpinned;
 
+    [SerializeField] private Image mark; 
+
     private void OnEnable()
     {
         Player.Instance.isInteracting = true;
         
         EventSystem.current.SetSelectedGameObject(firstFortuneWheelButtonSelected);
+        
+        mark.transform.localScale = new Vector3(1, 1, 1);
     }
 
     private void Start()
@@ -66,23 +72,34 @@ public class FortuneWheelUI : MonoBehaviour
         const float pieSize = 360f / FortuneWheelPieCount;
         //Do not know anymore why I put +41 right now, but it works
         int _priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + 36f) / pieSize) % Player.Instance.allWeaponPrizes.Count;
-        GetWeaponPrize(Player.Instance.allWeaponPrizes[_priceIndex]);
+        StartCoroutine(GetWeaponPrize(Player.Instance.allWeaponPrizes[_priceIndex]));
     }
     
-    private void GetWeaponPrize(WeaponObjectSO weapon)
+    private IEnumerator GetWeaponPrize(WeaponObjectSO weapon)
     {
+        mark.transform.localScale = new Vector3(2, 2, 1);
+        
+        yield return new WaitForSeconds(.3f);
+        
+        mark.transform.localScale = new Vector3(1, 1, 1);
+
+        yield return new WaitForSeconds(.3f);
+        
+        mark.transform.localScale = new Vector3(2, 2, 1);
+
+        yield return new WaitForSeconds(.3f);
+        
+        mark.transform.localScale = new Vector3(1, 1, 1);
+        
+        yield return new WaitForSeconds(.3f);
+
+        mark.transform.localScale = new Vector3(2, 2, 1);
+
         Player.Instance.GetWeapon(weapon);
         GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
 
         gameObject.SetActive(false);
-        wheelGotSpinned = false; 
-        
-        PrizeHighlight();
-    }
-
-    private void PrizeHighlight()
-    {
-        
+        wheelGotSpinned = false;
     }
 
     private void OnDisable()

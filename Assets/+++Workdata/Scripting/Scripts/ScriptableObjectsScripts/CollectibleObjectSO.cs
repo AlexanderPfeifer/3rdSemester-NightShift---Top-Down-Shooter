@@ -5,5 +5,5 @@ public class CollectibleObjectSO : ScriptableObject
 {
     public Sprite icon;
     public string header;
-    public string content;
+    [TextArea(3, 10)] public string content;
 }

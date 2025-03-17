@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ride : MonoBehaviour
 {
     [Header("Spawning")]
-    public Wave[] waves;
+    [SerializeField] private Wave[] waves;
     [HideInInspector] public bool waveStarted;
     private float waveTimer;
     [SerializeField] private GameObject enemyParent;

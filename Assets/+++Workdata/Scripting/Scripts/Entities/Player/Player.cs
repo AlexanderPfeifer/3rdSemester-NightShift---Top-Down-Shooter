@@ -609,7 +609,7 @@ public class Player : MonoBehaviour
         weaponAccuracy = weapon.weaponSpread;
         weaponVisual.transform.localScale = weapon.weaponScale;
         bulletsPerShot = weapon.bulletsPerShot;
-        shootingKnockBack = weapon.knockBack;
+        shootingKnockBack = weapon.playerKnockBack;
         maxClipSize = weapon.clipSize;
         ammunitionInBackUp = weapon.ammunitionInBackUp;
         ammunitionInClip = weapon.ammunitionInClip;
@@ -619,7 +619,7 @@ public class Player : MonoBehaviour
             _bullet.transform.localScale = weapon.bulletSize;
         }
         weaponScreenShake = weapon.screenShake;
-        enemyShootingKnockBack = weapon.enemyKnockBackPerBullet;
+        enemyShootingKnockBack = weapon.enemyKnockBack;
 
         playerVisual.SetActive(false);
         playerNoHandVisual.SetActive(true);

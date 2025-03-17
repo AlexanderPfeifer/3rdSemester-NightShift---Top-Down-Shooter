@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu]
 public class WeaponObjectSO : ScriptableObject
@@ -6,19 +7,19 @@ public class WeaponObjectSO : ScriptableObject
     //Scriptable Object for every unique weapon with unique perks
     public Sprite inGameWeaponVisual;
     public string weaponName;
-    public string weaponDescription;
-    public string weaponAbilityDescription;
+    [TextArea(3, 10)] public string weaponDescription;
+    [FormerlySerializedAs("weaponStats")] [TextArea(3, 10)] public string weaponAbilityDescription;
     public float shootDelay;
-    public int penetrationCount;
     public float bulletDamage;
     public float weaponSpread;
+    [FormerlySerializedAs("knockBack")] public float playerKnockBack;
+    [FormerlySerializedAs("enemyKnockBackPerBullet")] public float enemyKnockBack;
+    public float screenShake;
     public Vector3 weaponScale;
-    public int bulletsPerShot;
-    public float knockBack;
-    public float enemyKnockBackPerBullet;
     public Vector2 bulletSize;
+    public int penetrationCount;
+    public int bulletsPerShot;
     public int clipSize;
     public int ammunitionInClip;
     public int ammunitionInBackUp;
-    public float screenShake;
 }

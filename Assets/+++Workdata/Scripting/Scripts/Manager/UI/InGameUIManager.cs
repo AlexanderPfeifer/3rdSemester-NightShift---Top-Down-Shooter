@@ -366,7 +366,8 @@ public class InGameUIManager : MonoBehaviour
             
             _headerText += _weapon.weaponName;
             _text += _weapon.weaponDescription;
-            _text += "\n" + "\n" + "Special Ability:" + "\n" + _weapon.weaponAbilityDescription;
+            _text += "\n" + "\n" + "Special Ability:" + "\n" + _weapon.weaponAbilityDescription + "\n" + "\n" +
+                     "Damage: " + _weapon.bulletDamage +  "\n" + "Clipsize: " + _weapon.clipSize;
             var _spriteWeapon = _weapon.inGameWeaponVisual;
             
             var _itemIdentifier = _headerText;
