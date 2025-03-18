@@ -18,6 +18,7 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private Button deleteSaveStateCheckButton;
     [SerializeField] private GameObject deleteSaveStateCheckPanel;
     [HideInInspector] public bool gameStateLoaded;
+    [SerializeField] private ConfigureButtonsManager configureButtonsManager;
 
     [Header("MainMenuScreens")]
     [SerializeField] private GameObject loadScreen;
@@ -145,13 +146,11 @@ public class MainMenuUIManager : MonoBehaviour
     public void CreateLoadMenuButtons()
     {
         StartCoroutine(SetScreen(true, false, false, false, true, true));
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(firstMainMenuSelected);
 
         if (!gameStateLoaded)
         {
             string[] _saveGameNames = SaveFileManager.GetAllSaveFileNames();
-        
+            
             foreach (var _saveGameName in _saveGameNames)
             {
                 newLoadButton = Instantiate(loadLevelButtonPrefab, saveStateLayoutGroup);
@@ -171,6 +170,11 @@ public class MainMenuUIManager : MonoBehaviour
                 var _deleteButton = newDeleteButton.GetComponent<Button>();
                 _deleteButton.onClick.AddListener(PressButtonSound);
                 _deleteButton.onClick.AddListener(delegate{SetDeleteSaveStateCheck(_saveStateName);});
+            }
+
+            foreach (var _loadButtons in loadButtonsList)
+            {
+                configureButtonsManager.AddHoverEvent(_loadButtons);
             }
 
             gameStateLoaded = true;
