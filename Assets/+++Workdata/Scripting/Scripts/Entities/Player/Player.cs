@@ -296,7 +296,7 @@ public class Player : MonoBehaviour
         }
         else if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && !InGameUIManager.Instance.generatorScreen.activeSelf)
         {
-            if (_generator.GetComponent<Generator>().genInactive)
+            if (_generator.GetComponent<Generator>().genInteractable)
             {
                 InGameUIManager.Instance.generatorScreen.SetActive(true);
                 GameSaveStateManager.Instance.SaveGame();
@@ -682,7 +682,7 @@ public class Player : MonoBehaviour
     {
         if (GetInteractionObjectInRange(shopLayer, out _) ||
             GetInteractionObjectInRange(collectibleLayer, out _) ||
-            GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && _generator.GetComponent<Generator>().genInactive)
+            GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && _generator.GetComponent<Generator>().genInteractable)
         {
             canInteract = true;
         }

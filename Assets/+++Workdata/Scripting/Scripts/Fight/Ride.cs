@@ -124,6 +124,8 @@ public class Ride : MonoBehaviour
         Time.timeScale = 1f;
         rideRenderer.color = Color.white;
         rideGotHit = false;
+
+        GetComponentInChildren<Generator>().genInteractable = true;
         
         StopAllCoroutines();
         
@@ -155,7 +157,7 @@ public class Ride : MonoBehaviour
         InGameUIManager.Instance.fightScene.SetActive(false);
         InGameUIManager.Instance.radioAnim.SetTrigger("PutOn");
         InGameUIManager.Instance.ActivateRadio();
-        GetComponentInChildren<Generator>().genInactive = true;
+        GetComponentInChildren<Generator>().genInteractable = true;
         GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount();
         GameSaveStateManager.Instance.SaveGame();
         AudioManager.Instance.Play("InGameMusic");

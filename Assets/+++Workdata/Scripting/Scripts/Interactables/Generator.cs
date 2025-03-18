@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Generator : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class Generator : MonoBehaviour
     [Header("Music")]
     [SerializeField] public AudioSource fightMusic;
     
-    [HideInInspector] public bool genInactive = true;
+    [FormerlySerializedAs("genInactive")] [HideInInspector] public bool genInteractable = true;
 
     private void Start()
     {
@@ -22,7 +23,7 @@ public class Generator : MonoBehaviour
     {
         fightMusic.Play();
         AudioManager.Instance.Stop("InGameMusic");
-        genInactive = false;
+        genInteractable = false;
         ride.rideLight.SetActive(true);
         ride.gameObject.GetComponent<Animator>().SetTrigger("LightOn");
         ride.invisibleCollider.SetActive(true);
