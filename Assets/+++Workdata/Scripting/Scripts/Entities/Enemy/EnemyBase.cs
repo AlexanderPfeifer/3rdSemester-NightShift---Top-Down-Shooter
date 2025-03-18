@@ -28,6 +28,7 @@ public class EnemyBase : MonoBehaviour
     [FormerlySerializedAs("enemyAbilityGain")] [SerializeField] private float enemyAbilityGainForPlayer = 1;
     [SerializeField] private Vector2Int ammunitionAmountDropRange;
     [Range(0,1), SerializeField] private float ammunitionDropChancePercentage;
+    [SerializeField] private Vector2 currencyDropRange;
 
     private void Start()
     {
@@ -96,5 +97,7 @@ public class EnemyBase : MonoBehaviour
             GameObject _ammoDrop = Instantiate(ammoDropPrefab, transform.position, Quaternion.identity);
             _ammoDrop.GetComponent<AmmoDrop>().ammoCount = _ammoAmount;
         }
+        
+        Player.Instance.playerCurrency.AddCurrency(Random.Range((int)currencyDropRange.x, (int)currencyDropRange.y));
     }
 }

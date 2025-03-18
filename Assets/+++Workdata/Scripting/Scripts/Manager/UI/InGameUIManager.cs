@@ -58,6 +58,7 @@ public class InGameUIManager : MonoBehaviour
     public GameObject firstInventorySelected;
     public GameObject shopScreen;
     public GameObject generatorScreen;
+    public CurrencyUI currencyUI;
     
     [Header("End Sequence")]
     [HideInInspector] public bool changeLight;
@@ -107,6 +108,8 @@ public class InGameUIManager : MonoBehaviour
 
     private void Start()
     {
+        currencyUI = GetComponent<CurrencyUI>();
+        
         collectedItems = new Dictionary<string, (GameObject, Sprite, string, string)>
         {
             { "Broken Lights", (brokenLights, brokenLightsSprite, brokenLightsText, brokenLightsHeader) },

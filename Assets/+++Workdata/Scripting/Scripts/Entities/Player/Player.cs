@@ -107,6 +107,9 @@ public class Player : MonoBehaviour
     [HideInInspector] public bool canInteract = true;
     [HideInInspector] public bool isInteracting;
 
+    [Header("Currency")] 
+    [HideInInspector] public PlayerCurrency playerCurrency;
+
     private MyWeapon myWeapon;
     enum MyWeapon
     {
@@ -183,6 +186,7 @@ public class Player : MonoBehaviour
         InGameUIManager.Instance.ActivateInGameUI();
         rb = GetComponent<Rigidbody2D>();
         currentMoveSpeed = baseMoveSpeed;
+        playerCurrency = GetComponent<PlayerCurrency>();
 
         if (DebugMode.Instance.debugMode)
         {

@@ -45,7 +45,7 @@
                     "name": "interact",
                     "type": "Button",
                     "id": "24a68473-3cd3-444c-adb8-7e26a585dd97",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -60,10 +60,10 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "sprint",
+                    "name": "slide",
                     "type": "Button",
                     "id": "c007af05-b4a2-4ef9-b02f-c2d463f8279c",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -72,6 +72,15 @@
                     "name": "reload",
                     "type": "Button",
                     "id": "7851258e-d290-4f4a-9014-6a400e7dc028",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "melee",
+                    "type": "Button",
+                    "id": "dc0d9b29-3f25-4876-8fa7-1fdcc01575bb",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -273,25 +282,25 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "sprint",
+                    "action": "slide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "5d829d28-ad8b-4f76-b679-0371b0a9fd3e",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "sprint",
+                    "action": "slide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "1e185161-5c85-42dc-8c97-ca05be97645c",
-                    "path": "<Gamepad>/rightStick",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -307,6 +316,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a72f0a6b-56ca-4b98-8702-674dcd1607d2",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b4372265-449b-4dca-bca5-4426e9cfc6ef",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "melee",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "720d94e3-9e76-4c8e-8ccb-01bfd4488ca6",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "melee",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

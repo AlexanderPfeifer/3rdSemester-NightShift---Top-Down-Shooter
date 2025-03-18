@@ -67,7 +67,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""interact"",
                     ""type"": ""Button"",
                     ""id"": ""24a68473-3cd3-444c-adb8-7e26a585dd97"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -82,10 +82,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""sprint"",
+                    ""name"": ""slide"",
                     ""type"": ""Button"",
                     ""id"": ""c007af05-b4a2-4ef9-b02f-c2d463f8279c"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -94,6 +94,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""reload"",
                     ""type"": ""Button"",
                     ""id"": ""7851258e-d290-4f4a-9014-6a400e7dc028"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""melee"",
+                    ""type"": ""Button"",
+                    ""id"": ""dc0d9b29-3f25-4876-8fa7-1fdcc01575bb"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -295,25 +304,25 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""sprint"",
+                    ""action"": ""slide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""5d829d28-ad8b-4f76-b679-0371b0a9fd3e"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""sprint"",
+                    ""action"": ""slide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""1e185161-5c85-42dc-8c97-ca05be97645c"",
-                    ""path"": ""<Gamepad>/rightStick"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -331,6 +340,39 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a72f0a6b-56ca-4b98-8702-674dcd1607d2"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4372265-449b-4dca-bca5-4426e9cfc6ef"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""melee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""720d94e3-9e76-4c8e-8ccb-01bfd4488ca6"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""melee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -345,8 +387,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_player_pause = m_player.FindAction("pause", throwIfNotFound: true);
         m_player_interact = m_player.FindAction("interact", throwIfNotFound: true);
         m_player_ability = m_player.FindAction("ability", throwIfNotFound: true);
-        m_player_sprint = m_player.FindAction("sprint", throwIfNotFound: true);
+        m_player_slide = m_player.FindAction("slide", throwIfNotFound: true);
         m_player_reload = m_player.FindAction("reload", throwIfNotFound: true);
+        m_player_melee = m_player.FindAction("melee", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -419,8 +462,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_player_pause;
     private readonly InputAction m_player_interact;
     private readonly InputAction m_player_ability;
-    private readonly InputAction m_player_sprint;
+    private readonly InputAction m_player_slide;
     private readonly InputAction m_player_reload;
+    private readonly InputAction m_player_melee;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -431,8 +475,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @pause => m_Wrapper.m_player_pause;
         public InputAction @interact => m_Wrapper.m_player_interact;
         public InputAction @ability => m_Wrapper.m_player_ability;
-        public InputAction @sprint => m_Wrapper.m_player_sprint;
+        public InputAction @slide => m_Wrapper.m_player_slide;
         public InputAction @reload => m_Wrapper.m_player_reload;
+        public InputAction @melee => m_Wrapper.m_player_melee;
         public InputActionMap Get() { return m_Wrapper.m_player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -460,12 +505,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ability.started += instance.OnAbility;
             @ability.performed += instance.OnAbility;
             @ability.canceled += instance.OnAbility;
-            @sprint.started += instance.OnSprint;
-            @sprint.performed += instance.OnSprint;
-            @sprint.canceled += instance.OnSprint;
+            @slide.started += instance.OnSlide;
+            @slide.performed += instance.OnSlide;
+            @slide.canceled += instance.OnSlide;
             @reload.started += instance.OnReload;
             @reload.performed += instance.OnReload;
             @reload.canceled += instance.OnReload;
+            @melee.started += instance.OnMelee;
+            @melee.performed += instance.OnMelee;
+            @melee.canceled += instance.OnMelee;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -488,12 +536,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ability.started -= instance.OnAbility;
             @ability.performed -= instance.OnAbility;
             @ability.canceled -= instance.OnAbility;
-            @sprint.started -= instance.OnSprint;
-            @sprint.performed -= instance.OnSprint;
-            @sprint.canceled -= instance.OnSprint;
+            @slide.started -= instance.OnSlide;
+            @slide.performed -= instance.OnSlide;
+            @slide.canceled -= instance.OnSlide;
             @reload.started -= instance.OnReload;
             @reload.performed -= instance.OnReload;
             @reload.canceled -= instance.OnReload;
+            @melee.started -= instance.OnMelee;
+            @melee.performed -= instance.OnMelee;
+            @melee.canceled -= instance.OnMelee;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -519,7 +570,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnAbility(InputAction.CallbackContext context);
-        void OnSprint(InputAction.CallbackContext context);
+        void OnSlide(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnMelee(InputAction.CallbackContext context);
     }
 }

@@ -12,7 +12,7 @@ public class GameInputManager : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerInputActions.Enable();
 
-        playerInputActions.player.sprint.started += OnPlayerSliding;
+        playerInputActions.player.slide.started += OnPlayerSliding;
         playerInputActions.player.shoot.started += OnPlayerShooting;
         playerInputActions.player.shoot.canceled += OnPlayerNotShooting;
         playerInputActions.player.pause.performed += OnGamePaused;

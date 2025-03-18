@@ -17,7 +17,9 @@ public class EnemyHealthPoints : MonoBehaviour
         var _enemy = gameObject.GetComponent<EnemyBase>();
         _enemy.HitVisual();
 
-        if(currentHitPoints <= 0)
+        if (currentHitPoints <= 0)
+        {
             Destroy(gameObject);
+        }
     }
 }

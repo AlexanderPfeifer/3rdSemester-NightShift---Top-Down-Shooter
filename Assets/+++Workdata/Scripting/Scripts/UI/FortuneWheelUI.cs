@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class FortuneWheelUI : MonoBehaviour
 {
+    [Header("SpinPrice")] 
+    [SerializeField] private int spinPrice;
+    
     [Header("SpinPower")] 
     private const float SpinPower = 1250;
     [SerializeField] private float minStopPower, maxStopPower;
@@ -15,7 +18,8 @@ public class FortuneWheelUI : MonoBehaviour
     [SerializeField] private GameObject firstFortuneWheelButtonSelected;
 
     private Rigidbody2D rb;
-    [HideInInspector] public bool wheelGotSpinned;
+    private bool wheelSpinning;
+    private bool receivingWeapon;
 
     [SerializeField] private Image mark; 
 
@@ -50,10 +54,10 @@ public class FortuneWheelUI : MonoBehaviour
 
             rb.angularVelocity = Mathf.Clamp(_angularVelocity, 0, maxAngularVelocity);
 
-            wheelGotSpinned = true;
+            wheelSpinning = true;
         }
 
-        if (_angularVelocity > 0 || !wheelGotSpinned) 
+        if (_angularVelocity > 0 || !wheelSpinning) 
             return;
         
         GetRewardPosition();
@@ -61,7 +65,7 @@ public class FortuneWheelUI : MonoBehaviour
     
     public void SpinWheel()
     {
-        if (rb.angularVelocity > 0) 
+        if (rb.angularVelocity > 0 || !Player.Instance.playerCurrency.SpendCurrency(spinPrice) || receivingWeapon) 
             return;
         
         rb.AddTorque(SpinPower);
@@ -70,28 +74,32 @@ public class FortuneWheelUI : MonoBehaviour
     private void GetRewardPosition()
     {
         const float pieSize = 360f / FortuneWheelPieCount;
-        //Do not know anymore why I put +41 right now, but it works
+        
+        //The + 36f is there because the wheel of fortune starts in the middle of a field when on rotation 0,0,0 
         int _priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + 36f) / pieSize) % Player.Instance.allWeaponPrizes.Count;
         StartCoroutine(GetWeaponPrize(Player.Instance.allWeaponPrizes[_priceIndex]));
+        
+        wheelSpinning = false;
+        receivingWeapon = true;
     }
     
     private IEnumerator GetWeaponPrize(WeaponObjectSO weapon)
     {
         mark.transform.localScale = new Vector3(2, 2, 1);
         
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.75f);
         
         mark.transform.localScale = new Vector3(1, 1, 1);
 
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.75f);
         
         mark.transform.localScale = new Vector3(2, 2, 1);
 
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.75f);
         
         mark.transform.localScale = new Vector3(1, 1, 1);
         
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.75f);
 
         mark.transform.localScale = new Vector3(2, 2, 1);
 
@@ -99,7 +107,6 @@ public class FortuneWheelUI : MonoBehaviour
         GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
 
         gameObject.SetActive(false);
-        wheelGotSpinned = false;
     }
 
     private void OnDisable()
