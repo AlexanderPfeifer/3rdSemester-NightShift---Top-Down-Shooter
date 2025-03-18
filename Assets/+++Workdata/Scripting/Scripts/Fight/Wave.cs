@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class EnemyClusterData
 {
-    [SerializeField, ReadOnly] private string clusterBeginTime;
+    [FormerlySerializedAs("clusterBeginTime")] [SerializeField, ReadOnly] private string clusterName;
 
     [Header("WHO")]
     public GameObject enemyPrefab;
@@ -25,7 +26,7 @@ public class EnemyClusterData
     
     public void UpdateClusterName()
     {
-        clusterBeginTime = timeToSpawn.ToString(CultureInfo.CurrentCulture);
+        clusterName = enemyPrefab.name + " | " +timeToSpawn.ToString(CultureInfo.CurrentCulture);
     }
 }
 

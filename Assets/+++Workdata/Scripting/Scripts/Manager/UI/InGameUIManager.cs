@@ -17,21 +17,16 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI inventoryText;
     [SerializeField] private TextMeshProUGUI inventoryHeader;
     [SerializeField] private Image inventoryImage;
+    [SerializeField] private Button equipWeaponButton;
     [FormerlySerializedAs("collectedObjects")] [SerializeField] private CollectedWeaponsSO collectedWeaponsSO;
 
     [Header("Collectibles")]
-    private string brokenLightsText, teddyText, newsPaperText;
-    private string brokenLightsHeader, teddyHeader, newsPaperHeader;
-    private Sprite brokenLightsSprite, teddySprite, newsPaperSprite;
+    private Dictionary<string, (GameObject obj, Sprite sprite, string text, string header)> collectedCollectibles;
 
     [Header("Weapons")] 
     public TextMeshProUGUI ammunitionInClipText;
     public TextMeshProUGUI ammunitionInBackUpText;
-    private string popcornPistolText, frenchFriesAssaultRifleText, magnumMagnumText, cornDogHuntingRifleText, lollipopShotgunText;
-    private string popcornPistolHeader, frenchFriesAssaultRifleHeader, magnumMagnumHeader, cornDogHuntingRifleHeader, lollipopShotgunHeader;
-    private Sprite popcornPistolSprite, frenchFriesAssaultRifleSprite, magnumMagnumSprite, cornDogHuntingRifleSprite, lollipopShotgunSprite;
-
-    private Dictionary<string, (GameObject obj, Sprite sprite, string text, string header)> collectedItems;
+    private Dictionary<string, (GameObject obj, Sprite sprite, string text, string header, WeaponObjectSO weaponObjectSO)> collectedWeapons;
 
     [Header("Inventory Preview Items")]
     [SerializeField] private GameObject brokenLights;
@@ -58,7 +53,7 @@ public class InGameUIManager : MonoBehaviour
     public GameObject firstInventorySelected;
     public GameObject shopScreen;
     public GameObject generatorScreen;
-    public CurrencyUI currencyUI;
+    [HideInInspector] public CurrencyUI currencyUI;
     
     [Header("End Sequence")]
     [HideInInspector] public bool changeLight;
@@ -109,19 +104,11 @@ public class InGameUIManager : MonoBehaviour
     private void Start()
     {
         currencyUI = GetComponent<CurrencyUI>();
+        equipWeaponButton.gameObject.SetActive(false);
         
-        collectedItems = new Dictionary<string, (GameObject, Sprite, string, string)>
-        {
-            { "Broken Lights", (brokenLights, brokenLightsSprite, brokenLightsText, brokenLightsHeader) },
-            { "News Paper", (newsPaper, newsPaperSprite, newsPaperText, newsPaperHeader) },
-            { "Stuffed Animal", (teddy, teddySprite, teddyText, teddyHeader) },
-            { "Magnum magnum", (magnumMagnum, magnumMagnumSprite, magnumMagnumText, magnumMagnumHeader) },
-            { "French Fries AR", (frenchFriesAssaultRifle, frenchFriesAssaultRifleSprite, frenchFriesAssaultRifleText, frenchFriesAssaultRifleHeader) },
-            { "Lollipop Shotgun", (lollipopShotgun, lollipopShotgunSprite, lollipopShotgunText, lollipopShotgunHeader) },
-            { "Corn Dog Hunting Rifle", (cornDogHuntingRifle, cornDogHuntingRifleSprite, cornDogHuntingRifleText, cornDogHuntingRifleHeader) },
-            { "Popcorn Pistol", (popcornPistol, popcornPistolSprite, popcornPistolText, popcornPistolHeader) }
-        };
-        
+        collectedCollectibles = new Dictionary<string, (GameObject, Sprite, string, string)>();
+        collectedWeapons = new Dictionary<string, (GameObject, Sprite, string, string, WeaponObjectSO)>();
+
         if(DebugMode.Instance.debugMode)
             loadingScreenAnim.SetTrigger("Start");
     }
@@ -157,6 +144,7 @@ public class InGameUIManager : MonoBehaviour
         inventoryText.text = "";
         inventoryHeader.text = "";
         inventoryImage.gameObject.SetActive(false);
+        equipWeaponButton.gameObject.SetActive(false);
 
         dialogueCount = 0;
         dialogueTextCount = 0;
@@ -220,6 +208,11 @@ public class InGameUIManager : MonoBehaviour
 
     #region DisplayInventoryInformation
 
+    public void SetWeaponThroughInventory(WeaponObjectSO weaponObjectSO)
+    {
+        Player.Instance.GetWeapon(weaponObjectSO);
+    }
+
     private void ResetDisplayInformation()
     {
         inventoryText.text = "";
@@ -227,75 +220,82 @@ public class InGameUIManager : MonoBehaviour
         inventoryImage.gameObject.SetActive(true);
     }
     
-    private void DisplayItem(Sprite sprite, string text, string header)
+    private void DisplayItem(Sprite sprite, string text, string header, WeaponObjectSO weaponObjectSO)
     {
         inventoryText.text += text;
         inventoryHeader.text += header;
         inventoryImage.sprite = sprite;
+        
+        if (weaponObjectSO != null)
+        {
+            equipWeaponButton.gameObject.SetActive(true);
+            equipWeaponButton.onClick.RemoveAllListeners();
+            equipWeaponButton.onClick.AddListener(() => SetWeaponThroughInventory(weaponObjectSO));   
+        }
     }
     
     public void DisplayPopCornPistol()
     {
-        var _itemInformation = collectedItems["Popcorn Pistol"];
+        var _itemInformation = collectedWeapons["Popcorn Pistol"];
         
         ResetDisplayInformation();
-        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header, _itemInformation.weaponObjectSO);
     }
     
     public void DisplayMagnumMagnum()
     {
-        var _itemInformation = collectedItems["Magnum magnum"];
+        var _itemInformation = collectedWeapons["Magnum magnum"];
 
         ResetDisplayInformation();
-        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header, _itemInformation.weaponObjectSO);
     }
     
     public void DisplayFrenchFriesAssaultRifle()
     {
-        var _itemInformation = collectedItems["French Fries AR"];
+        var _itemInformation = collectedWeapons["French Fries AR"];
 
         ResetDisplayInformation();
-        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header, _itemInformation.weaponObjectSO);
     }
     
     public void DisplayCornDogHuntingRifle()
     {
-        var _itemInformation = collectedItems["Corn Dog Hunting Rifle"];
+        var _itemInformation = collectedWeapons["Corn Dog Hunting Rifle"];
 
         ResetDisplayInformation();
-        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header, _itemInformation.weaponObjectSO);
     }
     
     public void DisplayLollipopShotgun()
     {
-        var _itemInformation = collectedItems["Lollipop Shotgun"];
+        var _itemInformation = collectedWeapons["Lollipop Shotgun"];
 
         ResetDisplayInformation();
-        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header, _itemInformation.weaponObjectSO);
     }
     
     public void DisplayTeddy()
     {
-        var _itemInformation = collectedItems["Stuffed Animal"];
+        var _itemInformation = collectedCollectibles["Stuffed Animal"];
 
         ResetDisplayInformation();
-        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header, null);
     }
     
     public void DisplayNewspaper()
     {
-        var _itemInformation = collectedItems["News Paper"];
+        var _itemInformation = collectedCollectibles["News Paper"];
 
         ResetDisplayInformation();
-        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header, null);
     }
     
     public void DisplayLights()
     {
-        var _itemInformation = collectedItems["Broken Lights"];
+        var _itemInformation = collectedCollectibles["Broken Lights"];
 
         ResetDisplayInformation();
-        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header);
+        DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header, null);
     }
 
     #endregion
@@ -342,13 +342,13 @@ public class InGameUIManager : MonoBehaviour
             switch (_headerText)
             {
                 case "Broken Lights" :
-                    ActivateCollectible(_headerText, _spriteCollectible, _text);
+                    ActivateCollectible(brokenLights, _headerText, _spriteCollectible, _text);
                     break;
                 case "News Paper" :
-                    ActivateCollectible(_headerText, _spriteCollectible, _text);
+                    ActivateCollectible(newsPaper, _headerText, _spriteCollectible, _text);
                     break;
                 case "Stuffed Animal" :
-                    ActivateCollectible(_headerText, _spriteCollectible, _text);
+                    ActivateCollectible(teddy, _headerText, _spriteCollectible, _text);
                     break;
             }
         }
@@ -378,30 +378,39 @@ public class InGameUIManager : MonoBehaviour
             switch (_itemIdentifier)
             {
                 case "Magnum magnum" :
-                    ActivateCollectible(_headerText, _spriteWeapon, _text);
+                    ActivateWeapon(magnumMagnum, _headerText, _spriteWeapon, _text, _weapon);
                     break;
                 case "French Fries AR" :
-                    ActivateCollectible(_headerText, _spriteWeapon, _text);
+                    ActivateWeapon(frenchFriesAssaultRifle, _headerText, _spriteWeapon, _text,_weapon);
                     break;
                 case "Lollipop Shotgun" :
-                    ActivateCollectible(_headerText, _spriteWeapon, _text);
+                    ActivateWeapon(lollipopShotgun, _headerText, _spriteWeapon, _text, _weapon);
                     break;
                 case "Corn Dog Hunting Rifle" :
-                    ActivateCollectible(_headerText, _spriteWeapon, _text);
+                    ActivateWeapon(cornDogHuntingRifle, _headerText, _spriteWeapon, _text, _weapon);
                     break;
                 case "Popcorn Pistol" :
-                    ActivateCollectible(_headerText, _spriteWeapon, _text);
+                    ActivateWeapon(popcornPistol, _headerText, _spriteWeapon, _text, _weapon);
                     break;
             }
         }
     }
-
-    private void ActivateCollectible(string headerText, Sprite spriteCollectible, string text)
+    
+    private void ActivateWeapon(GameObject weapon, string headerText, Sprite spriteCollectible, string text, WeaponObjectSO weaponObjectSO)
     {
-        if (collectedItems.TryGetValue(headerText, out var _collectedObject))
+        if (!collectedWeapons.TryGetValue(headerText, out _))
         {
-            _collectedObject.obj.SetActive(true);
-            collectedItems[headerText] = (_collectedObject.obj, spriteCollectible, text, headerText);
+            collectedWeapons[headerText] = (weapon, spriteCollectible, text, headerText, weaponObjectSO); 
+            weapon.SetActive(true);
+        }
+    }
+
+    private void ActivateCollectible(GameObject collectible, string headerText, Sprite spriteCollectible, string text)
+    {
+        if (!collectedCollectibles.TryGetValue(headerText, out _))
+        {
+            collectedCollectibles[headerText] = (collectible, spriteCollectible, text, headerText); 
+            collectible.SetActive(true);
         }
     }
 

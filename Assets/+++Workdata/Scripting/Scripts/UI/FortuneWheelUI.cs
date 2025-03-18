@@ -65,7 +65,7 @@ public class FortuneWheelUI : MonoBehaviour
     
     public void SpinWheel()
     {
-        if (rb.angularVelocity > 0 || !Player.Instance.playerCurrency.SpendCurrency(spinPrice) || receivingWeapon) 
+        if (rb.angularVelocity > 0 || receivingWeapon || !Player.Instance.playerCurrency.SpendCurrency(spinPrice)) 
             return;
         
         rb.AddTorque(SpinPower);
@@ -87,26 +87,34 @@ public class FortuneWheelUI : MonoBehaviour
     {
         mark.transform.localScale = new Vector3(2, 2, 1);
         
-        yield return new WaitForSeconds(.75f);
+        yield return new WaitForSeconds(.3f);
         
         mark.transform.localScale = new Vector3(1, 1, 1);
 
-        yield return new WaitForSeconds(.75f);
+        yield return new WaitForSeconds(.3f);
         
         mark.transform.localScale = new Vector3(2, 2, 1);
 
-        yield return new WaitForSeconds(.75f);
+        yield return new WaitForSeconds(.3f);
         
         mark.transform.localScale = new Vector3(1, 1, 1);
         
-        yield return new WaitForSeconds(.75f);
+        yield return new WaitForSeconds(.3f);
 
         mark.transform.localScale = new Vector3(2, 2, 1);
-
+        
+        yield return new WaitForSeconds(.3f);
+        
+        mark.transform.localScale = new Vector3(1, 1, 1);
+        
+        yield return new WaitForSeconds(.3f);
+        
         Player.Instance.GetWeapon(weapon);
         GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
 
         gameObject.SetActive(false);
+
+        receivingWeapon = false;
     }
 
     private void OnDisable()

@@ -631,14 +631,15 @@ public class Player : MonoBehaviour
 
         InGameUIManager.Instance.equippedWeapon.GetComponent<Image>().sprite = weapon.inGameWeaponVisual;
         InGameUIManager.Instance.equippedWeapon.SetActive(true);
-
+        
         myWeapon = weapon.weaponName switch
         {
+            
             "Magnum magnum" => MyWeapon.Magnum,
             "French Fries AR" => MyWeapon.AssaultRifle,
             "Lollipop Shotgun" => MyWeapon.Shotgun,
             "Corn Dog Hunting Rifle" => MyWeapon.HuntingRifle,
-            "Popcorn Pistol" => MyWeapon.Pistol,
+            "Popcorn Launcher" => MyWeapon.Pistol,
             _ => myWeapon
         };
     }
