@@ -45,6 +45,7 @@ public class InGameUIManager : MonoBehaviour
     public Image rideTimeImage;
     public Image rideHpImage;
     public Image abilityProgressImage;
+    public GameObject abilityFillBar;
     
     [Header("Player UI")]
     [SerializeField] private GameObject eIndicator;
@@ -158,6 +159,8 @@ public class InGameUIManager : MonoBehaviour
         
         fightScene.SetActive(false);
         
+        abilityFillBar.SetActive(false);
+
         GameSaveStateManager.Instance.GoToMainMenu();
         OpenInventory();
     }
@@ -236,7 +239,7 @@ public class InGameUIManager : MonoBehaviour
     
     public void DisplayPopCornPistol()
     {
-        var _itemInformation = collectedWeapons["Popcorn Pistol"];
+        var _itemInformation = collectedWeapons["Popcorn Launcher"];
         
         ResetDisplayInformation();
         DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header, _itemInformation.weaponObjectSO);
@@ -356,21 +359,30 @@ public class InGameUIManager : MonoBehaviour
     
     private void DisplayCollectedWeapons()
     {
-        var _collectedCollectibles = GameSaveStateManager.Instance.saveGameDataManager.collectedWeaponsIdentifiers;
+        var _collectedWeapons = GameSaveStateManager.Instance.saveGameDataManager.collectedWeaponsIdentifiers;
 
-        foreach (var _character in _collectedCollectibles)
+        foreach (var _identifier in _collectedWeapons)
         {
             var _headerText = "";
             var _text = "";
-            var _weapon = collectedWeaponsSO.GetWeaponDataByIdentifier(_character);
+            var _weapon = collectedWeaponsSO.GetWeaponDataByIdentifier(_identifier);
             
             if (_weapon == null)
                 return;
             
+            Debug.Log(_weapon.hasAbilityUpgrade);
+            
             _headerText += _weapon.weaponName;
             _text += _weapon.weaponDescription;
-            _text += "\n" + "\n" + "Special Ability:" + "\n" + _weapon.weaponAbilityDescription + "\n" + "\n" +
-                     "Damage: " + _weapon.bulletDamage +  "\n" + "Clipsize: " + _weapon.clipSize;
+            if (_weapon.hasAbilityUpgrade)
+            {
+                _text += "\n" + "\n" + "Special Ability:" + "\n" + _weapon.weaponAbilityDescription + "\n" + "\n" + "Damage: " + _weapon.bulletDamage +  "\n" + "Clipsize: " + _weapon.clipSize;
+            }
+            else
+            {
+                _text += "\n" + "\n" + "Damage: " + _weapon.bulletDamage +  "\n" + "Clipsize: " + _weapon.clipSize;
+            }
+            
             var _spriteWeapon = _weapon.inGameWeaponVisual;
             
             var _itemIdentifier = _headerText;
@@ -389,7 +401,7 @@ public class InGameUIManager : MonoBehaviour
                 case "Corn Dog Hunting Rifle" :
                     ActivateWeapon(cornDogHuntingRifle, _headerText, _spriteWeapon, _text, _weapon);
                     break;
-                case "Popcorn Pistol" :
+                case "Popcorn Launcher" :
                     ActivateWeapon(popcornPistol, _headerText, _spriteWeapon, _text, _weapon);
                     break;
             }
@@ -403,6 +415,8 @@ public class InGameUIManager : MonoBehaviour
             collectedWeapons[headerText] = (weapon, spriteCollectible, text, headerText, weaponObjectSO); 
             weapon.SetActive(true);
         }
+        
+        Debug.Log($"Updating {headerText} with text: {text}");
     }
 
     private void ActivateCollectible(GameObject collectible, string headerText, Sprite spriteCollectible, string text)

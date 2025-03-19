@@ -155,6 +155,7 @@ public class Ride : MonoBehaviour
         waveStarted = false;
         Player.Instance.fightAreaCam.Priority = 5;
         InGameUIManager.Instance.fightScene.SetActive(false);
+        InGameUIManager.Instance.abilityFillBar.SetActive(false);
         InGameUIManager.Instance.radioAnim.SetTrigger("PutOn");
         InGameUIManager.Instance.ActivateRadio();
         GetComponentInChildren<Generator>().genInteractable = true;

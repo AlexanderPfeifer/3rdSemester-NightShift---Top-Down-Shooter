@@ -7,6 +7,7 @@ public class WeaponObjectSO : ScriptableObject
     //Scriptable Object for every unique weapon with unique perks
     public Sprite inGameWeaponVisual;
     public string weaponName;
+    public int upgradeTier;
     [TextArea(3, 10)] public string weaponDescription;
     [FormerlySerializedAs("weaponStats")] [TextArea(3, 10)] public string weaponAbilityDescription;
     public float shootDelay;
@@ -22,4 +23,5 @@ public class WeaponObjectSO : ScriptableObject
     public int clipSize;
     public int ammunitionInClip;
     public int ammunitionInBackUp;
+    [FormerlySerializedAs("showAbilityFill")] public bool hasAbilityUpgrade;
 }

@@ -12,16 +12,18 @@ public class FortuneWheelUI : MonoBehaviour
     private const float SpinPower = 1250;
     [SerializeField] private float minStopPower, maxStopPower;
     [SerializeField] private float maxAngularVelocity = 1440;
-    
-    private const int FortuneWheelPieCount = 5;
-
-    [SerializeField] private GameObject firstFortuneWheelButtonSelected;
-
     private Rigidbody2D rb;
     private bool wheelSpinning;
     private bool receivingWeapon;
+    [SerializeField] private Image mark;
 
-    [SerializeField] private Image mark; 
+    [Header("Upgrade")] 
+    [SerializeField] private UpgradeUI upgradeUI;
+    
+    private const int FortuneWheelPieCount = 5;
+
+    [Header("Controller")]
+    [SerializeField] private GameObject firstFortuneWheelButtonSelected;
 
     private void OnEnable()
     {
@@ -111,10 +113,9 @@ public class FortuneWheelUI : MonoBehaviour
         
         Player.Instance.GetWeapon(weapon);
         GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
-
-        gameObject.SetActive(false);
-
+        
         receivingWeapon = false;
+        upgradeUI.SetUpgradeButtons();
     }
 
     private void OnDisable()

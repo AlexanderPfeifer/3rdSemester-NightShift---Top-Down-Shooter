@@ -79,14 +79,14 @@ public class Player : MonoBehaviour
     private Vector3 mousePos;
     private float shootingKnockBack;
     private bool isShooting;
-    private bool hasWeapon;
     
     [Header("Weapon Ability")]
     public float maxAbilityTime;
     [SerializeField] private float fastBulletsDelay = 0.075f;
-    [HideInInspector] public float currentAbilityTime;
     [HideInInspector] public bool canGetAbilityGain = true;
+    private float currentAbilityTime;
     private bool isUsingAbility;
+    [HideInInspector] public bool hasAbilityUpgrade;
     
     [Header("WeaponVisuals")]
     public GameObject weaponVisual;
@@ -231,7 +231,7 @@ public class Player : MonoBehaviour
 
     private void GameInputManagerOnShootingAction(object sender, EventArgs e)
     {
-        if (!InGameUIManager.Instance.inventoryIsOpened && !isUsingAbility && weaponVisual.activeSelf && !isInteracting && InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueNotPlaying)
+        if (!InGameUIManager.Instance.inventoryIsOpened && !InGameUIManager.Instance.shopScreen.activeSelf && !isUsingAbility && weaponVisual.activeSelf && !isInteracting && InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueNotPlaying)
         {
             isShooting = true;
         }
@@ -280,23 +280,7 @@ public class Player : MonoBehaviour
         }
         else if (GetInteractionObjectInRange(shopLayer, out _) && !InGameUIManager.Instance.shopScreen.activeSelf)
         {
-            foreach (var _weapon in allWeaponPrizes.Where(weapon => GameSaveStateManager.Instance.saveGameDataManager.HasWeaponInInventory(weapon.weaponName)))
-            {
-                InGameUIManager.Instance.weaponSwapScreen.SetActive(true);
-                EventSystem.current.SetSelectedGameObject(InGameUIManager.Instance.firstSelectedWeaponDecision);
-                InGameUIManager.Instance.weaponDecisionWeaponAbilityText.text = "";
-                InGameUIManager.Instance.weaponDecisionWeaponName.text = "";
-                InGameUIManager.Instance.weaponDecisionWeaponImage.GetComponent<Image>().sprite = _weapon.inGameWeaponVisual;
-                InGameUIManager.Instance.weaponDecisionWeaponAbilityText.text += "Special Ability:" + "\n" + _weapon.weaponAbilityDescription;
-                InGameUIManager.Instance.weaponDecisionWeaponName.text += _weapon.weaponName;
-                isInteracting = true;
-                hasWeapon = true;
-            }
-
-            if (!hasWeapon)
-            {
-                InGameUIManager.Instance.shopScreen.SetActive(true);
-            }
+            InGameUIManager.Instance.shopScreen.SetActive(true);
         }
         else if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && !InGameUIManager.Instance.generatorScreen.activeSelf)
         {
@@ -314,7 +298,7 @@ public class Player : MonoBehaviour
 
     private void GameInputManagerOnUsingAbilityAction(object sender, EventArgs e)
     {
-        if (currentAbilityTime >= maxAbilityTime && InGameUIManager.Instance.fightScene.activeSelf)
+        if (currentAbilityTime >= maxAbilityTime && InGameUIManager.Instance.fightScene.activeSelf && hasAbilityUpgrade)
         {
             StartCoroutine(StartWeaponAbility());
         }
@@ -331,7 +315,7 @@ public class Player : MonoBehaviour
 
     private void HandleAimingUpdate()
     {
-        if (InGameUIManager.Instance.inventoryIsOpened || !weaponVisual.activeSelf) 
+        if (InGameUIManager.Instance.inventoryIsOpened || !weaponVisual.activeSelf || InGameUIManager.Instance.shopScreen.activeSelf) 
             return;
         
         mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -586,6 +570,20 @@ public class Player : MonoBehaviour
 
         canGetAbilityGain = true;
     }
+
+    public void AddAbilityFill(float enemyAbilityGainForPlayer)
+    {
+        if (canGetAbilityGain && hasAbilityUpgrade)
+        {
+            currentAbilityTime += enemyAbilityGainForPlayer;
+            InGameUIManager.Instance.abilityProgressImage.fillAmount = currentAbilityTime / maxAbilityTime;
+
+            if (currentAbilityTime >= maxAbilityTime)
+            {
+                InGameUIManager.Instance.pressSpace.SetActive(true);
+            }
+        }
+    }
     
     #endregion
 
@@ -617,6 +615,7 @@ public class Player : MonoBehaviour
         maxClipSize = weapon.clipSize;
         ammunitionInBackUp = weapon.ammunitionInBackUp;
         ammunitionInClip = weapon.ammunitionInClip;
+        hasAbilityUpgrade = weapon.hasAbilityUpgrade;
         SetAmmunitionText(weapon.ammunitionInClip.ToString(), weapon.ammunitionInBackUp.ToString());
         foreach (var _bullet in BulletPoolingManager.Instance.GetBulletList())
         {
@@ -627,7 +626,6 @@ public class Player : MonoBehaviour
 
         playerVisual.SetActive(false);
         playerNoHandVisual.SetActive(true);
-        hasWeapon = true;
 
         InGameUIManager.Instance.equippedWeapon.GetComponent<Image>().sprite = weapon.inGameWeaponVisual;
         InGameUIManager.Instance.equippedWeapon.SetActive(true);

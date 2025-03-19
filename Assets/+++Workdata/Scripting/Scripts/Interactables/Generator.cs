@@ -27,6 +27,11 @@ public class Generator : MonoBehaviour
         ride.rideLight.SetActive(true);
         ride.gameObject.GetComponent<Animator>().SetTrigger("LightOn");
         ride.invisibleCollider.SetActive(true);
+
+        if (Player.Instance.hasAbilityUpgrade)
+        {
+            InGameUIManager.Instance.abilityFillBar.gameObject.SetActive(true);
+        }
         InGameUIManager.Instance.fightScene.SetActive(true);
         ride.waveStarted = true;
         ride.ResetRide();

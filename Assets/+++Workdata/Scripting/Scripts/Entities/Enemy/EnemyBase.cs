@@ -78,19 +78,9 @@ public class EnemyBase : MonoBehaviour
             
         var _confetti = Instantiate(enemyConfetti, _transform.position, Quaternion.identity, _transform.parent);
         _confetti.GetComponent<ParticleSystem>().Play();
-            
-        if (Player.Instance.canGetAbilityGain)
-        {
-            var _player = Player.Instance;
-            _player.currentAbilityTime += enemyAbilityGainForPlayer;
-            InGameUIManager.Instance.abilityProgressImage.fillAmount = _player.currentAbilityTime / _player.maxAbilityTime;
+        
+        Player.Instance.AddAbilityFill(enemyAbilityGainForPlayer);
 
-            if (_player.currentAbilityTime >= _player.maxAbilityTime)
-            {
-                InGameUIManager.Instance.pressSpace.SetActive(true);
-            }
-        }
-            
         if (Random.value <= ammunitionDropChancePercentage)
         {
             int _ammoAmount = Random.Range(ammunitionAmountDropRange.x, ammunitionAmountDropRange.y + 1);

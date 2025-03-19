@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class DebugMode : MonoBehaviour
@@ -29,28 +30,27 @@ public class DebugMode : MonoBehaviour
         switch (choosableWeapons)
         {
             case ChoosableWeapons.Shotgun :
-                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes[0]);
+                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Lollipop Shotgun"));
                 break;
             
             case ChoosableWeapons.AR :
-                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes[1]);
+                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "French Fries AR"));                
                 break;
             
             case ChoosableWeapons.MagnumMagnum :
-                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes[2]);
+                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Magnum magnum"));                
                 break;
             
             case ChoosableWeapons.PopcornPistol :
-                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes[3]);
+                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Popcorn Launcher"));                
                 break;
             
             case ChoosableWeapons.HuntingRifle :
-                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes[4]);
+                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Corn Dog Hunting Rifle"));                
                 break;
             
             default:
                 throw new ArgumentOutOfRangeException();
         }
-        
     }
 }

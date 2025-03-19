@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d59bfe808e7dd244fbdf92a6c7cab6b3, type: 3}
+  m_Name: MagnumSO_Tier_3
+  m_EditorClassIdentifier: 
+  inGameWeaponVisual: {fileID: -1145309252, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
+  weaponName: Magnum magnum
+  weaponDescription: "Don\u2018t let the cool design fool you - this thing\u2018s
+    packing some heat. "
+  weaponAbilityDescription: Freezes enemies on bullet collision for 5 seconds.
+  shootDelay: 0.4
+  bulletDamage: 3
+  weaponSpread: 0.005
+  playerKnockBack: 4
+  enemyKnockBack: 6
+  screenShake: 5
+  weaponScale: {x: 0.8, y: 0.8, z: 1}
+  bulletSize: {x: 0.75, y: 0.75}
+  penetrationCount: 2
+  bulletsPerShot: 1
+  clipSize: 7
+  ammunitionInClip: 7
+  ammunitionInBackUp: 42
+  showAbilityFill: 1
