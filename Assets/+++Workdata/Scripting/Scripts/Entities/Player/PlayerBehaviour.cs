@@ -11,9 +11,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         public Dictionary<string, SavableVector3> PositionBySceneName = new();
     }
-    
-    [Header("Saving")]
-    private PlayerSaveData playerSaveData;
+    [SerializeField] private PlayerSaveData playerSaveData;
     
     [Header("Weapon")] 
     [HideInInspector] public WeaponBehaviour weaponBehaviour;

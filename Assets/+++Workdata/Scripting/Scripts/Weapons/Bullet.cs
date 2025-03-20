@@ -31,7 +31,6 @@ public class Bullet : MonoBehaviour
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
-        criticalDamage = PlayerBehaviour.Instance.weaponBehaviour.bulletDamage;
     }
     
     private void Update()

@@ -59,6 +59,7 @@ public class WeaponBehaviour : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] private GameObject muzzleFlashVisual;
     private Animator weaponAnim;
+    [SerializeField] private GameObject weaponObject;
     [SerializeField] private float weaponToMouseSmoothness = 8;
     private float weaponAngleSmoothed;
     private float weaponAngleUnSmoothed;
@@ -152,7 +153,7 @@ public class WeaponBehaviour : MonoBehaviour
     
     private void HandleAimingUpdate()
     {
-        if (InGameUIManager.Instance.inventoryIsOpened || !weaponAnim.gameObject.activeSelf || InGameUIManager.Instance.shopScreen.activeSelf) 
+        if (!weaponObject.activeSelf || InGameUIManager.Instance.inventoryIsOpened || InGameUIManager.Instance.shopScreen.activeSelf) 
             return;
         
         mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
