@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
-        criticalDamage = Player.Instance.bulletDamage;
+        criticalDamage = PlayerBehaviour.Instance.weaponBehaviour.bulletDamage;
     }
     
     private void Update()
@@ -51,7 +51,7 @@ public class Bullet : MonoBehaviour
 
     private void StickyBulletsTickDamageUpdate()
     {
-        if (Player.Instance.currentActiveAbility == Player.CurrentAbility.StickyBullets)
+        if (PlayerBehaviour.Instance.abilityBehaviour.currentActiveAbility == AbilityBehaviour.CurrentAbility.StickyBullets)
         {
             stickyBulletTimer -= Time.deltaTime;
 
@@ -70,11 +70,11 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void LaunchInDirection(Player shooter, Vector2 shootDirection)
+    public void LaunchInDirection(PlayerBehaviour shooter, Vector2 shootDirection)
     {
         startPosition = transform.position;
         
-        GetComponent<Rigidbody2D>().AddForce(shootDirection * shooter.bulletSpeed, ForceMode2D.Impulse);
+        GetComponent<Rigidbody2D>().AddForce(shootDirection * shooter.weaponBehaviour.bulletSpeed, ForceMode2D.Impulse);
 
         travelDirection = shootDirection;
     }
@@ -98,38 +98,38 @@ public class Bullet : MonoBehaviour
 
     private void ApplyAbilities(EnemyBase enemyBase)
     {
-        switch (Player.Instance.currentActiveAbility)
+        switch (PlayerBehaviour.Instance.abilityBehaviour.currentActiveAbility)
         {
-            case Player.CurrentAbility.FreezeBullets:
+            case AbilityBehaviour.CurrentAbility.FreezeBullets:
                 enemyBase.EnemyFreezeTime = enemyFreezeTime;
                 break;
             
-            case Player.CurrentAbility.PenetrationBullets:
+            case AbilityBehaviour.CurrentAbility.PenetrationBullets:
                 var _probability = Random.Range(1, criticalHuntingRifleDamageProbability);
             
                 if (_probability == criticalHuntingRifleDamageProbability - 1)
                 {
-                    criticalDamage = Random.Range(Player.Instance.bulletDamage * minCriticalHuntingRifleDamageMultiplier, 
-                        Player.Instance.bulletDamage * maxCriticalHuntingRifleDamageMultiplier);
+                    criticalDamage = Random.Range(PlayerBehaviour.Instance.weaponBehaviour.bulletDamage * minCriticalHuntingRifleDamageMultiplier, 
+                        PlayerBehaviour.Instance.weaponBehaviour.bulletDamage * maxCriticalHuntingRifleDamageMultiplier);
                 }
                 else
                 {
-                    criticalDamage = Player.Instance.bulletDamage;
+                    criticalDamage = PlayerBehaviour.Instance.weaponBehaviour.bulletDamage;
                 }
                 break;
             
-            case Player.CurrentAbility.StickyBullets:
+            case AbilityBehaviour.CurrentAbility.StickyBullets:
                 transform.position = enemyBase.transform.position;
                 rb.linearVelocity = Vector2.zero;
                 break;
 
-            case Player.CurrentAbility.FastBullets:
+            case AbilityBehaviour.CurrentAbility.FastBullets:
                 break;
             
-            case Player.CurrentAbility.ExplosiveBullets:
+            case AbilityBehaviour.CurrentAbility.ExplosiveBullets:
                 break;
             
-            case Player.CurrentAbility.None:
+            case AbilityBehaviour.CurrentAbility.None:
                 break;
             
             default:
@@ -143,7 +143,7 @@ public class Bullet : MonoBehaviour
         {
             enemyBase.enemyCanMove = false;
 
-            float _knockBackWithEnemyResistance = Mathf.Max(Player.Instance.enemyShootingKnockBack - enemyBase.knockBackResistance, 0);
+            float _knockBackWithEnemyResistance = Mathf.Max(PlayerBehaviour.Instance.weaponBehaviour.enemyShootingKnockBack - enemyBase.knockBackResistance, 0);
             enemyBase.GetComponent<Rigidbody2D>().AddForce(travelDirection * _knockBackWithEnemyResistance, ForceMode2D.Impulse);
 
             yield return new WaitForSeconds(knockBackTime);
@@ -154,12 +154,12 @@ public class Bullet : MonoBehaviour
     
     private void DealDamage(EnemyHealthPoints enemyHealthPoints)
     {
-        var _bulletPenetrationCount = Player.Instance.maxPenetrationCount;
+        var _bulletPenetrationCount = PlayerBehaviour.Instance.weaponBehaviour.maxPenetrationCount;
         
-        if (Player.Instance.currentActiveAbility != Player.CurrentAbility.PenetrationBullets)
+        if (PlayerBehaviour.Instance.abilityBehaviour.currentActiveAbility != AbilityBehaviour.CurrentAbility.PenetrationBullets)
         {
             _bulletPenetrationCount -= 1;
-            enemyHealthPoints.TakeDamage(Player.Instance.bulletDamage);
+            enemyHealthPoints.TakeDamage(PlayerBehaviour.Instance.weaponBehaviour.bulletDamage);
         }
         else
         {
@@ -169,7 +169,7 @@ public class Bullet : MonoBehaviour
         if (_bulletPenetrationCount >= 0) 
             return;
         
-        if (Player.Instance.currentActiveAbility != Player.CurrentAbility.StickyBullets)
+        if (PlayerBehaviour.Instance.abilityBehaviour.currentActiveAbility != AbilityBehaviour.CurrentAbility.StickyBullets)
         {
             DeactivateBullet();
         }
@@ -177,7 +177,7 @@ public class Bullet : MonoBehaviour
 
     private void DeactivateBullet()
     {
-        if (Player.Instance.currentActiveAbility != Player.CurrentAbility.StickyBullets)
+        if (PlayerBehaviour.Instance.abilityBehaviour.currentActiveAbility != AbilityBehaviour.CurrentAbility.StickyBullets)
         {
             var _bulletImpactParticles = BulletPoolingManager.Instance.impactParticles;
             _bulletImpactParticles.transform.SetPositionAndRotation(gameObject.transform.position, gameObject.transform.rotation);
@@ -185,7 +185,7 @@ public class Bullet : MonoBehaviour
             _bulletImpactParticles.Play();
         }
 
-        if (Player.Instance.currentActiveAbility == Player.CurrentAbility.ExplosiveBullets)
+        if (PlayerBehaviour.Instance.abilityBehaviour.currentActiveAbility == AbilityBehaviour.CurrentAbility.ExplosiveBullets)
         {
             AudioManager.Instance.Play("PopCornExplosion");
 

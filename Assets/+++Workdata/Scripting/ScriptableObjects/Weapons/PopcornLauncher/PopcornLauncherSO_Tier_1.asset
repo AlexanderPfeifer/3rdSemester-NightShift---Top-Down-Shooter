@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inGameWeaponVisual: {fileID: 1141658156, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
   weaponName: Popcorn Launcher
+  upgradeTier: 1
   weaponDescription: The trigger is buttery-smooth, but luckily this thing is more
     bark than bite. The noise wakes me right up, though.
   weaponAbilityDescription: Bullets explode and deal areal damage.
@@ -30,3 +31,4 @@ MonoBehaviour:
   clipSize: 9
   ammunitionInClip: 9
   ammunitionInBackUp: 56
+  hasAbilityUpgrade: 0

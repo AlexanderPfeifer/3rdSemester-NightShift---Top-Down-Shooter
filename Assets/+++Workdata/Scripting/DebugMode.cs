@@ -30,23 +30,23 @@ public class DebugMode : MonoBehaviour
         switch (choosableWeapons)
         {
             case ChoosableWeapons.Shotgun :
-                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Lollipop Shotgun"));
+                PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Lollipop Shotgun"));
                 break;
             
             case ChoosableWeapons.AR :
-                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "French Fries AR"));                
+                PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "French Fries AR"));                
                 break;
             
             case ChoosableWeapons.MagnumMagnum :
-                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Magnum magnum"));                
+                PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Magnum magnum"));                
                 break;
             
             case ChoosableWeapons.PopcornPistol :
-                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Popcorn Launcher"));                
+                PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Popcorn Launcher"));                
                 break;
             
             case ChoosableWeapons.HuntingRifle :
-                Player.Instance.GetWeapon(Player.Instance.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Corn Dog Hunting Rifle"));                
+                PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Corn Dog Hunting Rifle"));                
                 break;
             
             default:

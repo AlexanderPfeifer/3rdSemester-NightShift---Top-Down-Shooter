@@ -4,11 +4,14 @@ using UnityEngine;
 public class GameInputManager : MonoBehaviour
 {
     private PlayerInputActions playerInputActions;
+    public static GameInputManager Instance;
 
     public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnSprintingAction, OnNotShootingAction, OnReloadAction;
 
     private void Awake()
     {
+        Instance = this;
+        
         playerInputActions = new PlayerInputActions();
         playerInputActions.Enable();
 

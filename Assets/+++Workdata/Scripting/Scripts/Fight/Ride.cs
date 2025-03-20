@@ -153,7 +153,7 @@ public class Ride : MonoBehaviour
         
         GetComponentInChildren<Generator>().canPutAwayWalkieTalkie = true;
         waveStarted = false;
-        Player.Instance.fightAreaCam.Priority = 5;
+        PlayerBehaviour.Instance.weaponBehaviour.fightAreaCam.Priority = 5;
         InGameUIManager.Instance.fightScene.SetActive(false);
         InGameUIManager.Instance.abilityFillBar.SetActive(false);
         InGameUIManager.Instance.radioAnim.SetTrigger("PutOn");

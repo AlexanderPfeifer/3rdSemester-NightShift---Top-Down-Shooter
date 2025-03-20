@@ -20,7 +20,7 @@ public class GeneratorUI : MonoBehaviour
     
     private void OnEnable()
     {
-        Player.Instance.isInteracting = true;
+        PlayerBehaviour.Instance.isInteracting = true;
         EventSystem.current.SetSelectedGameObject(firstGeneratorSelected);
     }
 
@@ -47,7 +47,7 @@ public class GeneratorUI : MonoBehaviour
         if (generatorFillImage.fillAmount > activateGeneratorFillAmount)
         {
             gameObject.SetActive(false);
-            if (Player.Instance.GetInteractionObjectInRange(Player.Instance.generatorLayer, out Collider2D _generator))
+            if (PlayerBehaviour.Instance.GetInteractionObjectInRange(PlayerBehaviour.Instance.generatorLayer, out Collider2D _generator))
             {            
                 _generator.GetComponent<Generator>().SetUpFightArena();
             }
@@ -89,7 +89,7 @@ public class GeneratorUI : MonoBehaviour
 
     private void OnDisable()
     {
-        Player.Instance.isInteracting = false;
+        PlayerBehaviour.Instance.isInteracting = false;
         fillTime = 0;
         generatorFillImage.fillAmount = 0;
     }

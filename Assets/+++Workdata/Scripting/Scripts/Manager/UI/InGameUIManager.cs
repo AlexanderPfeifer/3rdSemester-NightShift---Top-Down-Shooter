@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,10 +20,10 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI inventoryHeader;
     [SerializeField] private Image inventoryImage;
     [SerializeField] private Button equipWeaponButton;
-    [FormerlySerializedAs("collectedObjects")] [SerializeField] private CollectedWeaponsSO collectedWeaponsSO;
+    [SerializeField] private CollectedCollectibles collectedCollectibles;
 
     [Header("Collectibles")]
-    private Dictionary<string, (GameObject obj, Sprite sprite, string text, string header)> collectedCollectibles;
+    private Dictionary<string, (GameObject obj, Sprite sprite, string text, string header)> collectedCollectiblesDictionary;
 
     [Header("Weapons")] 
     public TextMeshProUGUI ammunitionInClipText;
@@ -82,7 +84,6 @@ public class InGameUIManager : MonoBehaviour
     public GameObject weaponDecisionWeaponImage;
     public TextMeshProUGUI weaponDecisionWeaponAbilityText;
     public TextMeshProUGUI weaponDecisionWeaponName;
-    public GameObject firstSelectedWeaponDecision;
     [SerializeField] public GameObject weaponSwapScreen;
 
     public static InGameUIManager Instance;
@@ -107,7 +108,7 @@ public class InGameUIManager : MonoBehaviour
         currencyUI = GetComponent<CurrencyUI>();
         equipWeaponButton.gameObject.SetActive(false);
         
-        collectedCollectibles = new Dictionary<string, (GameObject, Sprite, string, string)>();
+        collectedCollectiblesDictionary = new Dictionary<string, (GameObject, Sprite, string, string)>();
         collectedWeapons = new Dictionary<string, (GameObject, Sprite, string, string, WeaponObjectSO)>();
 
         if(DebugMode.Instance.debugMode)
@@ -116,9 +117,9 @@ public class InGameUIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Player.Instance != null)
+        if (PlayerBehaviour.Instance != null)
         {
-            if (Player.Instance.canInteract)
+            if (PlayerBehaviour.Instance.canInteract)
             {
                 ShowInteractionIndicator(1);
             }
@@ -161,8 +162,8 @@ public class InGameUIManager : MonoBehaviour
         
         abilityFillBar.SetActive(false);
 
+        CloseInventory();
         GameSaveStateManager.Instance.GoToMainMenu();
-        OpenInventory();
     }
     
     public void PressButtonSound()
@@ -176,7 +177,7 @@ public class InGameUIManager : MonoBehaviour
         {
             t += 0.5f * Time.deltaTime;
 
-            Player.Instance.globalLightObject.gameObject.GetComponent<Light2D>().intensity = Mathf.Lerp( Player.Instance.globalLightObject.gameObject.GetComponent<Light2D>().intensity, 1, t);
+            PlayerBehaviour.Instance.globalLightObject.gameObject.GetComponent<Light2D>().intensity = Mathf.Lerp( PlayerBehaviour.Instance.globalLightObject.gameObject.GetComponent<Light2D>().intensity, 1, t);
         }
     }
 
@@ -211,9 +212,9 @@ public class InGameUIManager : MonoBehaviour
 
     #region DisplayInventoryInformation
 
-    public void SetWeaponThroughInventory(WeaponObjectSO weaponObjectSO)
+    private void SetWeaponThroughInventory(WeaponObjectSO weaponObjectSO)
     {
-        Player.Instance.GetWeapon(weaponObjectSO);
+        PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weaponObjectSO);
     }
 
     private void ResetDisplayInformation()
@@ -279,7 +280,7 @@ public class InGameUIManager : MonoBehaviour
     
     public void DisplayTeddy()
     {
-        var _itemInformation = collectedCollectibles["Stuffed Animal"];
+        var _itemInformation = collectedCollectiblesDictionary["Stuffed Animal"];
 
         ResetDisplayInformation();
         DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header, null);
@@ -287,7 +288,7 @@ public class InGameUIManager : MonoBehaviour
     
     public void DisplayNewspaper()
     {
-        var _itemInformation = collectedCollectibles["News Paper"];
+        var _itemInformation = collectedCollectiblesDictionary["News Paper"];
 
         ResetDisplayInformation();
         DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header, null);
@@ -295,7 +296,7 @@ public class InGameUIManager : MonoBehaviour
     
     public void DisplayLights()
     {
-        var _itemInformation = collectedCollectibles["Broken Lights"];
+        var _itemInformation = collectedCollectiblesDictionary["Broken Lights"];
 
         ResetDisplayInformation();
         DisplayItem(_itemInformation.sprite, _itemInformation.text, _itemInformation.header, null);
@@ -305,14 +306,16 @@ public class InGameUIManager : MonoBehaviour
 
     #region OnInventoryOpening
     
-    public void OpenInventory()
+    public void OpenInventory(object sender, EventArgs e)
     {
+        if (dialogueState != DialogueState.DialogueNotPlaying || PlayerBehaviour.Instance == null)
+        {
+            return;
+        }
+        
         if (inventoryIsOpened)
         {
-            inventoryButton.SetActive(true);
-            inventory.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(null);
-            inventoryIsOpened = false;
+            CloseInventory();
         }
         else
         {
@@ -325,6 +328,14 @@ public class InGameUIManager : MonoBehaviour
         }
     }
 
+    private void CloseInventory()
+    {
+        inventoryButton.SetActive(true);
+        inventory.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        inventoryIsOpened = false;
+    }
+
     private void DisplayCollectedCollectibles()
     {
         var _collectedCollectibles = GameSaveStateManager.Instance.saveGameDataManager.collectedCollectiblesIdentifiers;
@@ -333,7 +344,8 @@ public class InGameUIManager : MonoBehaviour
         {
             var _text = "";
             var _headerText = "";
-            var _collectible = collectedWeaponsSO.GetCollectibleDataByIdentifier(_identifier);
+
+            var _collectible = collectedCollectibles.GetCollectibleDataByIdentifier(_identifier);
             
             if (_collectible == null)
                 return;
@@ -365,12 +377,10 @@ public class InGameUIManager : MonoBehaviour
         {
             var _headerText = "";
             var _text = "";
-            var _weapon = collectedWeaponsSO.GetWeaponDataByIdentifier(_identifier);
+            var _weapon = PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == _identifier);
             
             if (_weapon == null)
                 return;
-            
-            Debug.Log(_weapon.hasAbilityUpgrade);
             
             _headerText += _weapon.weaponName;
             _text += _weapon.weaponDescription;
@@ -415,15 +425,13 @@ public class InGameUIManager : MonoBehaviour
             collectedWeapons[headerText] = (weapon, spriteCollectible, text, headerText, weaponObjectSO); 
             weapon.SetActive(true);
         }
-        
-        Debug.Log($"Updating {headerText} with text: {text}");
     }
 
     private void ActivateCollectible(GameObject collectible, string headerText, Sprite spriteCollectible, string text)
     {
-        if (!collectedCollectibles.TryGetValue(headerText, out _))
+        if (!collectedCollectiblesDictionary.TryGetValue(headerText, out _))
         {
-            collectedCollectibles[headerText] = (collectible, spriteCollectible, text, headerText); 
+            collectedCollectiblesDictionary[headerText] = (collectible, spriteCollectible, text, headerText); 
             collectible.SetActive(true);
         }
     }

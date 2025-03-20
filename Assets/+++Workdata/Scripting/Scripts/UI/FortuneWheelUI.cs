@@ -27,7 +27,7 @@ public class FortuneWheelUI : MonoBehaviour
 
     private void OnEnable()
     {
-        Player.Instance.isInteracting = true;
+        PlayerBehaviour.Instance.isInteracting = true;
         
         EventSystem.current.SetSelectedGameObject(firstFortuneWheelButtonSelected);
         
@@ -67,7 +67,7 @@ public class FortuneWheelUI : MonoBehaviour
     
     public void SpinWheel()
     {
-        if (rb.angularVelocity > 0 || receivingWeapon || !Player.Instance.playerCurrency.SpendCurrency(spinPrice)) 
+        if (rb.angularVelocity > 0 || receivingWeapon || !PlayerBehaviour.Instance.playerCurrency.SpendCurrency(spinPrice)) 
             return;
         
         rb.AddTorque(SpinPower);
@@ -78,8 +78,8 @@ public class FortuneWheelUI : MonoBehaviour
         const float pieSize = 360f / FortuneWheelPieCount;
         
         //The + 36f is there because the wheel of fortune starts in the middle of a field when on rotation 0,0,0 
-        int _priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + 36f) / pieSize) % Player.Instance.allWeaponPrizes.Count;
-        StartCoroutine(GetWeaponPrize(Player.Instance.allWeaponPrizes[_priceIndex]));
+        int _priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + 36f) / pieSize) % PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.Count;
+        StartCoroutine(GetWeaponPrize(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes[_priceIndex]));
         
         wheelSpinning = false;
         receivingWeapon = true;
@@ -111,7 +111,7 @@ public class FortuneWheelUI : MonoBehaviour
         
         yield return new WaitForSeconds(.3f);
         
-        Player.Instance.GetWeapon(weapon);
+        PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weapon);
         GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
         
         receivingWeapon = false;
@@ -120,7 +120,7 @@ public class FortuneWheelUI : MonoBehaviour
 
     private void OnDisable()
     {
-        Player.Instance.isInteracting = false;
+        PlayerBehaviour.Instance.isInteracting = false;
         EventSystem.current.SetSelectedGameObject(null);
     }
 }

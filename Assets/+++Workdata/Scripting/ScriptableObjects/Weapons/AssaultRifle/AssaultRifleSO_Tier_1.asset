@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inGameWeaponVisual: {fileID: 1193635104, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
   weaponName: French Fries AR
+  upgradeTier: 1
   weaponDescription: Served hot and fresh. This thing is a whole new definition of
     fast food.
   weaponAbilityDescription: Bullet Firerate increases.
@@ -30,3 +31,4 @@ MonoBehaviour:
   clipSize: 25
   ammunitionInClip: 25
   ammunitionInBackUp: 150
+  hasAbilityUpgrade: 0

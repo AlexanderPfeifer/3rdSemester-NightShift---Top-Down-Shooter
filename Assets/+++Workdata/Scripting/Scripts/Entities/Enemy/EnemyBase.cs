@@ -79,7 +79,7 @@ public class EnemyBase : MonoBehaviour
         var _confetti = Instantiate(enemyConfetti, _transform.position, Quaternion.identity, _transform.parent);
         _confetti.GetComponent<ParticleSystem>().Play();
         
-        Player.Instance.AddAbilityFill(enemyAbilityGainForPlayer);
+        PlayerBehaviour.Instance.abilityBehaviour.AddAbilityFill(enemyAbilityGainForPlayer);
 
         if (Random.value <= ammunitionDropChancePercentage)
         {
@@ -88,6 +88,6 @@ public class EnemyBase : MonoBehaviour
             _ammoDrop.GetComponent<AmmoDrop>().ammoCount = _ammoAmount;
         }
         
-        Player.Instance.playerCurrency.AddCurrency(Random.Range((int)currencyDropRange.x, (int)currencyDropRange.y));
+        PlayerBehaviour.Instance.playerCurrency.AddCurrency(Random.Range((int)currencyDropRange.x, (int)currencyDropRange.y));
     }
 }

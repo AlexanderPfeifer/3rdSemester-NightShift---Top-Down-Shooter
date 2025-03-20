@@ -13,7 +13,7 @@ public class SaveGameDataManager
     public List<string> weaponsInInventoryIdentifiers = new();
     public int finishedWavesCount;
     
-    public Player.PlayerSaveData newPlayerSaveData;
+    public PlayerBehaviour.PlayerSaveData newPlayerSaveData;
 
     /// <param name="identifier">The identifier that is unique for every collectible</param>
     public void AddCollectible(string identifier)

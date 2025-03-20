@@ -14,19 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inGameWeaponVisual: {fileID: -1145309252, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
   weaponName: Magnum magnum
+  upgradeTier: 1
   weaponDescription: "Don\u2018t let the cool design fool you - this thing\u2018s
     packing some heat. "
   weaponAbilityDescription: Freezes enemies on bullet collision for 5 seconds.
   shootDelay: 0.4
-  penetrationCount: 2
   bulletDamage: 3
   weaponSpread: 0.005
+  playerKnockBack: 4
+  enemyKnockBack: 6
+  screenShake: 5
   weaponScale: {x: 0.8, y: 0.8, z: 1}
-  bulletsPerShot: 1
-  knockBack: 4
-  enemyKnockBackPerBullet: 6
   bulletSize: {x: 0.75, y: 0.75}
+  penetrationCount: 2
+  bulletsPerShot: 1
   clipSize: 7
   ammunitionInClip: 7
   ammunitionInBackUp: 42
-  screenShake: 5
+  hasAbilityUpgrade: 0

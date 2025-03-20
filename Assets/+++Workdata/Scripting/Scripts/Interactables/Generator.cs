@@ -28,7 +28,7 @@ public class Generator : MonoBehaviour
         ride.gameObject.GetComponent<Animator>().SetTrigger("LightOn");
         ride.invisibleCollider.SetActive(true);
 
-        if (Player.Instance.hasAbilityUpgrade)
+        if (PlayerBehaviour.Instance.abilityBehaviour.hasAbilityUpgrade)
         {
             InGameUIManager.Instance.abilityFillBar.gameObject.SetActive(true);
         }
@@ -41,7 +41,7 @@ public class Generator : MonoBehaviour
         if (ride.rideGotDestroyed)
             fightMusic.Play();        
         
-        Player.Instance.fightAreaCam.Priority = 15;
+        PlayerBehaviour.Instance.weaponBehaviour.fightAreaCam.Priority = 15;
         
         //Set a bool for the PutAway Animation because the player can leave and enter the collider still inside the fight
         if (canPutAwayWalkieTalkie)
