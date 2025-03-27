@@ -50,12 +50,10 @@ public class InGameUIManager : MonoBehaviour
     public GameObject abilityFillBar;
     
     [Header("Player UI")]
-    [SerializeField] private GameObject eIndicator;
-    [SerializeField] private GameObject inventoryButton; 
     public GameObject inGameUIScreen;
     public GameObject firstInventorySelected;
-    public GameObject shopScreen;
-    public GameObject generatorScreen;
+    [SerializeField] private GameObject shopScreen;
+    [SerializeField] private GameObject generatorScreen;
     [HideInInspector] public CurrencyUI currencyUI;
     
     [Header("End Sequence")]
@@ -121,11 +119,11 @@ public class InGameUIManager : MonoBehaviour
         {
             if (PlayerBehaviour.Instance.canInteract)
             {
-                ShowInteractionIndicator(1);
+                //ShowInteractionIndicator(1);
             }
             else
             {
-                ShowInteractionIndicator(0.2156862745098039f);
+                //ShowInteractionIndicator(0.2156862745098039f);
             }
         }
 
@@ -191,13 +189,6 @@ public class InGameUIManager : MonoBehaviour
 
     #region PlayerUI
 
-    private void ShowInteractionIndicator(float alpha)
-    {
-        var _componentColor = eIndicator.GetComponent<Image>().color;
-        _componentColor.a = alpha;
-        eIndicator.GetComponent<Image>().color = _componentColor;
-    }
-
     public void ActivateInGameUI()
     {
         inGameUIScreen.SetActive(true);
@@ -206,6 +197,35 @@ public class InGameUIManager : MonoBehaviour
         {
             ActivateRadio();
         }
+    }
+
+    public void SetGeneratorUI()
+    {
+        if (!PlayerBehaviour.Instance.isPlayerBusy)
+        {
+            generatorScreen.SetActive(true);
+            
+            return;
+        }
+
+        generatorScreen.SetActive(false);
+    }
+
+    public void SetShopUI()
+    {
+        if (dialogueState != DialogueState.DialogueNotPlaying)
+        {
+            return;
+        }
+        
+        if (!PlayerBehaviour.Instance.isPlayerBusy)
+        {
+            shopScreen.SetActive(true);
+            
+            return;
+        }
+
+        shopScreen.SetActive(false);
     }
 
     #endregion
@@ -221,11 +241,12 @@ public class InGameUIManager : MonoBehaviour
     {
         inventoryText.text = "";
         inventoryHeader.text = "";
-        inventoryImage.gameObject.SetActive(true);
+        inventoryImage.gameObject.SetActive(false);
     }
     
     private void DisplayItem(Sprite sprite, string text, string header, WeaponObjectSO weaponObjectSO)
     {
+        inventoryImage.gameObject.SetActive(true);
         inventoryText.text += text;
         inventoryHeader.text += header;
         inventoryImage.sprite = sprite;
@@ -319,8 +340,11 @@ public class InGameUIManager : MonoBehaviour
         }
         else
         {
-            inventoryButton.SetActive(false);
+            if(PlayerBehaviour.Instance.isPlayerBusy)
+                return;
+            
             inventory.SetActive(true);
+            PlayerBehaviour.Instance.isPlayerBusy = true;
             DisplayCollectedCollectibles();
             DisplayCollectedWeapons();
             EventSystem.current.SetSelectedGameObject(firstInventorySelected);
@@ -330,10 +354,11 @@ public class InGameUIManager : MonoBehaviour
 
     private void CloseInventory()
     {
-        inventoryButton.SetActive(true);
         inventory.SetActive(false);
+        PlayerBehaviour.Instance.isPlayerBusy = false;
         EventSystem.current.SetSelectedGameObject(null);
         inventoryIsOpened = false;
+        ResetDisplayInformation();
     }
 
     private void DisplayCollectedCollectibles()
@@ -445,6 +470,26 @@ public class InGameUIManager : MonoBehaviour
         StartCoroutine(TypeTextCoroutine(currentDialogue[dialogueTextCount], currentDialogue));
         
         dialogueTextCount++;
+    }
+
+    public void SetDialogueState()
+    {
+        switch (dialogueState)
+        {
+            case DialogueState.DialoguePlaying:
+                Instance.textDisplaySpeed = Instance.maxTextDisplaySpeed;
+                break;
+            case DialogueState.DialogueAbleToGoNext:
+                Instance.PlayNextDialogue();
+                break;
+            case DialogueState.DialogueAbleToEnd:
+                Instance.EndDialogue();
+                break;
+            case DialogueState.DialogueNotPlaying:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
     
     private IEnumerator TypeTextCoroutine(string text, IReadOnlyList<string> currentDialogue)

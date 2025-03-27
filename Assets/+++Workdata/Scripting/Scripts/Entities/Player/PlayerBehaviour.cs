@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -42,7 +43,7 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField] public LayerMask duckLayer;
     [SerializeField] private LayerMask collectibleLayer;
     [HideInInspector] public bool canInteract = true;
-    [HideInInspector] public bool isInteracting;
+    [FormerlySerializedAs("isInteracting")] [HideInInspector] public bool isPlayerBusy;
 
     private void SetupFromData()
     {
@@ -84,6 +85,7 @@ public class PlayerBehaviour : MonoBehaviour
     private void Start()
     {
         weaponBehaviour = GetComponentInChildren<WeaponBehaviour>();
+        abilityBehaviour = GetComponentInChildren<AbilityBehaviour>();
         InGameUIManager.Instance.loadingScreenAnim.SetTrigger("End");
         InGameUIManager.Instance.ActivateInGameUI();
         rb = GetComponent<Rigidbody2D>();
@@ -92,11 +94,16 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (DebugMode.Instance.debugMode)
         {
-            FindAnyObjectByType<Generator>().GetComponent<Generator>().SetUpFightArena();
+            if (DebugMode.Instance.activateRide)
+            {
+                FindAnyObjectByType<Generator>().GetComponent<Generator>().SetUpFightArena();
             
-            transform.position = new Vector3(38, 4, 0);
-            
+                transform.position = new Vector3(38, 4, 0);   
+            }
+
             DebugMode.Instance.GetDebugWeapon();
+            
+            playerCurrency.AddCurrency(DebugMode.Instance.currencyAtStart);
         }
     }
 
@@ -131,15 +138,15 @@ public class PlayerBehaviour : MonoBehaviour
         {
             _collectible.GetComponent<Collectible>().Collect();
         }
-        else if (GetInteractionObjectInRange(shopLayer, out _) && !InGameUIManager.Instance.shopScreen.activeSelf)
+        else if (GetInteractionObjectInRange(shopLayer, out _))
         {
-            InGameUIManager.Instance.shopScreen.SetActive(true);
+            InGameUIManager.Instance.SetShopUI();
         }
-        else if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && !InGameUIManager.Instance.generatorScreen.activeSelf)
+        else if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator))
         {
             if (_generator.GetComponent<Generator>().genInteractable)
             {
-                InGameUIManager.Instance.generatorScreen.SetActive(true);
+                InGameUIManager.Instance.SetGeneratorUI();
                 GameSaveStateManager.Instance.SaveGame();
             }
         }
@@ -155,7 +162,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void HandleMovementFixedUpdate()
     {
-        if (InGameUIManager.Instance.dialogueState != InGameUIManager.DialogueState.DialogueNotPlaying || InGameUIManager.Instance.inventoryIsOpened || isInteracting) 
+        if (InGameUIManager.Instance.dialogueState != InGameUIManager.DialogueState.DialogueNotPlaying || InGameUIManager.Instance.inventoryIsOpened || isPlayerBusy) 
             return;
         
         rb.linearVelocity = GameInputManager.Instance.GetMovementVectorNormalized() * currentMoveSpeed + weaponBehaviour.CurrentKnockBack;
@@ -165,7 +172,7 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void SetAnimationParameterLateUpdate()
     {
-        if (!isInteracting && InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueNotPlaying)
+        if (!isPlayerBusy && InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueNotPlaying)
         {
             if (playerVisual.activeSelf)
             {
@@ -222,6 +229,14 @@ public class PlayerBehaviour : MonoBehaviour
     }
 
     #endregion
+    
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.TryGetComponent(out AmmoDrop _ammoDrop))
+        {
+            weaponBehaviour.ObtainAmmoDrop(_ammoDrop);
+        }
+    }
 
     private void OnDrawGizmos()
     {

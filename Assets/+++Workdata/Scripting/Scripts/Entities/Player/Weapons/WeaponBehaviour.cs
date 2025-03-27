@@ -44,7 +44,7 @@ public class WeaponBehaviour : MonoBehaviour
     [Header("Knock Back")]
     public float enemyShootingKnockBack = 2;
     private float shootingKnockBack;
-    [NonSerialized] public Vector2 CurrentKnockBack;
+    [HideInInspector] public Vector2 CurrentKnockBack;
     
     [Header("Camera")]
     [SerializeField] private Camera mainCamera;
@@ -86,7 +86,7 @@ public class WeaponBehaviour : MonoBehaviour
 
     private void Start()
     {
-        weaponAnim = GetComponentInChildren<Animator>();
+        weaponAnim = weaponObject.GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -119,30 +119,13 @@ public class WeaponBehaviour : MonoBehaviour
     
     private void OnPressingShootingAction(object sender, EventArgs e)
     {
-        if (!InGameUIManager.Instance.inventoryIsOpened && !InGameUIManager.Instance.shopScreen.activeSelf && 
-            weaponAnim.gameObject.activeSelf && !PlayerBehaviour.Instance.isInteracting && 
-            InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueNotPlaying)
+        if (weaponObject.activeSelf && !PlayerBehaviour.Instance.isPlayerBusy)
         {
             isShooting = true;
         }
         else
         {
-            switch (InGameUIManager.Instance.dialogueState)
-            {
-                case InGameUIManager.DialogueState.DialoguePlaying:
-                    InGameUIManager.Instance.textDisplaySpeed = InGameUIManager.Instance.maxTextDisplaySpeed;
-                    break;
-                case InGameUIManager.DialogueState.DialogueAbleToGoNext:
-                    InGameUIManager.Instance.PlayNextDialogue();
-                    break;
-                case InGameUIManager.DialogueState.DialogueAbleToEnd:
-                    InGameUIManager.Instance.EndDialogue();
-                    break;
-                case InGameUIManager.DialogueState.DialogueNotPlaying:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            InGameUIManager.Instance.SetDialogueState();
         }
     }
 
@@ -153,7 +136,7 @@ public class WeaponBehaviour : MonoBehaviour
     
     private void HandleAimingUpdate()
     {
-        if (!weaponObject.activeSelf || InGameUIManager.Instance.inventoryIsOpened || InGameUIManager.Instance.shopScreen.activeSelf) 
+        if (!weaponObject.activeSelf || PlayerBehaviour.Instance.isPlayerBusy) 
             return;
         
         mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -277,7 +260,7 @@ public class WeaponBehaviour : MonoBehaviour
     private IEnumerator ReloadCoroutine()
     {
         //If statement translation: no ammo overall or weapon already full or no weapon is equipped
-        if (ammunitionInBackUp <= 0 || ammunitionInClip == maxClipSize || !weaponAnim.gameObject.activeSelf)
+        if (ammunitionInBackUp <= 0 || ammunitionInClip == maxClipSize || !weaponObject.activeSelf)
         {
             //return and make some vfx
             yield break;
@@ -329,10 +312,27 @@ public class WeaponBehaviour : MonoBehaviour
         if(backUpAmmo != null)
             InGameUIManager.Instance.ammunitionInBackUpText.text = "/" + backUpAmmo;
     }
+
+    public void ObtainAmmoDrop(AmmoDrop ammoDrop)
+    {
+        ammunitionInBackUp += myWeapon switch
+        {
+            MyWeapon.AssaultRifle => ammoDrop.ammoCount * 5,
+            MyWeapon.Magnum => ammoDrop.ammoCount * 2,
+            MyWeapon.Pistol => ammoDrop.ammoCount * 3,
+            MyWeapon.HuntingRifle => Mathf.RoundToInt(ammoDrop.ammoCount * 1.5f),
+            MyWeapon.Shotgun => ammoDrop.ammoCount,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+            
+        SetAmmunitionText(null, ammunitionInBackUp.ToString());
+            
+        Destroy(ammoDrop.gameObject);
+    }
     
     private void WeaponTimerUpdate()
     {
-        if (weaponAnim.gameObject.activeSelf)
+        if (weaponObject.activeSelf)
         {
             currentShootingDelay -= Time.deltaTime;
         }
@@ -340,13 +340,13 @@ public class WeaponBehaviour : MonoBehaviour
     
     public void GetWeapon(WeaponObjectSO weapon)
     {
-        weaponAnim.gameObject.SetActive(true);
-        weaponAnim.gameObject.GetComponent<SpriteRenderer>().sprite = weapon.inGameWeaponVisual;
+        weaponObject.SetActive(true);
+        weaponObject.GetComponent<SpriteRenderer>().sprite = weapon.inGameWeaponVisual;
         bulletDamage = weapon.bulletDamage;
         maxPenetrationCount = weapon.penetrationCount;
         maxShootingDelay = weapon.shootDelay;
         weaponAccuracy = weapon.weaponSpread;
-        weaponAnim.gameObject.transform.localScale = weapon.weaponScale;
+        weaponObject.transform.localScale = weapon.weaponScale;
         bulletsPerShot = weapon.bulletsPerShot;
         shootingKnockBack = weapon.playerKnockBack;
         maxClipSize = weapon.clipSize;
@@ -383,7 +383,7 @@ public class WeaponBehaviour : MonoBehaviour
     {
         muzzleFlashVisual.SetActive(true);
         
-        if (fightAreaCam.Priority > 10)
+        if (fightAreaCam.isActiveAndEnabled && fightAreaCam.Priority > 10)
         {
             fightAreaCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = weaponScreenShake;
         }
@@ -400,31 +400,11 @@ public class WeaponBehaviour : MonoBehaviour
 
         bulletShellsParticle.Stop();
 
-        if (fightAreaCam.Priority > 10)
+        if (fightAreaCam.isActiveAndEnabled && fightAreaCam.Priority > 10)
         {
             fightAreaCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
         }
 
         muzzleFlashVisual.SetActive(false);
-    }
-    
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.TryGetComponent(out AmmoDrop _ammoDrop))
-        {
-            ammunitionInBackUp += myWeapon switch
-            {
-                MyWeapon.AssaultRifle => _ammoDrop.ammoCount * 5,
-                MyWeapon.Magnum => _ammoDrop.ammoCount * 2,
-                MyWeapon.Pistol => _ammoDrop.ammoCount * 3,
-                MyWeapon.HuntingRifle => Mathf.RoundToInt(_ammoDrop.ammoCount * 1.5f),
-                MyWeapon.Shotgun => _ammoDrop.ammoCount,
-                _ => throw new ArgumentOutOfRangeException()
-            };
-            
-            SetAmmunitionText(null, ammunitionInBackUp.ToString());
-            
-            Destroy(other.gameObject);
-        }
     }
 }

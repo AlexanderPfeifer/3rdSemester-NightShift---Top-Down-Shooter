@@ -9,7 +9,6 @@ public class WeaponSwapUI : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         
         InGameUIManager.Instance.weaponSwapScreen.SetActive(false);
-        PlayerBehaviour.Instance.isInteracting = false;
     }
     
     public void SwapWeapon()
@@ -23,6 +22,5 @@ public class WeaponSwapUI : MonoBehaviour
         }
 
         InGameUIManager.Instance.weaponSwapScreen.SetActive(false);
-        InGameUIManager.Instance.shopScreen.SetActive(true);
     }
 }

@@ -28,6 +28,7 @@ public class UpgradeUI : MonoBehaviour
     private void OnEnable()
     {
        SetUpgradeButtons();
+       PlayerBehaviour.Instance.isPlayerBusy = true;
     }
 
     public void SetUpgradeButtons()
@@ -48,7 +49,7 @@ public class UpgradeUI : MonoBehaviour
                             
                 case "Lollipop Shotgun" :
                     lollipopShotgunUpgradeButton.gameObject.SetActive(true);
-                    lollipopShotgunUpgradeButton.onClick.AddListener(() => UpgradeWeapon("Magnum magnum", lollipopShotgunUpgradeTiers));
+                    lollipopShotgunUpgradeButton.onClick.AddListener(() => UpgradeWeapon("Lollipop Shotgun", lollipopShotgunUpgradeTiers));
                     break;
                             
                 case "Corn Dog Hunting Rifle" :
@@ -88,5 +89,10 @@ public class UpgradeUI : MonoBehaviour
                 //Show that the upgrade cannot be achieved
             }
         }
+    }
+
+    private void OnDisable()
+    {
+        PlayerBehaviour.Instance.isPlayerBusy = false;
     }
 }

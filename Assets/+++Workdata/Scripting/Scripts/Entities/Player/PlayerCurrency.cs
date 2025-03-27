@@ -1,12 +1,16 @@
+using System;
 using UnityEngine;
 
 public class PlayerCurrency : MonoBehaviour
 {
-    [SerializeField] private int currentCurrency;
+    [NonSerialized] private int currency;
     [SerializeField] private float timeBetweenAddingNumbers;
     private float currentTimeBetweenAddingNumbers;
-    
-    private int currencyBeforeChange;
+
+    [Header("ShowCurrencyNumberByNumber")] 
+    [SerializeField] private int maxCurrencyNumberByNumberMultiplier = 10;
+    [SerializeField] private int divisionNumberPerMultiplier = 100;
+    private int currencyText;
 
     private void Start()
     {
@@ -22,19 +26,19 @@ public class PlayerCurrency : MonoBehaviour
 
     public void AddCurrency(int amount)
     {
-        currentCurrency += amount;
+        currency += amount;
     }
 
     private void SetCurrencyText()
     {
-        InGameUIManager.Instance.currencyUI.GetCurrencyText().text = "Currency:\n" + currencyBeforeChange;
+        InGameUIManager.Instance.currencyUI.GetCurrencyText().text = "Currency:\n" + currencyText;
     }
 
     public bool SpendCurrency(int amount)
     {
-        if (currentCurrency >= amount)
+        if (currency >= amount)
         {
-            currentCurrency -= amount;
+            currency -= amount;
             return true;
         }
         
@@ -43,15 +47,24 @@ public class PlayerCurrency : MonoBehaviour
 
     private void UpdateCurrencyTextNumberByNumber()
     {
-        if(currencyBeforeChange == currentCurrency)
+        if (currencyText == currency)
             return;
         
+        float _addNumberMultiplier = Mathf.Clamp(Mathf.Abs(currency - currencyText) / divisionNumberPerMultiplier, 1, maxCurrencyNumberByNumberMultiplier);
+
         if (currentTimeBetweenAddingNumbers < 0)
         {
-            currencyBeforeChange += (int)Mathf.Sign(currentCurrency - currencyBeforeChange);
-            SetCurrencyText();
+            //Mathf Sign to subtract or add numbers if needed - so if it is -1, it decreases number accordingly
+            int _step = Mathf.CeilToInt(_addNumberMultiplier * Mathf.Sign(currency - currencyText));
+            currencyText += _step;
 
-            currentTimeBetweenAddingNumbers = timeBetweenAddingNumbers;
+            if ((_step > 0 && currencyText > currency) || (_step < 0 && currencyText < currency))
+            {
+                currencyText = currency;
+            }
+
+            SetCurrencyText();
+            currentTimeBetweenAddingNumbers = timeBetweenAddingNumbers / _addNumberMultiplier;
         }
         else
         {

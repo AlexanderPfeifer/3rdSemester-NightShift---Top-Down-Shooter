@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class DebugMode : MonoBehaviour
 {
-    [Header("Debugging")]
+    [Header("ACTIVATION")]
     public bool debugMode;
     
-    public static DebugMode Instance;
-
+    [Header("Settings")]
+    public bool activateRide;
     public ChoosableWeapons choosableWeapons;
+    public int currencyAtStart;
 
+    public static DebugMode Instance;
+    
     public enum ChoosableWeapons
     {
+        None,
         Shotgun, 
         AR,
         PopcornPistol,
@@ -29,6 +33,9 @@ public class DebugMode : MonoBehaviour
     {
         switch (choosableWeapons)
         {
+            case ChoosableWeapons.None :
+                break;
+            
             case ChoosableWeapons.Shotgun :
                 PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Lollipop Shotgun"));
                 break;

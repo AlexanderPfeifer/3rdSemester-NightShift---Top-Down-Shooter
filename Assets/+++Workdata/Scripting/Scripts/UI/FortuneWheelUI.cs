@@ -27,7 +27,7 @@ public class FortuneWheelUI : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerBehaviour.Instance.isInteracting = true;
+        PlayerBehaviour.Instance.isPlayerBusy = true;
         
         EventSystem.current.SetSelectedGameObject(firstFortuneWheelButtonSelected);
         
@@ -120,7 +120,7 @@ public class FortuneWheelUI : MonoBehaviour
 
     private void OnDisable()
     {
-        PlayerBehaviour.Instance.isInteracting = false;
+        PlayerBehaviour.Instance.isPlayerBusy = false;
         EventSystem.current.SetSelectedGameObject(null);
     }
 }
