@@ -14,9 +14,10 @@ public class EnemyBase : MonoBehaviour
     [HideInInspector] public Rigidbody2D rbEnemy;
     [HideInInspector] public SpriteRenderer sr;
 
-    [Header("Death")]
+    [Header("Particles")]
     [SerializeField] private GameObject enemyDeathMark;
     [SerializeField] private GameObject enemyConfetti;
+    [FormerlySerializedAs("enemyShot")] public ParticleSystem enemyShotConfetti;
     
     [Header("Ride")]
     [SerializeField] private float rideAttackDamage = 1;

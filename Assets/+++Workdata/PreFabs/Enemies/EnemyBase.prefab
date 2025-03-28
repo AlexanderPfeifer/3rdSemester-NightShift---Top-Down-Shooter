@@ -201,17 +201,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockBackResistance: 10
   enemyCanMove: 1
-  enemyFreezeTime: 10
   rbEnemy: {fileID: 0}
   sr: {fileID: 0}
   enemyDeathMark: {fileID: 4290859008780889418, guid: 5201ca6a6521a604e9dac64a9e5c9a82, type: 3}
   enemyConfetti: {fileID: 0}
+  enemyShotConfetti: {fileID: 7808308972302223588, guid: 1cf185cb36f7e2a47a5cd5bab96760a7, type: 3}
   rideAttackDamage: 1
   ride: {fileID: 0}
   ammoDropPrefab: {fileID: 8691116015789563686, guid: 9e37250a8dcc9164b9ea5add047e4f9b, type: 3}
   enemyAbilityGainForPlayer: 1
   ammunitionAmountDropRange: {x: 0, y: 0}
   ammunitionDropChancePercentage: 0
+  currencyDropRange: {x: 0, y: 0}
 --- !u!114 &7295137754459367048
 MonoBehaviour:
   m_ObjectHideFlags: 0

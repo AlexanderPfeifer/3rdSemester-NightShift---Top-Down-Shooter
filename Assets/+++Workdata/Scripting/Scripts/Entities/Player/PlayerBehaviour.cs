@@ -234,7 +234,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out AmmoDrop _ammoDrop))
         {
-            weaponBehaviour.ObtainAmmoDrop(_ammoDrop);
+            weaponBehaviour.ObtainAmmoDrop(_ammoDrop, 0);
         }
     }
 

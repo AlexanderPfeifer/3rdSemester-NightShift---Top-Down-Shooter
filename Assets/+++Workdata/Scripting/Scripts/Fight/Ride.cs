@@ -8,7 +8,7 @@ public class Ride : MonoBehaviour
     [SerializeField] private Wave[] waves;
     [HideInInspector] public bool waveStarted;
     private float waveTimer;
-    [SerializeField] private GameObject enemyParent;
+    public GameObject enemyParent;
     private readonly List<GameObject> currentEnemies = new();
     
     [Header("Square Spawn Point")]
@@ -47,10 +47,10 @@ public class Ride : MonoBehaviour
             return;
         
         InGameUIManager.Instance.rideHpImage.fillAmount = currentRideHealth / maxRideHealth;
-        InGameUIManager.Instance.rideTimeImage.fillAmount = waveTimer / waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].maxWaveTime;
+        InGameUIManager.Instance.rideTimeImage.fillAmount = waveTimer / GetCurrentWave().maxWaveTime;
         waveTimer += Time.deltaTime;
 
-        if (waveTimer >= waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].maxWaveTime)
+        if (waveTimer >= GetCurrentWave().maxWaveTime)
         {
             WonWave();
         }
@@ -60,11 +60,16 @@ public class Ride : MonoBehaviour
         }
     }
 
+    private Wave GetCurrentWave()
+    {
+        return waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()];
+    }
+
     #region EnemySpawning
 
     public void StartEnemyClusterCoroutines()
     {
-        foreach (var _enemyCluster in waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].enemyClusters)
+        foreach (var _enemyCluster in GetCurrentWave().enemyClusters)
         {
             StartCoroutine(SpawnEnemiesDelayed(_enemyCluster));
         }
@@ -72,7 +77,7 @@ public class Ride : MonoBehaviour
 
     private IEnumerator SpawnEnemiesDelayed(EnemyClusterData enemyCluster)
     {
-        yield return new WaitForSeconds(enemyCluster.timeToSpawn);
+        yield return new WaitForSeconds(enemyCluster.spawnStartTime);
 
         for (int _i = 0; _i < enemyCluster.repeatCount; _i++)
         {
@@ -147,6 +152,9 @@ public class Ride : MonoBehaviour
         {
             Destroy(_enemy);
         }
+        
+        PlayerBehaviour.Instance.playerCurrency.AddCurrency(
+            Mathf.RoundToInt(GetCurrentWave().currencyPrize * (currentRideHealth / maxRideHealth)));
         
         ResetRide();
 

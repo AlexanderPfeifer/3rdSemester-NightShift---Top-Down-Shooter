@@ -313,8 +313,16 @@ public class WeaponBehaviour : MonoBehaviour
             InGameUIManager.Instance.ammunitionInBackUpText.text = "/" + backUpAmmo;
     }
 
-    public void ObtainAmmoDrop(AmmoDrop ammoDrop)
+    public void ObtainAmmoDrop(AmmoDrop ammoDrop, int setAmmoManually)
     {
+        SetAmmunitionText(null, ammunitionInBackUp.ToString());
+
+        if (ammoDrop == null)
+        {
+            ammunitionInBackUp = setAmmoManually;
+            return;
+        }
+        
         ammunitionInBackUp += myWeapon switch
         {
             MyWeapon.AssaultRifle => ammoDrop.ammoCount * 5,
@@ -324,9 +332,7 @@ public class WeaponBehaviour : MonoBehaviour
             MyWeapon.Shotgun => ammoDrop.ammoCount,
             _ => throw new ArgumentOutOfRangeException()
         };
-            
-        SetAmmunitionText(null, ammunitionInBackUp.ToString());
-            
+        
         Destroy(ammoDrop.gameObject);
     }
     

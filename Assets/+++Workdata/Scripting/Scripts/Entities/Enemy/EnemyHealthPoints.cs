@@ -10,7 +10,7 @@ public class EnemyHealthPoints : MonoBehaviour
         currentHitPoints = maximumHitPoints;
     }
 
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(float damageAmount, Transform bulletTransform)
     {
         currentHitPoints -= damageAmount;
         
@@ -20,6 +20,14 @@ public class EnemyHealthPoints : MonoBehaviour
         if (currentHitPoints <= 0)
         {
             Destroy(gameObject);
+            return;
+        }
+
+        if (bulletTransform != null)
+        {
+            var _enemyShotParticles = Instantiate(_enemy.enemyShotConfetti, transform.position, Quaternion.identity, _enemy.ride.enemyParent.transform);
+            _enemyShotParticles.transform.localRotation = bulletTransform.localRotation;
+            _enemyShotParticles.Play();
         }
     }
 }

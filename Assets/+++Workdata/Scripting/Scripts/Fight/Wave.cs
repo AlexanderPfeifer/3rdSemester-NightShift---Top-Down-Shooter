@@ -12,8 +12,9 @@ public class EnemyClusterData
     [Header("WHO")]
     public GameObject enemyPrefab;
     
+    [FormerlySerializedAs("timeToSpawn")]
     [Header("WHEN")]
-    [Min(0)] public float timeToSpawn;
+    [Min(0)] public float spawnStartTime;
     
     [Header("HOW MANY")]
     [Min(1)] public int spawnCount;
@@ -24,9 +25,14 @@ public class EnemyClusterData
     [Header("AT WHAT INTERVAL")]
     [Min(0)] public float timeBetweenSpawns;
     
+    [Header("UNTIL")]
+    [SerializeField, ReadOnly] private float stopsSpawningAtTime;
+
     public void UpdateClusterName()
     {
-        clusterName = enemyPrefab.name + " | " +timeToSpawn.ToString(CultureInfo.CurrentCulture);
+        clusterName = enemyPrefab.name + " | " +spawnStartTime.ToString(CultureInfo.CurrentCulture);
+
+        stopsSpawningAtTime = repeatCount * timeBetweenSpawns + spawnStartTime;
     }
 }
 
@@ -34,6 +40,8 @@ public class EnemyClusterData
 public class Wave
 {
     [ReadOnly] public string waveName;
+    
+    public int currencyPrize;
 
     [Min(1)] public float maxWaveTime = 120f;
 

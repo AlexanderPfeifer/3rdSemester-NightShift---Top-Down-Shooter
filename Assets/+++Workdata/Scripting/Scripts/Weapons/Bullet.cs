@@ -57,7 +57,7 @@ public class Bullet : MonoBehaviour
             if (stickyBulletTimer <= 0)
             {
                 tickCount--;
-                GetComponentInParent<EnemyHealthPoints>().TakeDamage(tickStickyBulletDamage);
+                GetComponentInParent<EnemyHealthPoints>().TakeDamage(tickStickyBulletDamage, null);
                 GetComponentInParent<EnemyBase>().HitVisual();
                 stickyBulletTimer = maxStickyBulletTimer;
                 
@@ -90,7 +90,7 @@ public class Bullet : MonoBehaviour
             ApplyAbilities(_enemy);
 
             _enemy.StartCoroutine(EnemyKnockBack(_enemy));
-            
+
             DealDamage(_enemyHealthPoints);
         }
     }
@@ -150,7 +150,7 @@ public class Bullet : MonoBehaviour
             enemyBase.enemyCanMove = true;
         }
     }
-    
+
     private void DealDamage(EnemyHealthPoints enemyHealthPoints)
     {
         var _bulletPenetrationCount = PlayerBehaviour.Instance.weaponBehaviour.maxPenetrationCount;
@@ -158,13 +158,13 @@ public class Bullet : MonoBehaviour
         if (PlayerBehaviour.Instance.abilityBehaviour.currentActiveAbility != AbilityBehaviour.CurrentAbility.PenetrationBullets)
         {
             _bulletPenetrationCount -= 1;
-            enemyHealthPoints.TakeDamage(PlayerBehaviour.Instance.weaponBehaviour.bulletDamage);
+            enemyHealthPoints.TakeDamage(PlayerBehaviour.Instance.weaponBehaviour.bulletDamage, transform);
         }
         else
         {
-            enemyHealthPoints.TakeDamage(criticalDamage);
+            enemyHealthPoints.TakeDamage(criticalDamage, transform);
         }
-        
+
         if (_bulletPenetrationCount >= 0) 
             return;
         
@@ -197,7 +197,7 @@ public class Bullet : MonoBehaviour
             {
                 if (_enemy.TryGetComponent(out EnemyHealthPoints _enemyHealthPoints))
                 {
-                    _enemyHealthPoints.TakeDamage(explosiveDamage);
+                    _enemyHealthPoints.TakeDamage(explosiveDamage, transform);
                 }
             }
         }
