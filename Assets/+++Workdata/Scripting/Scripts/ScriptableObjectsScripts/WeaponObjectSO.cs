@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 public class WeaponObjectSO : ScriptableObject
 {
     //Scriptable Object for every unique weapon with unique perks
+    [FormerlySerializedAs("inventoryWeaponVisual")] [FormerlySerializedAs("inGameWeaponVisual")] public Sprite uiWeaponVisual;
     public Sprite inGameWeaponVisual;
     public string weaponName;
     public int upgradeTier;

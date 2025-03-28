@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59bfe808e7dd244fbdf92a6c7cab6b3, type: 3}
   m_Name: MagnumSO_Tier_1
   m_EditorClassIdentifier: 
-  inGameWeaponVisual: {fileID: -1145309252, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
+  uiWeaponVisual: {fileID: -1145309252, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
+  inGameWeaponVisual: {fileID: 4202869945850092962, guid: cdad9a5716385f44eaba4354cba76481, type: 3}
   weaponName: Magnum magnum
   upgradeTier: 1
   weaponDescription: "Don\u2018t let the cool design fool you - this thing\u2018s
@@ -24,7 +25,7 @@ MonoBehaviour:
   playerKnockBack: 4
   enemyKnockBack: 6
   screenShake: 5
-  weaponScale: {x: 0.8, y: 0.8, z: 1}
+  weaponScale: {x: 1, y: 1, z: 1}
   bulletSize: {x: 0.75, y: 0.75}
   penetrationCount: 2
   bulletsPerShot: 1

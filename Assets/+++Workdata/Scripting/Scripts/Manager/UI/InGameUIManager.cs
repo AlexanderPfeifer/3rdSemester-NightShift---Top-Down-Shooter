@@ -41,7 +41,7 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private GameObject lollipopShotgun;
     
     [Header("Fight")]
-    [FormerlySerializedAs("inventoryWeapon")] public GameObject equippedWeapon;
+    public GameObject inGameUIWeaponVisual;
     public GameObject fightScene;
     public GameObject pressSpace;
     public Image rideTimeImage;
@@ -154,7 +154,7 @@ public class InGameUIManager : MonoBehaviour
         dialogueState = DialogueState.DialogueNotPlaying;
         StopAllCoroutines();
 
-        equippedWeapon.SetActive(false);
+        inGameUIWeaponVisual.SetActive(false);
         
         fightScene.SetActive(false);
         
@@ -418,7 +418,7 @@ public class InGameUIManager : MonoBehaviour
                 _text += "\n" + "\n" + "Damage: " + _weapon.bulletDamage +  "\n" + "Clipsize: " + _weapon.clipSize;
             }
             
-            var _spriteWeapon = _weapon.inGameWeaponVisual;
+            var _spriteWeapon = _weapon.uiWeaponVisual;
             
             var _itemIdentifier = _headerText;
             

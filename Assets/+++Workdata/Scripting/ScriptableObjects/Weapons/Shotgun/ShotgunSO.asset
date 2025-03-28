@@ -12,21 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59bfe808e7dd244fbdf92a6c7cab6b3, type: 3}
   m_Name: ShotgunSO
   m_EditorClassIdentifier: 
-  inGameWeaponVisual: {fileID: -158313173, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
+  uiWeaponVisual: {fileID: -158313173, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
+  inGameWeaponVisual: {fileID: 3834243142360421763, guid: cdad9a5716385f44eaba4354cba76481, type: 3}
   weaponName: Lollipop Shotgun
+  upgradeTier: 0
   weaponDescription: Although the grip is a little sticky, the smell is a nice change
     of pace. Suck it, monsters!
   weaponAbilityDescription: Bullets stick to enemies and deal damage over time.
   shootDelay: 0.75
-  penetrationCount: 0
   bulletDamage: 1
   weaponSpread: 0.1
+  playerKnockBack: 6
+  enemyKnockBack: 2
+  screenShake: 6
   weaponScale: {x: 1, y: 1, z: 1}
-  bulletsPerShot: 12
-  knockBack: 6
-  enemyKnockBackPerBullet: 2
   bulletSize: {x: 0.3, y: 0.3}
+  penetrationCount: 0
+  bulletsPerShot: 12
   clipSize: 5
   ammunitionInClip: 5
   ammunitionInBackUp: 30
-  screenShake: 6
+  hasAbilityUpgrade: 0

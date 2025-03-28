@@ -364,8 +364,8 @@ public class WeaponBehaviour : MonoBehaviour
         PlayerBehaviour.Instance.playerVisual.SetActive(false);
         PlayerBehaviour.Instance.playerNoHandVisual.SetActive(true);
 
-        InGameUIManager.Instance.equippedWeapon.GetComponent<Image>().sprite = weapon.inGameWeaponVisual;
-        InGameUIManager.Instance.equippedWeapon.SetActive(true);
+        InGameUIManager.Instance.inGameUIWeaponVisual.GetComponent<Image>().sprite = weapon.uiWeaponVisual;
+        InGameUIManager.Instance.inGameUIWeaponVisual.SetActive(true);
         
         myWeapon = weapon.weaponName switch
         {

@@ -23,7 +23,7 @@ public class Ride : MonoBehaviour
     [HideInInspector] public float currentRideHealth;
     private bool rideGotHit;
     [HideInInspector] public bool rideGotDestroyed;
-    private SpriteRenderer rideRenderer;
+    [SerializeField] private SpriteRenderer rideRenderer;
 
     [Header("Activation")]
     public GameObject rideLight;
@@ -34,7 +34,6 @@ public class Ride : MonoBehaviour
     private void Start()
     {
         InGameUIManager.Instance.dialogueCount = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
-        rideRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -120,15 +119,10 @@ public class Ride : MonoBehaviour
         
         ResetRide();
         rideGotDestroyed = true;
-        
-        Time.timeScale = 1f;
-        rideRenderer.color = Color.white;
-        rideGotHit = false;
 
         GetComponentInChildren<Generator>().genInteractable = true;
         
         StopAllCoroutines();
-        
         GetComponent<Animator>().SetTrigger("LightOff");
         rideLight.SetActive(false);
         
@@ -142,15 +136,20 @@ public class Ride : MonoBehaviour
     {
         GetComponentInChildren<Generator>().fightMusic.Stop();
         AudioManager.Instance.Play("FightMusicWon");
-        GetComponent<Animator>().SetTrigger("StartRide");
-        
+
         invisibleCollider.SetActive(false);
+        
+        StopAllCoroutines();
+        GetComponent<Animator>().SetTrigger("LightOff");
+        rideLight.SetActive(false);
         
         foreach (var _enemy in currentEnemies)
         {
             Destroy(_enemy);
         }
         
+        ResetRide();
+
         GetComponentInChildren<Generator>().canPutAwayWalkieTalkie = true;
         waveStarted = false;
         PlayerBehaviour.Instance.weaponBehaviour.fightAreaCam.Priority = 5;
@@ -171,6 +170,10 @@ public class Ride : MonoBehaviour
         waveTimer = 0;
         currentRideHealth = maxRideHealth;
         InGameUIManager.Instance.abilityProgressImage.fillAmount = 0;
+        
+        Time.timeScale = 1f;
+        rideRenderer.color = Color.white;
+        rideGotHit = false;
     }
 
     public void StartRideHitVisual()

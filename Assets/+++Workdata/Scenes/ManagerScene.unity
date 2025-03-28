@@ -9742,9 +9742,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
-  activateRide: 0
-  choosableWeapons: 0
-  currencyAtStart: 1500
+  activateRide: 1
+  choosableWeapons: 5
+  currencyAtStart: 1000
 --- !u!1 &1456861940
 GameObject:
   m_ObjectHideFlags: 0
@@ -11190,7 +11190,7 @@ MonoBehaviour:
   magnumMagnum: {fileID: 2031220323}
   cornDogHuntingRifle: {fileID: 775953482}
   lollipopShotgun: {fileID: 1029645976}
-  equippedWeapon: {fileID: 1992656932}
+  inGameUIWeaponVisual: {fileID: 1992656932}
   fightScene: {fileID: 559663715}
   pressSpace: {fileID: 467741167}
   rideTimeImage: {fileID: 1277513428}
