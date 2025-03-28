@@ -123,50 +123,6 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Karusells_licht_an_0
-      rect:
-        serializedVersion: 2
-        x: 57
-        y: 36
-        width: 106
-        height: 129
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b1ba0e4fd13802c49ac67673b45c02d5
-      internalID: 171534364
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Karusells_licht_an_1
-      rect:
-        serializedVersion: 2
-        x: 245
-        y: 36
-        width: 106
-        height: 129
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 41d8615c098292f4287be4ad4067705e
-      internalID: 1355097418
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Karusells_licht_an_2
       rect:
         serializedVersion: 2
@@ -174,8 +130,8 @@ TextureImporter:
         y: 36
         width: 106
         height: 129
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

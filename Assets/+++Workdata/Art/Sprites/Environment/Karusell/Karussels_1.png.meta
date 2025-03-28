@@ -123,50 +123,6 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Karussels_1_0
-      rect:
-        serializedVersion: 2
-        x: 57
-        y: 36
-        width: 106
-        height: 129
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ac7540a6792e3894ab171ef4f13e4561
-      internalID: -539237776
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Karussels_1_1
-      rect:
-        serializedVersion: 2
-        x: 245
-        y: 36
-        width: 106
-        height: 129
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b074ca9de1780aa4a89420ca496424c0
-      internalID: 45353983
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Karussels_1_2
       rect:
         serializedVersion: 2
@@ -174,8 +130,8 @@ TextureImporter:
         y: 36
         width: 106
         height: 129
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

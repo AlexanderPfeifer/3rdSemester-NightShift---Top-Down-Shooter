@@ -10840,8 +10840,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
-  activateRide: 0
-  choosableWeapons: 0
+  activateRide: 1
+  choosableWeapons: 2
   currencyAtStart: 1000
 --- !u!1 &1456861940
 GameObject:

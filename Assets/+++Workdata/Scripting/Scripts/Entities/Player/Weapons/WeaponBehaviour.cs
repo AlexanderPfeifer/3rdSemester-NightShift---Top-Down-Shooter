@@ -202,11 +202,11 @@ public class WeaponBehaviour : MonoBehaviour
         
         if (transform.eulerAngles.z is > 0 and < 180)
         {
-            transform.GetComponentInChildren<SpriteRenderer>().sortingOrder = - 1;
+            transform.GetComponentInChildren<SpriteRenderer>().sortingOrder = PlayerBehaviour.Instance.GetComponentInChildren<SpriteRenderer>().sortingOrder - 1;
         }
         else
         {
-            transform.GetComponentInChildren<SpriteRenderer>().sortingOrder = + 1;
+            transform.GetComponentInChildren<SpriteRenderer>().sortingOrder = PlayerBehaviour.Instance.GetComponentInChildren<SpriteRenderer>().sortingOrder + 1;
         }
     }
     
