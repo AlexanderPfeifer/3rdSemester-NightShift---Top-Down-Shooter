@@ -24,7 +24,7 @@ public class SceneManager : MonoBehaviour
     private static void OnLoad()
     {
         GraphicsSettings.transparencySortMode = TransparencySortMode.CustomAxis;
-        GraphicsSettings.transparencySortAxis = new Vector3(0.0f, 1.0f, 0.0f);
+        GraphicsSettings.transparencySortAxis = new Vector3(0.0f, 1, 0.0f);
     }
 
     private IEnumerator LoadNewSceneCoroutine(string newSceneName)
