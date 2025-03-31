@@ -34,7 +34,9 @@ public class WeaponBehaviour : MonoBehaviour
     private Vector3 changingWeaponToMouse;
     private Vector3 weaponToMouse;
     private Vector3 mousePos;
-    
+    [SerializeField] private int weaponRotationSnapPoints;
+    private float lastSnappedAngle;
+
     [Header("Shooting")]
     private float maxShootingDelay;
     private float currentShootingDelay;
@@ -60,9 +62,7 @@ public class WeaponBehaviour : MonoBehaviour
     [SerializeField] private GameObject muzzleFlashVisual;
     private Animator weaponAnim;
     [SerializeField] private GameObject weaponObject;
-    [SerializeField] private float weaponToMouseSmoothness = 8;
-    private float weaponAngleSmoothed;
-    private float weaponAngleUnSmoothed;
+    private float weaponAimingAngle;
     private float weaponScreenShake;
     
     [HideInInspector] public MyWeapon myWeapon;
@@ -141,7 +141,40 @@ public class WeaponBehaviour : MonoBehaviour
         
         mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         
-        //Do cam lookahead before we zero out the mousePos.z so we do not divide by 0
+        LookAheadFightCamera();
+        
+        weaponToMouse = mousePos - weaponEndPoint.transform.position;
+        weaponToMouse.z = 0;
+    
+        weaponAimingAngle = Vector3.SignedAngle(Vector3.up, weaponToMouse, Vector3.forward);
+        
+        float _angle360 = weaponAimingAngle < 0 ? 360 + weaponAimingAngle : weaponAimingAngle;
+        
+        var _snapAngle = 360f / weaponRotationSnapPoints;
+        
+        if (_angle360 < lastSnappedAngle - _snapAngle * .75f)
+        {
+            lastSnappedAngle = Mathf.Round(_angle360 / _snapAngle) * _snapAngle;
+        }
+        else if(_angle360 > lastSnappedAngle + _snapAngle * .75f)
+        {
+            lastSnappedAngle = Mathf.Round(_angle360 / _snapAngle) * _snapAngle;
+        }
+
+        transform.eulerAngles = new Vector3(0, 0, lastSnappedAngle);
+        
+        if (transform.eulerAngles.z is > 0 and < 180)
+        {
+            transform.GetComponentInChildren<SpriteRenderer>().sortingOrder = PlayerBehaviour.Instance.GetComponentInChildren<SpriteRenderer>().sortingOrder - 1;
+        }
+        else
+        {
+            transform.GetComponentInChildren<SpriteRenderer>().sortingOrder = PlayerBehaviour.Instance.GetComponentInChildren<SpriteRenderer>().sortingOrder + 1;
+        }
+    }
+
+    private void LookAheadFightCamera()
+    {
         if (fightAreaCam.Priority > 10)
         {
             if(!Mathf.Approximately(fightAreaCam.Lens.OrthographicSize, fightCamOrthoSize))
@@ -163,50 +196,6 @@ public class WeaponBehaviour : MonoBehaviour
             // Reset the Z Pos because otherwise the cam is below the floor
             smoothedLookAhead.z = _fightCamZPos;
             _fightCamTransform.position = smoothedLookAhead;
-        }
-        
-        mousePos.z = 0;
-
-        /*
-         Check for the distance of mouse to the character and 
-         increase the actual mouse position so it does not start glitching.
-         */
-        if (Vector3.Distance(transform.position, mousePos) >= 1.35f)
-        {
-            if (Vector3.Distance(weaponEndPoint.position, mousePos) <= 2f)
-            {
-                changingWeaponToMouse = mousePos - weaponEndPoint.transform.position;
-                
-                if (weaponToMouse.x < 0)
-                {
-                    weaponToMouse = (changingWeaponToMouse * -2).normalized;
-                }
-                
-                if(weaponToMouse.x > 0)
-                {
-                    weaponToMouse = (changingWeaponToMouse * 2).normalized;
-                }
-            }
-            else
-            {
-                weaponToMouse = mousePos - weaponEndPoint.transform.position;
-            }
-        }
-
-        Vector3 _newUp = Vector3.Slerp(transform.up, weaponToMouse, Time.deltaTime * weaponToMouseSmoothness);
-
-        weaponAngleSmoothed = Vector3.SignedAngle(Vector3.up, _newUp, Vector3.forward);
-        weaponAngleUnSmoothed = Vector3.SignedAngle(Vector3.up, weaponToMouse, Vector3.forward);
-        
-        transform.eulerAngles = new Vector3(0, 0, weaponAngleSmoothed);
-        
-        if (transform.eulerAngles.z is > 0 and < 180)
-        {
-            transform.GetComponentInChildren<SpriteRenderer>().sortingOrder = PlayerBehaviour.Instance.GetComponentInChildren<SpriteRenderer>().sortingOrder - 1;
-        }
-        else
-        {
-            transform.GetComponentInChildren<SpriteRenderer>().sortingOrder = PlayerBehaviour.Instance.GetComponentInChildren<SpriteRenderer>().sortingOrder + 1;
         }
     }
     
@@ -236,7 +225,7 @@ public class WeaponBehaviour : MonoBehaviour
                 Vector3 _spawnPosition = weaponEndPoint.position + (Vector3)(_perpendicularOffset * _spreadOffset);
     
                 var _bullet = BulletPoolingManager.Instance.GetInactiveBullet();
-                _bullet.transform.SetPositionAndRotation(_spawnPosition, Quaternion.Euler(0, 0, weaponAngleUnSmoothed));
+                _bullet.transform.SetPositionAndRotation(_spawnPosition, Quaternion.Euler(0, 0, weaponAimingAngle));
                 _bullet.gameObject.SetActive(true);
                 _bullet.LaunchInDirection(PlayerBehaviour.Instance, _bulletDirection);
             }
