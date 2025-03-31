@@ -28,6 +28,9 @@ public class Bullet : MonoBehaviour
 
     [Header("Enemy")] 
     [SerializeField] private float knockBackTime = .15f;
+
+    [Header("Game Fun Collision")] 
+    [SerializeField] private LayerMask treeLayer;
     
     private float criticalDamage;
 
@@ -38,10 +41,13 @@ public class Bullet : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        flyingTime = 0;
+    }
+
     private void Update()
     {
-        flyingTime += Time.deltaTime;
-        
         DeactivateBulletTooFarAwayUpdate();
         
         StickyBulletsTickDamageUpdate();
@@ -49,6 +55,8 @@ public class Bullet : MonoBehaviour
 
     private void DeactivateBulletTooFarAwayUpdate()
     {
+        flyingTime += Time.deltaTime;
+        
         if (flyingTime > BulletFlyingTimeUntilDestroy)
         {
             DeactivateBullet();
@@ -92,18 +100,23 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (!col.gameObject.TryGetComponent(out EnemyHealthPoints _enemyHealthPoints) ||
-            !col.gameObject.TryGetComponent(out EnemyBase _enemy))
-        {
-            DeactivateBullet();
-        }
-        else
+        if (col.gameObject.TryGetComponent(out EnemyHealthPoints _enemyHealthPoints) && col.gameObject.TryGetComponent(out EnemyBase _enemy))
         {
             ApplyAbilities(_enemy);
 
             _enemy.StartCoroutine(EnemyKnockBack(_enemy));
 
             DealDamage(_enemyHealthPoints);
+        }
+        else if ((treeLayer & (1 << col.gameObject.layer)) != 0)
+        {
+            col.gameObject.GetComponent<Animator>().SetTrigger("Shake");
+            col.GetComponentInChildren<ParticleSystem>().Play();
+            DeactivateBullet();
+        }
+        else
+        {
+            DeactivateBullet();
         }
     }
 
@@ -148,14 +161,10 @@ public class Bullet : MonoBehaviour
     
     private IEnumerator EnemyKnockBack(EnemyBase enemyBase)
     {
-        enemyBase.enemyCanMove = false;
-
         float _knockBackWithEnemyResistance = Mathf.Max(PlayerBehaviour.Instance.weaponBehaviour.enemyShootingKnockBack - flyingTime - enemyBase.knockBackResistance, 0);
         enemyBase.GetComponent<Rigidbody2D>().AddForce(travelDirection * _knockBackWithEnemyResistance, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(knockBackTime);
-
-        enemyBase.enemyCanMove = true;
     }
 
     private void DealDamage(EnemyHealthPoints enemyHealthPoints)
