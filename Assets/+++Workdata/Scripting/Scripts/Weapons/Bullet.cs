@@ -1,15 +1,17 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class Bullet : MonoBehaviour
 {
     [Header("Travel")]
-    private const float BulletDistanceUntilDestroy = 25;
+    private const float BulletFlyingTimeUntilDestroy = 7;
+    private float flyingTime;
     private Vector2 travelDirection;
-    private Vector2 startPosition;
     private Rigidbody2D rb;
+    private TrailRenderer trailRenderer;
 
     [Header("Ability")]
     [SerializeField] private float stickyBulletTimer;
@@ -17,8 +19,9 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float tickStickyBulletDamage = 2;
     [SerializeField] private float explosiveDamage = 3;
     [SerializeField] private float enemyFreezeTime = 3;
-    [Tooltip("The probability is one in the number you choose - so 1 in 10 if you chose 10"), Range(1, 10)]
-    [SerializeField] private int criticalHuntingRifleDamageProbability = 5;
+    [FormerlySerializedAs("criticalHuntingRifleDamageProbability")]
+    [Tooltip("The probability is one in the number you choose - so 1 in 10 if you chose 10"), Range(1, 100)]
+    [SerializeField] private int criticalHuntingRifleDamageProbabilityPercentage = 50;
     [SerializeField] private float maxCriticalHuntingRifleDamageMultiplier = 4;
     [SerializeField] private float minCriticalHuntingRifleDamageMultiplier = 2;
     private int tickCount = 2;
@@ -28,13 +31,17 @@ public class Bullet : MonoBehaviour
     
     private float criticalDamage;
 
-    private void OnEnable()
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        trailRenderer = GetComponent<TrailRenderer>();
+        gameObject.SetActive(false);
     }
-    
+
     private void Update()
     {
+        flyingTime += Time.deltaTime;
+        
         DeactivateBulletTooFarAwayUpdate();
         
         StickyBulletsTickDamageUpdate();
@@ -42,7 +49,7 @@ public class Bullet : MonoBehaviour
 
     private void DeactivateBulletTooFarAwayUpdate()
     {
-        if (Vector2.Distance(startPosition, transform.position) >= BulletDistanceUntilDestroy)
+        if (flyingTime > BulletFlyingTimeUntilDestroy)
         {
             DeactivateBullet();
         }
@@ -71,7 +78,12 @@ public class Bullet : MonoBehaviour
 
     public void LaunchInDirection(PlayerBehaviour shooter, Vector2 shootDirection)
     {
-        startPosition = transform.position;
+        if (trailRenderer != null)
+        {
+            trailRenderer.widthMultiplier = transform.localScale.x;
+            trailRenderer.emitting = true;
+            trailRenderer.Clear();
+        }
         
         GetComponent<Rigidbody2D>().AddForce(shootDirection * shooter.weaponBehaviour.bulletSpeed, ForceMode2D.Impulse);
 
@@ -104,9 +116,7 @@ public class Bullet : MonoBehaviour
                 break;
             
             case AbilityBehaviour.CurrentAbility.PenetrationBullets:
-                var _probability = Random.Range(1, criticalHuntingRifleDamageProbability);
-            
-                if (_probability == criticalHuntingRifleDamageProbability - 1)
+                if (Random.Range(1, 101) <= criticalHuntingRifleDamageProbabilityPercentage)
                 {
                     criticalDamage = Random.Range(PlayerBehaviour.Instance.weaponBehaviour.bulletDamage * minCriticalHuntingRifleDamageMultiplier, 
                         PlayerBehaviour.Instance.weaponBehaviour.bulletDamage * maxCriticalHuntingRifleDamageMultiplier);
@@ -138,17 +148,14 @@ public class Bullet : MonoBehaviour
     
     private IEnumerator EnemyKnockBack(EnemyBase enemyBase)
     {
-        if (enemyBase.knockBackResistance != 0)
-        {
-            enemyBase.enemyCanMove = false;
+        enemyBase.enemyCanMove = false;
 
-            float _knockBackWithEnemyResistance = Mathf.Max(PlayerBehaviour.Instance.weaponBehaviour.enemyShootingKnockBack - enemyBase.knockBackResistance, 0);
-            enemyBase.GetComponent<Rigidbody2D>().AddForce(travelDirection * _knockBackWithEnemyResistance, ForceMode2D.Impulse);
+        float _knockBackWithEnemyResistance = Mathf.Max(PlayerBehaviour.Instance.weaponBehaviour.enemyShootingKnockBack - flyingTime - enemyBase.knockBackResistance, 0);
+        enemyBase.GetComponent<Rigidbody2D>().AddForce(travelDirection * _knockBackWithEnemyResistance, ForceMode2D.Impulse);
 
-            yield return new WaitForSeconds(knockBackTime);
+        yield return new WaitForSeconds(knockBackTime);
 
-            enemyBase.enemyCanMove = true;
-        }
+        enemyBase.enemyCanMove = true;
     }
 
     private void DealDamage(EnemyHealthPoints enemyHealthPoints)
@@ -173,7 +180,7 @@ public class Bullet : MonoBehaviour
             DeactivateBullet();
         }
     }
-
+    
     private void DeactivateBullet()
     {
         if (PlayerBehaviour.Instance.abilityBehaviour.currentActiveAbility != AbilityBehaviour.CurrentAbility.StickyBullets)
@@ -202,6 +209,8 @@ public class Bullet : MonoBehaviour
             }
         }
         
+        trailRenderer.Clear();
+        trailRenderer.emitting = false;
         gameObject.SetActive(false);
     }
 }

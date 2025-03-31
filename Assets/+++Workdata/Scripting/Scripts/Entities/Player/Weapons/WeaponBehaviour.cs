@@ -365,7 +365,7 @@ public class WeaponBehaviour : MonoBehaviour
             _bullet.transform.localScale = weapon.bulletSize;
         }
         weaponScreenShake = weapon.screenShake;
-        enemyShootingKnockBack = weapon.enemyKnockBack;
+        enemyShootingKnockBack = weapon.enemyKnockBackPerBullet;
 
         PlayerBehaviour.Instance.playerVisual.SetActive(false);
         PlayerBehaviour.Instance.playerNoHandVisual.SetActive(true);

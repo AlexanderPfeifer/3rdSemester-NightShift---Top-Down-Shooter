@@ -27,7 +27,6 @@ public class BulletPoolingManager : MonoBehaviour
         for (int _poolIndex = 0; _poolIndex < bulletAmountToPool; _poolIndex++)
         {
             var _bullet = Instantiate(bulletPrefab, transform);
-            _bullet.gameObject.SetActive(false);
             poolableBullets.Add(_bullet);
         }
     }
