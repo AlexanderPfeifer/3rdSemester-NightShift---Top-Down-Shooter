@@ -165,9 +165,9 @@ public class PlayerBehaviour : MonoBehaviour
         if (InGameUIManager.Instance.dialogueState != InGameUIManager.DialogueState.DialogueNotPlaying || InGameUIManager.Instance.inventoryIsOpened || isPlayerBusy) 
             return;
         
-        rb.linearVelocity = GameInputManager.Instance.GetMovementVectorNormalized() * currentMoveSpeed + weaponBehaviour.CurrentKnockBack;
+        rb.linearVelocity = GameInputManager.Instance.GetMovementVectorNormalized() * currentMoveSpeed + weaponBehaviour.currentKnockBack;
 
-        weaponBehaviour.CurrentKnockBack = Vector2.Lerp(weaponBehaviour.CurrentKnockBack, Vector2.zero, Time.fixedDeltaTime * knockBackDecay);
+        weaponBehaviour.currentKnockBack = Vector2.Lerp(weaponBehaviour.currentKnockBack, Vector2.zero, Time.fixedDeltaTime * knockBackDecay);
     }
     
     private void SetAnimationParameterLateUpdate()
@@ -189,11 +189,13 @@ public class PlayerBehaviour : MonoBehaviour
             }
             else
             {
-                var _eulerAngles = weaponBehaviour.transform.eulerAngles;
-                animNoHand.SetBool("MovingUp", _eulerAngles.z is < 45 or > 315);
-                animNoHand.SetBool("MovingDown", _eulerAngles.z is > 135 and < 225);
-                animNoHand.SetBool("MovingSideWaysHand", _eulerAngles.z is > 45 and < 135);
-                animNoHand.SetBool("MovingSideWaysNoHand", _eulerAngles.z is > 225 and < 315);
+                var _snapAngle = weaponBehaviour.LastSnappedAngle;
+                animNoHand.SetBool("MovingUp", _snapAngle is >= 337.5f or <= 22.5f);
+                //right
+                animNoHand.SetBool("MovingSideWaysNoHand", _snapAngle is > 225f and < 337.5f);
+                animNoHand.SetBool("MovingDown", _snapAngle is >= 157.5f and <= 225f);
+                //left
+                animNoHand.SetBool("MovingSideWaysHand", _snapAngle is > 22.5f and < 157.5f);
         
                 animNoHand.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);   
             }

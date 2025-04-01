@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 public class Bullet : MonoBehaviour
 {
     [Header("Travel")]
-    private const float BulletFlyingTimeUntilDestroy = 7;
+    private const float BulletFlyingTimeUntilDestroy = 1;
     private float flyingTime;
     private Vector2 travelDirection;
     private Rigidbody2D rb;
@@ -110,7 +110,7 @@ public class Bullet : MonoBehaviour
         }
         else if ((treeLayer & (1 << col.gameObject.layer)) != 0)
         {
-            col.gameObject.GetComponent<Animator>().SetTrigger("Shake");
+            col.GetComponent<TreeBehaviour>().TreeShrink();
             col.GetComponentInChildren<ParticleSystem>().Play();
             DeactivateBullet();
         }
