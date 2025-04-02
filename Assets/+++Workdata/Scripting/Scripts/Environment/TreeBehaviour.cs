@@ -4,7 +4,7 @@ using UnityEngine;
 public class TreeBehaviour : MonoBehaviour
 {
     private bool treeShrinking;
-    
+
     private IEnumerator TreeShrinkCoroutine()
     {
         treeShrinking = true;
@@ -13,7 +13,7 @@ public class TreeBehaviour : MonoBehaviour
 
         transform.localScale = new Vector3(_originalScale.x, _originalScale.y * 0.75f, _originalScale.z);
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.2f);
 
         transform.localScale = _originalScale;
 
