@@ -32,7 +32,7 @@ public class Generator : MonoBehaviour
         {
             InGameUIManager.Instance.abilityFillBar.gameObject.SetActive(true);
         }
-        InGameUIManager.Instance.fightScene.SetActive(true);
+        InGameUIManager.Instance.fightUI.SetActive(true);
         ride.waveStarted = true;
         ride.ResetRide();
         ride.StartEnemyClusterCoroutines();
@@ -46,7 +46,7 @@ public class Generator : MonoBehaviour
         //Set a bool for the PutAway Animation because the player can leave and enter the collider still inside the fight
         if (canPutAwayWalkieTalkie)
         {
-            InGameUIManager.Instance.radioAnim.SetTrigger("PutAway");
+            InGameUIManager.Instance.dialogueUI.SetRadioState(false, false);
         }
         canPutAwayWalkieTalkie = false;
     }

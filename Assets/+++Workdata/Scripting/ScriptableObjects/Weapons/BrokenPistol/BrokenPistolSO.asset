@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d59bfe808e7dd244fbdf92a6c7cab6b3, type: 3}
+  m_Name: BrokenPistolSO
+  m_EditorClassIdentifier: 
+  weaponName: Broken Pistol
+  upgradeTier: 0
+  weaponDescription: Looks like the exhibit that has been there for far too long
+    and probably not safe to work with, but the best that I got.
+  weaponAbilityDescription: Shoots multiple bullets but not in the direction you
+    want it to shoot.
+  playerKnockBack: 2.5
+  enemyKnockBackPerBullet: 4
+  bulletsPerShot: 1
+  shootDelay: 0.8
+  bulletDamage: 1
+  weaponSpread: 0.08
+  penetrationCount: 0
+  uiWeaponVisual: {fileID: 21300000, guid: 1a781b2dd2c0f8242b0bd68a9baf3aba, type: 3}
+  inGameWeaponVisual: {fileID: 21300000, guid: 1a781b2dd2c0f8242b0bd68a9baf3aba, type: 3}
+  screenShake: 4
+  weaponScale: {x: 1, y: 1, z: 1}
+  bulletSize: {x: 0.7, y: 0.7}
+  clipSize: 12
+  ammunitionInClip: 12
+  ammunitionInBackUp: 48
+  hasAbilityUpgrade: 0

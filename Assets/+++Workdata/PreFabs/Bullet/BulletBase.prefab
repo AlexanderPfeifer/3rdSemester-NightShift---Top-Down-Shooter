@@ -143,10 +143,15 @@ MonoBehaviour:
   criticalHuntingRifleDamageProbabilityPercentage: 50
   maxCriticalHuntingRifleDamageMultiplier: 4
   minCriticalHuntingRifleDamageMultiplier: 2
-  knockBackTime: 0.15
   treeLayer:
     serializedVersion: 2
     m_Bits: 512
+  balloonLayer:
+    serializedVersion: 2
+    m_Bits: 65536
+  shootingRangeLayer:
+    serializedVersion: 2
+    m_Bits: 131072
 --- !u!70 &7744728890925311293
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

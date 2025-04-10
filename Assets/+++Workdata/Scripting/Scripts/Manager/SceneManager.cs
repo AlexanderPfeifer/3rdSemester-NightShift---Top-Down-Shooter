@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -7,11 +8,20 @@ public class SceneManager : MonoBehaviour
 {
     public static SceneManager Instance;
     private string currentScene;
+    
+    [Header("LoadingScreen")]
+    public Animator loadingScreenAnim;
 
     private void Awake()
     {
         Instance = this;
         OnLoad();
+    }
+
+    private void Start()
+    {
+        if(DebugMode.Instance.debugMode)
+            loadingScreenAnim.SetTrigger("Start");
     }
 
     public void SwitchScene(string newScene)

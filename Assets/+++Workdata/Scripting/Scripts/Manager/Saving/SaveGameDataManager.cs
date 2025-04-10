@@ -38,6 +38,7 @@ public class SaveGameDataManager
     public void AddWaveCount()
     {
         finishedWavesCount++;
+        TutorialManager.Instance.fillAmmoForFree = false;
     }
     
     /// <param name="identifier">The identifier that is unique for every collectible</param>

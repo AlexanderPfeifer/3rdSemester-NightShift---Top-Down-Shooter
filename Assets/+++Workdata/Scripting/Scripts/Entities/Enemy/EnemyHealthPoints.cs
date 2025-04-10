@@ -1,9 +1,14 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyHealthPoints : MonoBehaviour
 {
+    [Header("HealthPoints")]
     [SerializeField] private int maximumHitPoints = 5;
     private float currentHitPoints;
+    
+    [Header("Knockback")] 
+    [SerializeField] private float knockBackTime = .15f;
 
     private void Start()
     {
@@ -29,5 +34,13 @@ public class EnemyHealthPoints : MonoBehaviour
             _enemyShotParticles.transform.localRotation = bulletTransform.localRotation;
             _enemyShotParticles.Play();
         }
+    }
+    
+    public IEnumerator EnemyKnockBack(float bulletFlyingTime, Vector2 travelDirection)
+    {
+        float _knockBackWithEnemyResistance = Mathf.Max(PlayerBehaviour.Instance.weaponBehaviour.enemyShootingKnockBack - bulletFlyingTime - GetComponent<EnemyBase>().knockBackResistance, 0);
+        GetComponent<Rigidbody2D>().AddForce(travelDirection * _knockBackWithEnemyResistance, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(knockBackTime);
     }
 }

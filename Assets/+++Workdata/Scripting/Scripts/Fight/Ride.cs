@@ -33,7 +33,7 @@ public class Ride : MonoBehaviour
 
     private void Start()
     {
-        InGameUIManager.Instance.dialogueCount = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
+        InGameUIManager.Instance.dialogueUI.dialogueCount = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
     }
 
     private void Update()
@@ -161,10 +161,9 @@ public class Ride : MonoBehaviour
         GetComponentInChildren<Generator>().canPutAwayWalkieTalkie = true;
         waveStarted = false;
         PlayerBehaviour.Instance.weaponBehaviour.fightAreaCam.Priority = 5;
-        InGameUIManager.Instance.fightScene.SetActive(false);
+        InGameUIManager.Instance.fightUI.SetActive(false);
         InGameUIManager.Instance.abilityFillBar.SetActive(false);
-        InGameUIManager.Instance.radioAnim.SetTrigger("PutOn");
-        InGameUIManager.Instance.ActivateRadio();
+        InGameUIManager.Instance.dialogueUI.SetRadioState(true, true);
         GetComponentInChildren<Generator>().genInteractable = true;
         GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount();
         GameSaveStateManager.Instance.SaveGame();

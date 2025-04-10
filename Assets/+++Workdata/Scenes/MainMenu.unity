@@ -3230,7 +3230,7 @@ GameObject:
   - component: {fileID: 614670852}
   - component: {fileID: 614670851}
   m_Layer: 5
-  m_Name: BalloonCart
+  m_Name: ElectricSign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10826,7 +10826,7 @@ MonoBehaviour:
   deleteSaveStateCheckButton: {fileID: 506789266102967157}
   deleteSaveStateCheckPanel: {fileID: 910297103}
   gameStateLoaded: 0
-  configureButtonsManager: {fileID: 1316587621}
+  allButtonsConfiguration: {fileID: 1316587621}
   loadScreen: {fileID: 1899142947}
   optionsScreen: {fileID: 1335555898}
   creditsScreen: {fileID: 2042605896}

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class MainMenuUIManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private Button deleteSaveStateCheckButton;
     [SerializeField] private GameObject deleteSaveStateCheckPanel;
     [HideInInspector] public bool gameStateLoaded;
-    [SerializeField] private ConfigureButtonsManager configureButtonsManager;
+    [FormerlySerializedAs("configureButtonsManager")] [SerializeField] private AllButtonsConfiguration allButtonsConfiguration;
 
     [Header("MainMenuScreens")]
     [SerializeField] private GameObject loadScreen;
@@ -174,7 +175,7 @@ public class MainMenuUIManager : MonoBehaviour
 
             foreach (var _loadButtons in loadButtonsList)
             {
-                configureButtonsManager.AddHoverEvent(_loadButtons);
+                allButtonsConfiguration.AddHoverEvent(_loadButtons);
             }
 
             gameStateLoaded = true;
@@ -223,7 +224,7 @@ public class MainMenuUIManager : MonoBehaviour
 
     public void SetLoadingScreen()
     {
-        InGameUIManager.Instance.loadingScreenAnim.SetTrigger("Start");
+        SceneManager.Instance.loadingScreenAnim.SetTrigger("Start");
     }
 
     private IEnumerator SetScreen(bool shouldSetLoadScreen, bool shouldSetOptionsScreen, bool shouldSetCreditsScreen, bool loadButtonIsInteractable, bool optionsButtonIsInteractable, bool creditsButtonIsInteractable)

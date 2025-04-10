@@ -69,7 +69,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void OnEnable()
     {
-        GameInputManager.Instance.OnGamePausedAction += InGameUIManager.Instance.OpenInventory;
+        GameInputManager.Instance.OnGamePausedAction += InGameUIManager.Instance.inventoryUI.OpenInventory;
         GameInputManager.Instance.OnInteractAction += GameInputManagerOnInteractAction;
         //GameInputManager.Instance.OnSprintingAction += GameInputManagerOnSprintingAction;
         AudioManager.Instance.Play("InGameMusic");
@@ -77,7 +77,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void OnDisable()
     {
-        GameInputManager.Instance.OnGamePausedAction -= InGameUIManager.Instance.OpenInventory;
+        GameInputManager.Instance.OnGamePausedAction -= InGameUIManager.Instance.inventoryUI.OpenInventory;
         GameInputManager.Instance.OnInteractAction -= GameInputManagerOnInteractAction;
         //GameInputManager.Instance.OnSprintingAction -= GameInputManagerOnSprintingAction;
     }
@@ -86,8 +86,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         weaponBehaviour = GetComponentInChildren<WeaponBehaviour>();
         abilityBehaviour = GetComponentInChildren<AbilityBehaviour>();
-        InGameUIManager.Instance.loadingScreenAnim.SetTrigger("End");
-        InGameUIManager.Instance.ActivateInGameUI();
+        SceneManager.Instance.loadingScreenAnim.SetTrigger("End");
         rb = GetComponent<Rigidbody2D>();
         currentMoveSpeed = baseMoveSpeed;
         playerCurrency = GetComponent<PlayerCurrency>();
@@ -162,7 +161,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void HandleMovementFixedUpdate()
     {
-        if (InGameUIManager.Instance.dialogueState != InGameUIManager.DialogueState.DialogueNotPlaying || InGameUIManager.Instance.inventoryIsOpened || isPlayerBusy) 
+        if (InGameUIManager.Instance.dialogueUI.IsDialoguePlaying() || isPlayerBusy) 
             return;
         
         rb.linearVelocity = GameInputManager.Instance.GetMovementVectorNormalized() * currentMoveSpeed + weaponBehaviour.currentKnockBack;
@@ -172,37 +171,40 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void SetAnimationParameterLateUpdate()
     {
-        if (!isPlayerBusy && InGameUIManager.Instance.dialogueState == InGameUIManager.DialogueState.DialogueNotPlaying)
+        if (isPlayerBusy || InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())
         {
-            if (playerVisual.activeSelf)
+            if (playerNoHandVisual.activeSelf)
             {
-                anim.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);
-
-                if (GameInputManager.Instance.GetMovementVectorNormalized().sqrMagnitude <= 0)
-                {
-                    return;
-                }
-        
-                moveDirection = GameInputManager.Instance.GetMovementVectorNormalized();
-                anim.SetFloat("MoveDirX", moveDirection.x);
-                anim.SetFloat("MoveDirY", moveDirection.y);
+                animNoHand.SetFloat("MoveSpeed", 0);
             }
-            else
-            {
-                var _snapAngle = weaponBehaviour.LastSnappedAngle;
-                animNoHand.SetBool("MovingUp", _snapAngle is >= 337.5f or <= 22.5f);
-                //right
-                animNoHand.SetBool("MovingSideWaysNoHand", _snapAngle is > 225f and < 337.5f);
-                animNoHand.SetBool("MovingDown", _snapAngle is >= 157.5f and <= 225f);
-                //left
-                animNoHand.SetBool("MovingSideWaysHand", _snapAngle is > 22.5f and < 157.5f);
-        
-                animNoHand.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);   
-            }
+            
+            return;
         }
-        else if (playerNoHandVisual.activeSelf)
+
+        if (playerVisual.activeSelf)
         {
-            animNoHand.SetFloat("MoveSpeed", 0);
+            anim.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);
+
+            if (GameInputManager.Instance.GetMovementVectorNormalized().sqrMagnitude <= 0)
+            {
+                return;
+            }
+        
+            moveDirection = GameInputManager.Instance.GetMovementVectorNormalized();
+            anim.SetFloat("MoveDirX", moveDirection.x);
+            anim.SetFloat("MoveDirY", moveDirection.y);
+        }
+        else
+        {
+            var _snapAngle = weaponBehaviour.LastSnappedAngle;
+            animNoHand.SetBool("MovingUp", _snapAngle is >= 337.5f or <= 22.5f);
+            //right
+            animNoHand.SetBool("MovingSideWaysNoHand", _snapAngle is > 225f and < 337.5f);
+            animNoHand.SetBool("MovingDown", _snapAngle is >= 157.5f and <= 225f);
+            //left
+            animNoHand.SetBool("MovingSideWaysHand", _snapAngle is > 22.5f and < 157.5f);
+        
+            animNoHand.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);   
         }
     }
 

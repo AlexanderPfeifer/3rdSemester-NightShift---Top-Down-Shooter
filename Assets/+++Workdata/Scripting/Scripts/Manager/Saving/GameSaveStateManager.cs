@@ -15,7 +15,6 @@ public class GameSaveStateManager : MonoBehaviour
     [SerializeField] private float textAlphaChangeSpeed = 1;
     private bool changeAlpha;
     
-    [HideInInspector] public bool startedNewGame;
     [HideInInspector] public bool gameGotFinished;
 
     private enum GameState
@@ -45,7 +44,7 @@ public class GameSaveStateManager : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        InGameUIManager.Instance.inGameUIScreen.SetActive(false);
+        InGameUIManager.Instance.playerHUD.SetActive(false);
         CurrentState = GameState.InMainMenu;
         SceneManager.Instance.SwitchScene(MainMenuSceneName);
     }
@@ -53,7 +52,6 @@ public class GameSaveStateManager : MonoBehaviour
     public void StartNewGame(string gameName)
     {
         EventSystem.current.SetSelectedGameObject(null);
-        startedNewGame = true;
         saveGameDataManager = new SaveGameDataManager
         {
             saveName = gameName
