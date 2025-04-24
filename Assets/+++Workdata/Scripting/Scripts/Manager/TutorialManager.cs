@@ -7,6 +7,7 @@ public class TutorialManager : MonoBehaviour
 
     private int shotSigns;
 
+    [HideInInspector] public bool openShutterWheelOfFortune;
     [HideInInspector] public bool fillAmmoForFree;
     [HideInInspector] public bool talkedAboutCurrency;
     [HideInInspector] public bool canActivateGenerator;

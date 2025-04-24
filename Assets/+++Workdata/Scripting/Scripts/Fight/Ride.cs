@@ -139,6 +139,8 @@ public class Ride : MonoBehaviour
 
     private void WonWave()
     {
+        TutorialManager.Instance.openShutterWheelOfFortune = true;
+        
         GetComponentInChildren<Generator>().fightMusic.Stop();
         AudioManager.Instance.Play("FightMusicWon");
 

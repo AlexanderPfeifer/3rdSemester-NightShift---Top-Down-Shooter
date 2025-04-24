@@ -304,7 +304,7 @@ public class WeaponBehaviour : MonoBehaviour
 
     #region Ammo
 
-        private IEnumerator ReloadCoroutine()
+    private IEnumerator ReloadCoroutine()
     {
         //If statement translation: no ammo overall or weapon already full or no weapon is equipped
         if (ammunitionInBackUp <= 0 || ammunitionInClip == maxClipSize || !weapon.activeSelf)

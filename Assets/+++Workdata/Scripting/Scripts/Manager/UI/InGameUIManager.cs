@@ -22,13 +22,16 @@ public class InGameUIManager : MonoBehaviour
     public GameObject pressSpace;
     public Image abilityProgressImage;
     public GameObject abilityFillBar;
+
+    [Header("Shop")] 
+    [SerializeField] private GameObject wheelOfFortuneShutter;
     
     [Header("UI Screens")]
     public GameObject fightUI;
+    public GameObject weaponSwapScreen;
     [FormerlySerializedAs("inGameUIScreen")] public GameObject playerHUD;
     [SerializeField] private GameObject shopScreen;
     [SerializeField] private GameObject generatorScreen;
-    [SerializeField] public GameObject weaponSwapScreen;
     
     [Header("End Sequence")]
     [HideInInspector] public bool changeLight;
@@ -144,6 +147,12 @@ public class InGameUIManager : MonoBehaviour
         if (!PlayerBehaviour.Instance.isPlayerBusy)
         {
             shopScreen.SetActive(true);
+
+            if (TutorialManager.Instance.openShutterWheelOfFortune)
+            {
+                //Todo: Make this an animation of the shutter
+                wheelOfFortuneShutter.SetActive(false);
+            }
             
             playerHUD.SetActive(true);
 
