@@ -69,7 +69,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void OnEnable()
     {
-        GameInputManager.Instance.OnGamePausedAction += InGameUIManager.Instance.inventoryUI.OpenInventory;
         GameInputManager.Instance.OnInteractAction += GameInputManagerOnInteractAction;
         //GameInputManager.Instance.OnSprintingAction += GameInputManagerOnSprintingAction;
         AudioManager.Instance.Play("InGameMusic");
@@ -77,7 +76,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void OnDisable()
     {
-        GameInputManager.Instance.OnGamePausedAction -= InGameUIManager.Instance.inventoryUI.OpenInventory;
         GameInputManager.Instance.OnInteractAction -= GameInputManagerOnInteractAction;
         //GameInputManager.Instance.OnSprintingAction -= GameInputManagerOnSprintingAction;
     }

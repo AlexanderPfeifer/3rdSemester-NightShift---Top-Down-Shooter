@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +31,7 @@ public class InGameUIManager : MonoBehaviour
     public GameObject fightUI;
     public GameObject weaponSwapScreen;
     [FormerlySerializedAs("inGameUIScreen")] public GameObject playerHUD;
-    [SerializeField] private GameObject shopScreen;
+    public GameObject shopScreen;
     [SerializeField] private GameObject generatorScreen;
     
     [Header("End Sequence")]

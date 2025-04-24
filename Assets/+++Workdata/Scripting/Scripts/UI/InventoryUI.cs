@@ -30,12 +30,21 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private GameObject cornDogHuntingRifle;
     [SerializeField] private GameObject lollipopShotgun;
     
-
     private void Start()
     {
         equipWeaponButton.gameObject.SetActive(false);
         
         collectedItemsDictionary = new Dictionary<string, (GameObject, Sprite, string, string, WeaponObjectSO)>();
+    }
+    
+    private void OnEnable()
+    {
+        GameInputManager.Instance.OnGamePausedAction += OpenInventory;
+    }
+
+    private void OnDisable()
+    {
+        GameInputManager.Instance.OnGamePausedAction -= OpenInventory;
     }
 
     public void ResetInventoryElements()

@@ -1,9 +1,12 @@
+#if UNITY_EDITOR
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
 public class DebugMode : MonoBehaviour
 {
+
     [Header("ACTIVATION")]
     public bool debugMode;
     
@@ -27,8 +30,20 @@ public class DebugMode : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
+        //StartCoroutine(UnloadGameScene());
     }
 
+    private IEnumerator UnloadGameScene()
+    {
+        while (!UnityEngine.SceneManagement.SceneManager.GetSceneByName("InGame").isLoaded)
+        {
+            yield return null;
+        }
+        
+        UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("InGame");
+    }
+    
     public void GetDebugWeapon()
     {
         switch (choosableWeapons)
@@ -61,3 +76,4 @@ public class DebugMode : MonoBehaviour
         }
     }
 }
+#endif

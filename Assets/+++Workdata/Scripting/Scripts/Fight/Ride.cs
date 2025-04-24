@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Ride : MonoBehaviour
 {
@@ -30,6 +31,13 @@ public class Ride : MonoBehaviour
     
     [Header("Arena")]
     public GameObject invisibleCollider;
+
+    public static Ride Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -162,7 +170,6 @@ public class Ride : MonoBehaviour
 
         GetComponentInChildren<Generator>().canPutAwayWalkieTalkie = true;
         waveStarted = false;
-        PlayerBehaviour.Instance.weaponBehaviour.fightAreaCam.Priority = 5;
         InGameUIManager.Instance.fightUI.SetActive(false);
         InGameUIManager.Instance.abilityFillBar.SetActive(false);
         InGameUIManager.Instance.dialogueUI.SetRadioState(true, true);

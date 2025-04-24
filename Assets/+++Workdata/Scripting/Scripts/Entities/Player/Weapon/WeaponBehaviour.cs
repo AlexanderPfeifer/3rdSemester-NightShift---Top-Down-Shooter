@@ -26,7 +26,7 @@ public class WeaponBehaviour : MonoBehaviour
     [Header("Ammo/Reload")]
     private int maxClipSize;
     private int ammunitionInClip;
-    [HideInInspector] public int ammunitionInBackUp { private set; get; }
+    public int ammunitionInBackUp { private set; get; }
     private Coroutine currentReloadCoroutine;
     [SerializeField] private float reloadTime = 2;
     [SerializeField] private Image reloadProgress;
@@ -58,12 +58,13 @@ public class WeaponBehaviour : MonoBehaviour
     public float enemyShootingKnockBack = 2;
     private float shootingKnockBack;
     [FormerlySerializedAs("CurrentKnockBack")] [HideInInspector] public Vector2 currentKnockBack;
-    
-    [Header("Camera")]
+
+    [Header("Camera")] 
+    public CinemachineCamera playerCam;
     [SerializeField] private Camera mainCamera;
-    public CinemachineCamera fightAreaCam;
     [Range(2, 10)] [SerializeField] private float cameraTargetLookAheadDivider;
-    [SerializeField] private float fightCamOrthoSize = 8f;
+    [SerializeField] private float fightCamOrthoSize = 9f;
+    [SerializeField] private float normalCamOrthoSize = 6;
     [SerializeField] private float orthoSizeSmoothSpeed = 2f;
     [SerializeField] private float lookAheadSmoothTime = 0.2f;
     private Vector3 smoothedLookAhead;
@@ -124,6 +125,8 @@ public class WeaponBehaviour : MonoBehaviour
         HandleAimingUpdate();
         
         WeaponTimerUpdate();
+        
+        CamMovementUpdate();
     }
 
     #region Inputs
@@ -159,8 +162,6 @@ public class WeaponBehaviour : MonoBehaviour
         
         mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         
-        LookAheadFightCamera();
-
         var _shortGetMeleeWeaponOutRange = getMeleeWeaponOutRange - getMeleeWeaponOutRange / 2;
         var _longGetMeleeWeaponOutRange = getMeleeWeaponOutRange + getMeleeWeaponOutRange / 2;
         
@@ -211,29 +212,31 @@ public class WeaponBehaviour : MonoBehaviour
         transform.eulerAngles = new Vector3(0, 0, LastSnappedAngle);
     }
 
-    private void LookAheadFightCamera()
+    public void CamMovementUpdate()
     {
-        if (fightAreaCam.Priority > 10)
+        float _targetCamSize = normalCamOrthoSize;
+        var _targetLookAhead = transform.parent.position;
+
+        if (Ride.Instance.waveStarted)
         {
-            if(!Mathf.Approximately(fightAreaCam.Lens.OrthographicSize, fightCamOrthoSize))
-            {
-                fightAreaCam.Lens.OrthographicSize = Mathf.Lerp(fightAreaCam.Lens.OrthographicSize, fightCamOrthoSize, Time.deltaTime * orthoSizeSmoothSpeed);
-            }
+            _targetCamSize = fightCamOrthoSize;
+            _targetLookAhead = (mousePos + (cameraTargetLookAheadDivider - 1) * transform.position) / cameraTargetLookAheadDivider;
+        }
 
-            var _fightCamTransform = fightAreaCam.transform;
-            var _fightCamZPos = _fightCamTransform.position.z;
-            var _targetLookAhead = (mousePos + (cameraTargetLookAheadDivider - 1) * transform.position) / cameraTargetLookAheadDivider;
-            
-            //check for vector zero because otherwise the cam would jump in positions when starting 
-            if (smoothedLookAhead == Vector3.zero)
-            {
-                smoothedLookAhead = _targetLookAhead;
-            }
-            smoothedLookAhead = Vector3.SmoothDamp(smoothedLookAhead, _targetLookAhead, ref lookAheadVelocity, lookAheadSmoothTime);
+        //check for vector zero because otherwise the cam would jump in positions when starting 
+        if (smoothedLookAhead == Vector3.zero)
+        {
+            smoothedLookAhead = _targetLookAhead;
+        }
+        smoothedLookAhead = Vector3.SmoothDamp(smoothedLookAhead, _targetLookAhead, ref lookAheadVelocity, lookAheadSmoothTime);
 
-            // Reset the Z Pos because otherwise the cam is below the floor
-            smoothedLookAhead.z = _fightCamZPos;
-            _fightCamTransform.position = smoothedLookAhead;
+        // Reset the Z Pos because otherwise the cam is below the floor
+        smoothedLookAhead.z = playerCam.transform.position.z;
+        playerCam.transform.position = smoothedLookAhead;
+
+        if(!Mathf.Approximately(playerCam.Lens.OrthographicSize, _targetCamSize))
+        {
+            playerCam.Lens.OrthographicSize = Mathf.Lerp(playerCam.Lens.OrthographicSize, _targetCamSize, Time.deltaTime * orthoSizeSmoothSpeed);
         }
     }
     
@@ -446,11 +449,8 @@ public class WeaponBehaviour : MonoBehaviour
     {
         muzzleFlashVisual.SetActive(true);
         
-        if (fightAreaCam.isActiveAndEnabled && fightAreaCam.Priority > 10)
-        {
-            fightAreaCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = weaponScreenShake;
-        }
-        
+        playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = weaponScreenShake;
+
         bulletShellsParticle.Play();
 
         anim.SetTrigger("ShootGun");
@@ -463,10 +463,7 @@ public class WeaponBehaviour : MonoBehaviour
 
         bulletShellsParticle.Stop();
 
-        if (fightAreaCam.isActiveAndEnabled && fightAreaCam.Priority > 10)
-        {
-            fightAreaCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
-        }
+        playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
 
         muzzleFlashVisual.SetActive(false);
     }

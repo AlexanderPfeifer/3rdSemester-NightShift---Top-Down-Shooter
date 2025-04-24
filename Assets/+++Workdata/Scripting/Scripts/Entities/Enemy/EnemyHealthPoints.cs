@@ -30,7 +30,7 @@ public class EnemyHealthPoints : MonoBehaviour
 
         if (bulletTransform != null)
         {
-            var _enemyShotParticles = Instantiate(_enemy.enemyShotConfetti, transform.position, Quaternion.identity, _enemy.ride.enemyParent.transform);
+            var _enemyShotParticles = Instantiate(_enemy.enemyShotConfetti, transform.position, Quaternion.identity, Ride.Instance.enemyParent.transform);
             _enemyShotParticles.transform.localRotation = bulletTransform.localRotation;
             _enemyShotParticles.Play();
         }

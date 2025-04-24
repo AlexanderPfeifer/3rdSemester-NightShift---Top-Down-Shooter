@@ -42,5 +42,7 @@ public class TutorialManager : MonoBehaviour
         InGameUIManager.Instance.dialogueUI.dialogueBoxAnim.SetBool("DialogueBoxOn", false);
 
         InGameUIManager.Instance.dialogueUI.SetRadioState(true, true);
+        
+        InGameUIManager.Instance.shopScreen.SetActive(false);
     }
 }

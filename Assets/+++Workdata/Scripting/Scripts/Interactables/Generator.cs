@@ -3,9 +3,6 @@ using UnityEngine.Serialization;
 
 public class Generator : MonoBehaviour
 {
-    [Header("Interactable")]
-    private Ride ride;
-    
     [Header("WalkieTalkie")]
     [HideInInspector] public bool canPutAwayWalkieTalkie = true;
     
@@ -14,34 +11,27 @@ public class Generator : MonoBehaviour
     
     [FormerlySerializedAs("genInactive")] [HideInInspector] public bool genInteractable = true;
 
-    private void Start()
-    {
-        ride = GetComponentInParent<Ride>();
-    }
-
     public void SetUpFightArena()
     {
         fightMusic.Play();
         AudioManager.Instance.Stop("InGameMusic");
         genInteractable = false;
-        ride.rideLight.SetActive(true);
-        ride.gameObject.GetComponent<Animator>().SetTrigger("LightOn");
-        ride.invisibleCollider.SetActive(true);
+        Ride.Instance.rideLight.SetActive(true);
+        Ride.Instance.gameObject.GetComponent<Animator>().SetTrigger("LightOn");
+        Ride.Instance.invisibleCollider.SetActive(true);
 
         if (PlayerBehaviour.Instance.abilityBehaviour.hasAbilityUpgrade)
         {
             InGameUIManager.Instance.abilityFillBar.gameObject.SetActive(true);
         }
         InGameUIManager.Instance.fightUI.SetActive(true);
-        ride.waveStarted = true;
-        ride.ResetRide();
-        ride.StartEnemyClusterCoroutines();
+        Ride.Instance.waveStarted = true;
+        Ride.Instance.ResetRide();
+        Ride.Instance.StartEnemyClusterCoroutines();
 
         //Check if rideGotDestroyed because at the start the music already plays when turning on the generator
-        if (ride.rideGotDestroyed)
+        if (Ride.Instance.rideGotDestroyed)
             fightMusic.Play();        
-        
-        PlayerBehaviour.Instance.weaponBehaviour.fightAreaCam.Priority = 15;
         
         //Set a bool for the PutAway Animation because the player can leave and enter the collider still inside the fight
         if (canPutAwayWalkieTalkie)

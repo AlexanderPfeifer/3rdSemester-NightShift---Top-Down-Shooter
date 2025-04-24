@@ -22,7 +22,6 @@ public class EnemyBase : MonoBehaviour
     [Header("Ride")]
     [SerializeField] private float rideAttackDamage = 1;
     private bool gotKilledFromRide;
-    [HideInInspector] public Ride ride;
     
     [Header("Drops")]
     [SerializeField] private GameObject ammoDropPrefab;
@@ -34,7 +33,6 @@ public class EnemyBase : MonoBehaviour
     private void Start()
     {
         rbEnemy = GetComponent<Rigidbody2D>();
-        ride = GetComponentInParent<Ride>();
         sr = GetComponent<SpriteRenderer>();
     }
 
@@ -57,13 +55,13 @@ public class EnemyBase : MonoBehaviour
         
         AudioManager.Instance.Play("EnemyHit");
     }
-
-    private void OnCollisionEnter2D(Collision2D col)
+    
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (col.gameObject.TryGetComponent(out Ride _ride))
+        if (other.gameObject.TryGetComponent(out Ride _ride))
         {
             _ride.currentRideHealth -= rideAttackDamage;
-            ride.StartRideHitVisual();
+            Ride.Instance.StartRideHitVisual();
             gotKilledFromRide = true;
             Destroy(gameObject);
         }

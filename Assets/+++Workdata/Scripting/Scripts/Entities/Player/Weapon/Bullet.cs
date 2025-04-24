@@ -107,10 +107,13 @@ public class Bullet : MonoBehaviour
         }
         else if ((treeLayer & (1 << col.gameObject.layer)) != 0)
         {
-            if(TryGetComponent(out TreeBehaviour _treeBehaviour))
+            if (TryGetComponent(out TreeBehaviour _treeBehaviour))
+            {
                 _treeBehaviour.TreeShrink();
             
-            col.GetComponentInChildren<ParticleSystem>().Play();
+                col.GetComponentInChildren<ParticleSystem>().Play();                
+            }
+
             DeactivateBullet();
         }
         else if ((balloonLayer & (1 << col.gameObject.layer)) != 0)
