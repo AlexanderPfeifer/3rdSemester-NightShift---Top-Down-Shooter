@@ -7,7 +7,7 @@ using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
-public class MainMenuUIManager : MonoBehaviour
+public class MainMenuUIManager : Singleton<MainMenuUIManager>
 {
     [Header("LoadGameScreen")]
     private GameObject newLoadButton;
@@ -43,13 +43,6 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
 
     [SerializeField] private GameObject sunnyBackground;
-    
-    public static MainMenuUIManager Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     private void Start()
     {

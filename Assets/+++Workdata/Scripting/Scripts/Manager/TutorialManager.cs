@@ -1,10 +1,8 @@
 using System.Linq;
 using UnityEngine;
 
-public class TutorialManager : MonoBehaviour
+public class TutorialManager : SingletonPersistent<TutorialManager>
 {
-    public static TutorialManager Instance;
-
     private int shotSigns;
 
     [HideInInspector] public bool openShutterWheelOfFortune;
@@ -14,8 +12,6 @@ public class TutorialManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-
         fillAmmoForFree = true;
         talkedAboutCurrency = false;
         canActivateGenerator = false;

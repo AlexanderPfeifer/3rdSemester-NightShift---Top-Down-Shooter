@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Ride : MonoBehaviour
+public class Ride : Singleton<Ride>
 {
     [Header("Spawning")]
     [SerializeField] private Wave[] waves;
@@ -31,13 +31,6 @@ public class Ride : MonoBehaviour
     
     [Header("Arena")]
     public GameObject invisibleCollider;
-
-    public static Ride Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     private void Start()
     {

@@ -1,25 +1,15 @@
 using System;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : SingletonPersistent<AudioManager>
 {
     public SoundCategory[] soundCategories;
-
-    public static AudioManager Instance;
     
     private string lastRandomPlayedSound = "";
 
-    private void Awake()
+    protected override void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        base.Awake();
         
         foreach (var _soundCategory in soundCategories)
         {

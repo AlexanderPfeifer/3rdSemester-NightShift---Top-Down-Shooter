@@ -1,11 +1,10 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 
-public class InGameUIManager : MonoBehaviour
+public class InGameUIManager : SingletonPersistent<InGameUIManager>
 {
     [Header("Ammunition")] 
     public TextMeshProUGUI ammunitionInClipText;
@@ -48,14 +47,7 @@ public class InGameUIManager : MonoBehaviour
     public GameObject weaponDecisionWeaponImage;
     public TextMeshProUGUI weaponDecisionWeaponAbilityText;
     public TextMeshProUGUI weaponDecisionWeaponName;
-
-    public static InGameUIManager Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
+    
     private void Start()
     {
         currencyUI = GetComponent<CurrencyUI>();

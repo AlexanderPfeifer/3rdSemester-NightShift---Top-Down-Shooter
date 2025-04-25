@@ -3,10 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class GameSaveStateManager : MonoBehaviour
+public class GameSaveStateManager : SingletonPersistent<GameSaveStateManager>
 {
-    public static GameSaveStateManager Instance;
-    
     private const string MainMenuSceneName = "MainMenu";
     public const string InGameSceneName = "InGame";
 
@@ -26,11 +24,6 @@ public class GameSaveStateManager : MonoBehaviour
     private GameState CurrentState { get; set; } = GameState.InMainMenu;
     
     public SaveGameDataManager saveGameDataManager = new();
-    
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     private void Start()
     {

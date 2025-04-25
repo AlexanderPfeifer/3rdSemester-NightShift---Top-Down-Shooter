@@ -1,20 +1,18 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
-public class SceneManager : MonoBehaviour
+public class SceneManager : SingletonPersistent<SceneManager>
 {
-    public static SceneManager Instance;
     private string currentScene;
     
     [Header("LoadingScreen")]
     public Animator loadingScreenAnim;
 
-    private void Awake()
+    protected override void Awake()
     {
-        Instance = this;
+        base.Awake();
         OnLoad();
     }
 

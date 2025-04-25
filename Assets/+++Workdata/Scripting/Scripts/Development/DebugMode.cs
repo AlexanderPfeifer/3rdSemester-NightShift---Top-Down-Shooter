@@ -4,9 +4,8 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class DebugMode : MonoBehaviour
+public class DebugMode : SingletonPersistent<DebugMode>
 {
-
     [Header("ACTIVATION")]
     public bool debugMode;
     
@@ -14,8 +13,6 @@ public class DebugMode : MonoBehaviour
     public bool activateRide;
     public ChoosableWeapons choosableWeapons;
     public int currencyAtStart;
-
-    public static DebugMode Instance;
     
     public enum ChoosableWeapons
     {
@@ -27,10 +24,10 @@ public class DebugMode : MonoBehaviour
         MagnumMagnum
     }
     
-    private void Awake()
+    protected override void Awake()
     {
-        Instance = this;
-
+        base.Awake();
+        
         //StartCoroutine(UnloadGameScene());
     }
 

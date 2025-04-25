@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class PlayerBehaviour : MonoBehaviour
+public class PlayerBehaviour : Singleton<PlayerBehaviour>
 {
-    public static PlayerBehaviour Instance;
-    
     [Serializable]
     public class PlayerSaveData
     {
@@ -53,9 +51,9 @@ public class PlayerBehaviour : MonoBehaviour
 
     #region MonoBehaviourMethods
 
-    private void Awake()
+    protected override void Awake()
     {
-        Instance = this;
+        base.Awake();
 
         var _currentPlayerSaveData = GameSaveStateManager.Instance.saveGameDataManager.newPlayerSaveData;
         if (_currentPlayerSaveData != null)

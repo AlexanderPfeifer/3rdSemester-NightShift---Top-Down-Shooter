@@ -35,7 +35,6 @@ public class WeaponBehaviour : MonoBehaviour
     public Transform weaponEndPoint;
     private Vector3 changingWeaponToMouse;
     private Vector3 weaponToMouse;
-    private Vector3 mousePos;
     [SerializeField] private int weaponRotationSnapPoints;
     [NonSerialized] public float LastSnappedAngle;
     
@@ -61,7 +60,7 @@ public class WeaponBehaviour : MonoBehaviour
 
     [Header("Camera")] 
     public CinemachineCamera playerCam;
-    [SerializeField] private Camera mainCamera;
+    public Camera mainCamera;
     [Range(2, 10)] [SerializeField] private float cameraTargetLookAheadDivider;
     [SerializeField] private float fightCamOrthoSize = 9f;
     [SerializeField] private float normalCamOrthoSize = 6;
@@ -159,9 +158,7 @@ public class WeaponBehaviour : MonoBehaviour
     {
         if (!weapon.activeSelf || PlayerBehaviour.Instance.isPlayerBusy) 
             return;
-        
-        mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        
+
         var _shortGetMeleeWeaponOutRange = getMeleeWeaponOutRange - getMeleeWeaponOutRange / 2;
         var _longGetMeleeWeaponOutRange = getMeleeWeaponOutRange + getMeleeWeaponOutRange / 2;
         
@@ -174,7 +171,7 @@ public class WeaponBehaviour : MonoBehaviour
             
             anim.runtimeAnimatorController = meleeWeaponAnimatorController;
 
-            weaponToMouse = mousePos - PlayerBehaviour.Instance.transform.position;
+            weaponToMouse = GameInputManager.Instance.GetAimingVector() - PlayerBehaviour.Instance.transform.position;
             weaponToMouse.z = 0;
 
             currentGetMeleeWeaponOutRange = _longGetMeleeWeaponOutRange;
@@ -187,7 +184,7 @@ public class WeaponBehaviour : MonoBehaviour
 
             anim.runtimeAnimatorController = weaponAnimatorController;
             
-            weaponToMouse = mousePos - weaponEndPoint.transform.position;
+            weaponToMouse = GameInputManager.Instance.GetAimingVector() - weaponEndPoint.transform.position;
             weaponToMouse.z = 0;
             
             currentGetMeleeWeaponOutRange = _shortGetMeleeWeaponOutRange;
@@ -220,7 +217,7 @@ public class WeaponBehaviour : MonoBehaviour
         if (Ride.Instance.waveStarted)
         {
             _targetCamSize = fightCamOrthoSize;
-            _targetLookAhead = (mousePos + (cameraTargetLookAheadDivider - 1) * transform.position) / cameraTargetLookAheadDivider;
+            _targetLookAhead = ((Vector3)GameInputManager.Instance.GetAimingVector() + (cameraTargetLookAheadDivider - 1) * transform.position) / cameraTargetLookAheadDivider;
         }
 
         //check for vector zero because otherwise the cam would jump in positions when starting 
