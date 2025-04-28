@@ -139,7 +139,7 @@ public class DialogueUI : MonoBehaviour
         }
         else if (dialogueCount == 5)
         {
-            InGameUIManager.Instance.currencyUI.gameObject.SetActive(true);
+            InGameUIManager.Instance.currencyUI.GetCurrencyText().gameObject.SetActive(true);
         }
     }
 

@@ -10517,7 +10517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d76e3bcc8841e84cbe8d03bbc591a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
+  debugMode: 1
   activateRide: 1
   choosableWeapons: 2
   currencyAtStart: 1000

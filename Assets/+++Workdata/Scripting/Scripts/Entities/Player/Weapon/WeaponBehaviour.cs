@@ -5,7 +5,6 @@ using System.Linq;
 using Unity.Cinemachine;
 using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -248,6 +247,12 @@ public class WeaponBehaviour : MonoBehaviour
             return;
         }
         
+        if (ammunitionInClip <= 0)
+        {
+            currentReloadCoroutine ??= StartCoroutine(ReloadCoroutine());
+            return;
+        }
+        
         if (currentReloadCoroutine != null)
         {
             StopCoroutine(currentReloadCoroutine);
@@ -255,13 +260,7 @@ public class WeaponBehaviour : MonoBehaviour
             reloadProgress.fillAmount = 0f;           
             PlayerBehaviour.Instance.currentMoveSpeed = PlayerBehaviour.Instance.baseMoveSpeed;
         }
-        
-        if (ammunitionInClip <= 0)
-        {
-            currentReloadCoroutine ??= StartCoroutine(ReloadCoroutine());
-            return;
-        }
-                
+
         for (int _i = 0; _i < bulletsPerShot; _i++)
         {
             Vector2 _bulletDirection = Random.insideUnitCircle.normalized;

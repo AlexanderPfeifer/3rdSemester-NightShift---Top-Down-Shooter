@@ -25,9 +25,11 @@ public class Ride : Singleton<Ride>
     private bool rideGotHit;
     [HideInInspector] public bool rideGotDestroyed;
     [SerializeField] private SpriteRenderer rideRenderer;
+    private Animator rideAnimator;
 
     [Header("Activation")]
     public GameObject rideLight;
+    private Generator generator;
     
     [Header("Arena")]
     public GameObject invisibleCollider;
@@ -35,6 +37,8 @@ public class Ride : Singleton<Ride>
     private void Start()
     {
         InGameUIManager.Instance.dialogueUI.dialogueCount = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
+        rideAnimator = GetComponent<Animator>();
+        generator = GetComponentInChildren<Generator>();
     }
 
     private void Update()
@@ -120,16 +124,16 @@ public class Ride : Singleton<Ride>
 
     private void LostWave()
     {
-        GetComponentInChildren<Generator>().fightMusic.Stop();
+        generator.fightMusic.Stop();
         AudioManager.Instance.Play("FightMusicLoss");
         
         ResetRide();
         rideGotDestroyed = true;
 
-        GetComponentInChildren<Generator>().genInteractable = true;
+        generator.genInteractable = true;
         
         StopAllCoroutines();
-        GetComponent<Animator>().SetTrigger("LightOff");
+        rideAnimator.SetTrigger("LightOff");
         rideLight.SetActive(false);
         
         foreach (var _enemy in currentEnemies)
@@ -142,13 +146,13 @@ public class Ride : Singleton<Ride>
     {
         TutorialManager.Instance.openShutterWheelOfFortune = true;
         
-        GetComponentInChildren<Generator>().fightMusic.Stop();
+        generator.fightMusic.Stop();
         AudioManager.Instance.Play("FightMusicWon");
 
         invisibleCollider.SetActive(false);
         
         StopAllCoroutines();
-        GetComponent<Animator>().SetTrigger("LightOff");
+        rideAnimator.SetTrigger("LightOff");
         rideLight.SetActive(false);
         
         foreach (var _enemy in currentEnemies)
@@ -161,13 +165,19 @@ public class Ride : Singleton<Ride>
         
         ResetRide();
 
-        GetComponentInChildren<Generator>().canPutAwayWalkieTalkie = true;
+        generator.canPutAwayWalkieTalkie = true;
         waveStarted = false;
         InGameUIManager.Instance.fightUI.SetActive(false);
         InGameUIManager.Instance.abilityFillBar.SetActive(false);
         InGameUIManager.Instance.dialogueUI.SetRadioState(true, true);
-        GetComponentInChildren<Generator>().genInteractable = true;
+        generator.genInteractable = true;
         GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount();
+
+        if (GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() == waves.Length)
+        {
+            rideAnimator.SetTrigger("StartRide");
+        }
+        
         GameSaveStateManager.Instance.SaveGame();
         AudioManager.Instance.Play("InGameMusic");
     }
