@@ -138,7 +138,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         }
         else if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator))
         {
-            if (_generator.GetComponent<Generator>().genInteractable)
+            if (_generator.GetComponent<Generator>().interactable)
             {
                 InGameUIManager.Instance.SetGeneratorUI();
                 GameSaveStateManager.Instance.SaveGame();
@@ -217,7 +217,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     {
         if (GetInteractionObjectInRange(shopLayer, out _) ||
             GetInteractionObjectInRange(collectibleLayer, out _) ||
-            GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && _generator.GetComponent<Generator>().genInteractable)
+            GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && _generator.GetComponent<Generator>().interactable)
         {
             canInteract = true;
         }

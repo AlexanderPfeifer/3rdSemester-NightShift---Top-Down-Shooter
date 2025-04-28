@@ -17,11 +17,17 @@ public class GeneratorUI : MonoBehaviour
     [SerializeField] private float reduceFillSpeedMultiplier;
     private float fillTime;
     private bool resetDone = true;
+
+    [Header("Button")] 
+    [SerializeField] private Image buttonSpriteRenderer;
+    [SerializeField] private Sprite buttonOn;
+    [SerializeField] private Sprite buttonOff;
     
     private void OnEnable()
     {
         PlayerBehaviour.Instance.SetPlayerBusy(true);
-        EventSystem.current.SetSelectedGameObject(firstGeneratorSelected);
+        EventSystem.current.SetSelectedGameObject(firstGeneratorSelected);            
+        buttonSpriteRenderer.sprite = buttonOff;
     }
 
     private void Update()
@@ -37,6 +43,15 @@ public class GeneratorUI : MonoBehaviour
             fillTime += finalAcc * Time.deltaTime;
 
             generatorFillImage.fillAmount = Mathf.PingPong(fillTime, 1);
+        }
+        
+        if (generatorFillImage.fillAmount > activateGeneratorFillAmount)
+        {
+            buttonSpriteRenderer.sprite = buttonOn;
+        }
+        else
+        {
+            buttonSpriteRenderer.sprite = buttonOff;
         }
     }
 

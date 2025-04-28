@@ -130,14 +130,20 @@ public class Ride : Singleton<Ride>
         ResetRide();
         rideGotDestroyed = true;
 
-        generator.genInteractable = true;
+        generator.interactable = true;
         
         StopAllCoroutines();
         rideAnimator.SetTrigger("LightOff");
         rideLight.SetActive(false);
         
-        foreach (var _enemy in currentEnemies)
+        foreach (GameObject _enemy in enemyParent.transform)
         {
+            if (_enemy.TryGetComponent(out EnemyBase _enemyBase))
+            {
+                _enemyBase.addHelpDropsOnDeath = false;
+                _enemyBase.destroyWithoutEffect = true;
+            }
+            
             Destroy(_enemy);
         }
     }
@@ -157,6 +163,7 @@ public class Ride : Singleton<Ride>
         
         foreach (var _enemy in currentEnemies)
         {
+            _enemy.GetComponent<EnemyBase>().addHelpDropsOnDeath = false;
             Destroy(_enemy);
         }
         
@@ -170,7 +177,7 @@ public class Ride : Singleton<Ride>
         InGameUIManager.Instance.fightUI.SetActive(false);
         InGameUIManager.Instance.abilityFillBar.SetActive(false);
         InGameUIManager.Instance.dialogueUI.SetRadioState(true, true);
-        generator.genInteractable = true;
+        generator.interactable = true;
         GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount();
 
         if (GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() == waves.Length)

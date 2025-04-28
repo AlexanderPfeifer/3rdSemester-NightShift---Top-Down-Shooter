@@ -4651,6 +4651,9 @@ MonoBehaviour:
   activateGeneratorFillAmount: 0.941
   generatorFillImage: {fileID: 1296695489}
   reduceFillSpeedMultiplier: 3
+  buttonSpriteRenderer: {fileID: 2047534560}
+  buttonOn: {fileID: -3753508529759961820, guid: 4c56742be098f664e93e92822d72f139, type: 3}
+  buttonOff: {fileID: 4239312038919028401, guid: a03d66e561708524fa033b42402a0943, type: 3}
 --- !u!1 &596546072
 GameObject:
   m_ObjectHideFlags: 0
@@ -9574,7 +9577,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1970817364, guid: 6a54796af0647c44eab738bcac917c36, type: 3}
+  m_Sprite: {fileID: -7297618605265752012, guid: 73f3587c07d67c9448bd15d832b699fe, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10517,7 +10520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d76e3bcc8841e84cbe8d03bbc591a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
+  debugMode: 0
   activateRide: 1
   choosableWeapons: 2
   currencyAtStart: 1000
@@ -15701,7 +15704,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1265482553, guid: 059be3ad8a2954f4f80da55c154caa4f, type: 3}
+  m_Sprite: {fileID: 4239312038919028401, guid: a03d66e561708524fa033b42402a0943, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

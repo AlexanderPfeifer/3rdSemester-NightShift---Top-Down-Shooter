@@ -9,13 +9,13 @@ public class Generator : MonoBehaviour
     [Header("Music")]
     [SerializeField] public AudioSource fightMusic;
     
-    [FormerlySerializedAs("genInactive")] [HideInInspector] public bool genInteractable = true;
+    [FormerlySerializedAs("genInteractable")] [FormerlySerializedAs("genInactive")] [HideInInspector] public bool interactable = true;
 
     public void SetUpFightArena()
     {
         fightMusic.Play();
         AudioManager.Instance.Stop("InGameMusic");
-        genInteractable = false;
+        interactable = false;
         Ride.Instance.rideLight.SetActive(true);
         Ride.Instance.gameObject.GetComponent<Animator>().SetTrigger("LightOn");
         Ride.Instance.invisibleCollider.SetActive(true);

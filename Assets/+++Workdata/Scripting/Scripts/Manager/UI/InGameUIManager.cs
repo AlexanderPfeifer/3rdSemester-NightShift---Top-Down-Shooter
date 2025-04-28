@@ -142,6 +142,11 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         {
             shopScreen.SetActive(true);
             
+            foreach (GameObject _enemy in Ride.Instance.enemyParent.transform)
+            {
+                Destroy(_enemy);
+            }
+            
             PlayerBehaviour.Instance.SetPlayerBusy(true);
 
             if (TutorialManager.Instance.openShutterWheelOfFortune)

@@ -22,8 +22,11 @@ public class EnemyBase : MonoBehaviour
     [Header("Ride")]
     [SerializeField] private float rideAttackDamage = 1;
     private bool gotKilledFromRide;
-    
-    [Header("Drops")]
+
+    [FormerlySerializedAs("addCurrencyOnDeath")]
+    [Header("Drops")] 
+    [HideInInspector] public bool addHelpDropsOnDeath = true;
+    [HideInInspector] public bool destroyWithoutEffect;
     [SerializeField] private GameObject ammoDropPrefab;
     [FormerlySerializedAs("enemyAbilityGain")] [SerializeField] private float enemyAbilityGainForPlayer = 1;
     [SerializeField] private Vector2Int ammunitionAmountDropRange;
@@ -71,22 +74,27 @@ public class EnemyBase : MonoBehaviour
     {
         if(!gameObject.scene.isLoaded || gotKilledFromRide) 
             return;
-        
-        var _transform = transform;
-        Instantiate(enemyDeathMark, _transform.position, Quaternion.identity, _transform.parent);
-            
-        var _confetti = Instantiate(enemyConfetti, _transform.position, Quaternion.identity, _transform.parent);
-        _confetti.GetComponent<ParticleSystem>().Play();
-        
-        PlayerBehaviour.Instance.abilityBehaviour.AddAbilityFill(enemyAbilityGainForPlayer);
 
-        if (Random.value <= ammunitionDropChancePercentage)
+        if (!destroyWithoutEffect)
         {
-            int _ammoAmount = Random.Range(ammunitionAmountDropRange.x, ammunitionAmountDropRange.y + 1);
-            GameObject _ammoDrop = Instantiate(ammoDropPrefab, transform.position, Quaternion.identity);
-            _ammoDrop.GetComponent<AmmoDrop>().ammoCount = _ammoAmount;
+            var _transform = transform;
+            Instantiate(enemyDeathMark, _transform.position, Quaternion.identity, _transform.parent);
+            
+            var _confetti = Instantiate(enemyConfetti, _transform.position, Quaternion.identity, _transform.parent);
+            _confetti.GetComponent<ParticleSystem>().Play();
         }
-        
-        PlayerBehaviour.Instance.playerCurrency.AddCurrency(Random.Range((int)currencyDropRange.x, (int)currencyDropRange.y));
+
+        if (addHelpDropsOnDeath)
+        {
+            PlayerBehaviour.Instance.playerCurrency.AddCurrency(Random.Range((int)currencyDropRange.x, (int)currencyDropRange.y));
+            PlayerBehaviour.Instance.abilityBehaviour.AddAbilityFill(enemyAbilityGainForPlayer);
+
+            if (Random.value <= ammunitionDropChancePercentage)
+            {
+                int _ammoAmount = Random.Range(ammunitionAmountDropRange.x, ammunitionAmountDropRange.y + 1);
+                GameObject _ammoDrop = Instantiate(ammoDropPrefab, transform.position, Quaternion.identity);
+                _ammoDrop.GetComponent<AmmoDrop>().ammoCount = _ammoAmount;
+            }
+        }
     }
 }
