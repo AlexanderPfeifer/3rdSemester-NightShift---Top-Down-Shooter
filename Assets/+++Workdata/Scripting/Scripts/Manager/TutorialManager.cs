@@ -10,7 +10,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     [HideInInspector] public bool talkedAboutCurrency;
     [HideInInspector] public bool canActivateGenerator;
 
-    private void Awake()
+    protected override void Awake()
     {
         fillAmmoForFree = true;
         talkedAboutCurrency = false;

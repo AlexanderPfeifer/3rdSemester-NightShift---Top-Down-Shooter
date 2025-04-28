@@ -17,9 +17,6 @@ public class FortuneWheelUI : MonoBehaviour
     private bool receivingWeapon;
     [SerializeField] private Image mark;
 
-    [Header("Upgrade")] 
-    [SerializeField] private UpgradeUI upgradeUI;
-    
     private const int FortuneWheelPieCount = 5;
 
     [Header("Controller")]
@@ -27,7 +24,7 @@ public class FortuneWheelUI : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerBehaviour.Instance.isPlayerBusy = true;
+        PlayerBehaviour.Instance.SetPlayerBusy(true);
         
         EventSystem.current.SetSelectedGameObject(firstFortuneWheelButtonSelected);
         
@@ -115,12 +112,11 @@ public class FortuneWheelUI : MonoBehaviour
         GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
         
         receivingWeapon = false;
-        upgradeUI.SetUpgradeButtons();
     }
 
     private void OnDisable()
     {
-        PlayerBehaviour.Instance.isPlayerBusy = false;
+        PlayerBehaviour.Instance.SetPlayerBusy(false);
         EventSystem.current.SetSelectedGameObject(null);
     }
 }

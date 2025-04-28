@@ -137,7 +137,7 @@ public class WeaponBehaviour : MonoBehaviour
     
     private void OnPressingShootingAction(object sender, EventArgs e)
     {
-        if (weapon.activeSelf && !PlayerBehaviour.Instance.isPlayerBusy && !InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())
+        if (weapon.activeSelf && !PlayerBehaviour.Instance.IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())
         {
             isPressingLeftClick = true;
         }
@@ -156,7 +156,7 @@ public class WeaponBehaviour : MonoBehaviour
 
     private void HandleAimingUpdate()
     {
-        if (!weapon.activeSelf || PlayerBehaviour.Instance.isPlayerBusy) 
+        if (!weapon.activeSelf || PlayerBehaviour.Instance.IsPlayerBusy()) 
             return;
 
         var _shortGetMeleeWeaponOutRange = getMeleeWeaponOutRange - getMeleeWeaponOutRange / 2;

@@ -41,7 +41,8 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     [Header("References")]
     [HideInInspector] public CurrencyUI currencyUI;
     [HideInInspector] public DialogueUI dialogueUI;
-    [HideInInspector] public InventoryUI inventoryUI;
+    [FormerlySerializedAs("weaponDescriptionUI")] [FormerlySerializedAs("inventoryUI")] [HideInInspector] public ShopUI shopUI;
+    [HideInInspector] public PauseMenuUI pauseMenuUI;
 
     [Header("WeaponSwap")]
     public GameObject weaponDecisionWeaponImage;
@@ -52,7 +53,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     {
         currencyUI = GetComponent<CurrencyUI>();
         dialogueUI = GetComponent<DialogueUI>();
-        inventoryUI = GetComponent<InventoryUI>();
+        shopUI = GetComponent<ShopUI>();
     }
 
     private void Update()
@@ -74,7 +75,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     
     public void GoToMainMenu()
     {
-        inventoryUI.ResetInventoryElements();
+        shopUI.ResetInventoryElements();
         dialogueUI.ResetDialogueElements();
         StopAllCoroutines();
 
@@ -84,7 +85,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         
         abilityFillBar.SetActive(false);
 
-        inventoryUI.CloseInventory();
+        pauseMenuUI.CloseInventory();
         GameSaveStateManager.Instance.GoToMainMenu();
     }
     
@@ -113,7 +114,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
     public void SetGeneratorUI()
     {
-        if (!PlayerBehaviour.Instance.isPlayerBusy && TutorialManager.Instance.canActivateGenerator)
+        if (!PlayerBehaviour.Instance.IsPlayerBusy() && TutorialManager.Instance.canActivateGenerator)
         {
             if (!TutorialManager.Instance.talkedAboutCurrency)
             {
@@ -137,9 +138,11 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             return;
         }
         
-        if (!PlayerBehaviour.Instance.isPlayerBusy)
+        if (!PlayerBehaviour.Instance.IsPlayerBusy())
         {
             shopScreen.SetActive(true);
+            
+            PlayerBehaviour.Instance.SetPlayerBusy(true);
 
             if (TutorialManager.Instance.openShutterWheelOfFortune)
             {
@@ -155,10 +158,13 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
                 //Add the normal dialogue box instead
             }
             
+            shopUI.DisplayCollectedWeapons();
+            
             return;
         }
 
         dialogueUI.SetRadioState(false, true);
         shopScreen.SetActive(false);
+        PlayerBehaviour.Instance.SetPlayerBusy(false);
     }
 }

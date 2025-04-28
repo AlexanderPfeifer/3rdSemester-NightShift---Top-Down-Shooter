@@ -20,7 +20,7 @@ public class GeneratorUI : MonoBehaviour
     
     private void OnEnable()
     {
-        PlayerBehaviour.Instance.isPlayerBusy = true;
+        PlayerBehaviour.Instance.SetPlayerBusy(true);
         EventSystem.current.SetSelectedGameObject(firstGeneratorSelected);
     }
 
@@ -89,7 +89,7 @@ public class GeneratorUI : MonoBehaviour
 
     private void OnDisable()
     {
-        PlayerBehaviour.Instance.isPlayerBusy = false;
+        PlayerBehaviour.Instance.SetPlayerBusy(false);
         fillTime = 0;
         generatorFillImage.fillAmount = 0;
     }

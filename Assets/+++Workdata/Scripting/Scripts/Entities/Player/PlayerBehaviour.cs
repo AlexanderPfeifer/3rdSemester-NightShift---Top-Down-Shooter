@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PlayerBehaviour : Singleton<PlayerBehaviour>
 {
@@ -41,7 +40,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     [SerializeField] public LayerMask duckLayer;
     [SerializeField] private LayerMask collectibleLayer;
     [HideInInspector] public bool canInteract = true;
-    [FormerlySerializedAs("isInteracting")] [HideInInspector] public bool isPlayerBusy;
+    private bool isPlayerBusy;
 
     private void SetupFromData()
     {
@@ -226,6 +225,16 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         {
             canInteract = false;
         }
+    }
+
+    public void SetPlayerBusy(bool isBusy)
+    {
+        isPlayerBusy = isBusy;
+    }
+
+    public bool IsPlayerBusy()
+    {
+        return isPlayerBusy;
     }
 
     #endregion
