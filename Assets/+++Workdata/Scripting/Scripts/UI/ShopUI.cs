@@ -42,8 +42,6 @@ public class ShopUI : MonoBehaviour
     
     private void Start()
     {
-        equipWeaponButton.gameObject.SetActive(false);
-        
         collectedItemsDictionary = new Dictionary<string, (GameObject, Sprite, string, string, WeaponObjectSO)>();
     }
 
@@ -136,11 +134,10 @@ public class ShopUI : MonoBehaviour
 
             fillWeaponAmmoButton.interactable = true;
             fillWeaponAmmoButton.onClick.RemoveAllListeners();
-            equipWeaponButton.onClick.AddListener(() => FillWeaponAmmo(collectedItemsDictionary[header].weaponObjectSO));
+            fillWeaponAmmoButton.onClick.AddListener(() => FillWeaponAmmo(collectedItemsDictionary[header].weaponObjectSO));
 
             upgradeWeaponButton.interactable = true;
             upgradeWeaponButton.onClick.RemoveAllListeners();
-            
             switch (header)
             {
                 case "Magnum magnum" :

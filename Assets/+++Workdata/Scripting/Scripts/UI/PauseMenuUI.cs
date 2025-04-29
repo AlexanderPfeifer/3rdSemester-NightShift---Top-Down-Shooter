@@ -15,7 +15,8 @@ public class PauseMenuUI : MonoBehaviour
 
     private void OnDisable()
     {
-        GameInputManager.Instance.OnGamePausedAction -= OpenInventory;
+        if(GameInputManager.Instance != null)
+            GameInputManager.Instance.OnGamePausedAction -= OpenInventory;
     }
     
     public void OpenInventory(object sender, EventArgs e)

@@ -24,8 +24,6 @@ public class FortuneWheelUI : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerBehaviour.Instance.SetPlayerBusy(true);
-        
         EventSystem.current.SetSelectedGameObject(firstFortuneWheelButtonSelected);
         
         mark.transform.localScale = new Vector3(1, 1, 1);
@@ -109,14 +107,12 @@ public class FortuneWheelUI : MonoBehaviour
         yield return new WaitForSeconds(.3f);
         
         PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weapon);
-        GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
         
         receivingWeapon = false;
     }
 
     private void OnDisable()
     {
-        PlayerBehaviour.Instance.SetPlayerBusy(false);
         EventSystem.current.SetSelectedGameObject(null);
     }
 }

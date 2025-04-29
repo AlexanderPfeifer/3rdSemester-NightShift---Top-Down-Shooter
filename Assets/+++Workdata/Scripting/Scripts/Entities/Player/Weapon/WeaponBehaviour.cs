@@ -439,6 +439,8 @@ public class WeaponBehaviour : MonoBehaviour
             "Popcorn Launcher" => MyWeapon.PopcornLauncher,
             _ => myWeapon
         };
+        
+        GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
     }
     
     private IEnumerator WeaponVisualCoroutine()

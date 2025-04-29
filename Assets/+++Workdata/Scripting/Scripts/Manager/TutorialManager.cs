@@ -32,7 +32,6 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         WeaponObjectSO _brokenPistol = PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Broken Pistol");
         
         PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(_brokenPistol);
-        GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(_brokenPistol.weaponName);
         InGameUIManager.Instance.weaponSlot.SetActive(true);
         
         InGameUIManager.Instance.dialogueUI.dialogueBoxAnim.SetBool("DialogueBoxOn", false);

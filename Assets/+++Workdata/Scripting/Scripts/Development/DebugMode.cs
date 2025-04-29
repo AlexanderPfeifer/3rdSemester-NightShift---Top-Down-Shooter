@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DebugMode : SingletonPersistent<DebugMode>
 {
@@ -10,10 +11,11 @@ public class DebugMode : SingletonPersistent<DebugMode>
     public bool debugMode;
     
     [Header("Settings")]
+    public ChoosableWeapons equipWeapon;
+    public UnlockWeapons[] UnlockWeapons;
     public bool activateRide;
-    public ChoosableWeapons choosableWeapons;
     public int currencyAtStart;
-    
+
     public enum ChoosableWeapons
     {
         None,
@@ -43,34 +45,54 @@ public class DebugMode : SingletonPersistent<DebugMode>
     
     public void GetDebugWeapon()
     {
-        switch (choosableWeapons)
+        foreach (var _unlockWeapon in UnlockWeapons)
+        {
+            if (_unlockWeapon.getWeapon)
+            {
+                GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(_unlockWeapon.weaponName);
+            }
+        }
+        
+        switch (equipWeapon)
         {
             case ChoosableWeapons.None :
                 break;
             
             case ChoosableWeapons.Shotgun :
-                PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Lollipop Shotgun"));
+                GetDebuggedWeapon("Lollipop Shotgun");
                 break;
             
             case ChoosableWeapons.AR :
-                PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "French Fries AR"));                
+                GetDebuggedWeapon("French Fries AR");
                 break;
             
             case ChoosableWeapons.MagnumMagnum :
-                PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Magnum magnum"));                
+                GetDebuggedWeapon("Magnum magnum");
                 break;
             
             case ChoosableWeapons.PopcornPistol :
-                PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Popcorn Launcher"));                
+                GetDebuggedWeapon("Popcorn Launcher");
                 break;
             
             case ChoosableWeapons.HuntingRifle :
-                PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Corn Dog Hunting Rifle"));                
+                GetDebuggedWeapon("Corn Dog Hunting Rifle");
                 break;
             
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
+
+    private void GetDebuggedWeapon(string weaponName)
+    {
+        PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == weaponName));
+    }
+}
+
+[Serializable]
+public class UnlockWeapons
+{
+    public string weaponName;
+    public bool getWeapon;
 }
 #endif
