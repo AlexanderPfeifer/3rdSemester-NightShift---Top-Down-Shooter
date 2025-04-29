@@ -87,7 +87,7 @@ public class ShopUI : MonoBehaviour
         }
     }
 
-    public void ResetInventoryElements()
+    public void ResetShopElements()
     {
         brokenLights.SetActive(false);
         newsPaper.SetActive(false);
@@ -101,7 +101,6 @@ public class ShopUI : MonoBehaviour
         descriptionText.text = "";
         descriptionHeader.text = "";
         descriptionImage.gameObject.SetActive(false);
-        equipWeaponButton.interactable = false;
     }
     
     private void EquipNewWeapon(WeaponObjectSO weaponObjectSO)
@@ -114,6 +113,9 @@ public class ShopUI : MonoBehaviour
         descriptionText.text = "";
         descriptionHeader.text = "";
         descriptionImage.gameObject.SetActive(false);
+        equipWeaponButton.interactable = false;
+        fillWeaponAmmoButton.interactable = false;
+        upgradeWeaponButton.interactable = false;
     }
     
     private void DisplayItem(string header)

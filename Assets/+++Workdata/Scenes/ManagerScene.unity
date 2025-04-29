@@ -1931,12 +1931,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da36da28f31d644c8613d21bb335f5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fortuneWheelPieCount: 5
+  firstPieSliceBufferInDegree: 36
   spinPrice: 100
   minStopPower: 75
   maxStopPower: 125
   maxAngularVelocity: 1440
+  rb: {fileID: 1822746489}
   mark: {fileID: 1965271718}
   firstFortuneWheelButtonSelected: {fileID: 404747152}
+  labelRadiusMultiplier: 0.6
 --- !u!1 &355295546
 GameObject:
   m_ObjectHideFlags: 0
@@ -7604,7 +7608,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1380165083
 RectTransform:
   m_ObjectHideFlags: 0

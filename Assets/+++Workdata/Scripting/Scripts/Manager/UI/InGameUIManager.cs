@@ -75,7 +75,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     
     public void GoToMainMenu()
     {
-        shopUI.ResetInventoryElements();
+        shopUI.ResetShopElements();
         dialogueUI.ResetDialogueElements();
         StopAllCoroutines();
 
@@ -163,6 +163,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
                 //Add the normal dialogue box instead
             }
             
+            shopUI.ResetDescriptionsTexts();
             shopUI.DisplayCollectedWeapons();
             
             return;
