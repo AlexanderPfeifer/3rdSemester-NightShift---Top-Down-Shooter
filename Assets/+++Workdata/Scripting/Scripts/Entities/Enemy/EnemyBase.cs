@@ -64,6 +64,10 @@ public class EnemyBase : MonoBehaviour
         if (other.gameObject.TryGetComponent(out Ride _ride))
         {
             _ride.currentRideHealth -= rideAttackDamage;
+            if (_ride.currentRideHealth <= 0)
+            {
+                _ride.LostWave();
+            }
             Ride.Instance.StartRideHitVisual();
             gotKilledFromRide = true;
             Destroy(gameObject);

@@ -3180,7 +3180,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &540206088
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3944,10 +3944,10 @@ RectTransform:
   - {fileID: 1460130098}
   m_Father: {fileID: 1349386884}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 65.625}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 133.4, y: -32.8125}
+  m_SizeDelta: {x: 266.8, y: 65.625}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &684370836
 MonoBehaviour:
@@ -8069,14 +8069,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
-  equipWeapon: 2
+  equipWeapon: 4
   UnlockWeapons:
   - weaponName: Lollipop Shotgun
     getWeapon: 0
   - weaponName: French Fries AR
     getWeapon: 0
   - weaponName: Magnum magnum
-    getWeapon: 1
+    getWeapon: 0
   - weaponName: Popcorn Launcher
     getWeapon: 0
   - weaponName: Corn Dog Hunting Rifle
@@ -10292,10 +10292,10 @@ RectTransform:
   - {fileID: 1685129632}
   m_Father: {fileID: 1349386884}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 65.625}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 133.4, y: -98.4375}
+  m_SizeDelta: {x: 266.8, y: 65.625}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1779932097
 MonoBehaviour:
@@ -11402,10 +11402,10 @@ RectTransform:
   - {fileID: 1245581242}
   m_Father: {fileID: 1349386884}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 65.625}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 133.4, y: -164.0625}
+  m_SizeDelta: {x: 266.8, y: 65.625}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1959048874
 MonoBehaviour:

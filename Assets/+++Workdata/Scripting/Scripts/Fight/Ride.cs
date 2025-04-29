@@ -59,10 +59,6 @@ public class Ride : Singleton<Ride>
         {
             WonWave();
         }
-        else if (currentRideHealth <= 0)
-        {
-            LostWave();
-        }
     }
 
     private Wave GetCurrentWave()
@@ -122,7 +118,7 @@ public class Ride : Singleton<Ride>
 
     #endregion
 
-    private void LostWave()
+    public void LostWave()
     {
         generator.fightMusic.Stop();
         AudioManager.Instance.Play("FightMusicLoss");
@@ -163,7 +159,11 @@ public class Ride : Singleton<Ride>
         
         foreach (var _enemy in currentEnemies)
         {
-            _enemy.GetComponent<EnemyBase>().addHelpDropsOnDeath = false;
+            if (_enemy.TryGetComponent(out EnemyBase _enemyBase))
+            {
+                _enemyBase.addHelpDropsOnDeath = false;
+            }
+
             Destroy(_enemy);
         }
         
