@@ -18,6 +18,10 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private Button equipWeaponButton;
     [SerializeField] private Button upgradeWeaponButton;
     [SerializeField] private Button fillWeaponAmmoButton;
+
+    [Header("ShopWindow")] 
+    [SerializeField] private GameObject fortuneWheel;
+    [SerializeField] private GameObject weapons;
     
     [Header("ShopCosts")]
     [SerializeField] private int[] tierCosts;
@@ -77,7 +81,7 @@ public class ShopUI : MonoBehaviour
             
             if (TutorialManager.Instance.fillAmmoForFree)
             {
-                InGameUIManager.Instance.dialogueUI.SetRadioState(true, true);
+                InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
                 TutorialManager.Instance.canActivateGenerator = true;
             }
         }
@@ -87,6 +91,20 @@ public class ShopUI : MonoBehaviour
         }
     }
 
+    public void SetShopWindow()
+    {
+        if (fortuneWheel.activeSelf)
+        {
+            fortuneWheel.SetActive(false);
+            weapons.SetActive(true);
+        }
+        else
+        {
+            fortuneWheel.SetActive(true);
+            weapons.SetActive(false);
+        }
+    }
+    
     public void ResetShopElements()
     {
         brokenLights.SetActive(false);

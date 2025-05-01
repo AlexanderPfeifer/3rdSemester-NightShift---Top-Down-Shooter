@@ -118,7 +118,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         {
             if (!TutorialManager.Instance.talkedAboutCurrency)
             {
-                dialogueUI.SetRadioState(true, true);
+                dialogueUI.SetDialogueBoxState(true, true);
                 TutorialManager.Instance.talkedAboutCurrency = true;
                 return;
             }
@@ -146,6 +146,8 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             {
                 Destroy(_enemy);
             }
+
+            dialogueUI.SetDialogueBox(true); 
             
             PlayerBehaviour.Instance.SetPlayerBusy(true);
 
@@ -157,20 +159,18 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             
             playerHUD.SetActive(true);
 
-            if (dialogueUI.dialogueCount <= 0)
-            {
-                dialogueUI.dialogueBoxAnim.SetBool("DialogueBoxOn", true);
-                //Add the normal dialogue box instead
-            }
-            
+            dialogueUI.DisplayDialogue();
+
             shopUI.ResetDescriptionsTexts();
             shopUI.DisplayCollectedWeapons();
             
             return;
         }
 
-        dialogueUI.SetRadioState(false, true);
+        dialogueUI.SetDialogueBox(false);
+
         shopScreen.SetActive(false);
+        
         PlayerBehaviour.Instance.SetPlayerBusy(false);
     }
 }

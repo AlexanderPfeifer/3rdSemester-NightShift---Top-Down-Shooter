@@ -23,7 +23,6 @@ public class Ride : Singleton<Ride>
     [SerializeField] private ParticleSystem hitParticles;
     [HideInInspector] public float currentRideHealth;
     private bool rideGotHit;
-    [HideInInspector] public bool rideGotDestroyed;
     [SerializeField] private SpriteRenderer rideRenderer;
     private Animator rideAnimator;
 
@@ -37,7 +36,7 @@ public class Ride : Singleton<Ride>
     private void Start()
     {
         InGameUIManager.Instance.dialogueUI.dialogueCount = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
-        rideAnimator = GetComponent<Animator>();
+        rideAnimator = GetComponentInChildren<Animator>();
         generator = GetComponentInChildren<Generator>();
     }
 
@@ -124,23 +123,26 @@ public class Ride : Singleton<Ride>
         AudioManager.Instance.Play("FightMusicLoss");
         
         ResetRide();
-        rideGotDestroyed = true;
-
+        
         generator.interactable = true;
         
         StopAllCoroutines();
         rideAnimator.SetTrigger("LightOff");
         rideLight.SetActive(false);
-        
-        foreach (GameObject _enemy in enemyParent.transform)
+
+        waveStarted = false;
+
+        for (int _i = 0; _i < enemyParent.transform.childCount; _i++)
         {
-            if (_enemy.TryGetComponent(out EnemyBase _enemyBase))
+            Transform _child = enemyParent.transform.GetChild(_i);
+
+            if (_child.TryGetComponent(out EnemyBase _enemyBase))
             {
                 _enemyBase.addHelpDropsOnDeath = false;
                 _enemyBase.destroyWithoutEffect = true;
             }
             
-            Destroy(_enemy);
+            Destroy(_child.gameObject);
         }
     }
 
@@ -176,7 +178,7 @@ public class Ride : Singleton<Ride>
         waveStarted = false;
         InGameUIManager.Instance.fightUI.SetActive(false);
         InGameUIManager.Instance.abilityFillBar.SetActive(false);
-        InGameUIManager.Instance.dialogueUI.SetRadioState(true, true);
+        InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
         generator.interactable = true;
         GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount();
 
@@ -195,7 +197,6 @@ public class Ride : Singleton<Ride>
     {
         waveTimer = 0;
         currentRideHealth = maxRideHealth;
-        InGameUIManager.Instance.abilityProgressImage.fillAmount = 0;
         
         Time.timeScale = 1f;
         rideRenderer.color = Color.white;

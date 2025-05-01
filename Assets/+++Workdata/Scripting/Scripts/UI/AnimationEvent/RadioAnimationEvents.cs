@@ -4,7 +4,7 @@ public class RadioAnimationEvents : MonoBehaviour
 {
     public void ShowDialogueBox()
     {
-        InGameUIManager.Instance.dialogueUI.dialogueBoxAnim.SetBool("DialogueBoxOn", true);
+        InGameUIManager.Instance.dialogueUI.walkieTalkieDialogueBoxAnim.SetBool("DialogueBoxOn", true);
     }
 
     public void PlayRadioSound()

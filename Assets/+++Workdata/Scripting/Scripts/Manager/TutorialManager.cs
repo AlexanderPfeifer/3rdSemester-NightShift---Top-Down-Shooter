@@ -23,7 +23,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         
         if (shotSigns >= 3)
         {
-            InGameUIManager.Instance.dialogueUI.SetRadioState(true, true);
+            InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
         }
     }
     
@@ -34,10 +34,8 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(_brokenPistol);
         InGameUIManager.Instance.weaponSlot.SetActive(true);
         
-        InGameUIManager.Instance.dialogueUI.dialogueBoxAnim.SetBool("DialogueBoxOn", false);
-
-        InGameUIManager.Instance.dialogueUI.SetRadioState(true, true);
+        InGameUIManager.Instance.SetShopUI();
         
-        InGameUIManager.Instance.shopScreen.SetActive(false);
+        InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
     }
 }

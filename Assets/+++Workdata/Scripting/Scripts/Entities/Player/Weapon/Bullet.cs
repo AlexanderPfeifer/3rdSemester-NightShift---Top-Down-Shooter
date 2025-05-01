@@ -12,6 +12,7 @@ public class Bullet : MonoBehaviour
     private Vector2 travelDirection;
     private Rigidbody2D rb;
     private TrailRenderer trailRenderer;
+    private SpriteRenderer bulletSpriteRenderer;
 
     [Header("Ability")]
     [SerializeField] private float stickyBulletTimer;
@@ -37,6 +38,7 @@ public class Bullet : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         trailRenderer = GetComponent<TrailRenderer>();
+        bulletSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         gameObject.SetActive(false);
     }
 
@@ -50,6 +52,14 @@ public class Bullet : MonoBehaviour
         DeactivateBulletTooFarAwayUpdate();
         
         StickyBulletsTickDamageUpdate();
+
+        UpdateTrailRendererLayer();
+    }
+
+    private void UpdateTrailRendererLayer()
+    {
+        //I subtracted it by 100 because the engine needs enough time to get the bullet sorting order first while it is changing all the time
+        trailRenderer.sortingOrder = bulletSpriteRenderer.sortingOrder - 100;
     }
 
     private void DeactivateBulletTooFarAwayUpdate()

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Generator : MonoBehaviour
 {
@@ -9,7 +8,7 @@ public class Generator : MonoBehaviour
     [Header("Music")]
     [SerializeField] public AudioSource fightMusic;
     
-    [FormerlySerializedAs("genInteractable")] [FormerlySerializedAs("genInactive")] [HideInInspector] public bool interactable = true;
+    [HideInInspector] public bool interactable = true;
 
     public void SetUpFightArena()
     {
@@ -29,14 +28,10 @@ public class Generator : MonoBehaviour
         Ride.Instance.ResetRide();
         Ride.Instance.StartEnemyClusterCoroutines();
 
-        //Check if rideGotDestroyed because at the start the music already plays when turning on the generator
-        if (Ride.Instance.rideGotDestroyed)
-            fightMusic.Play();        
-        
         //Set a bool for the PutAway Animation because the player can leave and enter the collider still inside the fight
         if (canPutAwayWalkieTalkie)
         {
-            InGameUIManager.Instance.dialogueUI.SetRadioState(false, false);
+            InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(false, false);
         }
         canPutAwayWalkieTalkie = false;
     }

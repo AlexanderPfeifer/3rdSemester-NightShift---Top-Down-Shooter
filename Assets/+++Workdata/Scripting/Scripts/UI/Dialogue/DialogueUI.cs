@@ -2,19 +2,23 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DialogueUI : MonoBehaviour
 {
     [Header("Dialogue")]
     [SerializeField] private Animator radioAnim;
-    public Animator dialogueBoxAnim;
+    [FormerlySerializedAs("dialogueBoxAnim")] public Animator walkieTalkieDialogueBoxAnim;
     public Dialogues[] dialogue;
-    [SerializeField] private TextMeshProUGUI dialogueText;
+    [HideInInspector] public TextMeshProUGUI currentTextBox;
+    [FormerlySerializedAs("dialogueText")] [SerializeField] private TextMeshProUGUI walkieTalkieText;
+    [SerializeField] private TextMeshProUGUI shopText;
     [SerializeField] private float standardTextDisplaySpeed = 0.05f;
     [HideInInspector] public float textDisplaySpeed;
     [HideInInspector] public int dialogueCount;
     public float maxTextDisplaySpeed = 0.00005f;
     private int dialogueTextCount;
+    private bool usingShopDialogueBox;
     
     [HideInInspector] public DialogueState dialogueState = DialogueState.DialogueNotPlaying;
 
@@ -24,6 +28,13 @@ public class DialogueUI : MonoBehaviour
         DialoguePlaying,
         DialogueAbleToGoNext,
         DialogueAbleToEnd,
+    }
+
+    public void SetDialogueBox(bool inShop)
+    {
+        currentTextBox = inShop ? shopText : walkieTalkieText;
+
+        usingShopDialogueBox = inShop;
     }
     
     public void DisplayDialogue()
@@ -37,9 +48,9 @@ public class DialogueUI : MonoBehaviour
     {
         dialogueCount = 0;
         dialogueTextCount = 0;
-        dialogueText.text = "";
+        currentTextBox.text = "";
         radioAnim.Rebind();
-        dialogueBoxAnim.Rebind();
+        walkieTalkieDialogueBoxAnim.Rebind();
         dialogueState = DialogueState.DialogueNotPlaying;
     }
 
@@ -71,19 +82,19 @@ public class DialogueUI : MonoBehaviour
     private IEnumerator TypeTextCoroutine(string text)
     {
         dialogueState = DialogueState.DialoguePlaying;
-        dialogueText.text = "";
-        dialogueText.textWrappingMode = TextWrappingModes.Normal;
+        currentTextBox.text = "";
+        currentTextBox.textWrappingMode = TextWrappingModes.Normal;
 
         var _words = text.Split(' ');
         string _displayText = ""; 
-        float _availableWidth = dialogueText.rectTransform.rect.width;
+        float _availableWidth = currentTextBox.rectTransform.rect.width;
 
         foreach (var _word in _words)
         {
             string _testLine = _displayText + _word + " ";
-            dialogueText.text = _testLine;
-            dialogueText.ForceMeshUpdate();
-            float _textWidth = dialogueText.preferredWidth;
+            currentTextBox.text = _testLine;
+            currentTextBox.ForceMeshUpdate();
+            float _textWidth = currentTextBox.preferredWidth;
 
             if (_textWidth > _availableWidth) // If word doesn't fit, move to a new line before typing
             {
@@ -94,7 +105,7 @@ public class DialogueUI : MonoBehaviour
             foreach (char _letter in _word + " ")
             {
                 _displayText += _letter;
-                dialogueText.text = _displayText;
+                currentTextBox.text = _displayText;
                 yield return new WaitForSeconds(textDisplaySpeed);
             }
         }
@@ -110,14 +121,21 @@ public class DialogueUI : MonoBehaviour
         }
     }
 
-    public void SetRadioState(bool radioOn, bool putOn)
+    public void SetDialogueBoxState(bool radioOn, bool putOn)
     {
-        radioAnim.SetBool("RadioOn", radioOn);
-        radioAnim.SetBool("PutOn", putOn);
-
-        if (!radioOn)
+        if (!usingShopDialogueBox)
         {
-            dialogueBoxAnim.SetBool("DialogueBoxOn", false);   
+            radioAnim.SetBool("RadioOn", radioOn);
+            radioAnim.SetBool("PutOn", putOn);
+
+            if (!radioOn)
+            {
+                walkieTalkieDialogueBoxAnim.SetBool("DialogueBoxOn", false);   
+            }
+        }
+        else
+        {
+            
         }
     }
 
@@ -125,15 +143,17 @@ public class DialogueUI : MonoBehaviour
     {
         dialogueTextCount = 0;
         dialogueCount++;
-        dialogueText.text = "";
-        SetRadioState(false, true);
+        currentTextBox.text = "";
+        
+        SetDialogueBoxState(false, true);
+        
         dialogueState = DialogueState.DialogueNotPlaying;
 
         if (dialogueCount == dialogue.Length)
         {
             InGameUIManager.Instance.EndScreen();
         }
-        else if (dialogueCount == 1)
+        if (dialogueCount == 1)
         {
             TutorialManager.Instance.GetFirstWeaponAndWalkieTalkie();
         }
@@ -146,7 +166,7 @@ public class DialogueUI : MonoBehaviour
     public void PlayNextDialogue()
     {
         dialogueState = DialogueState.DialoguePlaying;
-        dialogueText.text = "";
+        currentTextBox.text = "";
         textDisplaySpeed = standardTextDisplaySpeed;
 
         DisplayDialogue();

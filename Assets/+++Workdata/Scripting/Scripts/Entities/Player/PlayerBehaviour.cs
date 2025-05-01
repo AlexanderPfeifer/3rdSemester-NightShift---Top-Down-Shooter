@@ -92,7 +92,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
             {
                 FindAnyObjectByType<Generator>().GetComponent<Generator>().SetUpFightArena();
             
-                transform.position = new Vector3(38, 4, 0);   
+                transform.position = new Vector3(36, 36, 0);   
             }
 
             DebugMode.Instance.GetDebugWeapon();
