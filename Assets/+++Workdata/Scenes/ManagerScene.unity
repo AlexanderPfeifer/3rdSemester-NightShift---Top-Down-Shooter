@@ -1628,7 +1628,7 @@ GameObject:
   - component: {fileID: 268103844}
   - component: {fileID: 268103846}
   m_Layer: 5
-  m_Name: '[Button] IMG_Weapon05'
+  m_Name: '[Button] IMG_AssaultRifle'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1782,8 +1782,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 736, y: 270.00375}
-  m_SizeDelta: {x: 775, y: 378.4}
+  m_AnchoredPosition: {x: 602.28796, y: 284}
+  m_SizeDelta: {x: 662.9807, y: 378.4}
   m_Pivot: {x: 1, y: 0.9999999}
 --- !u!114 &319582084
 MonoBehaviour:
@@ -1971,7 +1971,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &337340317
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2092,6 +2092,138 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1820, y: 980}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &369960743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 369960744}
+  - component: {fileID: 369960747}
+  - component: {fileID: 369960746}
+  - component: {fileID: 369960745}
+  m_Layer: 5
+  m_Name: '[Button] IMG_BrokenPistol'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &369960744
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369960743}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 817330390}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 80, y: 80}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &369960745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369960743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.60784316}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.21568628}
+    m_SelectedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.21568628}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 369960746}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1681847468}
+        m_TargetAssemblyTypeName: InGameUI, Assembly-CSharp
+        m_MethodName: PressButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &369960746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369960743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 1a781b2dd2c0f8242b0bd68a9baf3aba, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &369960747
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369960743}
+  m_CullTransparentMesh: 1
 --- !u!1 &373481257
 GameObject:
   m_ObjectHideFlags: 0
@@ -2126,8 +2258,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.7296143, y: -17.403305}
-  m_SizeDelta: {x: 688.6128, y: 249.6862}
+  m_AnchoredPosition: {x: 0.6369934, y: -17.403305}
+  m_SizeDelta: {x: 582.9044, y: 249.6862}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &373481259
 MonoBehaviour:
@@ -3256,7 +3388,7 @@ GameObject:
   - component: {fileID: 501134662}
   - component: {fileID: 501134664}
   m_Layer: 5
-  m_Name: '[Button] IMG_Weapon01'
+  m_Name: '[Button] IMG_PopcornLauncher'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3393,7 +3525,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &514220289
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3412,7 +3544,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 471, y: -437}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 160, y: 68.24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &514220290
 MonoBehaviour:
@@ -3619,7 +3751,6 @@ RectTransform:
   - {fileID: 514220289}
   - {fileID: 337340317}
   - {fileID: 1829733099}
-  - {fileID: 1380165083}
   - {fileID: 523036698}
   m_Father: {fileID: 2008812083}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4105,6 +4236,7 @@ MonoBehaviour:
   buttonSpriteRenderer: {fileID: 2047534560}
   buttonOn: {fileID: -3753508529759961820, guid: 4c56742be098f664e93e92822d72f139, type: 3}
   buttonOff: {fileID: 4239312038919028401, guid: a03d66e561708524fa033b42402a0943, type: 3}
+  gateAnim: {fileID: 0}
 --- !u!1 &596546072
 GameObject:
   m_ObjectHideFlags: 0
@@ -5087,7 +5219,7 @@ GameObject:
   - component: {fileID: 775953484}
   - component: {fileID: 775953486}
   m_Layer: 5
-  m_Name: '[Button] IMG_Weapon03'
+  m_Name: '[Button] IMG_HuntingRifle'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5287,6 +5419,82 @@ RectTransform:
   m_AnchoredPosition: {x: 0.00015258789, y: -0.000015258789}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &817330389
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 817330390}
+  - component: {fileID: 817330392}
+  - component: {fileID: 817330391}
+  m_Layer: 5
+  m_Name: 'IMG_BrokenPistolDark '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &817330390
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817330389}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 369960744}
+  m_Father: {fileID: 1405862378}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 552.5, y: -40}
+  m_SizeDelta: {x: 80, y: 80}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &817330391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817330389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 1a781b2dd2c0f8242b0bd68a9baf3aba, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &817330392
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817330389}
+  m_CullTransparentMesh: 1
 --- !u!1 &827388980
 GameObject:
   m_ObjectHideFlags: 0
@@ -5589,7 +5797,7 @@ GameObject:
   - component: {fileID: 861035819}
   - component: {fileID: 861035818}
   m_Layer: 5
-  m_Name: IMG_Weapon01Dark
+  m_Name: IMG_PopcornLauncherDark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5610,9 +5818,9 @@ RectTransform:
   - {fileID: 501134661}
   m_Father: {fileID: 1405862378}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -460.6, y: 42.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -40}
   m_SizeDelta: {x: 75, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &861035818
@@ -6438,7 +6646,7 @@ GameObject:
   - component: {fileID: 1027505341}
   - component: {fileID: 1027505340}
   m_Layer: 5
-  m_Name: IMG_Weapon02Dark
+  m_Name: IMG_MagnumDark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6459,9 +6667,9 @@ RectTransform:
   - {fileID: 2031220324}
   m_Father: {fileID: 1405862378}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -312, y: 42.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 138.5, y: -40}
   m_SizeDelta: {x: 75, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1027505340
@@ -6515,7 +6723,7 @@ GameObject:
   - component: {fileID: 1029645978}
   - component: {fileID: 1029645980}
   m_Layer: 5
-  m_Name: '[Button] IMG_Weapon04'
+  m_Name: '[Button] IMG_LollipopShotgun'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6807,7 +7015,7 @@ GameObject:
   - component: {fileID: 1066307515}
   - component: {fileID: 1066307514}
   m_Layer: 5
-  m_Name: IMG_Weapon05Dark
+  m_Name: IMG_AssaultRifleDark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6828,9 +7036,9 @@ RectTransform:
   - {fileID: 268103843}
   m_Father: {fileID: 1405862378}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 136, y: 42.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 446.5, y: -40}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1066307514
@@ -8196,7 +8404,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -171.09998, y: 106.86003}
+  m_AnchoredPosition: {x: -171.09998, y: 186.9}
   m_SizeDelta: {x: 266.8, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1349386885
@@ -8225,81 +8433,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1 &1380165082
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1380165083}
-  - component: {fileID: 1380165085}
-  - component: {fileID: 1380165084}
-  m_Layer: 5
-  m_Name: ShutterRight
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1380165083
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1380165082}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 540206088}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 474.58, y: 0}
-  m_SizeDelta: {x: 970.84, y: 1080}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1380165084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1380165082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.6150943, g: 0.6150943, b: 0.6150943, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1380165085
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1380165082}
-  m_CullTransparentMesh: 1
 --- !u!1 &1401014775
 GameObject:
   m_ObjectHideFlags: 0
@@ -8354,6 +8487,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1405862378}
+  - component: {fileID: 1405862379}
   m_Layer: 5
   m_Name: WeaponIcons
   m_TagString: Untagged
@@ -8373,19 +8507,45 @@ RectTransform:
   m_LocalScale: {x: 1.3, y: 1.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1632666682}
   - {fileID: 861035817}
   - {fileID: 1027505339}
   - {fileID: 1986497989}
   - {fileID: 1999407153}
   - {fileID: 1066307513}
+  - {fileID: 817330390}
   m_Father: {fileID: 1829733099}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 302.4, y: 236.56003}
+  m_AnchoredPosition: {x: -230.4, y: 304.5}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1405862379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1405862377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 26
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1427500008
 GameObject:
   m_ObjectHideFlags: 0
@@ -10067,14 +10227,14 @@ RectTransform:
   m_GameObject: {fileID: 1632666681}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1405862378}
+  m_Father: {fileID: 1829733099}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -162.99991, y: 169.99995}
+  m_AnchoredPosition: {x: 90.50009, y: 457.55994}
   m_SizeDelta: {x: 193.984, y: 30.006}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1632666683
@@ -10233,7 +10393,7 @@ MonoBehaviour:
   pressSpace: {fileID: 467741167}
   abilityProgressImage: {fileID: 435818944}
   abilityFillBar: {fileID: 573094197}
-  wheelOfFortuneShutter: {fileID: 1380165082}
+  changeShopWindowButton: {fileID: 514220288}
   fightUI: {fileID: 559663715}
   weaponSwapScreen: {fileID: 237238742}
   playerHUD: {fileID: 1057738072}
@@ -10241,6 +10401,7 @@ MonoBehaviour:
   generatorScreen: {fileID: 590653168}
   changeLight: 0
   endScreen: {fileID: 1787699098}
+  generatorUI: {fileID: 590653172}
   currencyUI: {fileID: 0}
   dialogueUI: {fileID: 0}
   shopUI: {fileID: 0}
@@ -10291,8 +10452,8 @@ MonoBehaviour:
     dialogues:
     - 'Margarite:
 
-      Nicely done! Come back to my shop and refill your ammo,
-      then you can finally start your shift.'
+      Nicely done! Come back to my shop and refill your ammo to
+      finally start your shift.'
   - situation: CameBackToFillAmmo
     dialogues:
     - 'Margarite:
@@ -10394,6 +10555,7 @@ MonoBehaviour:
   magnumMagnum: {fileID: 2031220323}
   cornDogHuntingRifle: {fileID: 775953482}
   lollipopShotgun: {fileID: 1029645976}
+  brokenPistol: {fileID: 369960743}
 --- !u!114 &1681847472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11556,7 +11718,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1829733099
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11570,6 +11732,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1171565109}
+  - {fileID: 1632666682}
   - {fileID: 1405862378}
   - {fileID: 1349386884}
   m_Father: {fileID: 540206088}
@@ -12327,7 +12490,7 @@ GameObject:
   - component: {fileID: 1986497991}
   - component: {fileID: 1986497990}
   m_Layer: 5
-  m_Name: IMG_Weapon03Dark
+  m_Name: IMG_HuntingRifleDark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12348,9 +12511,9 @@ RectTransform:
   - {fileID: 775953483}
   m_Father: {fileID: 1405862378}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -163, y: 42.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 240.75, y: -40}
   m_SizeDelta: {x: 77.5, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1986497990
@@ -12690,7 +12853,7 @@ GameObject:
   - component: {fileID: 1999407155}
   - component: {fileID: 1999407154}
   m_Layer: 5
-  m_Name: IMG_Weapon04Dark
+  m_Name: IMG_LollipopShotgunDark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12711,9 +12874,9 @@ RectTransform:
   - {fileID: 1029645977}
   m_Father: {fileID: 1405862378}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12.5, y: 42.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 343, y: -40}
   m_SizeDelta: {x: 75, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1999407154
@@ -13013,7 +13176,7 @@ GameObject:
   - component: {fileID: 2031220325}
   - component: {fileID: 2031220327}
   m_Layer: 5
-  m_Name: '[Button] IMG_Weapon02'
+  m_Name: '[Button] IMG_Magnum'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

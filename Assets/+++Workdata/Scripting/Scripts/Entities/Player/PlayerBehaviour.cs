@@ -39,6 +39,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     [SerializeField] public LayerMask generatorLayer;
     [SerializeField] public LayerMask duckLayer;
     [SerializeField] private LayerMask collectibleLayer;
+    [SerializeField] private LayerMask rideLayer;
     [HideInInspector] public bool canInteract = true;
     private bool isPlayerBusy;
 
@@ -147,6 +148,11 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         else if (GetInteractionObjectInRange(duckLayer, out _))
         {
             AudioManager.Instance.Play("DuckSound");
+        }
+        else if (GetInteractionObjectInRange(rideLayer, out Collider2D _ride))
+        {
+            InGameUIManager.Instance.generatorUI.gateAnim.SetBool("OpenGate", false);
+            _ride.GetComponent<Ride>().generator.SetUpFightArena();
         }
     }
 

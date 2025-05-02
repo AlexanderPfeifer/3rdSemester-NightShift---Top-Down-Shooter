@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -22,12 +23,20 @@ public class GeneratorUI : MonoBehaviour
     [SerializeField] private Image buttonSpriteRenderer;
     [SerializeField] private Sprite buttonOn;
     [SerializeField] private Sprite buttonOff;
+
+    [Header("Gate")] 
+    public Animator gateAnim;
     
     private void OnEnable()
     {
         PlayerBehaviour.Instance.SetPlayerBusy(true);
         EventSystem.current.SetSelectedGameObject(firstGeneratorSelected);            
         buttonSpriteRenderer.sprite = buttonOff;
+    }
+
+    private void Start()
+    {
+        gateAnim = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -62,8 +71,10 @@ public class GeneratorUI : MonoBehaviour
         if (generatorFillImage.fillAmount > activateGeneratorFillAmount)
         {
             gameObject.SetActive(false);
+            
             if (PlayerBehaviour.Instance.GetInteractionObjectInRange(PlayerBehaviour.Instance.generatorLayer, out Collider2D _generator))
-            {            
+            {          
+                gateAnim.SetBool("OpenGate", true);
                 _generator.GetComponent<Generator>().SetUpFightArena();
             }
         }

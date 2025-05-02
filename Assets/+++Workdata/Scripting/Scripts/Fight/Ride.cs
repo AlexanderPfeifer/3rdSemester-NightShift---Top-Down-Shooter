@@ -28,7 +28,7 @@ public class Ride : Singleton<Ride>
 
     [Header("Activation")]
     public GameObject rideLight;
-    private Generator generator;
+    [HideInInspector] public Generator generator;
     
     [Header("Arena")]
     public GameObject invisibleCollider;

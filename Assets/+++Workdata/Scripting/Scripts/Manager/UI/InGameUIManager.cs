@@ -24,7 +24,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     public GameObject abilityFillBar;
 
     [Header("Shop")] 
-    [SerializeField] private GameObject wheelOfFortuneShutter;
+    [SerializeField] private GameObject changeShopWindowButton;
     
     [Header("UI Screens")]
     public GameObject fightUI;
@@ -39,6 +39,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     static float t;
     
     [Header("References")]
+    public GeneratorUI generatorUI;
     [HideInInspector] public CurrencyUI currencyUI;
     [HideInInspector] public DialogueUI dialogueUI;
     [FormerlySerializedAs("weaponDescriptionUI")] [FormerlySerializedAs("inventoryUI")] [HideInInspector] public ShopUI shopUI;
@@ -154,7 +155,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             if (TutorialManager.Instance.openShutterWheelOfFortune)
             {
                 //Todo: Make this an animation of the shutter
-                wheelOfFortuneShutter.SetActive(false);
+                changeShopWindowButton.SetActive(true);
             }
             
             playerHUD.SetActive(true);

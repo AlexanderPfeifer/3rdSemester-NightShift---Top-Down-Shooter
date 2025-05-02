@@ -43,6 +43,7 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private GameObject magnumMagnum;
     [SerializeField] private GameObject cornDogHuntingRifle;
     [SerializeField] private GameObject lollipopShotgun;
+    [SerializeField] private GameObject brokenPistol;
     
     private void Start()
     {
@@ -115,6 +116,7 @@ public class ShopUI : MonoBehaviour
         popcornPistol.SetActive(false);
         lollipopShotgun.SetActive(false);
         frenchFriesAssaultRifle.SetActive(false);
+        brokenPistol.SetActive(false);
         
         descriptionText.text = "";
         descriptionHeader.text = "";
@@ -177,17 +179,12 @@ public class ShopUI : MonoBehaviour
                             
                 case "Corn Dog Hunting Rifle" :
                     upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO, 
-                        popcornLauncherUpgradeTiers));
+                        huntingRifleUpgradeTiers));
                     break;
                             
                 case "Popcorn Launcher" :
                     upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO, 
                         popcornLauncherUpgradeTiers));
-                    break;
-                            
-                case "Broken Pistol" :
-                    //upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO, 
-                        //brokenPistolUpgradeTiers));
                     break;
             }
         }
@@ -270,6 +267,9 @@ public class ShopUI : MonoBehaviour
                     break;
                 case "Popcorn Launcher" :
                     ActivateInventoryItem(popcornPistol, _headerText, _spriteWeapon, _text, _weapon);
+                    break;
+                case "Broken Pistol" :
+                    ActivateInventoryItem(brokenPistol, _headerText, _spriteWeapon, _text, _weapon);
                     break;
             }
         }
