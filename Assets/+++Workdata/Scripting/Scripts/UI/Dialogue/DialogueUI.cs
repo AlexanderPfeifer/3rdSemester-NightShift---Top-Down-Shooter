@@ -1,25 +1,34 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class DialogueUI : MonoBehaviour
 {
-    [Header("Dialogue")]
-    [SerializeField] private Animator radioAnim;
-    [FormerlySerializedAs("dialogueBoxAnim")] public Animator walkieTalkieDialogueBoxAnim;
-    public Dialogues[] dialogue;
-    [HideInInspector] public TextMeshProUGUI currentTextBox;
-    [FormerlySerializedAs("dialogueText")] [SerializeField] private TextMeshProUGUI walkieTalkieText;
+    [Header("DialogueType")]
+    [FormerlySerializedAs("dialogue")] public Dialogues[] dialogueShop;
+    public Dialogues[] dialogueWalkieTalkie;
     [SerializeField] private TextMeshProUGUI shopText;
+    [FormerlySerializedAs("dialogueText")] [SerializeField] private TextMeshProUGUI walkieTalkieText;
+    [HideInInspector] public TextMeshProUGUI currentTextBox;
+    [HideInInspector] public int dialogueCountShop;
+    [HideInInspector] public int dialogueCountWalkieTalkie;
+    [HideInInspector] public int currentDialogueCount;
+    
+    [Header("Typing Settings")]
     [SerializeField] private float standardTextDisplaySpeed = 0.05f;
     [HideInInspector] public float textDisplaySpeed;
-    [HideInInspector] public int dialogueCount;
     public float maxTextDisplaySpeed = 0.00005f;
-    private int dialogueTextCount;
-    private bool usingShopDialogueBox;
     
+    [Header("Animations")]
+    [SerializeField] private Animator radioAnim;
+    [FormerlySerializedAs("dialogueBoxAnim")] public Animator walkieTalkieDialogueBoxAnim;
+    
+    [Header("DialogueState")]
+    private int dialogueTextCount;
     [HideInInspector] public DialogueState dialogueState = DialogueState.DialogueNotPlaying;
 
     public enum DialogueState
@@ -32,21 +41,43 @@ public class DialogueUI : MonoBehaviour
 
     public void SetDialogueBox(bool inShop)
     {
-        currentTextBox = inShop ? shopText : walkieTalkieText;
-
-        usingShopDialogueBox = inShop;
+        if (inShop)
+        {
+            currentTextBox = shopText;
+            currentDialogueCount = dialogueCountShop;
+        }
+        else
+        {
+            currentTextBox = walkieTalkieText;
+            currentDialogueCount = dialogueCountWalkieTalkie;
+        }
     }
     
     public void DisplayDialogue()
     {
-        StartCoroutine(TypeTextCoroutine(dialogue[dialogueCount].dialogues[dialogueTextCount]));
+        if (currentTextBox == shopText)
+        {
+            if (dialogueShop.Length >= currentDialogueCount)
+            {
+                StartCoroutine(TypeTextCoroutine(dialogueShop[currentDialogueCount].dialogues[dialogueTextCount], dialogueShop));
+            }
+        }
+        else
+        {
+            if (dialogueWalkieTalkie.Length >= currentDialogueCount)
+            {
+                StartCoroutine(TypeTextCoroutine(dialogueWalkieTalkie[currentDialogueCount].dialogues[dialogueTextCount], dialogueWalkieTalkie));
+            }
+        }
         
         dialogueTextCount++;
     }
 
     public void ResetDialogueElements()
     {
-        dialogueCount = 0;
+        dialogueCountShop = 0;
+        dialogueCountWalkieTalkie = 0;
+        currentDialogueCount = 0;
         dialogueTextCount = 0;
         currentTextBox.text = "";
         radioAnim.Rebind();
@@ -79,7 +110,7 @@ public class DialogueUI : MonoBehaviour
         return dialogueState != DialogueState.DialogueNotPlaying;
     }
     
-    private IEnumerator TypeTextCoroutine(string text)
+    private IEnumerator TypeTextCoroutine(string text, Dialogues[] currentDialogue)
     {
         dialogueState = DialogueState.DialoguePlaying;
         currentTextBox.text = "";
@@ -110,8 +141,12 @@ public class DialogueUI : MonoBehaviour
             }
         }
         
-        //This checks for the current dialogue that is playing, whether they talked until the end or not
-        if (dialogueTextCount == dialogue[dialogueCount].dialogues.Count)
+        CheckDialogueEnd(currentDialogue);
+    }
+
+    private void CheckDialogueEnd(IReadOnlyList<Dialogues> currentDialogue)
+    {
+        if (dialogueTextCount == currentDialogue[currentDialogueCount].dialogues.Count)
         {
             dialogueState = DialogueState.DialogueAbleToEnd;
         }
@@ -123,7 +158,7 @@ public class DialogueUI : MonoBehaviour
 
     public void SetDialogueBoxState(bool radioOn, bool putOn)
     {
-        if (!usingShopDialogueBox)
+        if (currentTextBox != shopText)
         {
             radioAnim.SetBool("RadioOn", radioOn);
             radioAnim.SetBool("PutOn", putOn);
@@ -135,29 +170,38 @@ public class DialogueUI : MonoBehaviour
         }
         else
         {
-            
+            //Also some animation for the text box in the shop
         }
     }
 
     public void EndDialogue()
     {
         dialogueTextCount = 0;
-        dialogueCount++;
+        currentDialogueCount++;
         currentTextBox.text = "";
         
         SetDialogueBoxState(false, true);
         
         dialogueState = DialogueState.DialogueNotPlaying;
 
-        if (dialogueCount == dialogue.Length)
+        if (currentTextBox != shopText)
         {
-            InGameUIManager.Instance.EndScreen();
+            dialogueCountWalkieTalkie++;
+            return;
         }
-        if (dialogueCount == 1)
+        
+        dialogueCountShop++;
+
+        if (currentDialogueCount == dialogueShop.Length)
+        {
+            //Need to find a way to end the game
+            //InGameUIManager.Instance.EndScreen();
+        }
+        if (currentDialogueCount == 1)
         {
             TutorialManager.Instance.GetFirstWeaponAndWalkieTalkie();
         }
-        else if (dialogueCount == 5)
+        else if (currentDialogueCount == 5)
         {
             InGameUIManager.Instance.currencyUI.GetCurrencyText().gameObject.SetActive(true);
         }

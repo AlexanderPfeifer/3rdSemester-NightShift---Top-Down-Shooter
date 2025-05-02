@@ -24,19 +24,11 @@ public class GeneratorUI : MonoBehaviour
     [SerializeField] private Sprite buttonOn;
     [SerializeField] private Sprite buttonOff;
 
-    [Header("Gate")] 
-    public Animator gateAnim;
-    
     private void OnEnable()
     {
         PlayerBehaviour.Instance.SetPlayerBusy(true);
         EventSystem.current.SetSelectedGameObject(firstGeneratorSelected);            
         buttonSpriteRenderer.sprite = buttonOff;
-    }
-
-    private void Start()
-    {
-        gateAnim = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -74,8 +66,7 @@ public class GeneratorUI : MonoBehaviour
             
             if (PlayerBehaviour.Instance.GetInteractionObjectInRange(PlayerBehaviour.Instance.generatorLayer, out Collider2D _generator))
             {          
-                gateAnim.SetBool("OpenGate", true);
-                _generator.GetComponent<Generator>().SetUpFightArena();
+                _generator.GetComponent<Generator>().gateAnim.SetBool("OpenGate", true);
             }
         }
         else

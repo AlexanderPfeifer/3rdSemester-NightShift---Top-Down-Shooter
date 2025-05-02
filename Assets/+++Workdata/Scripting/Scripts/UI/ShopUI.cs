@@ -82,7 +82,7 @@ public class ShopUI : MonoBehaviour
             
             if (TutorialManager.Instance.fillAmmoForFree)
             {
-                InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
+                InGameUIManager.Instance.dialogueUI.DisplayDialogue();
                 TutorialManager.Instance.canActivateGenerator = true;
             }
         }

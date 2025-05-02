@@ -149,7 +149,8 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             }
 
             dialogueUI.SetDialogueBox(true); 
-            
+            dialogueUI.SetDialogueBoxState(false, false);
+
             PlayerBehaviour.Instance.SetPlayerBusy(true);
 
             if (TutorialManager.Instance.openShutterWheelOfFortune)
@@ -158,9 +159,12 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
                 changeShopWindowButton.SetActive(true);
             }
             
-            playerHUD.SetActive(true);
+            dialogueUI.SetDialogueBoxState(false, true);
 
-            dialogueUI.DisplayDialogue();
+            playerHUD.SetActive(true);
+            
+            if (TutorialManager.Instance.shotSigns < 3 || !TutorialManager.Instance.fillAmmoForFree)
+                dialogueUI.DisplayDialogue();
 
             shopUI.ResetDescriptionsTexts();
             shopUI.DisplayCollectedWeapons();

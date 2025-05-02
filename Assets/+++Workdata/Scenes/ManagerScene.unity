@@ -10434,15 +10434,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19437993c4ab9f44c9f650b9ec0d2167, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radioAnim: {fileID: 1046655514}
-  walkieTalkieDialogueBoxAnim: {fileID: 1181395887}
-  dialogue:
+  dialogueShop:
   - situation: GettingFirstEquipment
     dialogues:
     - "???: \nHey sweetie, you are the new guy, right?"
     - "Margarite: \nI am Margarite, nice to meet you."
     - "Margarite: \nLet me show you what you need to do - here is your first weapon
       and here is your walkie talkie, let's test it."
+  - situation: CameBackToFillAmmo
+    dialogues:
+    - 'Margarite:
+
+      Perfect, for now you can have an ammo refill for free but
+      don''t think this lasts forever.'
+    - 'Margarite:
+
+      Okay but enough talking now, I opened up the generator so
+      now you can activate it and get going.'
+  dialogueWalkieTalkie:
   - situation: ReceivingWalkieTalkie
     dialogues:
     - Works like a charm.
@@ -10454,20 +10463,6 @@ MonoBehaviour:
 
       Nicely done! Come back to my shop and refill your ammo to
       finally start your shift.'
-  - situation: CameBackToFillAmmo
-    dialogues:
-    - 'Margarite:
-
-      Perfect, for now you can have an ammo refill for free but
-      don''t think this lasts forever.'
-    - 'Margarite:
-
-      Oh, and the closed panel on the right, you''ll find out
-      what it is soon enough, a woman never reveals all her secrets right away.'
-    - 'Margarite:
-
-      Okay but enough talking now, I opened the generator so now
-      you can activate it and get going.'
   - situation: BeforeStartingFirstGenerator
     dialogues:
     - 'Margarite:
@@ -10496,13 +10491,17 @@ MonoBehaviour:
     - "I think it\u2018s about damn time for you to tell me what\u2018s going on
       here. "
     - "Boss: \nFine. You know what? Come to the entrance I'm gonna be there\u2026 "
-  currentTextBox: {fileID: 0}
-  walkieTalkieText: {fileID: 163291304}
   shopText: {fileID: 373481259}
+  walkieTalkieText: {fileID: 163291304}
+  currentTextBox: {fileID: 0}
+  dialogueCountShop: 0
+  dialogueCountWalkieTalkie: 0
+  currentDialogueCount: 0
   standardTextDisplaySpeed: 0.05
   textDisplaySpeed: 0
-  dialogueCount: 0
   maxTextDisplaySpeed: 0.0005
+  radioAnim: {fileID: 1046655514}
+  walkieTalkieDialogueBoxAnim: {fileID: 1181395887}
   dialogueState: 0
 --- !u!114 &1681847471
 MonoBehaviour:
@@ -13149,12 +13148,12 @@ RectTransform:
   m_Children:
   - {fileID: 1787699097}
   - {fileID: 559663716}
-  - {fileID: 1057738073}
-  - {fileID: 257483470}
   - {fileID: 1245599053}
-  - {fileID: 590653169}
   - {fileID: 540206088}
+  - {fileID: 1057738073}
+  - {fileID: 590653169}
   - {fileID: 237238743}
+  - {fileID: 257483470}
   - {fileID: 1838202615}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

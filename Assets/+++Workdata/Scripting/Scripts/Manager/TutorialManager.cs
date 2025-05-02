@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TutorialManager : SingletonPersistent<TutorialManager>
 {
-    private int shotSigns;
+    [HideInInspector] public int shotSigns;
 
     [HideInInspector] public bool openShutterWheelOfFortune;
     [HideInInspector] public bool fillAmmoForFree;

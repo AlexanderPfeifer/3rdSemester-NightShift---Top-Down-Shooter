@@ -151,7 +151,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         }
         else if (GetInteractionObjectInRange(rideLayer, out Collider2D _ride))
         {
-            InGameUIManager.Instance.generatorUI.gateAnim.SetBool("OpenGate", false);
+            _ride.GetComponent<Ride>().generator.gateAnim.SetBool("OpenGate", false);
             _ride.GetComponent<Ride>().generator.SetUpFightArena();
         }
     }

@@ -23,7 +23,7 @@ public class Ride : Singleton<Ride>
     [SerializeField] private ParticleSystem hitParticles;
     [HideInInspector] public float currentRideHealth;
     private bool rideGotHit;
-    [SerializeField] private SpriteRenderer rideRenderer;
+    public SpriteRenderer rideRenderer;
     private Animator rideAnimator;
 
     [Header("Activation")]
@@ -35,7 +35,7 @@ public class Ride : Singleton<Ride>
 
     private void Start()
     {
-        InGameUIManager.Instance.dialogueUI.dialogueCount = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
+        InGameUIManager.Instance.dialogueUI.dialogueCountShop = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
         rideAnimator = GetComponentInChildren<Animator>();
         generator = GetComponentInChildren<Generator>();
     }
