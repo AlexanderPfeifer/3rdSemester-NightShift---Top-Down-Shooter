@@ -159,10 +159,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
                 changeShopWindowButton.SetActive(true);
             }
             
-            dialogueUI.SetDialogueBoxState(false, true);
-
-            playerHUD.SetActive(true);
-            
             if (TutorialManager.Instance.shotSigns < 3 || !TutorialManager.Instance.fillAmmoForFree)
                 dialogueUI.DisplayDialogue();
 
@@ -173,6 +169,8 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         }
 
         dialogueUI.SetDialogueBox(false);
+        
+        dialogueUI.SetDialogueBoxState(false, true);
 
         shopScreen.SetActive(false);
         

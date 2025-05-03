@@ -29,6 +29,8 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     
     public void GetFirstWeaponAndWalkieTalkie()
     {
+        InGameUIManager.Instance.playerHUD.SetActive(true);
+        
         WeaponObjectSO _brokenPistol = PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Broken Pistol");
         
         PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(_brokenPistol);

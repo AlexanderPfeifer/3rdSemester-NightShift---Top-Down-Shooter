@@ -4236,7 +4236,6 @@ MonoBehaviour:
   buttonSpriteRenderer: {fileID: 2047534560}
   buttonOn: {fileID: -3753508529759961820, guid: 4c56742be098f664e93e92822d72f139, type: 3}
   buttonOff: {fileID: 4239312038919028401, guid: a03d66e561708524fa033b42402a0943, type: 3}
-  gateAnim: {fileID: 0}
 --- !u!1 &596546072
 GameObject:
   m_ObjectHideFlags: 0
@@ -4281,6 +4280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5c1f212da2b7064eb1719ff5232b9d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shotSigns: 0
   openShutterWheelOfFortune: 0
   fillAmmoForFree: 0
   talkedAboutCurrency: 0
@@ -6970,7 +6970,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1057738073
 RectTransform:
   m_ObjectHideFlags: 0

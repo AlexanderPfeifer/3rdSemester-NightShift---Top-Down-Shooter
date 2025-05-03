@@ -20,7 +20,7 @@ public class Generator : MonoBehaviour
         AudioManager.Instance.Stop("InGameMusic");
         interactable = false;
         Ride.Instance.rideLight.SetActive(true);
-        Ride.Instance.rideRenderer.GetComponent<Animator>().SetTrigger("LightOn");
+        //Ride.Instance.rideRenderer.GetComponent<Animator>().SetTrigger("LightOn");
         Ride.Instance.invisibleCollider.SetActive(true);
 
         if (PlayerBehaviour.Instance.abilityBehaviour.hasAbilityUpgrade)

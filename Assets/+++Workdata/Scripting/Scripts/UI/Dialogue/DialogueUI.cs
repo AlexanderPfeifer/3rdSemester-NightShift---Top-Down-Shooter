@@ -166,6 +166,11 @@ public class DialogueUI : MonoBehaviour
             if (!radioOn)
             {
                 walkieTalkieDialogueBoxAnim.SetBool("DialogueBoxOn", false);   
+                PlayerBehaviour.Instance.SetPlayerBusy(false);
+            }
+            else
+            {
+                PlayerBehaviour.Instance.SetPlayerBusy(true);
             }
         }
         else
