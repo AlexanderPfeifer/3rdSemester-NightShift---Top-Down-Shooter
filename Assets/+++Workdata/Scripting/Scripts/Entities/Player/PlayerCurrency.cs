@@ -27,6 +27,8 @@ public class PlayerCurrency : MonoBehaviour
     public void AddCurrency(int amount)
     {
         currency += amount;
+        
+        AudioManager.Instance.Play("AddCurrency");
     }
 
     private void SetCurrencyText()

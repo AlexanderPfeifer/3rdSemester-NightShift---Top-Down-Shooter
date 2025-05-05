@@ -1,12 +1,12 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AudioManager : SingletonPersistent<AudioManager>
 {
     public SoundCategory[] soundCategories;
     
-    private string lastRandomPlayedSound = "";
-
     protected override void Awake()
     {
         base.Awake();
@@ -16,10 +16,8 @@ public class AudioManager : SingletonPersistent<AudioManager>
             foreach (var _sound in _soundCategory.sounds)
             {
                 _sound.audioSource = gameObject.AddComponent<AudioSource>();
-                _sound.audioSource.clip = _sound.clip;
-
+                _sound.audioSource.resource = _sound.audioResource;
                 _sound.audioSource.volume = _sound.volume;
-
                 _sound.audioSource.loop = _sound.loop;
             
                 _sound.audioSource.outputAudioMixerGroup = _sound.audioMixer;
@@ -27,7 +25,7 @@ public class AudioManager : SingletonPersistent<AudioManager>
         }
     }
 
-    public void Play(string soundName)
+    private Sound GetSound(string soundName)
     {
         Sound _s = null;
         
@@ -42,68 +40,85 @@ public class AudioManager : SingletonPersistent<AudioManager>
         if (_s == null)
         {
             Debug.LogError("Sound: " + soundName + " not found!");
-            return;
         }
-        _s.audioSource.Play();
+        
+        return _s;
+    }
+    
+    public void Play(string soundName)
+    {
+        if (GetSound(soundName) != null)
+        {
+            GetSound(soundName).audioSource.Play();
+        }
     }
     
     public void Stop(string soundName)
     {
-        Sound _s = null;
-
-        foreach (var _soundCategory in soundCategories)
+        if (GetSound(soundName) != null)
         {
-            if(_s != null)
-                break;
-            
-            _s = Array.Find(_soundCategory.sounds, sound => sound.name == soundName);
+            GetSound(soundName).audioSource.Stop();
         }
-        
-        if (_s == null)
-        {
-            Debug.LogError("Sound: " + soundName + " not found!");
-            return;
-        }
-        _s.audioSource.Stop();
     }
-
-    public void PlayRandomSoundFromListArray(string[] soundNameFromArray)
+    
+    public void Pause(string soundName)
     {
-        if (soundNameFromArray.Length == 0)
+        if (GetSound(soundName) != null)
         {
-            Debug.LogError("Sound array is empty!");
-            return;
+            GetSound(soundName).audioSource.Pause();
         }
-
-        Sound _s = null;
-        string _soundName;
-
-        //I am keep asking for a new sound because it is easier to implement and performance is not a limiting factor here
-        do
+    }
+    
+    public void FadeOut(string soundEffect)
+    {
+        StartCoroutine(VolumeFadeOut(soundEffect));
+    }
+    
+    private IEnumerator VolumeFadeOut(string soundName)
+    {
+        Sound _s = GetSound(soundName);
+        
+        if (_s != null)
         {
-            _soundName = soundNameFromArray[UnityEngine.Random.Range(0, soundNameFromArray.Length)];
-        } 
-        while (_soundName == lastRandomPlayedSound && soundNameFromArray.Length > 1); 
+            while (_s.audioSource.volume > 0.01f)
+            {
+                _s.audioSource.volume = Mathf.Lerp(_s.audioSource.volume, 0, Time.unscaledTime);
+                yield return null;
+            }
 
-        lastRandomPlayedSound = _soundName; 
-
-        foreach (var _soundCategory in soundCategories)
+            _s.audioSource.volume = 0;
+        }
+    }
+    
+    public void FadeIn(string soundEffect)
+    {
+        StartCoroutine(VolumeFadeIn(soundEffect));
+    }
+    
+    private IEnumerator VolumeFadeIn(string soundName)
+    {
+        Sound _s = GetSound(soundName);
+        
+        if (_s != null)
         {
-            if(_s != null)
-                break;
+            if (!IsPlaying(soundName))
+            {
+                Play(soundName);
+                _s.volume = 0;
+            }
+        
+            while (_s.audioSource.volume < .9f)
+            {
+                _s.audioSource.volume = Mathf.Lerp(_s.audioSource.volume, 1, Time.unscaledTime);
+                yield return null;
+            }
             
-            _s = Array.Find(_soundCategory.sounds, sound => sound.name == _soundName);
+            _s.audioSource.volume = 1;
         }
-        
-        if (_s == null)
-        {
-            Debug.LogError("Sound: " + _soundName + " not found!");
-            return;
-        }
-        
-        if(_s.audioSource.isPlaying)
-            _s.audioSource.Stop();
-        
-        _s.audioSource.Play();
+    }
+    
+    public bool IsPlaying(string soundName)
+    {
+        return GetSound(soundName).audioSource.isPlaying;
     }
 }

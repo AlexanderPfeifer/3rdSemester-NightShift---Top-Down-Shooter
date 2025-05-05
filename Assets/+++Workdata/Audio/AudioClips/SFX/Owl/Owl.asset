@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-6616412623861435418
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Owl4_{-6616412623861435418}
+  m_AudioClip: {fileID: 8300000, guid: e13e153aca9c24f448b36ff030a48d2d, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-931723935461809584
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Owl2_{-931723935461809584}
+  m_AudioClip: {fileID: 8300000, guid: 707e7b3772e38cd43ac526ac1e168849, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-667560303621796141
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Owl3_{-667560303621796141}
+  m_AudioClip: {fileID: 8300000, guid: 28d82c418cefeb041a823424aefbdbca, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-368863551847480459
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Owl6_{-368863551847480459}
+  m_AudioClip: {fileID: 8300000, guid: 29b6aad95ac85c94c9da82495feb39b3, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &814852709953132707
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Owl5_{814852709953132707}
+  m_AudioClip: {fileID: 8300000, guid: 56bca99935f69e847b0528b3c200f60d, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1307931743 &6418180475301049370
+AudioRandomContainer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Owl
+  m_Volume: 0
+  m_Pitch: 0
+  m_AutomaticTriggerTime: 0
+  m_LoopCount: 1
+  m_VolumeRandomizationRange: {x: 0, y: 0}
+  m_PitchRandomizationRange: {x: -500, y: 500}
+  m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
+  m_LoopCountRandomizationRange: {x: 0, y: 0}
+  m_Elements:
+  - {fileID: 7888763373276931860}
+  - {fileID: -931723935461809584}
+  - {fileID: -667560303621796141}
+  - {fileID: -6616412623861435418}
+  - {fileID: 814852709953132707}
+  - {fileID: -368863551847480459}
+  m_AvoidRepeatingLast: 0
+  m_PlaybackMode: 1
+  m_TriggerMode: 0
+  m_AutomaticTriggerMode: 1
+  m_LoopMode: 2
+  m_VolumeRandomizationEnabled: 0
+  m_PitchRandomizationEnabled: 1
+  m_AutomaticTriggerTimeRandomizationEnabled: 0
+  m_LoopCountRandomizationEnabled: 0
+--- !u!1233149941 &7888763373276931860
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Owl1_{7888763373276931860}
+  m_AudioClip: {fileID: 8300000, guid: 4939173ec31be644ea3c8f3936f18508, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
