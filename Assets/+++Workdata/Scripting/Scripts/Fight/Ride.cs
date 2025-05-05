@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -51,7 +53,8 @@ public class Ride : Singleton<Ride>
             return;
         
         InGameUIManager.Instance.rideHpImage.fillAmount = currentRideHealth / maxRideHealth;
-        InGameUIManager.Instance.rideTimeImage.fillAmount = waveTimer / GetCurrentWave().maxWaveTime;
+        TimeSpan _timeSpan = TimeSpan.FromSeconds(waveTimer);
+        InGameUIManager.Instance.rideTimeText.text = _timeSpan.ToString(@"mm\:ss");        
         waveTimer += Time.deltaTime;
 
         if (waveTimer >= GetCurrentWave().maxWaveTime)
@@ -159,6 +162,8 @@ public class Ride : Singleton<Ride>
         rideAnimator.SetTrigger("LightOff");
         rideLight.SetActive(false);
         
+        List<GameObject> _toDestroy = new List<GameObject>();
+
         foreach (var _enemy in currentEnemies)
         {
             if (_enemy.TryGetComponent(out EnemyBase _enemyBase))
@@ -166,6 +171,11 @@ public class Ride : Singleton<Ride>
                 _enemyBase.addHelpDropsOnDeath = false;
             }
 
+            _toDestroy.Add(_enemy);
+        }
+
+        foreach (var _enemy in _toDestroy)
+        {
             Destroy(_enemy);
         }
         

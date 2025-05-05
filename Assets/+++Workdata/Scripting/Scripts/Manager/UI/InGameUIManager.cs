@@ -15,7 +15,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     public GameObject inGameUIWeaponVisual;
     
     [Header("Ride")]
-    public Image rideTimeImage;
+    public TextMeshProUGUI rideTimeText;
     public Image rideHpImage;
     
     [Header("Ability")]
@@ -59,18 +59,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
     private void Update()
     {
-        if (PlayerBehaviour.Instance != null)
-        {
-            if (PlayerBehaviour.Instance.canInteract)
-            {
-                //ShowInteractionIndicator(1);
-            }
-            else
-            {
-                //ShowInteractionIndicator(0.2156862745098039f);
-            }
-        }
-
         SimulateDayLight();
     }
     

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e17adc825d70f1a4eade37503ccc79b0
+guid: 655d9836b9f14814783d9f4c1469dbc3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8547154407637776237
-    second: ui_dialogue_9slice_0
+      213: 5118243822080425114
+    second: ui_upgrade_bar_top_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +52,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 32
-  spriteBorder: {x: 12, y: 36, z: 12, w: 41}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ui_dialogue_9slice_0
+      name: ui_upgrade_bar_top_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 96
-        height: 88
+        width: 8
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 32, y: 32, z: 32, w: 32}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d67f9a326a79d9670800000000000000
-      internalID: 8547154407637776237
+      spriteID: a9cf0f873a7a70740800000000000000
+      internalID: 5118243822080425114
       vertices: []
       indices: 
       edges: []
@@ -139,7 +139,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ui_dialogue_9slice_0: 8547154407637776237
+      ui_upgrade_bar_top_0: 5118243822080425114
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

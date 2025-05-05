@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerBehaviour : Singleton<PlayerBehaviour>
 {
@@ -40,8 +41,18 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     [SerializeField] public LayerMask duckLayer;
     [SerializeField] private LayerMask collectibleLayer;
     [SerializeField] private LayerMask rideLayer;
-    [HideInInspector] public bool canInteract = true;
     private bool isPlayerBusy;
+
+    [Header("InteractableHighlight")] 
+    [SerializeField] private SpriteRenderer generatorSpriteRenderer;
+    [SerializeField] private SpriteRenderer shopSpriteRenderer;
+    [SerializeField] private SpriteRenderer rideSpriteRenderer;
+    [SerializeField] private Sprite generatorSprite;
+    [SerializeField] private Sprite shopSprite;
+    [SerializeField] private Sprite rideSprite;
+    [SerializeField] private Sprite generatorSpriteHighlight;
+    [SerializeField] private Sprite shopSpriteHighlight;
+    [SerializeField] private Sprite rideSpriteHighlight;
 
     private void SetupFromData()
     {
@@ -68,14 +79,12 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     private void OnEnable()
     {
         GameInputManager.Instance.OnInteractAction += GameInputManagerOnInteractAction;
-        //GameInputManager.Instance.OnSprintingAction += GameInputManagerOnSprintingAction;
         AudioManager.Instance.Play("InGameMusic");
     }
 
     private void OnDisable()
     {
         GameInputManager.Instance.OnInteractAction -= GameInputManagerOnInteractAction;
-        //GameInputManager.Instance.OnSprintingAction -= GameInputManagerOnSprintingAction;
     }
 
     private void Start()
@@ -104,7 +113,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
     private void Update()
     {
-        HandleInteractionIndicator();
+        HandleInteractionSpriteSwitch();
     }
 
     private void FixedUpdate()
@@ -145,14 +154,17 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
                 GameSaveStateManager.Instance.SaveGame();
             }
         }
+        else if (GetInteractionObjectInRange(rideLayer, out Collider2D _ride))
+        {
+            if (_ride.TryGetComponent(out Ride ride))
+            {
+                ride.generator.gateAnim.SetBool("OpenGate", false);
+                ride.generator.SetUpFightArena();
+            }
+        }
         else if (GetInteractionObjectInRange(duckLayer, out _))
         {
             AudioManager.Instance.Play("DuckSound");
-        }
-        else if (GetInteractionObjectInRange(rideLayer, out Collider2D _ride))
-        {
-            _ride.GetComponent<Ride>().generator.gateAnim.SetBool("OpenGate", false);
-            _ride.GetComponent<Ride>().generator.SetUpFightArena();
         }
     }
 
@@ -213,24 +225,19 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
     #region Interaction
     
+    private void HandleInteractionSpriteSwitch()
+    {
+        shopSpriteRenderer.sprite = GetInteractionObjectInRange(shopLayer, out _) ? shopSpriteHighlight : shopSprite;
+        
+        generatorSpriteRenderer.sprite = GetInteractionObjectInRange(generatorLayer, out _) ? generatorSpriteHighlight : generatorSprite;
+        
+        rideSpriteRenderer.sprite = GetInteractionObjectInRange(rideLayer, out _) ? rideSpriteHighlight : rideSprite;
+    }
+    
     public bool GetInteractionObjectInRange(LayerMask layer, out Collider2D interactable)
     {
         interactable = Physics2D.OverlapCircle(transform.position, interactRadius, layer);
         return interactable != null;
-    }
-    
-    private void HandleInteractionIndicator()
-    {
-        if (GetInteractionObjectInRange(shopLayer, out _) ||
-            GetInteractionObjectInRange(collectibleLayer, out _) ||
-            GetInteractionObjectInRange(generatorLayer, out Collider2D _generator) && _generator.GetComponent<Generator>().interactable)
-        {
-            canInteract = true;
-        }
-        else
-        {
-            canInteract = false;
-        }
     }
 
     public void SetPlayerBusy(bool isBusy)

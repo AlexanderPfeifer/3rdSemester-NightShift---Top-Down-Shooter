@@ -8,7 +8,7 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     [HideInInspector] public bool mouseIsLastUsedDevice = true;
     Vector2 virtualCursorPos;
 
-    public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnSprintingAction, OnNotShootingAction, OnReloadAction;
+    public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnNotShootingAction, OnReloadAction;
 
     protected override void Awake()
     {
@@ -17,7 +17,6 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
         playerInputActions = new PlayerInputActions();
         playerInputActions.Enable();
 
-        playerInputActions.player.slide.started += OnPlayerSliding;
         playerInputActions.player.shoot.started += OnPlayerShooting;
         playerInputActions.player.shoot.canceled += OnPlayerNotShooting;
         playerInputActions.player.pause.performed += OnGamePaused;
@@ -45,11 +44,6 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     private void OnPlayerNotShooting(InputAction.CallbackContext context)
     {
         OnNotShootingAction?.Invoke(this, EventArgs.Empty);
-    }
-    
-    private void OnPlayerSliding(InputAction.CallbackContext context)
-    {
-        OnSprintingAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnGamePaused(InputAction.CallbackContext context)

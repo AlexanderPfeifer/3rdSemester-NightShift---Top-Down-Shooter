@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 261e130c10d99f54780cdfc0ce31c3bc
+guid: 6ce26835f795fdc4982ef9e9830edbd7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5257729460862011921
-    second: gate_end_0
+      213: 4446142057499144308
+    second: candy_shop_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: gate_end_0
+      name: candy_shop_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 23
-        height: 68
+        width: 179
+        height: 158
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fe5b63879eac807b0800000000000000
-      internalID: -5257729460862011921
+      spriteID: 470392605aed3bd30800000000000000
+      internalID: 4446142057499144308
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      gate_end_0: -5257729460862011921
+      candy_shop_0: 4446142057499144308
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

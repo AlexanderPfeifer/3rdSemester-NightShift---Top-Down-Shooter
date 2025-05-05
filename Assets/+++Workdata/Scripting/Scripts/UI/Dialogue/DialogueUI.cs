@@ -192,6 +192,10 @@ public class DialogueUI : MonoBehaviour
         if (currentTextBox != shopText)
         {
             dialogueCountWalkieTalkie++;
+            if (currentDialogueCount == 2)
+            {
+                InGameUIManager.Instance.currencyUI.GetCurrencyText().gameObject.SetActive(true);
+            }
             return;
         }
         
@@ -205,10 +209,6 @@ public class DialogueUI : MonoBehaviour
         if (currentDialogueCount == 1)
         {
             TutorialManager.Instance.GetFirstWeaponAndWalkieTalkie();
-        }
-        else if (currentDialogueCount == 5)
-        {
-            InGameUIManager.Instance.currencyUI.GetCurrencyText().gameObject.SetActive(true);
         }
     }
 
