@@ -4671,6 +4671,12 @@ MonoBehaviour:
       volume: 0.8
       loop: 0
       audioSource: {fileID: 0}
+    - name: EnemyHitPillow
+      clip: {fileID: 8300000, guid: b197bdc03d63d074ea17b9590c9caea4, type: 3}
+      audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
+      volume: 0.8
+      loop: 0
+      audioSource: {fileID: 0}
   - name: Generator
     sounds:
     - name: GeneratorButtonClickUp
