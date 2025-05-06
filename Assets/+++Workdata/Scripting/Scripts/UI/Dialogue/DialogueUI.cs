@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -11,7 +10,7 @@ public class DialogueUI : MonoBehaviour
     [Header("DialogueType")]
     [FormerlySerializedAs("dialogue")] public Dialogues[] dialogueShop;
     public Dialogues[] dialogueWalkieTalkie;
-    [SerializeField] private TextMeshProUGUI shopText;
+    public TextMeshProUGUI shopText;
     [FormerlySerializedAs("dialogueText")] [SerializeField] private TextMeshProUGUI walkieTalkieText;
     [HideInInspector] public TextMeshProUGUI currentTextBox;
     [HideInInspector] public int dialogueCountShop;
@@ -19,8 +18,6 @@ public class DialogueUI : MonoBehaviour
     [HideInInspector] public int currentDialogueCount;
     
     [Header("Typing Settings")]
-    [SerializeField] private float standardTextDisplaySpeed = 0.05f;
-    [HideInInspector] public float textDisplaySpeed;
     public float maxTextDisplaySpeed = 0.00005f;
     
     [Header("Animations")]
@@ -90,7 +87,6 @@ public class DialogueUI : MonoBehaviour
         switch (dialogueState)
         {
             case DialogueState.DialoguePlaying:
-                textDisplaySpeed = maxTextDisplaySpeed;
                 break;
             case DialogueState.DialogueAbleToGoNext:
                 PlayNextDialogue();
@@ -110,7 +106,7 @@ public class DialogueUI : MonoBehaviour
         return dialogueState != DialogueState.DialogueNotPlaying;
     }
     
-    private IEnumerator TypeTextCoroutine(string text, Dialogues[] currentDialogue)
+    public IEnumerator TypeTextCoroutine(string text, Dialogues[] currentDialogue)
     {
         dialogueState = DialogueState.DialoguePlaying;
         currentTextBox.text = "";
@@ -137,11 +133,12 @@ public class DialogueUI : MonoBehaviour
             {
                 _displayText += _letter;
                 currentTextBox.text = _displayText;
-                yield return new WaitForSeconds(textDisplaySpeed);
+                yield return new WaitForSeconds(maxTextDisplaySpeed);
             }
         }
         
-        CheckDialogueEnd(currentDialogue);
+        if(currentDialogue != null)
+            CheckDialogueEnd(currentDialogue);
     }
 
     private void CheckDialogueEnd(IReadOnlyList<Dialogues> currentDialogue)
@@ -158,25 +155,20 @@ public class DialogueUI : MonoBehaviour
 
     public void SetDialogueBoxState(bool radioOn, bool putOn)
     {
-        if (currentTextBox != shopText)
-        {
-            radioAnim.SetBool("RadioOn", radioOn);
-            radioAnim.SetBool("PutOn", putOn);
+        radioAnim.SetBool("RadioOn", radioOn);
+        radioAnim.SetBool("PutOn", putOn);
 
-            if (!radioOn)
-            {
-                walkieTalkieDialogueBoxAnim.SetBool("DialogueBoxOn", false);   
-                PlayerBehaviour.Instance.SetPlayerBusy(false);
-            }
-            else
-            {
-                PlayerBehaviour.Instance.SetPlayerBusy(true);
-            }
+        if (!radioOn)
+        {
+            walkieTalkieDialogueBoxAnim.SetBool("DialogueBoxOn", false);   
+            PlayerBehaviour.Instance.SetPlayerBusy(false);
         }
         else
         {
-            //Also some animation for the text box in the shop
+            PlayerBehaviour.Instance.SetPlayerBusy(true);
         }
+        
+        //Also some animation for the text box in the shop
     }
 
     public void EndDialogue()
@@ -185,12 +177,12 @@ public class DialogueUI : MonoBehaviour
         currentDialogueCount++;
         currentTextBox.text = "";
         
-        SetDialogueBoxState(false, true);
         
         dialogueState = DialogueState.DialogueNotPlaying;
 
         if (currentTextBox != shopText)
         {
+            SetDialogueBoxState(false, true);
             dialogueCountWalkieTalkie++;
             if (currentDialogueCount == 2)
             {
@@ -216,7 +208,6 @@ public class DialogueUI : MonoBehaviour
     {
         dialogueState = DialogueState.DialoguePlaying;
         currentTextBox.text = "";
-        textDisplaySpeed = standardTextDisplaySpeed;
 
         DisplayDialogue();
     }

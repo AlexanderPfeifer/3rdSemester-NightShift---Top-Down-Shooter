@@ -36,6 +36,7 @@ public class WeaponObjectSO : ScriptableObject
     public int clipSize;
     public int ammunitionInClip;
     public int ammunitionInBackUp;
+    public float reloadTime;
     
     [Header("Ability")]
     [FormerlySerializedAs("showAbilityFill")] public bool hasAbilityUpgrade;

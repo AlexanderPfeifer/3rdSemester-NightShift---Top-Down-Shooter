@@ -30,8 +30,6 @@ public class PlayerCurrency : MonoBehaviour
     {
         currency += amount;
         
-        AudioManager.Instance.Play("AddCurrency");
-
         if (rideMoney)
         {
             gotRideMoney = true;
@@ -66,8 +64,9 @@ public class PlayerCurrency : MonoBehaviour
             //Mathf Sign to subtract or add numbers if needed - so if it is -1, it decreases number accordingly
             int _step = Mathf.CeilToInt(_addNumberMultiplier * Mathf.Sign(currency - currencyText));
             currencyText += _step;
+            AudioManager.Instance.Play("CurrencyAdd");
 
-            if ((_step > 0 && currencyText > currency) || (_step < 0 && currencyText < currency))
+            if ((_step > 0 && currencyText > currency) || (_step < 0 && currencyText < currency) || currencyText == currency)
             {
                 currencyText = currency;
 

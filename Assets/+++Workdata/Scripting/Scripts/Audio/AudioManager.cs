@@ -100,7 +100,7 @@ public class AudioManager : SingletonPersistent<AudioManager>
             }
 
             _s.audioSource.volume = 0;
-            Pause(_s.audioSource.name);
+            Pause(_s.audioSource.resource.name);
         }
     }
     

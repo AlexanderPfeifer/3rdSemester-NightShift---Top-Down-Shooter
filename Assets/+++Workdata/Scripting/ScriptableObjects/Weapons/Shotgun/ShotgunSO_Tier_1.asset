@@ -16,7 +16,7 @@ MonoBehaviour:
   upgradeTier: 1
   weaponDescription: Although the grip is a little sticky, the smell is a nice change
     of pace. Suck it, monsters!
-  weaponAbilityDescription: Bullets stick to enemies and deal damage over time.
+  weaponAbilityDescription: 
   playerKnockBack: 6
   enemyKnockBackPerBullet: 1
   bulletsPerShot: 12
@@ -32,6 +32,7 @@ MonoBehaviour:
   clipSize: 5
   ammunitionInClip: 5
   ammunitionInBackUp: 30
+  reloadTime: 2.5
   hasAbilityUpgrade: 0
   shotSound: {fileID: 6418180475301049370, guid: cd7fd8453ae6564468fed3e22ddb002e, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: a6e38dbd56aa45640b7b13bc5017cd46, type: 2}

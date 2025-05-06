@@ -16,7 +16,7 @@ MonoBehaviour:
   upgradeTier: 0
   weaponDescription: Served hot and fresh. This thing is a whole new definition of
     fast food.
-  weaponAbilityDescription: Bullet Firerate increases.
+  weaponAbilityDescription: 
   playerKnockBack: 2
   enemyKnockBackPerBullet: 4
   bulletsPerShot: 1
@@ -32,6 +32,7 @@ MonoBehaviour:
   clipSize: 25
   ammunitionInClip: 25
   ammunitionInBackUp: 150
+  reloadTime: 1.8
   hasAbilityUpgrade: 0
   shotSound: {fileID: 6418180475301049370, guid: 6d76990b337c49a45ab3fff78b5fbb8f, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 7b5340328516d8346aee236cfda4d4b7, type: 2}

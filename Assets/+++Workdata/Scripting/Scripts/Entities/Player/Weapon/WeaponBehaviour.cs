@@ -27,7 +27,7 @@ public class WeaponBehaviour : MonoBehaviour
     private int ammunitionInClip;
     public int ammunitionInBackUp { private set; get; }
     private Coroutine currentReloadCoroutine;
-    [SerializeField] private float reloadTime = 2;
+    private float reloadTime;
     [SerializeField] private Image reloadProgress;
 
     [Header("Aiming")]
@@ -416,6 +416,7 @@ public class WeaponBehaviour : MonoBehaviour
         maxClipSize = weapon.clipSize;
         ammunitionInBackUp = weapon.ammunitionInBackUp;
         ammunitionInClip = weapon.ammunitionInClip;
+        reloadTime = weapon.reloadTime;
         PlayerBehaviour.Instance.abilityBehaviour.hasAbilityUpgrade = weapon.hasAbilityUpgrade;
         SetAmmunitionText(weapon.ammunitionInClip.ToString(), weapon.ammunitionInBackUp.ToString());
         AudioManager.Instance.ChangeSound("Shooting", weapon.shotSound);

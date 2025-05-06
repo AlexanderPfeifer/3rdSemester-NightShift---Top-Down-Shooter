@@ -16,7 +16,7 @@ MonoBehaviour:
   upgradeTier: 1
   weaponDescription: "Don\u2018t let the cool design fool you - this thing\u2018s
     packing some heat. "
-  weaponAbilityDescription: Freezes enemies on bullet collision for 5 seconds.
+  weaponAbilityDescription: 
   playerKnockBack: 4
   enemyKnockBackPerBullet: 10
   bulletsPerShot: 1
@@ -32,6 +32,7 @@ MonoBehaviour:
   clipSize: 7
   ammunitionInClip: 7
   ammunitionInBackUp: 42
+  reloadTime: 2
   hasAbilityUpgrade: 0
   shotSound: {fileID: 6418180475301049370, guid: d035078986ad0e34fb2a3308f64e60a6, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 0a58044c5f91a4241b716e15157ce968, type: 2}

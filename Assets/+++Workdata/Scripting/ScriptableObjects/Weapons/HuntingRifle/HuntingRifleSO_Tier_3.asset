@@ -32,6 +32,7 @@ MonoBehaviour:
   clipSize: 4
   ammunitionInClip: 4
   ammunitionInBackUp: 24
+  reloadTime: 2.8
   hasAbilityUpgrade: 1
   shotSound: {fileID: 6418180475301049370, guid: 0d4e17e37b49ccb428be875f5dcb55eb, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 247ed1a333d2ddf49a6ee3957d3a556e, type: 2}

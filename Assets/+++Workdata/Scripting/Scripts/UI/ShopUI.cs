@@ -18,36 +18,32 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private Button equipWeaponButton;
     [SerializeField] private Button upgradeWeaponButton;
     [SerializeField] private Button fillWeaponAmmoButton;
+    [SerializeField] private GameObject buttonsGameObject;
 
     [Header("ShopWindow")] 
     [SerializeField] private GameObject fortuneWheel;
     [SerializeField] private GameObject weapons;
+    private int currentWeaponWindow;
     
     [Header("ShopCosts")]
     [SerializeField] private int[] tierCosts;
     [SerializeField] private int fillAmmoCost;
 
     [Header("Collected Item Description")]
-    [FormerlySerializedAs("inventoryText")] [SerializeField] private TextMeshProUGUI descriptionText;
     [FormerlySerializedAs("inventoryHeader")] [SerializeField] private TextMeshProUGUI descriptionHeader;
     [FormerlySerializedAs("inventoryImage")] [SerializeField] private Image descriptionImage;
+    [FormerlySerializedAs("inventoryImage")] [SerializeField] private Image levelFillImage;
     [SerializeField] private CollectedCollectibles collectedCollectibles;
-    private Dictionary<string, (GameObject obj, Sprite sprite, string text, string header, WeaponObjectSO weaponObjectSO)> collectedItemsDictionary;
+    private Dictionary<string, (float levelFill, Sprite sprite, string text, string header, WeaponObjectSO weaponObjectSO)> collectedItemsDictionary;
 
     [Header("Collected Items")] 
     [SerializeField] private GameObject brokenLights;
     [SerializeField] private GameObject teddy;
     [SerializeField] private GameObject newsPaper;
-    [SerializeField] private GameObject popcornPistol;
-    [SerializeField] private GameObject frenchFriesAssaultRifle;
-    [SerializeField] private GameObject magnumMagnum;
-    [SerializeField] private GameObject cornDogHuntingRifle;
-    [SerializeField] private GameObject lollipopShotgun;
-    [SerializeField] private GameObject brokenPistol;
-    
+
     private void Start()
     {
-        collectedItemsDictionary = new Dictionary<string, (GameObject, Sprite, string, string, WeaponObjectSO)>();
+        collectedItemsDictionary = new Dictionary<string, (float, Sprite, string, string, WeaponObjectSO)>();
     }
 
     private void UpgradeWeapon(WeaponObjectSO weapon, IReadOnlyList<WeaponObjectSO> upgradeTiers)
@@ -111,16 +107,10 @@ public class ShopUI : MonoBehaviour
         brokenLights.SetActive(false);
         newsPaper.SetActive(false);
         teddy.SetActive(false);
-        magnumMagnum.SetActive(false);
-        cornDogHuntingRifle.SetActive(false);
-        popcornPistol.SetActive(false);
-        lollipopShotgun.SetActive(false);
-        frenchFriesAssaultRifle.SetActive(false);
-        brokenPistol.SetActive(false);
-        
-        descriptionText.text = "";
+
+        InGameUIManager.Instance.dialogueUI.shopText.text = "";
         descriptionHeader.text = "";
-        descriptionImage.gameObject.SetActive(false);
+        descriptionImage.color = Color.black;
     }
     
     private void EquipNewWeapon(WeaponObjectSO weaponObjectSO)
@@ -130,7 +120,7 @@ public class ShopUI : MonoBehaviour
 
     public void ResetDescriptionsTexts()
     {
-        descriptionText.text = "";
+        InGameUIManager.Instance.dialogueUI.shopText.text = "";
         descriptionHeader.text = "";
         descriptionImage.gameObject.SetActive(false);
         equipWeaponButton.interactable = false;
@@ -143,8 +133,14 @@ public class ShopUI : MonoBehaviour
         ResetDescriptionsTexts();
         
         descriptionImage.gameObject.SetActive(true);
+        buttonsGameObject.SetActive(true);
+        levelFillImage.gameObject.SetActive(true);
+
+        if (InGameUIManager.Instance.dialogueUI.shopText.text == "")
+        {
+            StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].text, null));
+        }
         
-        descriptionText.text += collectedItemsDictionary[header].text;
         descriptionHeader.text += collectedItemsDictionary[header].header;
         descriptionImage.sprite = collectedItemsDictionary[header].sprite;
 
@@ -211,13 +207,13 @@ public class ShopUI : MonoBehaviour
             switch (_headerText)
             {
                 case "Broken Lights" :
-                    ActivateInventoryItem(brokenLights, _headerText, _spriteCollectible, _text, null);
+                    //ActivateInventoryItem(brokenLights, _headerText, _spriteCollectible, _text, null);
                     break;
                 case "News Paper" :
-                    ActivateInventoryItem(newsPaper, _headerText, _spriteCollectible, _text, null);
+                    //ActivateInventoryItem(newsPaper, _headerText, _spriteCollectible, _text, null);
                     break;
                 case "Stuffed Animal" :
-                    ActivateInventoryItem(teddy, _headerText, _spriteCollectible, _text, null);
+                    //ActivateInventoryItem(teddy, _headerText, _spriteCollectible, _text, null);
                     break;
             }
         }
@@ -244,7 +240,11 @@ public class ShopUI : MonoBehaviour
             }
             else
             {
-                _text += "\n" + "\n" + "Damage: " + _weapon.bulletDamage +  "\n" + "Clipsize: " + _weapon.clipSize;
+                _text += "\n" + 
+                         "\n" + "Bullet Damage: " + _weapon.bulletDamage +  
+                         "\n" + "Clip Size: " + _weapon.clipSize +  
+                         "\n" + "Shoot Delay: " + _weapon.shootDelay +  
+                         "\n" + "Reload Speed: " + _weapon.reloadTime;
             }
             
             var _spriteWeapon = _weapon.uiWeaponVisual;
@@ -254,34 +254,33 @@ public class ShopUI : MonoBehaviour
             switch (_itemIdentifier)
             {
                 case "Magnum magnum" :
-                    ActivateInventoryItem(magnumMagnum, _headerText, _spriteWeapon, _text, _weapon);
+                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _text, _weapon);
                     break;
                 case "French Fries AR" :
-                    ActivateInventoryItem(frenchFriesAssaultRifle, _headerText, _spriteWeapon, _text,_weapon);
+                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _text,_weapon);
                     break;
                 case "Lollipop Shotgun" :
-                    ActivateInventoryItem(lollipopShotgun, _headerText, _spriteWeapon, _text, _weapon);
+                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _text, _weapon);
                     break;
                 case "Corn Dog Hunting Rifle" :
-                    ActivateInventoryItem(cornDogHuntingRifle, _headerText, _spriteWeapon, _text, _weapon);
+                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _text, _weapon);
                     break;
                 case "Popcorn Launcher" :
-                    ActivateInventoryItem(popcornPistol, _headerText, _spriteWeapon, _text, _weapon);
+                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _text, _weapon);
                     break;
                 case "Broken Pistol" :
-                    ActivateInventoryItem(brokenPistol, _headerText, _spriteWeapon, _text, _weapon);
+                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _text, _weapon);
+                    DisplayItem("Broken Pistol");
                     break;
             }
         }
     }
     
-    private void ActivateInventoryItem(GameObject item, string headerText, Sprite spriteItem, string text, WeaponObjectSO weaponObjectSO)
+    private void ActivateInventoryItem(float levelFill, string headerText, Sprite spriteItem, string text, WeaponObjectSO weaponObjectSO)
     {
         if (!collectedItemsDictionary.TryGetValue(headerText, out _))
         {
-            collectedItemsDictionary[headerText] = (item, spriteItem, text, headerText, weaponObjectSO); 
-            item.SetActive(true);
-            item.GetComponent<Button>().onClick.AddListener(() => DisplayItem(headerText));
+            collectedItemsDictionary[headerText] = (levelFill, spriteItem, text, headerText, weaponObjectSO); 
         }
     }
 }

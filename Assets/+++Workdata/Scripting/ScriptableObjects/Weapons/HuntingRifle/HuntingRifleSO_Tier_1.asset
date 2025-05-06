@@ -15,8 +15,7 @@ MonoBehaviour:
   weaponName: Corn Dog Hunting Rifle
   upgradeTier: 1
   weaponDescription: "I\u2018ve had my fill of corny one-liners with this one. "
-  weaponAbilityDescription: On Activation has no enemy penetration limit and every
-    shot doubles to triple the incoming damage.
+  weaponAbilityDescription: 
   playerKnockBack: 5
   enemyKnockBackPerBullet: 15
   bulletsPerShot: 1
@@ -32,6 +31,7 @@ MonoBehaviour:
   clipSize: 4
   ammunitionInClip: 4
   ammunitionInBackUp: 24
+  reloadTime: 2.8
   hasAbilityUpgrade: 0
   shotSound: {fileID: 6418180475301049370, guid: 0d4e17e37b49ccb428be875f5dcb55eb, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 247ed1a333d2ddf49a6ee3957d3a556e, type: 2}

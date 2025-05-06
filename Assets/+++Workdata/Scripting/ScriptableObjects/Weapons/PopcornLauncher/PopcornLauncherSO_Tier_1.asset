@@ -16,7 +16,7 @@ MonoBehaviour:
   upgradeTier: 1
   weaponDescription: The trigger is buttery-smooth, but luckily this thing is more
     bark than bite. The noise wakes me right up, though.
-  weaponAbilityDescription: Bullets explode and deal areal damage.
+  weaponAbilityDescription: 
   playerKnockBack: 2.5
   enemyKnockBackPerBullet: 2
   bulletsPerShot: 3
@@ -32,6 +32,7 @@ MonoBehaviour:
   clipSize: 9
   ammunitionInClip: 9
   ammunitionInBackUp: 56
+  reloadTime: 1.2
   hasAbilityUpgrade: 0
   shotSound: {fileID: 6418180475301049370, guid: 0cf89129991d6c140b89d47ded813275, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 8221b7cca657cf547af16659bde5541b, type: 2}
