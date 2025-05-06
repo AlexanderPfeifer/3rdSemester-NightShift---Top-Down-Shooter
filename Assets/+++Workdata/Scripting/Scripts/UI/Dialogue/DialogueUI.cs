@@ -155,7 +155,7 @@ public class DialogueUI : MonoBehaviour
 
     public void SetDialogueBoxState(bool radioOn, bool putOn)
     {
-        if (radioAnim.gameObject.activeSelf)
+        if (InGameUIManager.Instance.playerHUD.activeSelf)
         {
             radioAnim.SetBool("RadioOn", radioOn);
             radioAnim.SetBool("PutOn", putOn);

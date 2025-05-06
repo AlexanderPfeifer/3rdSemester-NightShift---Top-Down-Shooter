@@ -58,10 +58,11 @@ public class ShopUI : MonoBehaviour
         
         if (collectedItemsDictionary.TryGetValue(selectionWindows[currentWeaponSelectionWindow], out _))
         {
+            Debug.Log("Displaying");
             DisplayItem(selectionWindows[currentWeaponSelectionWindow]);        
         }
-        else
-        {
+        else if(TutorialManager.Instance.shotSigns >= 3)
+        { 
             ResetDescriptionsTexts();
         }
     }
@@ -152,24 +153,25 @@ public class ShopUI : MonoBehaviour
         bulletDelayTextField.text = "???";
         reloadSpeedTextField.text = "???";
         clipSizeTextField.text = "???";
+        
         buttonsGameObject.SetActive(false);
     }
     
     private void DisplayItem(string header)
     {
         ResetDescriptionsTexts();
-
-        if (InGameUIManager.Instance.dialogueUI.shopText.text == "")
-        {
-            StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].weaponDescription, null));
-        }
         
-        descriptionHeader.text += collectedItemsDictionary[header].header;
+        InGameUIManager.Instance.dialogueUI.shopText.text = "";
+
+        StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].weaponDescription, null));
+
+        descriptionHeader.text = collectedItemsDictionary[header].header;
         descriptionImage.sprite = collectedItemsDictionary[header].sprite;
-        bulletDamageTextField.text += collectedItemsDictionary[header].bulletDamageText;
-        bulletDelayTextField.text += collectedItemsDictionary[header].shotDelayText;
-        reloadSpeedTextField.text += collectedItemsDictionary[header].reloadSpeedText;
-        clipSizeTextField.text += collectedItemsDictionary[header].clipSizeText;
+        bulletDamageTextField.text = collectedItemsDictionary[header].bulletDamageText;
+        bulletDelayTextField.text = collectedItemsDictionary[header].shotDelayText;
+        reloadSpeedTextField.text = collectedItemsDictionary[header].reloadSpeedText;
+        clipSizeTextField.text = collectedItemsDictionary[header].clipSizeText;
+        buttonsGameObject.SetActive(true);
 
         if (collectedItemsDictionary[header].weaponObjectSO != null)
         {

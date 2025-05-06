@@ -103,10 +103,14 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
     public void SetGeneratorUI()
     {
-        if (!PlayerBehaviour.Instance.IsPlayerBusy() && TutorialManager.Instance.talkedAboutCurrency)
+        if (!PlayerBehaviour.Instance.IsPlayerBusy())
         {
-            TutorialManager.Instance.ExplainCurrency();
-
+            if (!TutorialManager.Instance.talkedAboutCurrency)
+            {
+                TutorialManager.Instance.ExplainCurrency();
+                return;
+            }
+            
             generatorScreen.SetActive(true);
         }
         else
@@ -141,6 +145,8 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             TutorialManager.Instance.MakeNewWeaponsUnlockable();
             
             TutorialManager.Instance.PlayStartingDialogue();
+            
+            shopUI.SwitchWindow(0);
 
             shopUI.DisplayCollectedWeapons();
             

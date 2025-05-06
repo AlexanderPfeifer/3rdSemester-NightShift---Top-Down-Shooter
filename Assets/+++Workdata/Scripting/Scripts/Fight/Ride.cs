@@ -11,7 +11,7 @@ public class Ride : Singleton<Ride>
     [HideInInspector] public bool waveStarted;
     private float waveTimer;
     public GameObject enemyParent;
-    private readonly List<GameObject> currentEnemies = new();
+    public List<GameObject> currentEnemies = new();
     
     [Header("Square Spawn Point")]
     [SerializeField] private Transform spawnCenter; 
@@ -48,15 +48,18 @@ public class Ride : Singleton<Ride>
     
     private void TimerUpdate()
     {
-        if (!waveStarted) 
+        if (!waveStarted)
+        {
+            waveTimer = GetCurrentWave().maxWaveTime;
             return;
+        }
         
         InGameUIManager.Instance.rideHpImage.fillAmount = currentRideHealth / maxRideHealth;
         TimeSpan _timeSpan = TimeSpan.FromSeconds(waveTimer);
         InGameUIManager.Instance.rideTimeText.text = _timeSpan.ToString(@"mm\:ss");        
-        waveTimer += Time.deltaTime;
+        waveTimer -= Time.deltaTime;
 
-        if (waveTimer >= GetCurrentWave().maxWaveTime)
+        if (waveTimer <= 0)
         {
             WonWave();
         }

@@ -9,6 +9,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     [FormerlySerializedAs("openShutterWheelOfFortune")] [HideInInspector] public bool newWeaponsCanBeUnlocked;
     [HideInInspector] public bool fillAmmoForFree;
     [HideInInspector] public bool talkedAboutCurrency;
+    private bool playedFirstDialogue;
 
     protected override void Awake()
     {
@@ -28,7 +29,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
 
     public void ExplainGenerator()
     {
-        if (fillAmmoForFree && talkedAboutCurrency == false)
+        if (shotSigns >= 3)
         {
             InGameUIManager.Instance.dialogueUI.DisplayDialogue();
         }
@@ -56,9 +57,10 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     
     public void PlayStartingDialogue()
     {
-        if (shotSigns < 3 || !fillAmmoForFree)
+        if (!playedFirstDialogue)
         {
             InGameUIManager.Instance.dialogueUI.DisplayDialogue();
+            playedFirstDialogue = true;
         }
     }
     

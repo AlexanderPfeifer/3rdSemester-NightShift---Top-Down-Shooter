@@ -59,7 +59,7 @@ public class EnemyBase : MonoBehaviour
         AudioManager.Instance.Play("EnemyHit");
     }
     
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.TryGetComponent(out Ride _ride))
         {
@@ -106,5 +106,7 @@ public class EnemyBase : MonoBehaviour
                 _ammoDrop.GetComponent<AmmoDrop>().ammoCount = _ammoAmount;
             }
         }
+
+        Ride.Instance.currentEnemies.Remove(gameObject);
     }
 }

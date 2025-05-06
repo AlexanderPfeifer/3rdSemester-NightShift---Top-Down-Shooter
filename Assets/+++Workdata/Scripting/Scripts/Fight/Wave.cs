@@ -20,7 +20,7 @@ public class EnemyClusterData
     [Min(1)] public int spawnCount;
     
     [Header("HOW MANY REPETITIONS")]
-    [Min(0)] public int repeatCount;
+    [Min(1)] public int repeatCount;
     
     [Header("AT WHAT INTERVAL")]
     [Min(0)] public float timeBetweenSpawns;
