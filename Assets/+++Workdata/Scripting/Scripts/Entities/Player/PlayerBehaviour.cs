@@ -107,7 +107,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
             DebugMode.Instance.GetDebugWeapon();
             
-            playerCurrency.AddCurrency(DebugMode.Instance.currencyAtStart);
+            playerCurrency.AddCurrency(DebugMode.Instance.currencyAtStart, true);
         }
     }
 

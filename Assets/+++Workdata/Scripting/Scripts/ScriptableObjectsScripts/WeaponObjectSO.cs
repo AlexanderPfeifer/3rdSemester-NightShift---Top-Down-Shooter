@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Serialization;
 
 [CreateAssetMenu]
@@ -38,4 +39,9 @@ public class WeaponObjectSO : ScriptableObject
     
     [Header("Ability")]
     [FormerlySerializedAs("showAbilityFill")] public bool hasAbilityUpgrade;
+
+    [Header("Sounds")] 
+    public AudioResource shotSound;
+    public AudioResource reloadSound;
+    public AudioResource repetitionSound;
 }

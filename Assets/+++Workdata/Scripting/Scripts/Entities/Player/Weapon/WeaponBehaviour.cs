@@ -255,6 +255,7 @@ public class WeaponBehaviour : MonoBehaviour
         
         if (currentReloadCoroutine != null)
         {
+            AudioManager.Instance.Stop("Reload");
             StopCoroutine(currentReloadCoroutine);
             currentReloadCoroutine = null;
             reloadProgress.fillAmount = 0f;           
@@ -312,6 +313,7 @@ public class WeaponBehaviour : MonoBehaviour
             yield break;
         }
         
+        AudioManager.Instance.Play("Reload");
         reloadProgress.gameObject.SetActive(true);
         PlayerBehaviour.Instance.currentMoveSpeed = PlayerBehaviour.Instance.slowDownSpeed;
 
@@ -416,6 +418,9 @@ public class WeaponBehaviour : MonoBehaviour
         ammunitionInClip = weapon.ammunitionInClip;
         PlayerBehaviour.Instance.abilityBehaviour.hasAbilityUpgrade = weapon.hasAbilityUpgrade;
         SetAmmunitionText(weapon.ammunitionInClip.ToString(), weapon.ammunitionInBackUp.ToString());
+        AudioManager.Instance.ChangeSound("Shooting", weapon.shotSound);
+        AudioManager.Instance.ChangeSound("Reload", weapon.reloadSound);
+        AudioManager.Instance.ChangeSound("Repetition", weapon.repetitionSound);
         foreach (var _bullet in BulletPoolingManager.Instance.GetBulletList())
         {
             _bullet.transform.localScale = weapon.bulletSize;
@@ -464,5 +469,7 @@ public class WeaponBehaviour : MonoBehaviour
         playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
 
         muzzleFlashVisual.SetActive(false);
+        
+        AudioManager.Instance.Play("Repetition");
     }
 }

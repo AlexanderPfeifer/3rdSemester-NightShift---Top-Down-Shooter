@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
 public class AudioManager : SingletonPersistent<AudioManager>
@@ -43,6 +44,18 @@ public class AudioManager : SingletonPersistent<AudioManager>
         }
         
         return _s;
+    }
+
+    public void ChangeSound(string soundName, AudioResource audioResource)
+    {
+        if (GetSound(soundName) != null)
+        {
+            GetSound(soundName).audioSource.resource = audioResource;
+        }
+        else
+        {
+            GetSound(soundName).audioSource.resource = null;
+        }
     }
     
     public void Play(string soundName)
@@ -87,6 +100,7 @@ public class AudioManager : SingletonPersistent<AudioManager>
             }
 
             _s.audioSource.volume = 0;
+            Pause(_s.audioSource.name);
         }
     }
     
@@ -103,8 +117,8 @@ public class AudioManager : SingletonPersistent<AudioManager>
         {
             if (!IsPlaying(soundName))
             {
-                Play(soundName);
                 _s.volume = 0;
+                Play(soundName);
             }
         
             while (_s.audioSource.volume < .9f)

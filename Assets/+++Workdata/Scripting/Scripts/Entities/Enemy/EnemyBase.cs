@@ -64,11 +64,17 @@ public class EnemyBase : MonoBehaviour
         if (other.gameObject.TryGetComponent(out Ride _ride))
         {
             _ride.currentRideHealth -= rideAttackDamage;
+            
             if (_ride.currentRideHealth <= 0)
             {
                 _ride.LostWave();
+                AudioManager.Instance.Play("RideShutDown");
             }
-            Ride.Instance.StartRideHitVisual();
+            else
+            {
+                Ride.Instance.StartRideHitVisual();
+                AudioManager.Instance.Play("RideHit");
+            }
             gotKilledFromRide = true;
             Destroy(gameObject);
         }
@@ -90,7 +96,7 @@ public class EnemyBase : MonoBehaviour
 
         if (addHelpDropsOnDeath)
         {
-            PlayerBehaviour.Instance.playerCurrency.AddCurrency(Random.Range((int)currencyDropRange.x, (int)currencyDropRange.y));
+            PlayerBehaviour.Instance.playerCurrency.AddCurrency(Random.Range((int)currencyDropRange.x, (int)currencyDropRange.y), false);
             PlayerBehaviour.Instance.abilityBehaviour.AddAbilityFill(enemyAbilityGainForPlayer);
 
             if (Random.value <= ammunitionDropChancePercentage)

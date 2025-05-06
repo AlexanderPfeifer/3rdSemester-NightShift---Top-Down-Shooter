@@ -33,3 +33,6 @@ MonoBehaviour:
   ammunitionInClip: 4
   ammunitionInBackUp: 24
   hasAbilityUpgrade: 0
+  shotSound: {fileID: 6418180475301049370, guid: 0d4e17e37b49ccb428be875f5dcb55eb, type: 2}
+  reloadSound: {fileID: 6418180475301049370, guid: 247ed1a333d2ddf49a6ee3957d3a556e, type: 2}
+  repetitionSound: {fileID: 6418180475301049370, guid: 124b41101aad9c14a8d22399d2937576, type: 2}

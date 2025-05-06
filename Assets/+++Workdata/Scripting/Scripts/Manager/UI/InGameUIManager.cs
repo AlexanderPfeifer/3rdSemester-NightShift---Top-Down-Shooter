@@ -131,6 +131,9 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         {
             shopScreen.SetActive(true);
             
+            AudioManager.Instance.FadeOut("InGameMusic");
+            AudioManager.Instance.FadeIn("ShopMusic");
+
             foreach (GameObject _enemy in Ride.Instance.enemyParent.transform)
             {
                 Destroy(_enemy);
@@ -162,6 +165,9 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
         shopScreen.SetActive(false);
         
+        AudioManager.Instance.FadeOut("ShopMusic");
+        AudioManager.Instance.FadeIn("InGameMusic");
+
         PlayerBehaviour.Instance.SetPlayerBusy(false);
     }
 }

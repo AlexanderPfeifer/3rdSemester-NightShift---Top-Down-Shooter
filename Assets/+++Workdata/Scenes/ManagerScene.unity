@@ -4667,6 +4667,13 @@ MonoBehaviour:
       loop: 1
       pitch: 1
       audioSource: {fileID: 0}
+    - name: ShopMusic
+      audioResource: {fileID: 8300000, guid: 0d6c00988d0699c44adbebf7da48b9b4, type: 3}
+      audioMixer: {fileID: 4467578473944214479, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
+      volume: 0.6
+      loop: 1
+      pitch: 1
+      audioSource: {fileID: 0}
   - name: Enemy
     sounds:
     - name: EnemyHit
@@ -4736,7 +4743,7 @@ MonoBehaviour:
   - name: Weapon
     sounds:
     - name: Shooting
-      audioResource: {fileID: 6418180475301049370, guid: 6d76990b337c49a45ab3fff78b5fbb8f, type: 2}
+      audioResource: {fileID: 6418180475301049370, guid: 65adfb397f7ae5c4787636d15ac02ad6, type: 2}
       audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
       volume: 0.6
       loop: 0
@@ -4750,26 +4757,17 @@ MonoBehaviour:
       pitch: 1
       audioSource: {fileID: 0}
     - name: Reload
-      audioResource: {fileID: 0}
+      audioResource: {fileID: 6418180475301049370, guid: 1617141f9a7969a4da6799d2388633b1, type: 2}
       audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
       volume: 0.5
       loop: 0
       pitch: 1
       audioSource: {fileID: 0}
-  - name: Shop
-    sounds:
-    - name: CurrencyAdd
-      audioResource: {fileID: 6418180475301049370, guid: 4e9df9cf6f3c31d4c8dbd8fc7c51dbc2, type: 2}
+    - name: Repetition
+      audioResource: {fileID: 0}
       audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
-      volume: 0.6
+      volume: 0.5
       loop: 0
-      pitch: 1
-      audioSource: {fileID: 0}
-    - name: ShopMusic
-      audioResource: {fileID: 8300000, guid: 0d6c00988d0699c44adbebf7da48b9b4, type: 3}
-      audioMixer: {fileID: 4467578473944214479, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
-      volume: 0.6
-      loop: 1
       pitch: 1
       audioSource: {fileID: 0}
   - name: Environment
@@ -4806,6 +4804,13 @@ MonoBehaviour:
       audioSource: {fileID: 0}
     - name: RideShutDown
       audioResource: {fileID: 8300000, guid: 42ba7369b3704c64c96ea3c407fc7b36, type: 3}
+      audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
+      volume: 0.6
+      loop: 0
+      pitch: 1
+      audioSource: {fileID: 0}
+    - name: CurrencyAdd
+      audioResource: {fileID: 6418180475301049370, guid: 4e9df9cf6f3c31d4c8dbd8fc7c51dbc2, type: 2}
       audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
       volume: 0.6
       loop: 0

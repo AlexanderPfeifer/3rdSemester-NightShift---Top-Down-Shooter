@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -180,7 +179,7 @@ public class Ride : Singleton<Ride>
         }
         
         PlayerBehaviour.Instance.playerCurrency.AddCurrency(
-            Mathf.RoundToInt(GetCurrentWave().currencyPrize * (currentRideHealth / maxRideHealth)));
+            Mathf.RoundToInt(GetCurrentWave().currencyPrize * (currentRideHealth / maxRideHealth)), true);
         
         ResetRide();
 

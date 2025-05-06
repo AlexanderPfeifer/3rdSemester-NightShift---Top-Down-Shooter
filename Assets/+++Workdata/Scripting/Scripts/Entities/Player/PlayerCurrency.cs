@@ -12,6 +12,8 @@ public class PlayerCurrency : MonoBehaviour
     [SerializeField] private int divisionNumberPerMultiplier = 100;
     private int currencyText;
 
+    private bool gotRideMoney;
+
     private void Start()
     {
         SetCurrencyText();
@@ -24,11 +26,16 @@ public class PlayerCurrency : MonoBehaviour
         UpdateCurrencyTextNumberByNumber();
     }
 
-    public void AddCurrency(int amount)
+    public void AddCurrency(int amount, bool rideMoney)
     {
         currency += amount;
         
         AudioManager.Instance.Play("AddCurrency");
+
+        if (rideMoney)
+        {
+            gotRideMoney = true;
+        }
     }
 
     private void SetCurrencyText()
@@ -63,6 +70,12 @@ public class PlayerCurrency : MonoBehaviour
             if ((_step > 0 && currencyText > currency) || (_step < 0 && currencyText < currency))
             {
                 currencyText = currency;
+
+                if (gotRideMoney)
+                {
+                    AudioManager.Instance.Play("GotRideMoney");
+                    gotRideMoney = false;
+                }
             }
 
             SetCurrencyText();
