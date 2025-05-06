@@ -23,7 +23,9 @@ public class ShopUI : MonoBehaviour
     [Header("ShopWindow")] 
     [SerializeField] private GameObject fortuneWheel;
     [SerializeField] private GameObject weapons;
-    private int currentWeaponWindow;
+    private int currentWeaponSelectionWindow;
+    [SerializeField] private string[] selectionWindows;
+    public GameObject switchWindowButtons;
     
     [Header("ShopCosts")]
     [SerializeField] private int[] tierCosts;
@@ -33,8 +35,12 @@ public class ShopUI : MonoBehaviour
     [FormerlySerializedAs("inventoryHeader")] [SerializeField] private TextMeshProUGUI descriptionHeader;
     [FormerlySerializedAs("inventoryImage")] [SerializeField] private Image descriptionImage;
     [FormerlySerializedAs("inventoryImage")] [SerializeField] private Image levelFillImage;
+    [SerializeField] private TextMeshProUGUI bulletDamageTextField;
+    [SerializeField] private TextMeshProUGUI bulletDelayTextField;
+    [SerializeField] private TextMeshProUGUI reloadSpeedTextField;
+    [SerializeField] private TextMeshProUGUI clipSizeTextField;
     [SerializeField] private CollectedCollectibles collectedCollectibles;
-    private Dictionary<string, (float levelFill, Sprite sprite, string text, string header, WeaponObjectSO weaponObjectSO)> collectedItemsDictionary;
+    private Dictionary<string, (float levelFill, Sprite sprite, string weaponDescription, string header, string bulletDamageText, string shotDelayText, string reloadSpeedText, string clipSizeText, WeaponObjectSO weaponObjectSO)> collectedItemsDictionary;
 
     [Header("Collected Items")] 
     [SerializeField] private GameObject brokenLights;
@@ -43,7 +49,21 @@ public class ShopUI : MonoBehaviour
 
     private void Start()
     {
-        collectedItemsDictionary = new Dictionary<string, (float, Sprite, string, string, WeaponObjectSO)>();
+        collectedItemsDictionary = new Dictionary<string, (float, Sprite, string, string, string, string, string, string, WeaponObjectSO)>();
+    }
+
+    public void SwitchWindow(int windowSwitch)
+    {
+        currentWeaponSelectionWindow += windowSwitch;
+        
+        if (collectedItemsDictionary.TryGetValue(selectionWindows[currentWeaponSelectionWindow], out _))
+        {
+            DisplayItem(selectionWindows[currentWeaponSelectionWindow]);        
+        }
+        else
+        {
+            ResetDescriptionsTexts();
+        }
     }
 
     private void UpgradeWeapon(WeaponObjectSO weapon, IReadOnlyList<WeaponObjectSO> upgradeTiers)
@@ -71,16 +91,13 @@ public class ShopUI : MonoBehaviour
     private void FillWeaponAmmo(WeaponObjectSO weapon)
     {
         //Checks for broken pistol because there refilling ammo does not cost
-        if (TutorialManager.Instance.fillAmmoForFree || (PlayerBehaviour.Instance.playerCurrency.SpendCurrency(fillAmmoCost) && 
-                                                     weapon.ammunitionInBackUp != PlayerBehaviour.Instance.weaponBehaviour.ammunitionInBackUp))
+        if (TutorialManager.Instance.fillAmmoForFree || 
+            (PlayerBehaviour.Instance.playerCurrency.SpendCurrency(fillAmmoCost) && 
+             weapon.ammunitionInBackUp != PlayerBehaviour.Instance.weaponBehaviour.ammunitionInBackUp))
         {
             PlayerBehaviour.Instance.weaponBehaviour.ObtainAmmoDrop(null, weapon.ammunitionInBackUp);
-            
-            if (TutorialManager.Instance.fillAmmoForFree)
-            {
-                InGameUIManager.Instance.dialogueUI.DisplayDialogue();
-                TutorialManager.Instance.canActivateGenerator = true;
-            }
+
+            TutorialManager.Instance.ExplainGenerator();
         }
         else
         {
@@ -115,34 +132,44 @@ public class ShopUI : MonoBehaviour
     
     private void EquipNewWeapon(WeaponObjectSO weaponObjectSO)
     {
-        PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weaponObjectSO);
+        if(PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon != weaponObjectSO.weaponName)
+            PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weaponObjectSO);
     }
 
     public void ResetDescriptionsTexts()
     {
-        InGameUIManager.Instance.dialogueUI.shopText.text = "";
-        descriptionHeader.text = "";
-        descriptionImage.gameObject.SetActive(false);
-        equipWeaponButton.interactable = false;
-        fillWeaponAmmoButton.interactable = false;
-        upgradeWeaponButton.interactable = false;
+        descriptionImage.gameObject.SetActive(true);
+        descriptionHeader.gameObject.SetActive(true);
+        levelFillImage.gameObject.SetActive(true);
+        bulletDamageTextField.gameObject.SetActive(true);
+        bulletDelayTextField.gameObject.SetActive(true);
+        reloadSpeedTextField.gameObject.SetActive(true);
+        clipSizeTextField.gameObject.SetActive(true);
+        
+        InGameUIManager.Instance.dialogueUI.shopText.text = "???";
+        descriptionHeader.text = "???";
+        bulletDamageTextField.text = "???";
+        bulletDelayTextField.text = "???";
+        reloadSpeedTextField.text = "???";
+        clipSizeTextField.text = "???";
+        buttonsGameObject.SetActive(false);
     }
     
     private void DisplayItem(string header)
     {
         ResetDescriptionsTexts();
-        
-        descriptionImage.gameObject.SetActive(true);
-        buttonsGameObject.SetActive(true);
-        levelFillImage.gameObject.SetActive(true);
 
         if (InGameUIManager.Instance.dialogueUI.shopText.text == "")
         {
-            StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].text, null));
+            StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].weaponDescription, null));
         }
         
         descriptionHeader.text += collectedItemsDictionary[header].header;
         descriptionImage.sprite = collectedItemsDictionary[header].sprite;
+        bulletDamageTextField.text += collectedItemsDictionary[header].bulletDamageText;
+        bulletDelayTextField.text += collectedItemsDictionary[header].shotDelayText;
+        reloadSpeedTextField.text += collectedItemsDictionary[header].reloadSpeedText;
+        clipSizeTextField.text += collectedItemsDictionary[header].clipSizeText;
 
         if (collectedItemsDictionary[header].weaponObjectSO != null)
         {
@@ -226,25 +253,28 @@ public class ShopUI : MonoBehaviour
         foreach (var _identifier in _collectedWeapons)
         {
             var _headerText = "";
-            var _text = "";
+            var _weaponDescription = "";
+            var _bulletDamageText = "";
+            var _bulletDelayText = "";
+            var _reloadSpeedText = "";
+            var _clipSizeText = "";
             var _weapon = PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == _identifier);
             
             if (_weapon == null)
                 return;
             
             _headerText += _weapon.weaponName;
-            _text += _weapon.weaponDescription;
+            _weaponDescription += _weapon.weaponDescription;
             if (_weapon.hasAbilityUpgrade)
             {
-                _text += "\n" + "\n" + "Special Ability:" + "\n" + _weapon.weaponAbilityDescription + "\n" + "\n" + "Damage: " + _weapon.bulletDamage +  "\n" + "Clipsize: " + _weapon.clipSize;
+                _weaponDescription += "\n" + "\n" + "Special Ability:" + "\n" + _weapon.weaponAbilityDescription;
             }
             else
             {
-                _text += "\n" + 
-                         "\n" + "Bullet Damage: " + _weapon.bulletDamage +  
-                         "\n" + "Clip Size: " + _weapon.clipSize +  
-                         "\n" + "Shoot Delay: " + _weapon.shootDelay +  
-                         "\n" + "Reload Speed: " + _weapon.reloadTime;
+                _bulletDamageText = "Bullet Damage: " + "\n" + _weapon.bulletDamage;
+                _clipSizeText = "Clip Size: " + "\n" + _weapon.clipSize;
+                _bulletDelayText = "Shoot Delay: " + "\n" + _weapon.shootDelay; 
+                _reloadSpeedText = "Reload Speed: " + "\n" + _weapon.reloadTime;
             }
             
             var _spriteWeapon = _weapon.uiWeaponVisual;
@@ -254,33 +284,32 @@ public class ShopUI : MonoBehaviour
             switch (_itemIdentifier)
             {
                 case "Magnum magnum" :
-                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _text, _weapon);
+                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _weaponDescription, _bulletDamageText, _bulletDelayText, _reloadSpeedText, _clipSizeText, _weapon);
                     break;
                 case "French Fries AR" :
-                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _text,_weapon);
+                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _weaponDescription, _bulletDamageText, _bulletDelayText, _reloadSpeedText, _clipSizeText, _weapon);
                     break;
                 case "Lollipop Shotgun" :
-                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _text, _weapon);
+                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _weaponDescription, _bulletDamageText, _bulletDelayText, _reloadSpeedText, _clipSizeText, _weapon);
                     break;
                 case "Corn Dog Hunting Rifle" :
-                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _text, _weapon);
+                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _weaponDescription, _bulletDamageText, _bulletDelayText, _reloadSpeedText, _clipSizeText, _weapon);
                     break;
                 case "Popcorn Launcher" :
-                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _text, _weapon);
+                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _weaponDescription, _bulletDamageText, _bulletDelayText, _reloadSpeedText, _clipSizeText, _weapon);
                     break;
                 case "Broken Pistol" :
-                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _text, _weapon);
-                    DisplayItem("Broken Pistol");
+                    ActivateInventoryItem((float)_weapon.upgradeTier / 3, _headerText, _spriteWeapon, _weaponDescription, _bulletDamageText, _bulletDelayText, _reloadSpeedText, _clipSizeText, _weapon);
                     break;
             }
         }
     }
     
-    private void ActivateInventoryItem(float levelFill, string headerText, Sprite spriteItem, string text, WeaponObjectSO weaponObjectSO)
+    private void ActivateInventoryItem(float levelFill, string headerText, Sprite spriteItem, string weaponDescription, string bulletDamageText, string bulletDelayText, string reloadSpeedText, string  clipSizeText,WeaponObjectSO weaponObjectSO)
     {
         if (!collectedItemsDictionary.TryGetValue(headerText, out _))
         {
-            collectedItemsDictionary[headerText] = (levelFill, spriteItem, text, headerText, weaponObjectSO); 
+            collectedItemsDictionary[headerText] = (levelFill, spriteItem, weaponDescription, headerText, bulletDamageText, bulletDelayText, reloadSpeedText, clipSizeText, weaponObjectSO); 
         }
     }
 }

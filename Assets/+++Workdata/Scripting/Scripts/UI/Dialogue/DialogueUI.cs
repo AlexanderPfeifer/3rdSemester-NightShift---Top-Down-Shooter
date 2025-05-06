@@ -155,19 +155,22 @@ public class DialogueUI : MonoBehaviour
 
     public void SetDialogueBoxState(bool radioOn, bool putOn)
     {
-        radioAnim.SetBool("RadioOn", radioOn);
-        radioAnim.SetBool("PutOn", putOn);
+        if (radioAnim.gameObject.activeSelf)
+        {
+            radioAnim.SetBool("RadioOn", radioOn);
+            radioAnim.SetBool("PutOn", putOn);
 
-        if (!radioOn)
-        {
-            walkieTalkieDialogueBoxAnim.SetBool("DialogueBoxOn", false);   
-            PlayerBehaviour.Instance.SetPlayerBusy(false);
+            if (!radioOn)
+            {
+                walkieTalkieDialogueBoxAnim.SetBool("DialogueBoxOn", false);   
+                PlayerBehaviour.Instance.SetPlayerBusy(false);
+            }
+            else
+            {
+                PlayerBehaviour.Instance.SetPlayerBusy(true);
+            }   
         }
-        else
-        {
-            PlayerBehaviour.Instance.SetPlayerBusy(true);
-        }
-        
+
         //Also some animation for the text box in the shop
     }
 
@@ -176,32 +179,18 @@ public class DialogueUI : MonoBehaviour
         dialogueTextCount = 0;
         currentDialogueCount++;
         currentTextBox.text = "";
-        
-        
+
         dialogueState = DialogueState.DialogueNotPlaying;
 
         if (currentTextBox != shopText)
         {
             SetDialogueBoxState(false, true);
             dialogueCountWalkieTalkie++;
-            if (currentDialogueCount == 2)
-            {
-                InGameUIManager.Instance.currencyUI.GetCurrencyText().gameObject.SetActive(true);
-            }
             return;
         }
-        
-        dialogueCountShop++;
 
-        if (currentDialogueCount == dialogueShop.Length)
-        {
-            //Need to find a way to end the game
-            //InGameUIManager.Instance.EndScreen();
-        }
-        if (currentDialogueCount == 1)
-        {
-            TutorialManager.Instance.GetFirstWeaponAndWalkieTalkie();
-        }
+        dialogueShop[dialogueCountShop].dialogueEndAction?.Invoke();
+        dialogueCountShop++;
     }
 
     public void PlayNextDialogue()

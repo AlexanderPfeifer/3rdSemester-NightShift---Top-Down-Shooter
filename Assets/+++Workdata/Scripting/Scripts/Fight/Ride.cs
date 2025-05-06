@@ -150,7 +150,7 @@ public class Ride : Singleton<Ride>
 
     private void WonWave()
     {
-        TutorialManager.Instance.openShutterWheelOfFortune = true;
+        TutorialManager.Instance.newWeaponsCanBeUnlocked = true;
         
         generator.fightMusic.Stop();
         AudioManager.Instance.Play("FightMusicWon");
@@ -197,7 +197,7 @@ public class Ride : Singleton<Ride>
         }
         
         GameSaveStateManager.Instance.SaveGame();
-        AudioManager.Instance.Play("InGameMusic");
+        AudioManager.Instance.FadeIn("InGameMusic");
     }
 
     #region Ride

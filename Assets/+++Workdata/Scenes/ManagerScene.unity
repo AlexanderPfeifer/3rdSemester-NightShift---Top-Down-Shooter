@@ -119,6 +119,138 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &17457267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 17457268}
+  - component: {fileID: 17457271}
+  - component: {fileID: 17457270}
+  - component: {fileID: 17457269}
+  m_Layer: 5
+  m_Name: '[Button] SwitchToLeftWeapon'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &17457268
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17457267}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1318670666}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 104, y: -7}
+  m_SizeDelta: {x: 46.875, y: 59.375}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &17457269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17457267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 21300000, guid: 7919a3dce5390894eb727b89222f4797, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 7919a3dce5390894eb727b89222f4797, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 7919a3dce5390894eb727b89222f4797, type: 3}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 17457270}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1681847471}
+        m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
+        m_MethodName: SwitchWindow
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: -1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &17457270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17457267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 1584273717, guid: a6f2c1c53cda6774db0325682feb5005, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &17457271
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17457267}
+  m_CullTransparentMesh: 1
 --- !u!1 &52209058
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,7 +305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &75838876
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3426,7 +3558,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &540206088
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3441,6 +3573,7 @@ RectTransform:
   m_Children:
   - {fileID: 421328985}
   - {fileID: 514220289}
+  - {fileID: 1318670666}
   - {fileID: 337340317}
   - {fileID: 52209059}
   - {fileID: 523036698}
@@ -3973,10 +4106,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSigns: 0
-  openShutterWheelOfFortune: 0
+  newWeaponsCanBeUnlocked: 0
   fillAmmoForFree: 0
   talkedAboutCurrency: 0
-  canActivateGenerator: 0
 --- !u!1 &597088243
 GameObject:
   m_ObjectHideFlags: 0
@@ -4033,12 +4165,12 @@ GameObject:
   - component: {fileID: 597335844}
   - component: {fileID: 597335843}
   m_Layer: 5
-  m_Name: TXT_BulletDamage (2)
+  m_Name: TXT_ReloadSpeed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &597335842
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4078,7 +4210,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BulletDamage
+  m_text: ReloadSpeed
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 95e0f79c26e97814da9023b3bfea0fe9, type: 2}
   m_sharedMaterial: {fileID: 4351764625433093535, guid: 95e0f79c26e97814da9023b3bfea0fe9, type: 2}
@@ -4385,7 +4517,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &631215902
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4819,6 +4951,7 @@ MonoBehaviour:
       loop: 0
       pitch: 1
       audioSource: {fileID: 0}
+  fadeMusicTime: 0.7
 --- !u!4 &696515804
 Transform:
   m_ObjectHideFlags: 0
@@ -5053,6 +5186,138 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 729482997}
+  m_CullTransparentMesh: 1
+--- !u!1 &732962266
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 732962267}
+  - component: {fileID: 732962270}
+  - component: {fileID: 732962269}
+  - component: {fileID: 732962268}
+  m_Layer: 5
+  m_Name: '[Button] SwitchToRightWeapon'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &732962267
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732962266}
+  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1318670666}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 840, y: -7}
+  m_SizeDelta: {x: 46.875, y: 59.375}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &732962268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732962266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 21300000, guid: 7919a3dce5390894eb727b89222f4797, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 7919a3dce5390894eb727b89222f4797, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 7919a3dce5390894eb727b89222f4797, type: 3}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 732962269}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1681847471}
+        m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
+        m_MethodName: SwitchWindow
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &732962269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732962266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 1584273717, guid: a6f2c1c53cda6774db0325682feb5005, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &732962270
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732962266}
   m_CullTransparentMesh: 1
 --- !u!1 &762135246
 GameObject:
@@ -5786,7 +6051,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &950976626
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5959,12 +6224,12 @@ GameObject:
   - component: {fileID: 979890683}
   - component: {fileID: 979890682}
   m_Layer: 5
-  m_Name: TXT_BulletDamage (1)
+  m_Name: TXT_ShootDelay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &979890681
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5981,7 +6246,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 128, y: -46.91516}
+  m_AnchoredPosition: {x: 124, y: -46.91516}
   m_SizeDelta: {x: 163.05, y: 138.7316}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &979890682
@@ -6004,7 +6269,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BulletDamage
+  m_text: ShootDelay
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 95e0f79c26e97814da9023b3bfea0fe9, type: 2}
   m_sharedMaterial: {fileID: 4351764625433093535, guid: 95e0f79c26e97814da9023b3bfea0fe9, type: 2}
@@ -7942,6 +8207,43 @@ RectTransform:
   m_AnchoredPosition: {x: -198, y: -148.4}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1318670665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1318670666}
+  m_Layer: 5
+  m_Name: SwitchWeaponWindow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1318670666
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318670665}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 732962267}
+  - {fileID: 17457268}
+  m_Father: {fileID: 540206088}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1326538651
 GameObject:
   m_ObjectHideFlags: 0
@@ -8443,7 +8745,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d76e3bcc8841e84cbe8d03bbc591a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
+  debugMode: 0
   equipWeapon: 4
   UnlockWeapons:
   - weaponName: Lollipop Shotgun
@@ -8747,7 +9049,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1458062553
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10099,6 +10401,21 @@ MonoBehaviour:
     - "Margarite: \nI am Margarite, nice to meet you."
     - "Margarite: \nLet me show you what you need to do - here is your first weapon
       and here is your walkie talkie, let's test it."
+    dialogueEndAction:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 596546074}
+          m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+          m_MethodName: GetFirstWeaponAndWalkieTalkie
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - situation: CameBackToFillAmmo
     dialogues:
     - 'Margarite:
@@ -10109,36 +10426,54 @@ MonoBehaviour:
 
       Okay but enough talking now, I opened up the generator so
       now you can activate it and get going.'
+    dialogueEndAction:
+      m_PersistentCalls:
+        m_Calls: []
   dialogueWalkieTalkie:
   - situation: ReceivingWalkieTalkie
     dialogues:
     - Works like a charm.
     - Now go ahead and shoot the target <nobr>\u00A0\u00A0<sprite name="char_side_fin_0"></nobr> 
       on the shooting range.
+    dialogueEndAction:
+      m_PersistentCalls:
+        m_Calls: []
   - situation: ShotAllSigns
     dialogues:
     - 'Margarite:
 
       Nicely done! Come back to my shop and refill your ammo to
       finally start your shift.'
+    dialogueEndAction:
+      m_PersistentCalls:
+        m_Calls: []
   - situation: BeforeStartingFirstGenerator
     dialogues:
     - 'Margarite:
 
       I forgot to mention, that for every animal you can kill,
       you get tickets which you can use to get things that make your job easier here.'
+    dialogueEndAction:
+      m_PersistentCalls:
+        m_Calls: []
   - situation: AfterFirstFight
     dialogues:
     - "Margarite: \nThe generator shut down again - what a bummer. You probably have
       to try again."
     - "Margarite: \nBut before that, go ahead and visit my shop, I've got a special
       gift for you."
+    dialogueEndAction:
+      m_PersistentCalls:
+        m_Calls: []
   - situation: AfterSecondFight
     dialogues:
     - 'Boss:
 
       ...'
     - "Dan: \nBoss? Hello?"
+    dialogueEndAction:
+      m_PersistentCalls:
+        m_Calls: []
   - situation: AfterThirdFight
     dialogues:
     - "Dan: \nBoss, I\u2018m finally done here. Everything should be repaired now. "
@@ -10149,6 +10484,9 @@ MonoBehaviour:
     - "I think it\u2018s about damn time for you to tell me what\u2018s going on
       here. "
     - "Boss: \nFine. You know what? Come to the entrance I'm gonna be there\u2026 "
+    dialogueEndAction:
+      m_PersistentCalls:
+        m_Calls: []
   shopText: {fileID: 373481259}
   walkieTalkieText: {fileID: 163291304}
   currentTextBox: {fileID: 0}
@@ -10197,11 +10535,23 @@ MonoBehaviour:
   buttonsGameObject: {fileID: 1349386883}
   fortuneWheel: {fileID: 337340316}
   weapons: {fileID: 52209058}
+  selectionWindows:
+  - Broken Pistol
+  - French Fries AR
+  - Corn Dog Hunting Rifle
+  - Magnum magnum
+  - Popcorn Launcher
+  - Lollipop Shotgun
+  switchWindowButtons: {fileID: 1318670665}
   tierCosts: 2003000040060000800c0000
   fillAmmoCost: 0
   descriptionHeader: {fileID: 75838877}
   descriptionImage: {fileID: 631215903}
   levelFillImage: {fileID: 1458062554}
+  bulletDamageTextField: {fileID: 950976627}
+  bulletDelayTextField: {fileID: 979890682}
+  reloadSpeedTextField: {fileID: 597335843}
+  clipSizeTextField: {fileID: 1690539910}
   collectedCollectibles: {fileID: 11400000, guid: fa73a1117e1d3094ba8e37d8ee4a2636, type: 2}
   brokenLights: {fileID: 1083643690}
   teddy: {fileID: 1883376355}
@@ -10369,12 +10719,12 @@ GameObject:
   - component: {fileID: 1690539911}
   - component: {fileID: 1690539910}
   m_Layer: 5
-  m_Name: TXT_BulletDamage (3)
+  m_Name: TXT_ClipSize
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1690539909
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10414,7 +10764,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BulletDamage
+  m_text: ClipSize
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 95e0f79c26e97814da9023b3bfea0fe9, type: 2}
   m_sharedMaterial: {fileID: 4351764625433093535, guid: 95e0f79c26e97814da9023b3bfea0fe9, type: 2}

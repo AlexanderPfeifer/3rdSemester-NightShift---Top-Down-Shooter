@@ -24,7 +24,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     public GameObject abilityFillBar;
 
     [Header("Shop")] 
-    [SerializeField] private GameObject changeShopWindowButton;
+    public GameObject changeShopWindowButton;
     
     [Header("UI Screens")]
     public GameObject fightUI;
@@ -103,15 +103,10 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
     public void SetGeneratorUI()
     {
-        if (!PlayerBehaviour.Instance.IsPlayerBusy() && TutorialManager.Instance.canActivateGenerator)
+        if (!PlayerBehaviour.Instance.IsPlayerBusy() && TutorialManager.Instance.talkedAboutCurrency)
         {
-            if (!TutorialManager.Instance.talkedAboutCurrency)
-            {
-                dialogueUI.SetDialogueBoxState(true, true);
-                TutorialManager.Instance.talkedAboutCurrency = true;
-                return;
-            }
-            
+            TutorialManager.Instance.ExplainCurrency();
+
             generatorScreen.SetActive(true);
         }
         else
@@ -131,8 +126,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         {
             shopScreen.SetActive(true);
             
-            AudioManager.Instance.FadeOut("InGameMusic");
-            AudioManager.Instance.FadeIn("ShopMusic");
+            AudioManager.Instance.FadeOut("InGameMusic", "ShopMusic");
 
             foreach (GameObject _enemy in Ride.Instance.enemyParent.transform)
             {
@@ -144,29 +138,21 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
             PlayerBehaviour.Instance.SetPlayerBusy(true);
 
-            if (TutorialManager.Instance.openShutterWheelOfFortune)
-            {
-                //Todo: Make this an animation of the shutter
-                changeShopWindowButton.SetActive(true);
-            }
+            TutorialManager.Instance.MakeNewWeaponsUnlockable();
             
-            if (TutorialManager.Instance.shotSigns < 3 || !TutorialManager.Instance.fillAmmoForFree)
-                dialogueUI.DisplayDialogue();
+            TutorialManager.Instance.PlayStartingDialogue();
 
-            shopUI.ResetDescriptionsTexts();
             shopUI.DisplayCollectedWeapons();
             
             return;
         }
 
         dialogueUI.SetDialogueBox(false);
-        
         dialogueUI.SetDialogueBoxState(false, true);
 
         shopScreen.SetActive(false);
         
-        AudioManager.Instance.FadeOut("ShopMusic");
-        AudioManager.Instance.FadeIn("InGameMusic");
+        AudioManager.Instance.FadeOut("ShopMusic", "InGameMusic");
 
         PlayerBehaviour.Instance.SetPlayerBusy(false);
     }

@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class AudioManager : SingletonPersistent<AudioManager>
 {
     public SoundCategory[] soundCategories;
+    [SerializeField] private float fadeMusicTime;
     
     protected override void Awake()
     {
@@ -82,25 +83,39 @@ public class AudioManager : SingletonPersistent<AudioManager>
         }
     }
     
-    public void FadeOut(string soundEffect)
+    public void FadeOut(string soundEffect, string soundEffectFadeInAfter)
     {
-        StartCoroutine(VolumeFadeOut(soundEffect));
+        StartCoroutine(VolumeFadeOut(soundEffect, soundEffectFadeInAfter));
     }
     
-    private IEnumerator VolumeFadeOut(string soundName)
+    private IEnumerator VolumeFadeOut(string soundName, string soundNameFadeIn)
     {
         Sound _s = GetSound(soundName);
         
         if (_s != null)
         {
-            while (_s.audioSource.volume > 0.01f)
+            float _startVolume = _s.audioSource.volume;
+            float _elapsed = 0f;
+
+            while (_elapsed < fadeMusicTime)
             {
-                _s.audioSource.volume = Mathf.Lerp(_s.audioSource.volume, 0, Time.unscaledTime);
+                _elapsed += Time.unscaledDeltaTime;
+                _s.audioSource.volume = Mathf.Lerp(_startVolume, 0f, _elapsed / fadeMusicTime);
                 yield return null;
             }
 
-            _s.audioSource.volume = 0;
+            _s.audioSource.volume = 0f;
             Pause(_s.audioSource.resource.name);
+
+            if (soundName == "MainMenuMusic")
+            {
+                SceneManager.Instance.SwitchScene(GameSaveStateManager.Instance.saveGameDataManager.loadedSceneName);
+            }
+
+            if (soundNameFadeIn != "")
+            {
+                FadeIn(soundNameFadeIn);
+            }
         }
     }
     
@@ -117,17 +132,21 @@ public class AudioManager : SingletonPersistent<AudioManager>
         {
             if (!IsPlaying(soundName))
             {
-                _s.volume = 0;
                 Play(soundName);
-            }
-        
-            while (_s.audioSource.volume < .9f)
-            {
-                _s.audioSource.volume = Mathf.Lerp(_s.audioSource.volume, 1, Time.unscaledTime);
-                yield return null;
+                _s.audioSource.volume = 0;
             }
             
-            _s.audioSource.volume = 1;
+            float _startVolume = _s.audioSource.volume;
+            float _elapsed = 0f;
+        
+            while (_elapsed < fadeMusicTime)
+            {
+                _elapsed += Time.unscaledDeltaTime;
+                _s.audioSource.volume = Mathf.Lerp(_startVolume, _s.volume, _elapsed / fadeMusicTime);
+                yield return null;
+            }
+
+            _s.audioSource.volume = _s.volume;
         }
     }
     

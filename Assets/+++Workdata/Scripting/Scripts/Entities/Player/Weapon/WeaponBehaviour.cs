@@ -76,6 +76,8 @@ public class WeaponBehaviour : MonoBehaviour
     private Sprite longRangeWeaponSprite;
     private float weaponAimingAngle;
     private float weaponScreenShake;
+
+    [HideInInspector] public string currentEquippedWeapon;
     
     [HideInInspector] public MyWeapon myWeapon;
 
@@ -405,6 +407,7 @@ public class WeaponBehaviour : MonoBehaviour
     public void GetWeapon(WeaponObjectSO weapon)
     {
         this.weapon.SetActive(true);
+        currentEquippedWeapon = weapon.weaponName;
         longRangeWeaponSprite = weapon.inGameWeaponVisual;
         bulletDamage = weapon.bulletDamage;
         maxPenetrationCount = weapon.penetrationCount;

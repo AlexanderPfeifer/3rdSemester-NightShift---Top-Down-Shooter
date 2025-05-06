@@ -185,7 +185,7 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     {
         EventSystem.current.SetSelectedGameObject(null);
         GameSaveStateManager.Instance.LoadFromSave(saveName);
-        AudioManager.Instance.Stop("MainMenuMusic");
+        AudioManager.Instance.FadeOut("MainMenuMusic", "InGameMusic");
         gameStateLoaded = false;
     }
 

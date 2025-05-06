@@ -92,6 +92,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         weaponBehaviour = GetComponentInChildren<WeaponBehaviour>();
         abilityBehaviour = GetComponentInChildren<AbilityBehaviour>();
         SceneManager.Instance.loadingScreenAnim.SetTrigger("End");
+        AudioManager.Instance.FadeIn("InGameMusic");
         rb = GetComponent<Rigidbody2D>();
         currentMoveSpeed = baseMoveSpeed;
         playerCurrency = GetComponent<PlayerCurrency>();

@@ -51,8 +51,7 @@ public class GameSaveStateManager : SingletonPersistent<GameSaveStateManager>
         };
         
         CurrentState = GameState.InGame;
-        AudioManager.Instance.Stop("MainMenuMusic");
-        SceneManager.Instance.SwitchScene(saveGameDataManager.loadedSceneName);
+        AudioManager.Instance.FadeOut("MainMenuMusic", "");
     }
 
     public void LoadFromSave(string saveName)
