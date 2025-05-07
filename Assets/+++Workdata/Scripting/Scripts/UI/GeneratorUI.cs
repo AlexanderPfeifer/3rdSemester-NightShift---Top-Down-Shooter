@@ -67,6 +67,7 @@ public class GeneratorUI : MonoBehaviour
             if (PlayerBehaviour.Instance.GetInteractionObjectInRange(PlayerBehaviour.Instance.generatorLayer, out Collider2D _generator))
             {          
                 _generator.GetComponent<Generator>().gateAnim.SetBool("OpenGate", true);
+                _generator.GetComponent<Generator>().interactable = false;
             }
         }
         else

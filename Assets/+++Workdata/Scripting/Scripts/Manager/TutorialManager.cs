@@ -46,9 +46,10 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
 
     public void ExplainGenerator()
     {
-        if (shotSigns >= 3)
+        if (shotSigns >= 3 && Ride.Instance.GetCurrentWaveAsInt() == 0 && Ride.Instance.generator.interactable == false)
         {
             InGameUIManager.Instance.dialogueUI.DisplayDialogue();
+            Ride.Instance.generator.interactable = true;
         }
     }
 
@@ -56,7 +57,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     {
         shotSigns++;
         
-        if (shotSigns >= 3)
+        if (shotSigns == 3)
         {
             InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
         }

@@ -163,10 +163,10 @@ public class WeaponBehaviour : MonoBehaviour
         var _shortGetMeleeWeaponOutRange = getMeleeWeaponOutRange - getMeleeWeaponOutRange / 2;
         var _longGetMeleeWeaponOutRange = getMeleeWeaponOutRange + getMeleeWeaponOutRange / 2;
         
-        if (Mathf.Abs(weaponToMouse.x) <= currentGetMeleeWeaponOutRange && 
+        if (PlayerBehaviour.Instance.playerVisual.activeSelf || (Mathf.Abs(weaponToMouse.x) <= currentGetMeleeWeaponOutRange && 
             Mathf.Abs(weaponToMouse.y) <= currentGetMeleeWeaponOutRange &&
             Mathf.Abs(weaponToMouse.x) >= 0 && 
-            Mathf.Abs(weaponToMouse.y) >= 0) 
+            Mathf.Abs(weaponToMouse.y) >= 0)) 
         {
             weapon.GetComponent<SpriteRenderer>().sprite = meleeWeapon;
             

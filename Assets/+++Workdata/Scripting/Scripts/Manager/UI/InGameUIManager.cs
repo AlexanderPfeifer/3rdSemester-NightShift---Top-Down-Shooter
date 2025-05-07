@@ -130,13 +130,11 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         {
             shopScreen.SetActive(true);
             
-            
-            
             AudioManager.Instance.FadeOut("InGameMusic", "ShopMusic");
 
-            foreach (GameObject _enemy in Ride.Instance.enemyParent.transform)
+            foreach (Transform _enemy in Ride.Instance.enemyParent.transform)
             {
-                Destroy(_enemy);
+                Destroy(_enemy.gameObject);
             }
 
             dialogueUI.SetDialogueBox(true); 

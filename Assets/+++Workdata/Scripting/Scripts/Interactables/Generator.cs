@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Generator : MonoBehaviour
@@ -8,16 +9,20 @@ public class Generator : MonoBehaviour
     [Header("Music")]
     [SerializeField] public AudioSource fightMusic;
     
-    [HideInInspector] public bool interactable = true;
+    [HideInInspector] public bool interactable;
     
     [Header("Gate")] 
     public Animator gateAnim;
+
+    private void Start()
+    {
+        interactable = false;
+    }
 
     public void SetUpFightArena()
     {
         fightMusic.Play();
         AudioManager.Instance.Stop("InGameMusic");
-        interactable = false;
         Ride.Instance.rideLight.SetActive(true);
         //Ride.Instance.rideRenderer.GetComponent<Animator>().SetTrigger("LightOn");
         Ride.Instance.invisibleCollider.SetActive(true);

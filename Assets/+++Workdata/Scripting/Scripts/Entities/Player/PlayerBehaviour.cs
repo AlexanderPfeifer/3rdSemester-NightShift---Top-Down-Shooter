@@ -142,11 +142,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
     private void GameInputManagerOnInteractAction(object sender, EventArgs e)
     {
-        if (GetInteractionObjectInRange(collectibleLayer, out Collider2D _collectible))
-        {
-            _collectible.GetComponent<Collectible>().Collect();
-        }
-        else if (GetInteractionObjectInRange(shopLayer, out _))
+        if (GetInteractionObjectInRange(shopLayer, out _))
         {
             InGameUIManager.Instance.SetShopUI();
         }
@@ -160,7 +156,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         }
         else if (GetInteractionObjectInRange(rideLayer, out Collider2D _ride))
         {
-            if (_ride.TryGetComponent(out Ride ride))
+            if (_ride.TryGetComponent(out Ride ride) && !ride.waveStarted && !ride.generator.interactable)
             {
                 ride.generator.gateAnim.SetBool("OpenGate", false);
                 ride.generator.SetUpFightArena();
@@ -247,7 +243,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
         if (GetInteractionObjectInRange(rideLayer, out Collider2D _ride))
         {
-            if (_ride.TryGetComponent(out Ride _rideBehaviour) && !_rideBehaviour.generator.interactable)
+            if (_ride.TryGetComponent(out Ride _rideBehaviour) && !_rideBehaviour.waveStarted && !_rideBehaviour.generator.interactable)
             {
                 rideSpriteRenderer.sprite = rideSpriteHighlight;
             }
