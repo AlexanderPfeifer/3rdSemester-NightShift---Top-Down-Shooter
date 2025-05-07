@@ -136,7 +136,7 @@ public class Ride : Singleton<Ride>
         generator.interactable = true;
         
         StopAllCoroutines();
-        rideAnimator.SetTrigger("LightOff");
+        //rideAnimator.SetTrigger("LightOff");
         rideLight.SetActive(false);
 
         waveStarted = false;

@@ -48,6 +48,5 @@ public class PauseMenuUI : MonoBehaviour
         PlayerBehaviour.Instance.SetPlayerBusy(false);
         EventSystem.current.SetSelectedGameObject(null);
         inventoryIsOpened = false;
-        InGameUIManager.Instance.shopUI.ResetDescriptionsTexts();
     }
 }

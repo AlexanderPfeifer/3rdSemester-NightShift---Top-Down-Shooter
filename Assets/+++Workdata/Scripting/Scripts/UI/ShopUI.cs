@@ -55,15 +55,17 @@ public class ShopUI : MonoBehaviour
     public void DisplayWeaponWindow(int windowSwitch)
     {
         currentWeaponSelectionWindow += windowSwitch;
-        
-        if (collectedItemsDictionary.TryGetValue(selectionWindows[currentWeaponSelectionWindow], out _))
+
+        if (currentWeaponSelectionWindow == selectionWindows.Length)
         {
-            DisplayItem(selectionWindows[currentWeaponSelectionWindow]);        
+            currentWeaponSelectionWindow = 0;
         }
-        else if(TutorialManager.Instance.shotSigns >= 3)
-        { 
-            ResetDescriptionsTexts();
+        else if (currentWeaponSelectionWindow == -1)
+        {
+            currentWeaponSelectionWindow = selectionWindows.Length;
         }
+        
+        DisplayItem(selectionWindows[currentWeaponSelectionWindow]);
     }
 
     private void UpgradeWeapon(WeaponObjectSO weapon, IReadOnlyList<WeaponObjectSO> upgradeTiers)
@@ -136,7 +138,7 @@ public class ShopUI : MonoBehaviour
             PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weaponObjectSO);
     }
 
-    public void ResetDescriptionsTexts()
+    private void DisplayItem(string header)
     {
         descriptionImage.gameObject.SetActive(true);
         descriptionHeader.gameObject.SetActive(true);
@@ -146,24 +148,26 @@ public class ShopUI : MonoBehaviour
         reloadSpeedTextField.gameObject.SetActive(true);
         clipSizeTextField.gameObject.SetActive(true);
         
-        InGameUIManager.Instance.dialogueUI.shopText.text = "???";
-        descriptionHeader.text = "???";
-        bulletDamageTextField.text = "???";
-        bulletDelayTextField.text = "???";
-        reloadSpeedTextField.text = "???";
-        clipSizeTextField.text = "???";
-        
-        buttonsGameObject.SetActive(false);
-    }
-    
-    private void DisplayItem(string header)
-    {
-        ResetDescriptionsTexts();
-        
+        if (!collectedItemsDictionary.TryGetValue(selectionWindows[currentWeaponSelectionWindow], out _))
+        {
+            //descriptionImage.sprite = collectedItemsDictionary[header].sprite;
+            descriptionImage.color = Color.black;
+            InGameUIManager.Instance.dialogueUI.shopText.text = "???";
+            descriptionHeader.text = "???";
+            bulletDamageTextField.text = "???";
+            bulletDelayTextField.text = "???";
+            reloadSpeedTextField.text = "???";
+            clipSizeTextField.text = "???";
+            
+            buttonsGameObject.SetActive(false);
+            return;
+        }
+
         InGameUIManager.Instance.dialogueUI.shopText.text = "";
 
         StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].weaponDescription, null));
 
+        descriptionImage.color = Color.white;
         descriptionHeader.text = collectedItemsDictionary[header].header;
         descriptionImage.sprite = collectedItemsDictionary[header].sprite;
         bulletDamageTextField.text = collectedItemsDictionary[header].bulletDamageText;
