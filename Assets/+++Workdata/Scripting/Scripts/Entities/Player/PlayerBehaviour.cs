@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PlayerBehaviour : Singleton<PlayerBehaviour>
 {
@@ -233,10 +232,30 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     private void HandleInteractionSpriteSwitch()
     {
         shopSpriteRenderer.sprite = GetInteractionObjectInRange(shopLayer, out _) ? shopSpriteHighlight : shopSprite;
-        
-        generatorSpriteRenderer.sprite = GetInteractionObjectInRange(generatorLayer, out _) ? generatorSpriteHighlight : generatorSprite;
-        
-        rideSpriteRenderer.sprite = GetInteractionObjectInRange(rideLayer, out _) ? rideSpriteHighlight : rideSprite;
+
+        if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator))
+        {
+            if (_generator.TryGetComponent(out Generator _generatorBehaviour) && _generatorBehaviour.interactable)
+            {
+                generatorSpriteRenderer.sprite = generatorSpriteHighlight;
+            }
+        }
+        else
+        {
+            generatorSpriteRenderer.sprite = generatorSprite;
+        }
+
+        if (GetInteractionObjectInRange(rideLayer, out Collider2D _ride))
+        {
+            if (_ride.TryGetComponent(out Ride _rideBehaviour) && !_rideBehaviour.generator.interactable)
+            {
+                rideSpriteRenderer.sprite = rideSpriteHighlight;
+            }
+        }
+        else
+        {
+            rideSpriteRenderer.sprite = rideSprite;
+        }
     }
     
     public bool GetInteractionObjectInRange(LayerMask layer, out Collider2D interactable)
@@ -261,7 +280,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     {
         if (other.gameObject.TryGetComponent(out AmmoDrop _ammoDrop))
         {
-            weaponBehaviour.ObtainAmmoDrop(_ammoDrop, 0);
+            weaponBehaviour.ObtainAmmoDrop(_ammoDrop, 0, false);
         }
     }
 

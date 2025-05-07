@@ -363,7 +363,7 @@ public class WeaponBehaviour : MonoBehaviour
             InGameUIManager.Instance.ammunitionInBackUpText.text = "/" + backUpAmmo;
     }
 
-    public void ObtainAmmoDrop(AmmoDrop ammoDrop, int setAmmoManually)
+    public void ObtainAmmoDrop(AmmoDrop ammoDrop, int setAmmoManually, bool fillClipAmmo)
     {
         if (ammoDrop == null)
         {
@@ -384,7 +384,15 @@ public class WeaponBehaviour : MonoBehaviour
             Destroy(ammoDrop.gameObject);
         }
 
-        SetAmmunitionText(null, ammunitionInBackUp.ToString());
+        if (fillClipAmmo)
+        {
+            ammunitionInClip = maxClipSize;
+            SetAmmunitionText(ammunitionInClip.ToString(), ammunitionInBackUp.ToString());
+        }
+        else
+        {
+            SetAmmunitionText(null, ammunitionInBackUp.ToString());
+        }
     }
 
     #endregion

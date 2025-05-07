@@ -203,7 +203,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1681847471}
         m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
-        m_MethodName: SwitchWindow
+        m_MethodName: DisplayWeaponWindow
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -281,6 +281,7 @@ RectTransform:
   m_Children:
   - {fileID: 1349386884}
   - {fileID: 1171565109}
+  - {fileID: 1318670666}
   m_Father: {fileID: 540206088}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2410,7 +2411,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 490}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 260, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &383314084
 MonoBehaviour:
@@ -2436,8 +2437,8 @@ MonoBehaviour:
 
     0'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 95e0f79c26e97814da9023b3bfea0fe9, type: 2}
+  m_sharedMaterial: {fileID: 4351764625433093535, guid: 95e0f79c26e97814da9023b3bfea0fe9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3573,7 +3574,6 @@ RectTransform:
   m_Children:
   - {fileID: 421328985}
   - {fileID: 514220289}
-  - {fileID: 1318670666}
   - {fileID: 337340317}
   - {fileID: 52209059}
   - {fileID: 523036698}
@@ -5271,7 +5271,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1681847471}
         m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
-        m_MethodName: SwitchWindow
+        m_MethodName: DisplayWeaponWindow
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8230,14 +8230,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318670665}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 732962267}
   - {fileID: 17457268}
-  m_Father: {fileID: 540206088}
+  m_Father: {fileID: 52209059}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -10429,6 +10429,27 @@ MonoBehaviour:
     dialogueEndAction:
       m_PersistentCalls:
         m_Calls: []
+  - situation: GotFirstFight
+    dialogues:
+    - 'Margarite:
+
+      Welcome back. So now that you know the basics, I''ve got
+      a new offer for you.'
+    - 'Margarite:
+
+      There is a new thing I wanted to try. My newly bought fortune
+      wheel. Before showing it to customers you are the first one to try.'
+    - 'Margarite:
+
+      A spin only costs a few tickets and you can get some amazing
+      prizes.'
+    - 'Margarite:
+
+      That is everything you need to know to start your job. Have
+      fun at your Night Shift.'
+    dialogueEndAction:
+      m_PersistentCalls:
+        m_Calls: []
   dialogueWalkieTalkie:
   - situation: ReceivingWalkieTalkie
     dialogues:
@@ -10451,8 +10472,14 @@ MonoBehaviour:
     dialogues:
     - 'Margarite:
 
-      I forgot to mention, that for every animal you can kill,
-      you get tickets which you can use to get things that make your job easier here.'
+      I forgot to mention! Every beast you kill gets you tickets!'
+    - 'Margarite:
+
+      With these tickets you can buy things to make your job easier
+      here.'
+    - 'Margarite:
+
+      Now good luck with your first fight!'
     dialogueEndAction:
       m_PersistentCalls:
         m_Calls: []

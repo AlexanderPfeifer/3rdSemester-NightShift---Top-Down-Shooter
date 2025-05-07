@@ -73,7 +73,7 @@ public class GameSaveStateManager : SingletonPersistent<GameSaveStateManager>
         
         SaveFileManager.TrySaveData(saveGameDataManager.saveName, saveGameDataManager);
 
-        StartCoroutine(SetSaveGameText());
+        //StartCoroutine(SetSaveGameText());
     }
 
     #region SetSaveGameText

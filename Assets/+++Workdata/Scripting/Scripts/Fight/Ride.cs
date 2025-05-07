@@ -50,7 +50,6 @@ public class Ride : Singleton<Ride>
     {
         if (!waveStarted)
         {
-            waveTimer = GetCurrentWave().maxWaveTime;
             return;
         }
         
@@ -68,6 +67,11 @@ public class Ride : Singleton<Ride>
     private Wave GetCurrentWave()
     {
         return waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()];
+    }
+    
+    public int GetCurrentWaveAsInt()
+    {
+        return GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
     }
 
     #region EnemySpawning
@@ -161,25 +165,22 @@ public class Ride : Singleton<Ride>
         invisibleCollider.SetActive(false);
         
         StopAllCoroutines();
-        rideAnimator.SetTrigger("LightOff");
+        //rideAnimator.SetTrigger("LightOff");
         rideLight.SetActive(false);
         
-        List<GameObject> _toDestroy = new List<GameObject>();
-
-        foreach (var _enemy in currentEnemies)
+        for (int _i = 0; _i < enemyParent.transform.childCount; _i++)
         {
-            if (_enemy.TryGetComponent(out EnemyBase _enemyBase))
+            Transform _child = enemyParent.transform.GetChild(_i);
+
+            if (_child.TryGetComponent(out EnemyBase _enemyBase))
             {
                 _enemyBase.addHelpDropsOnDeath = false;
+                
+                Destroy(_child.gameObject);
             }
-
-            _toDestroy.Add(_enemy);
         }
 
-        foreach (var _enemy in _toDestroy)
-        {
-            Destroy(_enemy);
-        }
+        currentEnemies.Clear();
         
         PlayerBehaviour.Instance.playerCurrency.AddCurrency(
             Mathf.RoundToInt(GetCurrentWave().currencyPrize * (currentRideHealth / maxRideHealth)), true);
@@ -207,7 +208,8 @@ public class Ride : Singleton<Ride>
 
     public void ResetRide()
     {
-        waveTimer = 0;
+        generator.gateAnim.SetBool("OpenGate", true);
+        waveTimer = GetCurrentWave().maxWaveTime;
         currentRideHealth = maxRideHealth;
         
         Time.timeScale = 1f;

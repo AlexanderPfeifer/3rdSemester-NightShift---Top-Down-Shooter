@@ -130,6 +130,8 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         {
             shopScreen.SetActive(true);
             
+            
+            
             AudioManager.Instance.FadeOut("InGameMusic", "ShopMusic");
 
             foreach (GameObject _enemy in Ride.Instance.enemyParent.transform)
@@ -142,12 +144,8 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
             PlayerBehaviour.Instance.SetPlayerBusy(true);
 
-            TutorialManager.Instance.MakeNewWeaponsUnlockable();
-            
-            TutorialManager.Instance.PlayStartingDialogue();
-            
-            shopUI.SwitchWindow(0);
-
+            TutorialManager.Instance.CheckDialogue();
+                
             shopUI.DisplayCollectedWeapons();
             
             return;

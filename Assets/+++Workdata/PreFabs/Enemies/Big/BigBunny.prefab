@@ -19,7 +19,7 @@ PrefabInstance:
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: enemyConfetti
       value: 
-      objectReference: {fileID: 2876798362843056283, guid: 0389d7449b4690e429c3c2716cf8c245, type: 3}
+      objectReference: {fileID: 2681389201241787721, guid: 8bbab8cac9b6788469fac9a933e9d041, type: 3}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: hitVisualTime
       value: 0.05

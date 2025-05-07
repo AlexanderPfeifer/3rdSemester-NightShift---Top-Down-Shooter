@@ -108,7 +108,9 @@ public class DialogueUI : MonoBehaviour
     
     public IEnumerator TypeTextCoroutine(string text, Dialogues[] currentDialogue)
     {
-        dialogueState = DialogueState.DialoguePlaying;
+        if(currentDialogue != null)
+            dialogueState = DialogueState.DialoguePlaying;
+        
         currentTextBox.text = "";
         currentTextBox.textWrappingMode = TextWrappingModes.Normal;
 
@@ -136,9 +138,13 @@ public class DialogueUI : MonoBehaviour
                 yield return new WaitForSeconds(maxTextDisplaySpeed);
             }
         }
-        
-        if(currentDialogue != null)
+
+        if (currentDialogue != null)
+        {
+            yield return new WaitForSeconds(.5f);
+            
             CheckDialogueEnd(currentDialogue);
+        }
     }
 
     private void CheckDialogueEnd(IReadOnlyList<Dialogues> currentDialogue)
@@ -162,11 +168,13 @@ public class DialogueUI : MonoBehaviour
 
             if (!radioOn)
             {
+                walkieTalkieText.gameObject.SetActive(false);
                 walkieTalkieDialogueBoxAnim.SetBool("DialogueBoxOn", false);   
                 PlayerBehaviour.Instance.SetPlayerBusy(false);
             }
             else
             {
+                walkieTalkieText.gameObject.SetActive(true);
                 PlayerBehaviour.Instance.SetPlayerBusy(true);
             }   
         }

@@ -27,6 +27,23 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         }    
     }
 
+    public void CheckDialogue()
+    {
+        MakeNewWeaponsUnlockable();
+            
+        PlayStartingDialogue();
+
+        FinishedFirstFight();
+    }
+
+    private void FinishedFirstFight()
+    {
+        if (Ride.Instance.GetCurrentWaveAsInt() > 0)
+        {
+            InGameUIManager.Instance.dialogueUI.DisplayDialogue();
+        }
+    }
+
     public void ExplainGenerator()
     {
         if (shotSigns >= 3)
@@ -45,7 +62,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         }
     }
 
-    public void MakeNewWeaponsUnlockable()
+    private void MakeNewWeaponsUnlockable()
     {
         if (newWeaponsCanBeUnlocked)
         {
@@ -55,7 +72,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         }
     }
     
-    public void PlayStartingDialogue()
+    private void PlayStartingDialogue()
     {
         if (!playedFirstDialogue)
         {

@@ -52,13 +52,12 @@ public class ShopUI : MonoBehaviour
         collectedItemsDictionary = new Dictionary<string, (float, Sprite, string, string, string, string, string, string, WeaponObjectSO)>();
     }
 
-    public void SwitchWindow(int windowSwitch)
+    public void DisplayWeaponWindow(int windowSwitch)
     {
         currentWeaponSelectionWindow += windowSwitch;
         
         if (collectedItemsDictionary.TryGetValue(selectionWindows[currentWeaponSelectionWindow], out _))
         {
-            Debug.Log("Displaying");
             DisplayItem(selectionWindows[currentWeaponSelectionWindow]);        
         }
         else if(TutorialManager.Instance.shotSigns >= 3)
@@ -96,7 +95,7 @@ public class ShopUI : MonoBehaviour
             (PlayerBehaviour.Instance.playerCurrency.SpendCurrency(fillAmmoCost) && 
              weapon.ammunitionInBackUp != PlayerBehaviour.Instance.weaponBehaviour.ammunitionInBackUp))
         {
-            PlayerBehaviour.Instance.weaponBehaviour.ObtainAmmoDrop(null, weapon.ammunitionInBackUp);
+            PlayerBehaviour.Instance.weaponBehaviour.ObtainAmmoDrop(null, weapon.ammunitionInBackUp, true);
 
             TutorialManager.Instance.ExplainGenerator();
         }
@@ -305,6 +304,8 @@ public class ShopUI : MonoBehaviour
                     break;
             }
         }
+        
+        DisplayWeaponWindow(0);
     }
     
     private void ActivateInventoryItem(float levelFill, string headerText, Sprite spriteItem, string weaponDescription, string bulletDamageText, string bulletDelayText, string reloadSpeedText, string  clipSizeText,WeaponObjectSO weaponObjectSO)

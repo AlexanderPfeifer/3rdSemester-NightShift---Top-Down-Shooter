@@ -106,7 +106,5 @@ public class EnemyBase : MonoBehaviour
                 _ammoDrop.GetComponent<AmmoDrop>().ammoCount = _ammoAmount;
             }
         }
-
-        Ride.Instance.currentEnemies.Remove(gameObject);
     }
 }
