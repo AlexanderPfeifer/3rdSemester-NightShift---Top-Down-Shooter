@@ -1,4 +1,5 @@
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -92,9 +93,9 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         
             PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(_brokenPistol);
             InGameUIManager.Instance.weaponSlot.SetActive(true);
-        
-            InGameUIManager.Instance.OpenShop();
-        
+            
+            InGameUIManager.Instance.CloseShop();
+
             InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);   
         }
     }

@@ -14,14 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Lollipop Shotgun
   upgradeTier: 1
+  bulletDamage: 1.4
+  shootDelay: 0.8
+  clipSize: 10
+  reloadTime: 1.8
   weaponDescription: The Lollipop Shotgun, a classic. Although the grip is a little
     sticky, the smell is a nice change of pace. Suck it, beasts!
   weaponAbilityDescription: 
   playerKnockBack: 6
   enemyKnockBackPerBullet: 1
   bulletsPerShot: 12
-  shootDelay: 0.75
-  bulletDamage: 1
   weaponSpread: 0.1
   penetrationCount: 0
   uiWeaponVisual: {fileID: -158313173, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
@@ -29,10 +31,9 @@ MonoBehaviour:
   screenShake: 6
   weaponScale: {x: 1, y: 1, z: 1}
   bulletSize: {x: 0.3, y: 0.3}
-  clipSize: 5
   ammunitionInClip: 5
+  ammunitionBackUpSize: 30
   ammunitionInBackUp: 30
-  reloadTime: 2.5
   hasAbilityUpgrade: 0
   shotSound: {fileID: 6418180475301049370, guid: cd7fd8453ae6564468fed3e22ddb002e, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: a6e38dbd56aa45640b7b13bc5017cd46, type: 2}

@@ -14,7 +14,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     [Header("Weapon")] 
     [HideInInspector] public WeaponBehaviour weaponBehaviour;
     [HideInInspector] public AbilityBehaviour abilityBehaviour;
-    
+
     [Header("Currency")] 
     [HideInInspector] public PlayerCurrency playerCurrency;
 
@@ -200,7 +200,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
             if (GameInputManager.Instance.GetMovementVectorNormalized().sqrMagnitude <= 0)
             {
-                weaponBehaviour.currentWeaponAccuracy = 0.1f;
+                weaponBehaviour.currentWeaponAccuracy = weaponBehaviour.accuracyWhenStandingStill;
                 return;
             }
 

@@ -22,7 +22,8 @@ public class DebugMode : SingletonPersistent<DebugMode>
         AR,
         PopcornPistol,
         HuntingRifle,
-        MagnumMagnum
+        MagnumMagnum,
+        BrokenPistol
     }
     
     protected override void Awake()
@@ -75,6 +76,9 @@ public class DebugMode : SingletonPersistent<DebugMode>
             
             case ChoosableWeapons.HuntingRifle :
                 GetDebuggedWeapon("Corn Dog Hunting Rifle");
+                break;
+            case ChoosableWeapons.BrokenPistol :
+                GetDebuggedWeapon("Broken Pistol");
                 break;
             
             default:

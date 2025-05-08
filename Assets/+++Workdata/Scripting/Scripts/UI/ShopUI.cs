@@ -88,6 +88,8 @@ public class ShopUI : MonoBehaviour
         {
             //Show that the upgrade cannot be achieved
         }
+        
+        ResetWeaponDescriptions();
     }
 
     private void FillWeaponAmmo(WeaponObjectSO weapon)
@@ -95,9 +97,9 @@ public class ShopUI : MonoBehaviour
         //Checks for broken pistol because there refilling ammo does not cost
         if (TutorialManager.Instance.fillAmmoForFree || 
             (PlayerBehaviour.Instance.playerCurrency.SpendCurrency(fillAmmoCost) && 
-             weapon.ammunitionInBackUp != PlayerBehaviour.Instance.weaponBehaviour.ammunitionInBackUp))
+             weapon.ammunitionBackUpSize != PlayerBehaviour.Instance.weaponBehaviour.ammunitionBackUpSize))
         {
-            PlayerBehaviour.Instance.weaponBehaviour.ObtainAmmoDrop(null, weapon.ammunitionInBackUp, true);
+            PlayerBehaviour.Instance.weaponBehaviour.ObtainAmmoDrop(null, weapon.ammunitionBackUpSize, true);
 
             TutorialManager.Instance.ExplainGenerator();
         }
@@ -140,6 +142,11 @@ public class ShopUI : MonoBehaviour
 
     private void DisplayItem(string header)
     {
+        if (collectedItemsDictionary.Count == 0)
+        {
+            return;
+        }
+        
         descriptionImage.gameObject.SetActive(true);
         descriptionHeader.gameObject.SetActive(true);
         levelFillImage.gameObject.SetActive(true);
@@ -175,12 +182,13 @@ public class ShopUI : MonoBehaviour
         }
         
         descriptionImage.color = Color.white;
-        descriptionHeader.text = collectedItemsDictionary[header].header;
-        descriptionImage.sprite = collectedItemsDictionary[header].sprite;
         bulletDamageTextField.text = collectedItemsDictionary[header].bulletDamageText;
         bulletDelayTextField.text = collectedItemsDictionary[header].shotDelayText;
         reloadSpeedTextField.text = collectedItemsDictionary[header].reloadSpeedText;
         clipSizeTextField.text = collectedItemsDictionary[header].clipSizeText;
+        descriptionHeader.text = collectedItemsDictionary[header].header;
+        descriptionImage.sprite = collectedItemsDictionary[header].sprite;
+
         buttonsGameObject.SetActive(true);
 
         if (collectedItemsDictionary[header].weaponObjectSO != null)
@@ -261,7 +269,7 @@ public class ShopUI : MonoBehaviour
         }
     }
     
-    public void DisplayCollectedWeapons()
+    public void ResetWeaponDescriptions()
     {
         var _collectedWeapons = GameSaveStateManager.Instance.saveGameDataManager.collectedWeaponsIdentifiers;
 
@@ -324,9 +332,6 @@ public class ShopUI : MonoBehaviour
     
     private void ActivateInventoryItem(float levelFill, string headerText, Sprite spriteItem, string weaponDescription, string bulletDamageText, string bulletDelayText, string reloadSpeedText, string  clipSizeText,WeaponObjectSO weaponObjectSO)
     {
-        if (!collectedItemsDictionary.TryGetValue(headerText, out _))
-        {
-            collectedItemsDictionary[headerText] = (levelFill, spriteItem, weaponDescription, headerText, bulletDamageText, bulletDelayText, reloadSpeedText, clipSizeText, weaponObjectSO); 
-        }
+        collectedItemsDictionary[headerText] = (levelFill, spriteItem, weaponDescription, headerText, bulletDamageText, bulletDelayText, reloadSpeedText, clipSizeText, weaponObjectSO);
     }
 }

@@ -14,14 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Magnum magnum
   upgradeTier: 0
+  bulletDamage: 5
+  shootDelay: 1
+  clipSize: 7
+  reloadTime: 2
   weaponDescription: "Ouh the Magnum Magnum, my favourite  one. Don\u2018t let the
     cool design fool you - this thing\u2018s packing some heat. "
   weaponAbilityDescription: 
   playerKnockBack: 4
   enemyKnockBackPerBullet: 10
   bulletsPerShot: 1
-  shootDelay: 0.4
-  bulletDamage: 3
   weaponSpread: 0.005
   penetrationCount: 2
   uiWeaponVisual: {fileID: -1145309252, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
@@ -29,10 +31,9 @@ MonoBehaviour:
   screenShake: 5
   weaponScale: {x: 1, y: 1, z: 1}
   bulletSize: {x: 0.75, y: 0.75}
-  clipSize: 7
   ammunitionInClip: 7
+  ammunitionBackUpSize: 42
   ammunitionInBackUp: 42
-  reloadTime: 2
   hasAbilityUpgrade: 0
   shotSound: {fileID: 6418180475301049370, guid: d035078986ad0e34fb2a3308f64e60a6, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 0a58044c5f91a4241b716e15157ce968, type: 2}

@@ -24,7 +24,8 @@ public class WeaponBehaviour : MonoBehaviour
     [Header("Ammo/Reload")]
     private int maxClipSize;
     private int ammunitionInClip;
-    public int ammunitionInBackUp { private set; get; }
+    private int ammunitionInBackUp;
+    public int ammunitionBackUpSize { private set; get; }
     private Coroutine currentReloadCoroutine;
     private float reloadTime;
     [SerializeField] private Image reloadProgress;
@@ -45,6 +46,7 @@ public class WeaponBehaviour : MonoBehaviour
     private float currentHitDelay;
 
     [Header("Shooting")]
+    public float accuracyWhenStandingStill = 0.00005f;
     private float maxShootingDelay;
     private float currentShootingDelay;
     [HideInInspector] public float weaponAccuracy;
@@ -52,9 +54,8 @@ public class WeaponBehaviour : MonoBehaviour
     private bool isPressingLeftClick;
     
     [Header("Knock Back")]
+    [HideInInspector] public float currentEnemyKnockBack;
     private float enemyShootingKnockBack;
-    private float enemyMeleeKnockBack;
-    public float currentEnemyKnockBack;
     private float shootingKnockBack;
     [FormerlySerializedAs("CurrentKnockBack")] [HideInInspector] public Vector2 currentKnockBack;
 
@@ -161,7 +162,7 @@ public class WeaponBehaviour : MonoBehaviour
             return;
 
         
-        if (PlayerBehaviour.Instance.playerVisual.activeSelf || GetComponent<MeleeWeaponBehaviour>().hitCollider.gameObject.activeSelf || (Mathf.Abs(weaponToMouse.x) <= currentGetMeleeWeaponOutRange && 
+        if (PlayerBehaviour.Instance.playerVisual.activeSelf || GetComponent<MeleeWeaponBehaviour>().hitCollider.isActiveAndEnabled || (Mathf.Abs(weaponToMouse.x) <= currentGetMeleeWeaponOutRange && 
             Mathf.Abs(weaponToMouse.y) <= currentGetMeleeWeaponOutRange &&
             Mathf.Abs(weaponToMouse.x) >= 0 && 
             Mathf.Abs(weaponToMouse.y) >= 0)) 
@@ -197,6 +198,11 @@ public class WeaponBehaviour : MonoBehaviour
         }
 
         transform.eulerAngles = new Vector3(0, 0, LastSnappedAngle);
+    }
+
+    public WeaponObjectSO GetCurrentWeaponObjectSO()
+    {
+        return PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == currentEquippedWeapon);
     }
 
     private void GetMeleeWeaponOut()
@@ -250,9 +256,9 @@ public class WeaponBehaviour : MonoBehaviour
     
     private void ShootAutomaticUpdate()
     {
-        if (!isPressingLeftClick || currentShootingDelay > 0) 
+        if (!isPressingLeftClick) 
             return;
-
+        
         if (meleeWeaponOut)
         {
             HitAutomatic();
@@ -274,6 +280,11 @@ public class WeaponBehaviour : MonoBehaviour
             PlayerBehaviour.Instance.currentMoveSpeed = PlayerBehaviour.Instance.baseMoveSpeed;
         }
 
+        if (currentShootingDelay > 0)
+        {
+            return;
+        }
+        
         for (int _i = 0; _i < bulletsPerShot; _i++)
         {
             Vector2 _bulletDirection = Random.insideUnitCircle.normalized;
@@ -309,7 +320,7 @@ public class WeaponBehaviour : MonoBehaviour
         if (currentHitDelay > 0) 
             return;
 
-        StartCoroutine(MeleeSwingCoroutine());
+        StartCoroutine(MeleeWeaponSwingCoroutine());
         
         currentHitDelay = maxHitDelay;
     }
@@ -381,23 +392,31 @@ public class WeaponBehaviour : MonoBehaviour
         }
         else
         {
-            ammunitionInBackUp += myWeapon switch
+            if (ammunitionInBackUp < ammunitionBackUpSize)
             {
-                MyWeapon.AssaultRifle => ammoDrop.ammoCount * 5,
-                MyWeapon.Magnum => ammoDrop.ammoCount * 2,
-                MyWeapon.PopcornLauncher => ammoDrop.ammoCount * 3,
-                MyWeapon.HuntingRifle => Mathf.RoundToInt(ammoDrop.ammoCount * 1.5f),
-                MyWeapon.Shotgun => ammoDrop.ammoCount,
-                _ => throw new ArgumentOutOfRangeException()
-            };
-        
-            Destroy(ammoDrop.gameObject);
+                ammunitionInBackUp += myWeapon switch
+                {
+                    MyWeapon.AssaultRifle => ammoDrop.ammoCount * 5,
+                    MyWeapon.Magnum => ammoDrop.ammoCount * 2,
+                    MyWeapon.PopcornLauncher => ammoDrop.ammoCount * 3,
+                    MyWeapon.HuntingRifle => Mathf.RoundToInt(ammoDrop.ammoCount * 1.5f),
+                    MyWeapon.Shotgun => ammoDrop.ammoCount,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+
+                if (ammunitionInBackUp > ammunitionBackUpSize)
+                {
+                    ammunitionInBackUp = ammunitionBackUpSize;
+                }
+                
+                Destroy(ammoDrop.gameObject);
+            }
         }
 
         if (fillClipAmmo)
         {
             ammunitionInClip = maxClipSize;
-            SetAmmunitionText(ammunitionInClip.ToString(), ammunitionInBackUp.ToString());
+            SetAmmunitionText(ammunitionInClip.ToString(), ammunitionBackUpSize.ToString());
         }
         else
         {
@@ -424,6 +443,12 @@ public class WeaponBehaviour : MonoBehaviour
     
     public void GetWeapon(WeaponObjectSO weapon)
     {
+        if (GetCurrentWeaponObjectSO() != null)
+        {
+            GetCurrentWeaponObjectSO().ammunitionInClip = ammunitionInClip;
+            GetCurrentWeaponObjectSO().ammunitionInBackUp = ammunitionInBackUp;   
+        }
+
         this.weapon.SetActive(true);
         currentEquippedWeapon = weapon.weaponName;
         longRangeWeaponSprite = weapon.inGameWeaponVisual;
@@ -436,10 +461,11 @@ public class WeaponBehaviour : MonoBehaviour
         shootingKnockBack = weapon.playerKnockBack;
         maxClipSize = weapon.clipSize;
         ammunitionInBackUp = weapon.ammunitionInBackUp;
+        ammunitionBackUpSize = weapon.ammunitionBackUpSize;
         ammunitionInClip = weapon.ammunitionInClip;
         reloadTime = weapon.reloadTime;
         PlayerBehaviour.Instance.abilityBehaviour.hasAbilityUpgrade = weapon.hasAbilityUpgrade;
-        SetAmmunitionText(weapon.ammunitionInClip.ToString(), weapon.ammunitionInBackUp.ToString());
+        SetAmmunitionText(weapon.ammunitionInClip.ToString(), weapon.ammunitionBackUpSize.ToString());
         AudioManager.Instance.ChangeSound("Shooting", weapon.shotSound);
         AudioManager.Instance.ChangeSound("Reload", weapon.reloadSound);
         AudioManager.Instance.ChangeSound("Repetition", weapon.repetitionSound);
@@ -491,9 +517,38 @@ public class WeaponBehaviour : MonoBehaviour
         AudioManager.Instance.Play("Repetition");
     }
     
-    private IEnumerator MeleeSwingCoroutine()
+    IEnumerator MeleeWeaponSwingCoroutine()
     {
-        yield return null;
-    }
+        var _steps = new[]
+        {
+            (-50f, 0.08f),
+            (230f, 0.25f),
+            (-170f, 0.45f),
+        };
 
+        for (var _index = 0; _index < _steps.Length; _index++)
+        {
+            if (_index == 1)
+            {
+                GetComponent<MeleeWeaponBehaviour>().hitCollider.enabled = true;
+            }
+            
+            (float _deltaZ, float _duration) = _steps[_index];
+            float _elapsed = 0f;
+            float _startZ = transform.localRotation.eulerAngles.z;
+            float _targetZ = _startZ + _deltaZ;
+
+            while (_elapsed < _duration)
+            {
+                _elapsed += Time.deltaTime;
+                float _currentZ = Mathf.Lerp(_startZ, _targetZ, _elapsed / _duration);
+                transform.localRotation = Quaternion.Euler(0f, 0f, _currentZ);
+                yield return null;
+            }
+            
+            transform.localRotation = Quaternion.Euler(0f, 0f, _targetZ);
+        }
+        
+        GetComponent<MeleeWeaponBehaviour>().hitCollider.enabled = false;
+    }
 }

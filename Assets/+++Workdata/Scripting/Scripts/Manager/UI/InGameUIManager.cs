@@ -60,17 +60,22 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
     private void OnEnable()
     {
-        GameInputManager.Instance.OnGamePausedAction += CloseShop;
+        GameInputManager.Instance.OnGamePausedAction += OnGamePauseAction;
     }
 
     private void OnDisable()
     {
-        GameInputManager.Instance.OnGamePausedAction -= CloseShop;
+        GameInputManager.Instance.OnGamePausedAction -= OnGamePauseAction;
     }
 
     private void Update()
     {
         SimulateDayLight();
+    }
+
+    private void OnGamePauseAction(object sender, EventArgs eventArgs)
+    {
+        CloseShop();
     }
     
     public void GoToMainMenu()
@@ -157,13 +162,13 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
             TutorialManager.Instance.CheckDialogue();
                 
-            shopUI.DisplayCollectedWeapons();
+            shopUI.ResetWeaponDescriptions();
         }
     }
 
-    private void CloseShop(object sender, EventArgs eventArgs)
+    public void CloseShop()
     {
-        if (shopScreen.activeSelf)
+        if (shopScreen.activeSelf && !dialogueUI.IsDialoguePlaying())
         {
             dialogueUI.SetDialogueBox(false);
             dialogueUI.SetDialogueBoxState(false, true);

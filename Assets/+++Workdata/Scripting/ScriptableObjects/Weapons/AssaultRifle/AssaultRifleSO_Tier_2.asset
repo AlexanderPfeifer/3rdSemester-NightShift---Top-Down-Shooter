@@ -14,14 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: French Fries AR
   upgradeTier: 2
+  bulletDamage: 3.5
+  shootDelay: 0.14
+  clipSize: 35
+  reloadTime: 1.5
   weaponDescription: Served hot and fresh. This thing is a whole new definition of
     fast food.
   weaponAbilityDescription: Bullet Firerate increases.
   playerKnockBack: 2
   enemyKnockBackPerBullet: 4
   bulletsPerShot: 1
-  shootDelay: 0.175
-  bulletDamage: 2
   weaponSpread: 0.025
   penetrationCount: 0
   uiWeaponVisual: {fileID: 1193635104, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
@@ -29,10 +31,9 @@ MonoBehaviour:
   screenShake: 4
   weaponScale: {x: 1, y: 1, z: 1}
   bulletSize: {x: 0.5, y: 0.5}
-  clipSize: 25
   ammunitionInClip: 25
+  ammunitionBackUpSize: 150
   ammunitionInBackUp: 150
-  reloadTime: 1.8
   hasAbilityUpgrade: 1
   shotSound: {fileID: 6418180475301049370, guid: 6d76990b337c49a45ab3fff78b5fbb8f, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 7b5340328516d8346aee236cfda4d4b7, type: 2}

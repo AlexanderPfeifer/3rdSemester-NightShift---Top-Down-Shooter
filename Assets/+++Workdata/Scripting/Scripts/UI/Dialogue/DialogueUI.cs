@@ -117,6 +117,7 @@ public class DialogueUI : MonoBehaviour
         var _words = text.Split(' ');
         string _displayText = ""; 
         float _availableWidth = currentTextBox.rectTransform.rect.width;
+        int _bracketCount = 0;
 
         foreach (var _word in _words)
         {
@@ -133,6 +134,23 @@ public class DialogueUI : MonoBehaviour
             // Update the text for each word, not each character, for performance reasons
             foreach (char _letter in _word + " ")
             {
+                if (_letter == '<' || (_bracketCount > 0 && _bracketCount < 3))
+                {
+                    _displayText += _letter;
+
+                    if (_letter == '<' && _bracketCount == 0)
+                    {
+                        _bracketCount = 1;
+                    }
+                    else if (_letter == '>' && _bracketCount > 0)
+                    {
+                        _bracketCount++;
+                    }
+
+                    continue;
+                }
+
+                _bracketCount = 0;
                 _displayText += _letter;
                 currentTextBox.text = _displayText;
                 yield return new WaitForSeconds(maxTextDisplaySpeed);

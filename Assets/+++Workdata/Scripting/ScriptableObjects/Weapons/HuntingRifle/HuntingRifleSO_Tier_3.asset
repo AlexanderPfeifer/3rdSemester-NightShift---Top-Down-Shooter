@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Corn Dog Hunting Rifle
   upgradeTier: 3
+  bulletDamage: 14
+  shootDelay: 0.5
+  clipSize: 7
+  reloadTime: 1.8
   weaponDescription: "The Corn Dog Hunting Rifle. I\u2018ve had my fill of corny
     one-liners with this one. "
   weaponAbilityDescription: On Activation has no enemy penetration limit and every
@@ -21,8 +25,6 @@ MonoBehaviour:
   playerKnockBack: 5
   enemyKnockBackPerBullet: 15
   bulletsPerShot: 1
-  shootDelay: 0.75
-  bulletDamage: 7
   weaponSpread: 0.005
   penetrationCount: 2
   uiWeaponVisual: {fileID: -253621731, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
@@ -30,10 +32,9 @@ MonoBehaviour:
   screenShake: 6
   weaponScale: {x: 1.1, y: 1.1, z: 1}
   bulletSize: {x: 1, y: 1}
-  clipSize: 4
   ammunitionInClip: 4
+  ammunitionBackUpSize: 24
   ammunitionInBackUp: 24
-  reloadTime: 2.8
   hasAbilityUpgrade: 1
   shotSound: {fileID: 6418180475301049370, guid: 0d4e17e37b49ccb428be875f5dcb55eb, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 247ed1a333d2ddf49a6ee3957d3a556e, type: 2}

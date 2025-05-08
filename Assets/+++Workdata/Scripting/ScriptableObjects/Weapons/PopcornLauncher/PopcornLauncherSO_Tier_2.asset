@@ -14,14 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Popcorn Launcher
   upgradeTier: 2
+  bulletDamage: 2.5
+  shootDelay: 0.5
+  clipSize: 15
+  reloadTime: 1.1
   weaponDescription: The Popcorn Launcher. The trigger is buttery-smooth, but luckily
     this thing is more bark than bite. The noise wakes me right up, though.
   weaponAbilityDescription: Bullets explode and deal areal damage.
   playerKnockBack: 2.5
   enemyKnockBackPerBullet: 2
   bulletsPerShot: 3
-  shootDelay: 0.375
-  bulletDamage: 1
   weaponSpread: 0.05
   penetrationCount: 0
   uiWeaponVisual: {fileID: 1141658156, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
@@ -29,10 +31,9 @@ MonoBehaviour:
   screenShake: 4
   weaponScale: {x: 1, y: 1, z: 1}
   bulletSize: {x: 0.6, y: 0.6}
-  clipSize: 9
   ammunitionInClip: 9
+  ammunitionBackUpSize: 56
   ammunitionInBackUp: 56
-  reloadTime: 1.2
   hasAbilityUpgrade: 1
   shotSound: {fileID: 6418180475301049370, guid: 0cf89129991d6c140b89d47ded813275, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 8221b7cca657cf547af16659bde5541b, type: 2}

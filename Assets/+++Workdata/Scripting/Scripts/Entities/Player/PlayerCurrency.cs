@@ -38,7 +38,7 @@ public class PlayerCurrency : MonoBehaviour
 
     private void SetCurrencyText()
     {
-        InGameUIManager.Instance.currencyUI.GetCurrencyText().text = "Currency:\n" + currencyText;
+        InGameUIManager.Instance.currencyUI.GetCurrencyText().text = currencyText.ToString();
     }
 
     public bool SpendCurrency(int amount)

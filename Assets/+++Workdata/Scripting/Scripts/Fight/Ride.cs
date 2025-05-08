@@ -17,7 +17,7 @@ public class Ride : Singleton<Ride>
     [SerializeField] private float squareSizeX;
 
     [Header("Health")] 
-    public float maxRideHealth { get; }    
+    public float maxRideHealth;  
     [SerializeField] private float hitVisualTime = .05f;
     [SerializeField] private ParticleSystem hitParticles;
     [HideInInspector] public float currentRideHealth;

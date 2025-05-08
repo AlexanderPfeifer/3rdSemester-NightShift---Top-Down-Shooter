@@ -10,6 +10,12 @@ public class WeaponObjectSO : ScriptableObject
     [Header("Upgrades")]
     public int upgradeTier;
     
+    [Header("UpgradableValues")]
+    public float bulletDamage;
+    public float shootDelay;
+    public int clipSize;
+    public float reloadTime;
+    
     [Header("Descriptions")]
     [TextArea(3, 10)] public string weaponDescription;
     [FormerlySerializedAs("weaponStats")] [TextArea(3, 10)] public string weaponAbilityDescription;
@@ -20,8 +26,6 @@ public class WeaponObjectSO : ScriptableObject
     
     [Header("Bullets")]
     public int bulletsPerShot;
-    public float shootDelay;
-    public float bulletDamage;
     public float weaponSpread;
     public int penetrationCount;
     
@@ -33,10 +37,9 @@ public class WeaponObjectSO : ScriptableObject
     public Vector2 bulletSize;
 
     [Header("Ammo")]
-    public int clipSize;
     public int ammunitionInClip;
+    [FormerlySerializedAs("ammunitionInBackUp")] public int ammunitionBackUpSize;
     public int ammunitionInBackUp;
-    public float reloadTime;
     
     [Header("Ability")]
     [FormerlySerializedAs("showAbilityFill")] public bool hasAbilityUpgrade;
