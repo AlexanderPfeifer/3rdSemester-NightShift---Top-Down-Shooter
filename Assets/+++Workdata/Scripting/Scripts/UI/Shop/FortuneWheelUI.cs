@@ -1,13 +1,16 @@
 using System.Collections;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class FortuneWheelUI : MonoBehaviour
 {
-    [Header("Price Settings")]
+    [Header("Price Settings")] 
+    [SerializeField] private UnityEvent[] prizes;
     [SerializeField] private int fortuneWheelPieCount = 5;
     [SerializeField] private float firstPieSliceBufferInDegree = 36f;
     [SerializeField] private int spinPrice;
@@ -16,7 +19,7 @@ public class FortuneWheelUI : MonoBehaviour
     [SerializeField] private Vector2Int timeUntilStop;
     [SerializeField] private float spinPower = 1250;
     [SerializeField] private Rigidbody2D rb;
-    private bool receivingWeapon;
+    private bool receivingPrize;
     [SerializeField] private Image mark;
     
     [Header("EventSystem Controlling")]
@@ -57,7 +60,7 @@ public class FortuneWheelUI : MonoBehaviour
     
     public void SpinWheel()
     {
-        if (rb.angularVelocity > 0 || receivingWeapon || !PlayerBehaviour.Instance.playerCurrency.SpendCurrency(spinPrice)) 
+        if (rb.angularVelocity > 0 || receivingPrize || !PlayerBehaviour.Instance.playerCurrency.SpendCurrency(spinPrice)) 
             return;
         
         rb.AddTorque(spinPower);
@@ -70,12 +73,12 @@ public class FortuneWheelUI : MonoBehaviour
         
         //The + 36f is there because the wheel of fortune starts in the middle of a field when on rotation 0,0,0 
         int _priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + firstPieSliceBufferInDegree) / _pieSize) % PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.Count;
-        StartCoroutine(GetWeaponPrize(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes[_priceIndex]));
+        StartCoroutine(LocationHighlight(_priceIndex));
         
-        receivingWeapon = true;
+        receivingPrize = true;
     }
     
-    private IEnumerator GetWeaponPrize(WeaponObjectSO weapon)
+    private IEnumerator LocationHighlight(int priceIndex)
     {
         mark.transform.localScale = new Vector3(2, 2, 1);
         
@@ -101,9 +104,19 @@ public class FortuneWheelUI : MonoBehaviour
         
         yield return new WaitForSeconds(.3f);
         
+        prizes[priceIndex]?.Invoke();
+
+        receivingPrize = false;
+    }
+
+    public void WinWeapon(WeaponObjectSO weapon)
+    {
         PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weapon);
-        
-        receivingWeapon = false;
+    }
+
+    public void WinMoney(int money)
+    {
+        PlayerBehaviour.Instance.playerCurrency.AddCurrency(money, true);
     }
 
     private void OnDisable()

@@ -55,7 +55,7 @@ public class ShopUI : MonoBehaviour
     public void DisplayWeaponWindow(int windowSwitch)
     {
         currentWeaponSelectionWindow += windowSwitch;
-
+        
         if (currentWeaponSelectionWindow == selectionWindows.Length)
         {
             currentWeaponSelectionWindow = 0;
@@ -157,7 +157,7 @@ public class ShopUI : MonoBehaviour
         equipWeaponButton.interactable = true;
         upgradeWeaponButton.interactable = true;
         
-        if (!collectedItemsDictionary.TryGetValue(selectionWindows[currentWeaponSelectionWindow], out _))
+        if (!collectedItemsDictionary.TryGetValue(header, out _))
         {
             //descriptionImage.sprite = collectedItemsDictionary[header].sprite;
             descriptionImage.color = Color.black;

@@ -56,6 +56,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         currencyUI = GetComponent<CurrencyUI>();
         dialogueUI = GetComponent<DialogueUI>();
         shopUI = GetComponent<ShopUI>();
+        pauseMenuUI = GetComponent<PauseMenuUI>();
     }
 
     private void OnEnable()
@@ -90,7 +91,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         
         abilityFillBar.SetActive(false);
 
-        pauseMenuUI.CloseInventory();
+        pauseMenuUI.ClosePauseMenu();
         GameSaveStateManager.Instance.GoToMainMenu();
     }
     
@@ -144,6 +145,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         
         if (!PlayerBehaviour.Instance.IsPlayerBusy())
         {
+            pauseMenuUI.canOpenPauseMenu = false;
             shopScreen.SetActive(true);
             
             AudioManager.Instance.FadeOut("InGameMusic", "ShopMusic");
@@ -170,6 +172,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     {
         if (shopScreen.activeSelf && !dialogueUI.IsDialoguePlaying())
         {
+            pauseMenuUI.canOpenPauseMenu = true;
             dialogueUI.SetDialogueBox(false);
             dialogueUI.SetDialogueBoxState(false, true);
             shopScreen.SetActive(false);

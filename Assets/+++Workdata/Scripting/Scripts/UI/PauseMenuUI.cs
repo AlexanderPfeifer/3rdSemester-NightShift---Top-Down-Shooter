@@ -7,28 +7,28 @@ public class PauseMenuUI : MonoBehaviour
     [HideInInspector] public bool inventoryIsOpened;
     [SerializeField] private GameObject inventory;
     public GameObject firstPauseMenuSelected;
+    public bool canOpenPauseMenu = true;
 
     private void OnEnable()
     {
-        GameInputManager.Instance.OnGamePausedAction += OpenInventory;
+        GameInputManager.Instance.OnGamePausedAction += OpenPauseMenu;
     }
 
     private void OnDisable()
     {
-        if(GameInputManager.Instance != null)
-            GameInputManager.Instance.OnGamePausedAction -= OpenInventory;
+        GameInputManager.Instance.OnGamePausedAction -= OpenPauseMenu;
     }
     
-    public void OpenInventory(object sender, EventArgs e)
+    public void OpenPauseMenu(object sender, EventArgs e)
     {
-        if (InGameUIManager.Instance.dialogueUI.IsDialoguePlaying() || PlayerBehaviour.Instance == null)
+        if (PlayerBehaviour.Instance == null || !canOpenPauseMenu)
         {
             return;
         }
         
         if (inventoryIsOpened)
         {
-            CloseInventory();
+            ClosePauseMenu();
         }
         else
         {
@@ -42,7 +42,7 @@ public class PauseMenuUI : MonoBehaviour
         }
     }
 
-    public void CloseInventory()
+    public void ClosePauseMenu()
     {
         inventory.SetActive(false);
         PlayerBehaviour.Instance.SetPlayerBusy(false);

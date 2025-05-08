@@ -27,13 +27,12 @@ public class Ride : Singleton<Ride>
 
     [Header("Activation")]
     public GameObject rideLight;
-    [HideInInspector] public Generator generator;
+    public Generator generator;
 
     private void Start()
     {
         InGameUIManager.Instance.dialogueUI.dialogueCountShop = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
         rideAnimator = GetComponentInChildren<Animator>();
-        generator = GetComponentInChildren<Generator>();
     }
 
     private void Update()
@@ -147,6 +146,7 @@ public class Ride : Singleton<Ride>
         if (GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() == waves.Length)
         {
             rideAnimator.SetTrigger("StartRide");
+            InGameUIManager.Instance.EndScreen();
         }
         
         GameSaveStateManager.Instance.SaveGame();

@@ -12,7 +12,7 @@ public class PlayerCurrency : MonoBehaviour
     [SerializeField] private int divisionNumberPerMultiplier = 100;
     private int currencyText;
 
-    private bool gotRideMoney;
+    private bool playTschaTschingSFX;
 
     private void Start()
     {
@@ -26,13 +26,13 @@ public class PlayerCurrency : MonoBehaviour
         UpdateCurrencyTextNumberByNumber();
     }
 
-    public void AddCurrency(int amount, bool rideMoney)
+    public void AddCurrency(int amount, bool playTschaTschingSFX)
     {
         currency += amount;
         
-        if (rideMoney)
+        if (playTschaTschingSFX)
         {
-            gotRideMoney = true;
+            this.playTschaTschingSFX = true;
         }
     }
 
@@ -70,10 +70,10 @@ public class PlayerCurrency : MonoBehaviour
             {
                 currencyText = currency;
 
-                if (gotRideMoney)
+                if (playTschaTschingSFX)
                 {
                     AudioManager.Instance.Play("GotRideMoney");
-                    gotRideMoney = false;
+                    playTschaTschingSFX = false;
                 }
             }
 
