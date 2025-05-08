@@ -21,7 +21,7 @@ MonoBehaviour:
   enemyKnockBackPerBullet: 4
   bulletsPerShot: 1
   shootDelay: 0.175
-  bulletDamage: 1.5
+  bulletDamage: 2
   weaponSpread: 0.025
   penetrationCount: 0
   uiWeaponVisual: {fileID: 1193635104, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}

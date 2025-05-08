@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Lollipop Shotgun
   upgradeTier: 0
-  weaponDescription: Although the grip is a little sticky, the smell is a nice change
-    of pace. Suck it, monsters!
+  weaponDescription: The Lollipop Shotgun, a classic. Although the grip is a little
+    sticky, the smell is a nice change of pace. Suck it, beasts!
   weaponAbilityDescription: 
   playerKnockBack: 6
   enemyKnockBackPerBullet: 1

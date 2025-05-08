@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Popcorn Launcher
   upgradeTier: 2
-  weaponDescription: The trigger is buttery-smooth, but luckily this thing is more
-    bark than bite. The noise wakes me right up, though.
+  weaponDescription: The Popcorn Launcher. The trigger is buttery-smooth, but luckily
+    this thing is more bark than bite. The noise wakes me right up, though.
   weaponAbilityDescription: Bullets explode and deal areal damage.
   playerKnockBack: 2.5
   enemyKnockBackPerBullet: 2

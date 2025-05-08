@@ -82,15 +82,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""slide"",
-                    ""type"": ""Button"",
-                    ""id"": ""c007af05-b4a2-4ef9-b02f-c2d463f8279c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""reload"",
                     ""type"": ""Button"",
                     ""id"": ""7851258e-d290-4f4a-9014-6a400e7dc028"",
@@ -233,28 +224,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a63400b8-04d8-403d-9af6-51d5e104a534"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a94eb10a-708a-4ce2-ac5d-560c79fccd3a"",
-                    ""path"": ""<Keyboard>/i"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""7e419cc7-fdf4-484c-9747-4d00220f13d1"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
@@ -294,28 +263,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ability"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e8b1d120-00e0-497e-b9b6-d6ffab0aa3a7"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""slide"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5d829d28-ad8b-4f76-b679-0371b0a9fd3e"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""slide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -387,7 +334,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_player_pause = m_player.FindAction("pause", throwIfNotFound: true);
         m_player_interact = m_player.FindAction("interact", throwIfNotFound: true);
         m_player_ability = m_player.FindAction("ability", throwIfNotFound: true);
-        m_player_slide = m_player.FindAction("slide", throwIfNotFound: true);
         m_player_reload = m_player.FindAction("reload", throwIfNotFound: true);
         m_player_melee = m_player.FindAction("melee", throwIfNotFound: true);
     }
@@ -462,7 +408,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_player_pause;
     private readonly InputAction m_player_interact;
     private readonly InputAction m_player_ability;
-    private readonly InputAction m_player_slide;
     private readonly InputAction m_player_reload;
     private readonly InputAction m_player_melee;
     public struct PlayerActions
@@ -475,7 +420,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @pause => m_Wrapper.m_player_pause;
         public InputAction @interact => m_Wrapper.m_player_interact;
         public InputAction @ability => m_Wrapper.m_player_ability;
-        public InputAction @slide => m_Wrapper.m_player_slide;
         public InputAction @reload => m_Wrapper.m_player_reload;
         public InputAction @melee => m_Wrapper.m_player_melee;
         public InputActionMap Get() { return m_Wrapper.m_player; }
@@ -505,9 +449,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ability.started += instance.OnAbility;
             @ability.performed += instance.OnAbility;
             @ability.canceled += instance.OnAbility;
-            @slide.started += instance.OnSlide;
-            @slide.performed += instance.OnSlide;
-            @slide.canceled += instance.OnSlide;
             @reload.started += instance.OnReload;
             @reload.performed += instance.OnReload;
             @reload.canceled += instance.OnReload;
@@ -536,9 +477,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ability.started -= instance.OnAbility;
             @ability.performed -= instance.OnAbility;
             @ability.canceled -= instance.OnAbility;
-            @slide.started -= instance.OnSlide;
-            @slide.performed -= instance.OnSlide;
-            @slide.canceled -= instance.OnSlide;
             @reload.started -= instance.OnReload;
             @reload.performed -= instance.OnReload;
             @reload.canceled -= instance.OnReload;
@@ -570,7 +508,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnAbility(InputAction.CallbackContext context);
-        void OnSlide(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnMelee(InputAction.CallbackContext context);
     }

@@ -147,6 +147,8 @@ public class ShopUI : MonoBehaviour
         bulletDelayTextField.gameObject.SetActive(true);
         reloadSpeedTextField.gameObject.SetActive(true);
         clipSizeTextField.gameObject.SetActive(true);
+        equipWeaponButton.interactable = true;
+        upgradeWeaponButton.interactable = true;
         
         if (!collectedItemsDictionary.TryGetValue(selectionWindows[currentWeaponSelectionWindow], out _))
         {
@@ -167,6 +169,11 @@ public class ShopUI : MonoBehaviour
 
         StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].weaponDescription, null));
 
+        if (header == PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon)
+        {
+            equipWeaponButton.interactable = false;
+        }
+        
         descriptionImage.color = Color.white;
         descriptionHeader.text = collectedItemsDictionary[header].header;
         descriptionImage.sprite = collectedItemsDictionary[header].sprite;
@@ -213,6 +220,9 @@ public class ShopUI : MonoBehaviour
                 case "Popcorn Launcher" :
                     upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO, 
                         popcornLauncherUpgradeTiers));
+                    break;
+                case "Broken Pistol" :
+                    upgradeWeaponButton.interactable = false;
                     break;
             }
         }

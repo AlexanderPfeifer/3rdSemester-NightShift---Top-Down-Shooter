@@ -93,7 +93,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
             PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(_brokenPistol);
             InGameUIManager.Instance.weaponSlot.SetActive(true);
         
-            InGameUIManager.Instance.SetShopUI();
+            InGameUIManager.Instance.OpenShop();
         
             InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);   
         }

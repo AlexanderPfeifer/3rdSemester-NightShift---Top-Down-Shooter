@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Magnum magnum
   upgradeTier: 0
-  weaponDescription: "Don\u2018t let the cool design fool you - this thing\u2018s
-    packing some heat. "
+  weaponDescription: "Ouh the Magnum Magnum, my favourite  one. Don\u2018t let the
+    cool design fool you - this thing\u2018s packing some heat. "
   weaponAbilityDescription: 
   playerKnockBack: 4
   enemyKnockBackPerBullet: 10

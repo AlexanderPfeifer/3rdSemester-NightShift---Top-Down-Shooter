@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Cinemachine;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -44,16 +43,18 @@ public class WeaponBehaviour : MonoBehaviour
     private bool meleeWeaponOut;
     [SerializeField] private float maxHitDelay;
     private float currentHitDelay;
-    [SerializeField] private AnimatorController meleeWeaponAnimatorController;
 
     [Header("Shooting")]
     private float maxShootingDelay;
     private float currentShootingDelay;
-    private float weaponAccuracy;
+    [HideInInspector] public float weaponAccuracy;
+    [HideInInspector] public float currentWeaponAccuracy;
     private bool isPressingLeftClick;
     
     [Header("Knock Back")]
-    public float enemyShootingKnockBack = 2;
+    private float enemyShootingKnockBack;
+    private float enemyMeleeKnockBack;
+    public float currentEnemyKnockBack;
     private float shootingKnockBack;
     [FormerlySerializedAs("CurrentKnockBack")] [HideInInspector] public Vector2 currentKnockBack;
 
@@ -70,8 +71,6 @@ public class WeaponBehaviour : MonoBehaviour
     
     [Header("Weapon Visuals")]
     [SerializeField] private GameObject muzzleFlashVisual;
-    private Animator anim;
-    [SerializeField] private AnimatorController weaponAnimatorController;
     [FormerlySerializedAs("longRangeWeapon")] [FormerlySerializedAs("weaponObject")] [SerializeField] private GameObject weapon;
     private Sprite longRangeWeaponSprite;
     private float weaponAimingAngle;
@@ -100,7 +99,6 @@ public class WeaponBehaviour : MonoBehaviour
 
     private void Start()
     {
-        anim = weapon.GetComponent<Animator>();
         currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange;
     }
 
@@ -109,6 +107,7 @@ public class WeaponBehaviour : MonoBehaviour
         GameInputManager.Instance.OnShootingAction += OnPressingShootingAction;
         GameInputManager.Instance.OnNotShootingAction += OnReleasingShootingAction;
         GameInputManager.Instance.OnReloadAction += OnPressingReloadingAction;
+        GameInputManager.Instance.OnMeleeWeaponAction += HitWithMelee;
     }
     
     private void OnDisable()
@@ -116,6 +115,7 @@ public class WeaponBehaviour : MonoBehaviour
         GameInputManager.Instance.OnShootingAction -= OnPressingShootingAction;
         GameInputManager.Instance.OnNotShootingAction -= OnReleasingShootingAction;
         GameInputManager.Instance.OnReloadAction -= OnPressingReloadingAction;
+        GameInputManager.Instance.OnMeleeWeaponAction -= HitWithMelee;
     }
 
     private void Update()
@@ -160,35 +160,24 @@ public class WeaponBehaviour : MonoBehaviour
         if (!weapon.activeSelf || PlayerBehaviour.Instance.IsPlayerBusy()) 
             return;
 
-        var _shortGetMeleeWeaponOutRange = getMeleeWeaponOutRange - getMeleeWeaponOutRange / 2;
-        var _longGetMeleeWeaponOutRange = getMeleeWeaponOutRange + getMeleeWeaponOutRange / 2;
         
-        if (PlayerBehaviour.Instance.playerVisual.activeSelf || (Mathf.Abs(weaponToMouse.x) <= currentGetMeleeWeaponOutRange && 
+        if (PlayerBehaviour.Instance.playerVisual.activeSelf || GetComponent<MeleeWeaponBehaviour>().hitCollider.gameObject.activeSelf || (Mathf.Abs(weaponToMouse.x) <= currentGetMeleeWeaponOutRange && 
             Mathf.Abs(weaponToMouse.y) <= currentGetMeleeWeaponOutRange &&
             Mathf.Abs(weaponToMouse.x) >= 0 && 
             Mathf.Abs(weaponToMouse.y) >= 0)) 
         {
-            weapon.GetComponent<SpriteRenderer>().sprite = meleeWeapon;
-            
-            anim.runtimeAnimatorController = meleeWeaponAnimatorController;
-
-            weaponToMouse = GameInputManager.Instance.GetAimingVector() - PlayerBehaviour.Instance.transform.position;
-            weaponToMouse.z = 0;
-
-            currentGetMeleeWeaponOutRange = _longGetMeleeWeaponOutRange;
-
-            meleeWeaponOut = true;
+            GetMeleeWeaponOut();
         }
         else
         {
+            currentEnemyKnockBack = enemyShootingKnockBack;
+            
             weapon.GetComponent<SpriteRenderer>().sprite = longRangeWeaponSprite;
-
-            anim.runtimeAnimatorController = weaponAnimatorController;
             
             weaponToMouse = GameInputManager.Instance.GetAimingVector() - weaponEndPoint.transform.position;
             weaponToMouse.z = 0;
             
-            currentGetMeleeWeaponOutRange = _shortGetMeleeWeaponOutRange;
+            currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange - getMeleeWeaponOutRange / 2;
             
             meleeWeaponOut = false;
         }
@@ -210,6 +199,27 @@ public class WeaponBehaviour : MonoBehaviour
         transform.eulerAngles = new Vector3(0, 0, LastSnappedAngle);
     }
 
+    private void GetMeleeWeaponOut()
+    {
+        currentEnemyKnockBack = GetComponent<MeleeWeaponBehaviour>().knockBack;
+            
+        weapon.GetComponent<SpriteRenderer>().sprite = meleeWeapon;
+            
+        weaponToMouse = GameInputManager.Instance.GetAimingVector() - PlayerBehaviour.Instance.transform.position;
+        weaponToMouse.z = 0;
+
+        currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange + getMeleeWeaponOutRange / 2;
+
+        meleeWeaponOut = true;
+    }
+
+    private void HitWithMelee(object sender, EventArgs eventArgs)
+    {
+        GetMeleeWeaponOut();
+        
+        HitAutomatic();
+    }
+
     public void CamMovementUpdate()
     {
         float _targetCamSize = normalCamOrthoSize;
@@ -218,7 +228,7 @@ public class WeaponBehaviour : MonoBehaviour
         if (Ride.Instance.waveStarted)
         {
             _targetCamSize = fightCamOrthoSize;
-            _targetLookAhead = ((Vector3)GameInputManager.Instance.GetAimingVector() + (cameraTargetLookAheadDivider - 1) * transform.position) / cameraTargetLookAheadDivider;
+            _targetLookAhead = (GameInputManager.Instance.GetAimingVector() + (cameraTargetLookAheadDivider - 1) * transform.position) / cameraTargetLookAheadDivider;
         }
 
         //check for vector zero because otherwise the cam would jump in positions when starting 
@@ -267,7 +277,7 @@ public class WeaponBehaviour : MonoBehaviour
         for (int _i = 0; _i < bulletsPerShot; _i++)
         {
             Vector2 _bulletDirection = Random.insideUnitCircle.normalized;
-            _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - weaponAccuracy);
+            _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - currentWeaponAccuracy);
 
             Vector2 _perpendicularOffset = new Vector2(-_bulletDirection.y, _bulletDirection.x);
             // This calculation is a perfect spread of bullets(ask ChatGPT) 
@@ -299,7 +309,7 @@ public class WeaponBehaviour : MonoBehaviour
         if (currentHitDelay > 0) 
             return;
 
-        anim.SetTrigger("Hit");
+        StartCoroutine(MeleeSwingCoroutine());
         
         currentHitDelay = maxHitDelay;
     }
@@ -468,14 +478,10 @@ public class WeaponBehaviour : MonoBehaviour
 
         bulletShellsParticle.Play();
 
-        anim.SetTrigger("ShootGun");
-        
         AudioManager.Instance.Play("Shooting");
         
         yield return new WaitForSeconds(.1f);
         
-        anim.SetTrigger("GunStartPos");
-
         bulletShellsParticle.Stop();
 
         playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
@@ -484,4 +490,10 @@ public class WeaponBehaviour : MonoBehaviour
         
         AudioManager.Instance.Play("Repetition");
     }
+    
+    private IEnumerator MeleeSwingCoroutine()
+    {
+        yield return null;
+    }
+
 }

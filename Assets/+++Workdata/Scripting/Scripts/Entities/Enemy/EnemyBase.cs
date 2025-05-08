@@ -64,7 +64,8 @@ public class EnemyBase : MonoBehaviour
         if (other.gameObject.TryGetComponent(out Ride _ride))
         {
             _ride.currentRideHealth -= rideAttackDamage;
-            
+            InGameUIManager.Instance.rideHpImage.fillAmount = _ride.currentRideHealth / _ride.maxRideHealth;
+
             if (_ride.currentRideHealth <= 0)
             {
                 _ride.LostWave();

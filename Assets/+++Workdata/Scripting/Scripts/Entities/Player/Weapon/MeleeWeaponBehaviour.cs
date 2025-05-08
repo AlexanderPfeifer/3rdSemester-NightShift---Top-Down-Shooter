@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class MeleeWeaponBehaviour : MonoBehaviour
 {
-    private BoxCollider2D hitCollider;
+    [HideInInspector] public BoxCollider2D hitCollider;
     [SerializeField] private float damage;
+    public float knockBack = 5;
 
     private void Start()
     {

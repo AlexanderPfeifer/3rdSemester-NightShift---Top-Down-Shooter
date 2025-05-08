@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Magnum magnum
   upgradeTier: 2
-  weaponDescription: "Don\u2018t let the cool design fool you - this thing\u2018s
-    packing some heat. "
+  weaponDescription: "Ouh the Magnum Magnum, my favourite  one. Don\u2018t let the
+    cool design fool you - this thing\u2018s packing some heat. "
   weaponAbilityDescription: Freezes enemies on bullet collision for 5 seconds.
   playerKnockBack: 4
   enemyKnockBackPerBullet: 10

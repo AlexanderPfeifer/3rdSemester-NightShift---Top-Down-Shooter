@@ -8,7 +8,7 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     [HideInInspector] public bool mouseIsLastUsedDevice = true;
     Vector2 virtualCursorPos;
 
-    public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnNotShootingAction, OnReloadAction;
+    public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnNotShootingAction, OnReloadAction, OnMeleeWeaponAction;
 
     protected override void Awake()
     {
@@ -23,6 +23,7 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
         playerInputActions.player.interact.performed += OnPlayerInteracting;
         playerInputActions.player.ability.performed += OnPlayerUsingAbility;
         playerInputActions.player.reload.performed += OnPlayerReloading;
+        playerInputActions.player.melee.performed += OnPlayerMeleeAttack;
     }
 
     private void Start()
@@ -59,6 +60,11 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     private void OnPlayerReloading(InputAction.CallbackContext context)
     {
         OnReloadAction?.Invoke(this, EventArgs.Empty);
+    }    
+    
+    private void OnPlayerMeleeAttack(InputAction.CallbackContext context)
+    {
+        OnMeleeWeaponAction?.Invoke(this, EventArgs.Empty);
     }
 
     public Vector2 GetMovementVectorNormalized()

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Corn Dog Hunting Rifle
   upgradeTier: 0
-  weaponDescription: "I\u2018ve had my fill of corny one-liners with this one. "
+  weaponDescription: "The Corn Dog Hunting Rifle. I\u2018ve had my fill of corny
+    one-liners with this one. "
   weaponAbilityDescription: 
   playerKnockBack: 5
   enemyKnockBackPerBullet: 15

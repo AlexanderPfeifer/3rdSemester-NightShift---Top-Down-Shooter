@@ -38,7 +38,7 @@ public class EnemyHealthPoints : MonoBehaviour
     
     public IEnumerator EnemyKnockBack(float bulletFlyingTime, Vector2 travelDirection)
     {
-        float _knockBackWithEnemyResistance = Mathf.Max(PlayerBehaviour.Instance.weaponBehaviour.enemyShootingKnockBack - bulletFlyingTime - GetComponent<EnemyBase>().knockBackResistance, 0);
+        float _knockBackWithEnemyResistance = Mathf.Max(PlayerBehaviour.Instance.weaponBehaviour.currentEnemyKnockBack - bulletFlyingTime - GetComponent<EnemyBase>().knockBackResistance, 0);
         GetComponent<Rigidbody2D>().AddForce(travelDirection * _knockBackWithEnemyResistance, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(knockBackTime);

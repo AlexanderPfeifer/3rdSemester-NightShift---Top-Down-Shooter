@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,6 +56,16 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         currencyUI = GetComponent<CurrencyUI>();
         dialogueUI = GetComponent<DialogueUI>();
         shopUI = GetComponent<ShopUI>();
+    }
+
+    private void OnEnable()
+    {
+        GameInputManager.Instance.OnGamePausedAction += CloseShop;
+    }
+
+    private void OnDisable()
+    {
+        GameInputManager.Instance.OnGamePausedAction -= CloseShop;
     }
 
     private void Update()
@@ -119,7 +130,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         }
     }
 
-    public void SetShopUI()
+    public void OpenShop()
     {
         if (dialogueUI.IsDialoguePlaying())
         {
@@ -136,6 +147,8 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             {
                 Destroy(_enemy.gameObject);
             }
+            
+            Ride.Instance.generator.gateAnim.SetBool("OpenGate", false);
 
             dialogueUI.SetDialogueBox(true); 
             dialogueUI.SetDialogueBoxState(false, false);
@@ -145,17 +158,20 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             TutorialManager.Instance.CheckDialogue();
                 
             shopUI.DisplayCollectedWeapons();
-            
-            return;
         }
+    }
 
-        dialogueUI.SetDialogueBox(false);
-        dialogueUI.SetDialogueBoxState(false, true);
-
-        shopScreen.SetActive(false);
+    private void CloseShop(object sender, EventArgs eventArgs)
+    {
+        if (shopScreen.activeSelf)
+        {
+            dialogueUI.SetDialogueBox(false);
+            dialogueUI.SetDialogueBoxState(false, true);
+            shopScreen.SetActive(false);
         
-        AudioManager.Instance.FadeOut("ShopMusic", "InGameMusic");
+            AudioManager.Instance.FadeOut("ShopMusic", "InGameMusic");
 
-        PlayerBehaviour.Instance.SetPlayerBusy(false);
+            PlayerBehaviour.Instance.SetPlayerBusy(false);   
+        }
     }
 }

@@ -144,7 +144,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     {
         if (GetInteractionObjectInRange(shopLayer, out _))
         {
-            InGameUIManager.Instance.SetShopUI();
+            InGameUIManager.Instance.OpenShop();
         }
         else if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator))
         {
@@ -200,9 +200,11 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
             if (GameInputManager.Instance.GetMovementVectorNormalized().sqrMagnitude <= 0)
             {
+                weaponBehaviour.currentWeaponAccuracy = 0.1f;
                 return;
             }
-        
+
+            weaponBehaviour.currentWeaponAccuracy = weaponBehaviour.weaponAccuracy;
             moveDirection = GameInputManager.Instance.GetMovementVectorNormalized();
             anim.SetFloat("MoveDirX", moveDirection.x);
             anim.SetFloat("MoveDirY", moveDirection.y);

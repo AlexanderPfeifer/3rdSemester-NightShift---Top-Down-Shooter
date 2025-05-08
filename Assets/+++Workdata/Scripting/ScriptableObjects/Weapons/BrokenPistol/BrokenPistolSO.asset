@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Broken Pistol
   upgradeTier: 0
-  weaponDescription: Looks like the exhibit that has been there for far too long
-    and probably not safe to work with, but the best that I got.
+  weaponDescription: Ah the Broken Pistol. Looks like the exhibit that has been there
+    for far too long and probably not safe to work with, but the best that I got.
   weaponAbilityDescription: Shoots multiple bullets but not in the direction you
     want it to shoot.
   playerKnockBack: 2.5

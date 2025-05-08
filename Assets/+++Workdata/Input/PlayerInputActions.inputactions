@@ -60,15 +60,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "slide",
-                    "type": "Button",
-                    "id": "c007af05-b4a2-4ef9-b02f-c2d463f8279c",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "reload",
                     "type": "Button",
                     "id": "7851258e-d290-4f4a-9014-6a400e7dc028",
@@ -211,28 +202,6 @@
                 },
                 {
                     "name": "",
-                    "id": "a63400b8-04d8-403d-9af6-51d5e104a534",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a94eb10a-708a-4ce2-ac5d-560c79fccd3a",
-                    "path": "<Keyboard>/i",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "7e419cc7-fdf4-484c-9747-4d00220f13d1",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -272,28 +241,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "ability",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e8b1d120-00e0-497e-b9b6-d6ffab0aa3a7",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "slide",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5d829d28-ad8b-4f76-b679-0371b0a9fd3e",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "slide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

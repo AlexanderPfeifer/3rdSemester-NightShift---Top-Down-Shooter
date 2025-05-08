@@ -105,6 +105,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6641996682267424595, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: m_Mass
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641996682267424595, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: m_Interpolate
       value: 1
       objectReference: {fileID: 0}

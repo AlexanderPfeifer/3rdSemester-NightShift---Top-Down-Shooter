@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: French Fries AR
   upgradeTier: 1
-  weaponDescription: Served hot and fresh. This thing is a whole new definition of
-    fast food.
+  weaponDescription: The French Fries Assault Rifle, pretty long name I know. It
+    is served hot and fresh. This thing is a whole new definition of fast food.
   weaponAbilityDescription: 
   playerKnockBack: 2
   enemyKnockBackPerBullet: 4
   bulletsPerShot: 1
   shootDelay: 0.175
-  bulletDamage: 1.5
+  bulletDamage: 2
   weaponSpread: 0.025
   penetrationCount: 0
   uiWeaponVisual: {fileID: 1193635104, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}

@@ -4055,7 +4055,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   acceleration: 0.375
   firstGeneratorSelected: {fileID: 2047534556}
-  activateGeneratorFillAmount: 0.941
+  activateGeneratorFillAmount: 0.835
   generatorFillImage: {fileID: 1296695489}
   reduceFillSpeedMultiplier: 3
   buttonSpriteRenderer: {fileID: 2047534560}
@@ -10437,8 +10437,8 @@ MonoBehaviour:
       a new offer for you.'
     - 'Margarite:
 
-      There is a new thing I wanted to try. My newly bought fortune
-      wheel. Before showing it to customers you are the first one to try.'
+      This is my newly purchased Fortune Wheel. You are the first
+      one to try it before I show it to customers.'
     - 'Margarite:
 
       A spin only costs a few tickets and you can get some amazing
