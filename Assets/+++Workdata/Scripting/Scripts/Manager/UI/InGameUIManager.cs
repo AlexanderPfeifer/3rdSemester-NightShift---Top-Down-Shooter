@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -159,7 +161,9 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             
             AudioManager.Instance.FadeOut("InGameMusic", "ShopMusic");
 
-            foreach (Transform _enemy in Ride.Instance.enemyParent.transform)
+            List<Transform> _enemies = Ride.Instance.enemyParent.transform.Cast<Transform>().ToList();
+
+            foreach (Transform _enemy in _enemies)
             {
                 Destroy(_enemy.gameObject);
             }
@@ -171,9 +175,9 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
             PlayerBehaviour.Instance.SetPlayerBusy(true);
 
-            TutorialManager.Instance.CheckDialogue();
-                
             shopUI.ResetWeaponDescriptions();
+            
+            TutorialManager.Instance.CheckDialogue();
         }
     }
 

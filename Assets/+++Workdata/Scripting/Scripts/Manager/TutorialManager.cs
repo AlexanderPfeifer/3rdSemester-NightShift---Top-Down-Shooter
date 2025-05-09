@@ -11,6 +11,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     [HideInInspector] public bool fillAmmoForFree;
     [HideInInspector] public bool talkedAboutCurrency;
     private bool playedFirstDialogue;
+    private bool openedShopAfterFirstFight;
 
     protected override void Awake()
     {
@@ -39,11 +40,13 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
 
     private void FinishedFirstFight()
     {
-        if (Ride.Instance.GetCurrentWaveAsInt() > 0)
+        if (Ride.Instance.GetCurrentWaveAsInt() > 0 && !openedShopAfterFirstFight)
         {
             InGameUIManager.Instance.shopUI.SetShopWindow();
             
             InGameUIManager.Instance.dialogueUI.DisplayDialogue();
+
+            openedShopAfterFirstFight = true;
         }
     }
 

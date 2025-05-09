@@ -157,12 +157,12 @@ public class ShopUI : MonoBehaviour
         clipSizeTextField.gameObject.SetActive(true);
         equipWeaponButton.interactable = true;
         upgradeWeaponButton.interactable = true;
+        InGameUIManager.Instance.dialogueUI.shopText.text = "";
         
         if (!collectedItemsDictionary.TryGetValue(header, out _))
         {
             descriptionImage.sprite = PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == header)?.uiWeaponVisual;
             descriptionImage.color = Color.black;
-            InGameUIManager.Instance.dialogueUI.shopText.text = "???";
             descriptionHeader.text = "???";
             bulletDamageTextField.text = "???";
             bulletDelayTextField.text = "???";
@@ -172,9 +172,7 @@ public class ShopUI : MonoBehaviour
             buttonsGameObject.SetActive(false);
             return;
         }
-
-        InGameUIManager.Instance.dialogueUI.shopText.text = "";
-
+        
         StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].weaponDescription, null));
 
         if (header == PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon)

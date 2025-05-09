@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -111,6 +110,8 @@ public class FortuneWheelUI : MonoBehaviour
     public void WinWeapon(WeaponObjectSO weapon)
     {
         PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weapon);
+        
+        InGameUIManager.Instance.shopUI.ResetWeaponDescriptions();
     }
 
     public void WinMoney(int money)
