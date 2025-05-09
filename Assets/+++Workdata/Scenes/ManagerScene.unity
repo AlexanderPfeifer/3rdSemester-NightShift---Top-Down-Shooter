@@ -11973,7 +11973,6 @@ MonoBehaviour:
   inventoryIsOpened: 0
   inventory: {fileID: 257483467}
   firstPauseMenuSelected: {fileID: 729482997}
-  canOpenPauseMenu: 1
 --- !u!1 &1685129631
 GameObject:
   m_ObjectHideFlags: 0

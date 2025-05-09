@@ -118,6 +118,7 @@ public class ShopUI : MonoBehaviour
         }
         else
         {
+            ResetShopElements();
             fortuneWheel.SetActive(true);
             weapons.SetActive(false);
         }
@@ -159,7 +160,7 @@ public class ShopUI : MonoBehaviour
         
         if (!collectedItemsDictionary.TryGetValue(header, out _))
         {
-            //descriptionImage.sprite = collectedItemsDictionary[header].sprite;
+            descriptionImage.sprite = PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == header)?.uiWeaponVisual;
             descriptionImage.color = Color.black;
             InGameUIManager.Instance.dialogueUI.shopText.text = "???";
             descriptionHeader.text = "???";

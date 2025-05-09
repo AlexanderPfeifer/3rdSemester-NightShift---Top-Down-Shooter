@@ -41,9 +41,9 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     {
         if (Ride.Instance.GetCurrentWaveAsInt() > 0)
         {
-            InGameUIManager.Instance.dialogueUI.DisplayDialogue();
-            
             InGameUIManager.Instance.shopUI.SetShopWindow();
+            
+            InGameUIManager.Instance.dialogueUI.DisplayDialogue();
         }
     }
 

@@ -71,8 +71,7 @@ public class FortuneWheelUI : MonoBehaviour
     {
         float _pieSize = 360f / fortuneWheelPieCount;
         
-        //The + 36f is there because the wheel of fortune starts in the middle of a field when on rotation 0,0,0 
-        int _priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + firstPieSliceBufferInDegree) / _pieSize) % PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.Count;
+        int _priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + firstPieSliceBufferInDegree) / _pieSize) % fortuneWheelPieCount;
         StartCoroutine(LocationHighlight(_priceIndex));
         
         receivingPrize = true;

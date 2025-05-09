@@ -140,7 +140,12 @@ public class Ride : Singleton<Ride>
 
         InGameUIManager.Instance.fightUI.SetActive(false);
         InGameUIManager.Instance.abilityFillBar.SetActive(false);
-        InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
+        
+        if(InGameUIManager.Instance.dialogueUI.dialogueCountWalkieTalkie < InGameUIManager.Instance.dialogueUI.dialogueWalkieTalkie.Length)
+        {
+            InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
+        }
+        
         GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount();
 
         if (GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() == waves.Length)
