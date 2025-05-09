@@ -28,6 +28,8 @@ public class DialogueUI : MonoBehaviour
     private int dialogueTextCount;
     [HideInInspector] public DialogueState dialogueState = DialogueState.DialogueNotPlaying;
 
+    [HideInInspector] public AllButtonsConfiguration allButtonsConfiguration;
+
     public enum DialogueState
     {
         DialogueNotPlaying,
@@ -98,6 +100,21 @@ public class DialogueUI : MonoBehaviour
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
+        }
+
+        if (dialogueState != DialogueState.DialogueNotPlaying)
+        {
+            foreach (var _interactableButton in allButtonsConfiguration.allInteractableButton)
+            {
+                _interactableButton.interactable = false;
+            }   
+        }
+        else
+        {
+            foreach (var _interactableButton in allButtonsConfiguration.allInteractableButton)
+            {
+                _interactableButton.interactable = true;
+            }   
         }
     }
 

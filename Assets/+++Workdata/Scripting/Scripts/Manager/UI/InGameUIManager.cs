@@ -61,12 +61,12 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
     private void OnEnable()
     {
-        GameInputManager.Instance.OnGamePausedAction += OnGamePauseAction;
+        GameInputManager.Instance.OnGamePausedAction += OnPressEscape;
     }
 
     private void OnDisable()
     {
-        GameInputManager.Instance.OnGamePausedAction -= OnGamePauseAction;
+        GameInputManager.Instance.OnGamePausedAction -= OnPressEscape;
     }
 
     private void Update()
@@ -74,9 +74,11 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         SimulateDayLight();
     }
 
-    private void OnGamePauseAction(object sender, EventArgs eventArgs)
+    private void OnPressEscape(object sender, EventArgs eventArgs)
     {
         CloseShop();
+        
+        CloseGeneratorUI();
     }
     
     public void GoToMainMenu()
@@ -132,6 +134,14 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         }
         else
         {
+            CloseGeneratorUI();
+        }
+    }
+
+    private void CloseGeneratorUI()
+    {
+        if (generatorScreen.activeSelf)
+        {
             generatorScreen.SetActive(false);
         }
     }
@@ -145,7 +155,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         
         if (!PlayerBehaviour.Instance.IsPlayerBusy())
         {
-            pauseMenuUI.canOpenPauseMenu = false;
             shopScreen.SetActive(true);
             
             AudioManager.Instance.FadeOut("InGameMusic", "ShopMusic");
@@ -172,7 +181,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     {
         if (shopScreen.activeSelf && !dialogueUI.IsDialoguePlaying())
         {
-            pauseMenuUI.canOpenPauseMenu = true;
             dialogueUI.SetDialogueBox(false);
             dialogueUI.SetDialogueBoxState(false, true);
             shopScreen.SetActive(false);

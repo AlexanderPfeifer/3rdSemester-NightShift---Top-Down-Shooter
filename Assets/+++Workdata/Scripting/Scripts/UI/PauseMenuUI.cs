@@ -7,7 +7,6 @@ public class PauseMenuUI : MonoBehaviour
     [HideInInspector] public bool inventoryIsOpened;
     [SerializeField] private GameObject inventory;
     public GameObject firstPauseMenuSelected;
-    public bool canOpenPauseMenu = true;
 
     private void OnEnable()
     {
@@ -21,7 +20,7 @@ public class PauseMenuUI : MonoBehaviour
     
     public void OpenPauseMenu(object sender, EventArgs e)
     {
-        if (PlayerBehaviour.Instance == null || !canOpenPauseMenu)
+        if (PlayerBehaviour.Instance == null || !PlayerBehaviour.Instance.IsPlayerBusy())
         {
             return;
         }

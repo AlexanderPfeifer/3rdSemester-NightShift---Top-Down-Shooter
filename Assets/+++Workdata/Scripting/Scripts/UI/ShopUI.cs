@@ -62,7 +62,7 @@ public class ShopUI : MonoBehaviour
         }
         else if (currentWeaponSelectionWindow == -1)
         {
-            currentWeaponSelectionWindow = selectionWindows.Length;
+            currentWeaponSelectionWindow = selectionWindows.Length - 1;
         }
         
         DisplayItem(selectionWindows[currentWeaponSelectionWindow]);
