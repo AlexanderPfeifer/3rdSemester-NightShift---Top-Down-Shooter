@@ -85,7 +85,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     
     public void GoToMainMenu()
     {
-        shopUI.ResetShopElements();
         dialogueUI.ResetDialogueElements();
         StopAllCoroutines();
 

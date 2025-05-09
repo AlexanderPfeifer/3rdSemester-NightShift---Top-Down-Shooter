@@ -150,8 +150,8 @@ public class Ride : Singleton<Ride>
 
         if (GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() == waves.Length)
         {
+            rideLight.SetActive(true);
             rideAnimator.SetTrigger("StartRide");
-            InGameUIManager.Instance.EndScreen();
         }
         
         GameSaveStateManager.Instance.SaveGame();

@@ -43,6 +43,8 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         if (Ride.Instance.GetCurrentWaveAsInt() > 0 && !openedShopAfterFirstFight)
         {
             InGameUIManager.Instance.shopUI.SetShopWindow();
+
+            InGameUIManager.Instance.dialogueUI.shopText.text = "";
             
             InGameUIManager.Instance.dialogueUI.DisplayDialogue();
 

@@ -38,6 +38,11 @@ public class DialogueUI : MonoBehaviour
         DialogueAbleToEnd,
     }
 
+    public void EndGame()
+    {
+        InGameUIManager.Instance.EndScreen();
+    }
+
     public void SetDialogueBox(bool inShop)
     {
         if (inShop)
@@ -228,6 +233,7 @@ public class DialogueUI : MonoBehaviour
         if (currentTextBox != shopText)
         {
             SetDialogueBoxState(false, true);
+            dialogueWalkieTalkie[dialogueCountWalkieTalkie].dialogueEndAction?.Invoke();
             dialogueCountWalkieTalkie++;
             return;
         }

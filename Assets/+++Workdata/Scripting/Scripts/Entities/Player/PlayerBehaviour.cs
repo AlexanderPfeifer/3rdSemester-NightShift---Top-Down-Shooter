@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerBehaviour : Singleton<PlayerBehaviour>
@@ -41,6 +42,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     [SerializeField] private LayerMask collectibleLayer;
     [SerializeField] private LayerMask rideLayer;
     private bool isPlayerBusy;
+    public TextMeshProUGUI ammoText;
 
     [Header("InteractableHighlight")] 
     [SerializeField] private SpriteRenderer generatorSpriteRenderer;
@@ -278,8 +280,15 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     {
         if (other.gameObject.TryGetComponent(out AmmoDrop _ammoDrop))
         {
+            ammoText.gameObject.SetActive(true);
+            ammoText.text = "";
             weaponBehaviour.ObtainAmmoDrop(_ammoDrop, 0, false);
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        ammoText.gameObject.SetActive(false);
     }
 
     private void OnDrawGizmos()

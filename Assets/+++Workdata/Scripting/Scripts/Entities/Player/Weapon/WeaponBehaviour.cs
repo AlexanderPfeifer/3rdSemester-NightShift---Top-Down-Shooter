@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.Cinemachine;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -24,7 +26,7 @@ public class WeaponBehaviour : MonoBehaviour
     [Header("Ammo/Reload")]
     private int maxClipSize;
     private int ammunitionInClip;
-    private int ammunitionInBackUp;
+    [HideInInspector] public int ammunitionInBackUp;
     public int ammunitionBackUpSize { private set; get; }
     private Coroutine currentReloadCoroutine;
     private float reloadTime;
@@ -256,6 +258,11 @@ public class WeaponBehaviour : MonoBehaviour
     
     private void ShootAutomaticUpdate()
     {
+        if (ammunitionInClip == 0 && ammunitionInBackUp == 0 && PlayerBehaviour.Instance.weaponBehaviour.GetCurrentWeaponObjectSO() != null)
+        {
+            PlayerBehaviour.Instance.ammoText.text = "NO AMMO LEFT";
+        }
+        
         if (!isPressingLeftClick) 
             return;
         
@@ -410,6 +417,10 @@ public class WeaponBehaviour : MonoBehaviour
                 }
                 
                 Destroy(ammoDrop.gameObject);
+            }
+            else
+            {
+                PlayerBehaviour.Instance.ammoText.text = "AMMO FULL";
             }
         }
 

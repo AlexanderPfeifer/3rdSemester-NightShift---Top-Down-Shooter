@@ -52,10 +52,10 @@ public class ShopUI : MonoBehaviour
         collectedItemsDictionary = new Dictionary<string, (float, Sprite, string, string, string, string, string, string, WeaponObjectSO)>();
     }
 
-    public void DisplayWeaponWindow(int windowSwitch)
+    public void DisplayWeaponWindowAdding(int windowSwitch)
     {
         currentWeaponSelectionWindow += windowSwitch;
-        
+
         if (currentWeaponSelectionWindow == selectionWindows.Length)
         {
             currentWeaponSelectionWindow = 0;
@@ -64,6 +64,13 @@ public class ShopUI : MonoBehaviour
         {
             currentWeaponSelectionWindow = selectionWindows.Length - 1;
         }
+        
+        DisplayItem(selectionWindows[currentWeaponSelectionWindow]);
+    }
+
+    private void DisplayWeaponWindowOverride(int number)
+    {
+        currentWeaponSelectionWindow = number;
         
         DisplayItem(selectionWindows[currentWeaponSelectionWindow]);
     }
@@ -81,6 +88,14 @@ public class ShopUI : MonoBehaviour
                 
                 PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes[_i] = upgradeTiers[_currentTierOnUpgradingWeapon];
                 PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes[_i]);
+                foreach (var _selected in selectionWindows)
+                {
+                    if (_selected == PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes[_i].weaponName)
+                    {
+                        int _index = System.Array.IndexOf(selectionWindows, _selected);
+                        DisplayWeaponWindowOverride(_index);
+                    }
+                }
                 break;
             }
         }
@@ -97,7 +112,7 @@ public class ShopUI : MonoBehaviour
         //Checks for broken pistol because there refilling ammo does not cost
         if (TutorialManager.Instance.fillAmmoForFree || 
             (PlayerBehaviour.Instance.playerCurrency.SpendCurrency(fillAmmoCost) && 
-             weapon.ammunitionBackUpSize != PlayerBehaviour.Instance.weaponBehaviour.ammunitionBackUpSize))
+             PlayerBehaviour.Instance.weaponBehaviour.ammunitionInBackUp != PlayerBehaviour.Instance.weaponBehaviour.ammunitionBackUpSize))
         {
             PlayerBehaviour.Instance.weaponBehaviour.ObtainAmmoDrop(null, weapon.ammunitionBackUpSize, true);
 
@@ -118,23 +133,12 @@ public class ShopUI : MonoBehaviour
         }
         else
         {
-            ResetShopElements();
+            InGameUIManager.Instance.dialogueUI.shopText.text = "";
             fortuneWheel.SetActive(true);
             weapons.SetActive(false);
         }
     }
-    
-    public void ResetShopElements()
-    {
-        brokenLights.SetActive(false);
-        newsPaper.SetActive(false);
-        teddy.SetActive(false);
 
-        InGameUIManager.Instance.dialogueUI.shopText.text = "";
-        descriptionHeader.text = "";
-        descriptionImage.color = Color.black;
-    }
-    
     private void EquipNewWeapon(WeaponObjectSO weaponObjectSO)
     {
         if(PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon != weaponObjectSO.weaponName)
@@ -196,12 +200,30 @@ public class ShopUI : MonoBehaviour
             equipWeaponButton.onClick.RemoveAllListeners();
             equipWeaponButton.onClick.AddListener(() => EquipNewWeapon(collectedItemsDictionary[header].weaponObjectSO));
 
+            if (TutorialManager.Instance.fillAmmoForFree)
+            {
+                fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "REFILL" + "\n" + "free";
+            }
+            else
+            {
+                fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "REFILL" + "\n" + fillAmmoCost;
+            }
+            
             fillWeaponAmmoButton.interactable = true;
             fillWeaponAmmoButton.onClick.RemoveAllListeners();
             fillWeaponAmmoButton.onClick.AddListener(() => FillWeaponAmmo(collectedItemsDictionary[header].weaponObjectSO));
 
             upgradeWeaponButton.interactable = true;
             upgradeWeaponButton.onClick.RemoveAllListeners();
+            if (header == "Broken Pistol")
+            {
+                upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO UPGRADE";
+            }
+            else
+            {
+                upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "UPGRADE" + "\n" + tierCosts[collectedItemsDictionary[header].weaponObjectSO.upgradeTier];
+            }
+            
             switch (header)
             {
                 case "Magnum magnum" :
@@ -326,7 +348,14 @@ public class ShopUI : MonoBehaviour
             }
         }
         
-        DisplayWeaponWindow(0);
+        foreach (var _selected in selectionWindows)
+        {
+            if (_selected == PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon)
+            {
+                int _index = System.Array.IndexOf(selectionWindows, _selected);
+                DisplayWeaponWindowOverride(_index);
+            }
+        }
     }
     
     private void ActivateInventoryItem(float levelFill, string headerText, Sprite spriteItem, string weaponDescription, string bulletDamageText, string bulletDelayText, string reloadSpeedText, string  clipSizeText,WeaponObjectSO weaponObjectSO)

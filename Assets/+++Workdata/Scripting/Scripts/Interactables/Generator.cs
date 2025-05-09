@@ -28,6 +28,7 @@ public class Generator : MonoBehaviour
         InGameUIManager.Instance.fightUI.SetActive(true);
         Ride.Instance.waveStarted = true;
         Ride.Instance.ResetRide();
+        gateAnim.SetBool("OpenGate", false);
         Ride.Instance.StartEnemyClusterCoroutines();
 
         InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(false, false);
