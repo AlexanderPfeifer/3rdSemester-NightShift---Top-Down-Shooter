@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.Cinemachine;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -31,6 +30,8 @@ public class WeaponBehaviour : MonoBehaviour
     private Coroutine currentReloadCoroutine;
     private float reloadTime;
     [SerializeField] private Image reloadProgress;
+    public string noAmmoString = "NO AMMO LEFT";
+    [SerializeField] private string ammoFullString = "AMMO FULL";
 
     [Header("Aiming")]
     public Transform weaponEndPoint;
@@ -258,11 +259,6 @@ public class WeaponBehaviour : MonoBehaviour
     
     private void ShootAutomaticUpdate()
     {
-        if (ammunitionInClip == 0 && ammunitionInBackUp == 0 && PlayerBehaviour.Instance.weaponBehaviour.GetCurrentWeaponObjectSO() != null)
-        {
-            PlayerBehaviour.Instance.ammoText.text = "NO AMMO LEFT";
-        }
-        
         if (!isPressingLeftClick) 
             return;
         
@@ -318,6 +314,11 @@ public class WeaponBehaviour : MonoBehaviour
         currentKnockBack = -weaponToMouse.normalized * shootingKnockBack;
             
         ammunitionInClip--;
+        
+        if (ammunitionInClip == 0 && ammunitionInBackUp == 0 && PlayerBehaviour.Instance.weaponBehaviour.GetCurrentWeaponObjectSO() != null)
+        {
+            PlayerBehaviour.Instance.ammoText.text = noAmmoString;
+        }
                 
         SetAmmunitionText(ammunitionInClip.ToString(), ammunitionInBackUp.ToString());
     }
@@ -416,11 +417,13 @@ public class WeaponBehaviour : MonoBehaviour
                     ammunitionInBackUp = ammunitionBackUpSize;
                 }
                 
+                PlayerBehaviour.Instance.ammoText.text = "";
+
                 Destroy(ammoDrop.gameObject);
             }
             else
             {
-                PlayerBehaviour.Instance.ammoText.text = "AMMO FULL";
+                PlayerBehaviour.Instance.ammoText.text = ammoFullString;
             }
         }
 

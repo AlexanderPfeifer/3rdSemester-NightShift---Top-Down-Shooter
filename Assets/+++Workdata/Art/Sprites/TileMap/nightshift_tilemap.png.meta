@@ -197,7 +197,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      nightshift_tilemap_0: 1594944726841434605
+      nightshift_tilemap_1: -7152840562525938975
+      nightshift_tilemap_2: 4110081312085960485
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

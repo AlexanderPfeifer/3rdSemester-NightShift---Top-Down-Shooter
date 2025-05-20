@@ -176,7 +176,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
     private void HandleMovementFixedUpdate()
     {
-        if (InGameUIManager.Instance.dialogueUI.IsDialoguePlaying() || isPlayerBusy) 
+        if (IsPlayerBusy()) 
             return;
         
         rb.linearVelocity = GameInputManager.Instance.GetMovementVectorNormalized() * currentMoveSpeed + weaponBehaviour.currentKnockBack;
@@ -186,7 +186,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     
     private void SetAnimationParameterLateUpdate()
     {
-        if (isPlayerBusy || InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())
+        if (IsPlayerBusy() || InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())
         {
             if (playerNoHandVisual.activeSelf)
             {
@@ -280,15 +280,16 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     {
         if (other.gameObject.TryGetComponent(out AmmoDrop _ammoDrop))
         {
-            ammoText.gameObject.SetActive(true);
-            ammoText.text = "";
             weaponBehaviour.ObtainAmmoDrop(_ammoDrop, 0, false);
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        ammoText.gameObject.SetActive(false);
+        if(ammoText.text.Contains(weaponBehaviour.noAmmoString))
+        {
+            ammoText.text = "";
+        }
     }
 
     private void OnDrawGizmos()

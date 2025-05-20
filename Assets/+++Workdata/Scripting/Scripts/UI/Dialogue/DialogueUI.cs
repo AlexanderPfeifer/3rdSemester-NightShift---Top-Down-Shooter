@@ -19,6 +19,7 @@ public class DialogueUI : MonoBehaviour
     
     [Header("Typing Settings")]
     public float maxTextDisplaySpeed = 0.00005f;
+    [SerializeField] private float timeBetweenTextSkip = 0.2f;
     
     [Header("Animations")]
     [SerializeField] private Animator radioAnim;
@@ -181,7 +182,7 @@ public class DialogueUI : MonoBehaviour
 
         if (currentDialogue != null)
         {
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(timeBetweenTextSkip);
             
             CheckDialogueEnd(currentDialogue);
         }

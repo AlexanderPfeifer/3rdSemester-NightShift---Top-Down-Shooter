@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using System;
 using System.Collections;
 using System.Linq;
@@ -98,4 +97,3 @@ public class UnlockWeapons
     public string weaponName;
     public bool getWeapon;
 }
-#endif

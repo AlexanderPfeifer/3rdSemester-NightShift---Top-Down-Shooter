@@ -338,7 +338,7 @@ GameObject:
   - component: {fileID: 45956591}
   - component: {fileID: 45956590}
   m_Layer: 5
-  m_Name: TXT_Equip
+  m_Name: TXT_Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3024,7 +3024,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1433879710}
   m_Father: {fileID: 337340317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3108,7 +3109,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -392326438, guid: f3d67f880daa0044caf8c511d843c54e, type: 3}
+  m_Sprite: {fileID: 1624479729, guid: 3352c1d71e829d943b83a598807b3cab, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9739,6 +9740,142 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 547.4653, y: 136.8663}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1433879709
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1433879710}
+  - component: {fileID: 1433879712}
+  - component: {fileID: 1433879711}
+  m_Layer: 5
+  m_Name: TXT_SPIN
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1433879710
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433879709}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 404747153}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 230, y: 65.194}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1433879711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433879709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: SPIN
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 95e0f79c26e97814da9023b3bfea0fe9, type: 2}
+  m_sharedMaterial: {fileID: 4351764625433093535, guid: 95e0f79c26e97814da9023b3bfea0fe9, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4279376531
+  m_fontColor: {r: 0.5764706, g: 0.101960786, b: 0.07058824, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 24
+  m_fontSizeBase: 24
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1433879712
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433879709}
+  m_CullTransparentMesh: 1
 --- !u!1 &1443695201
 GameObject:
   m_ObjectHideFlags: 0
@@ -9783,7 +9920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d76e3bcc8841e84cbe8d03bbc591a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
+  debugMode: 1
   equipWeapon: 0
   UnlockWeapons:
   - weaponName: Lollipop Shotgun
@@ -9797,7 +9934,7 @@ MonoBehaviour:
   - weaponName: Corn Dog Hunting Rifle
     getWeapon: 0
   activateRide: 0
-  currencyAtStart: 0
+  currencyAtStart: 1500
 --- !u!1 &1444278721
 GameObject:
   m_ObjectHideFlags: 0
@@ -11932,10 +12069,16 @@ MonoBehaviour:
   dialogueShop:
   - situation: GettingFirstEquipment
     dialogues:
-    - "???: \nHey sweetie, you are the new guy, right?"
-    - "Margarite: \nI am Margarite, nice to meet you."
-    - "Margarite: \nLet me show you what you need to do - here is your first weapon
-      and here is your walkie talkie, let's test it."
+    - "???: \nHello sweetums\u2026"
+    - "???: \nYou\u2019re the new guy, ain'tcha?"
+    - "Peggy: \nMy name is Margaret, but please call me Peggy."
+    - "Peggy: \nLet me give you a briefing, hm?"
+    - "Peggy: \nYou\u2019ll need a walkie talkie around the premises so I can keep
+      an eye on you."
+    - "Peggy: \n..."
+    - "Peggy: \n... and a weapon. Who knows what is loitering around in the woods
+      at this time of night."
+    - "Peggy: \nLet\u2019s test it first, okay?"
     dialogueEndAction:
       m_PersistentCalls:
         m_Calls:
@@ -11953,105 +12096,140 @@ MonoBehaviour:
           m_CallState: 2
   - situation: CameBackToFillAmmo
     dialogues:
-    - 'Margarite:
+    - "Peggy:\nPerfect, that\u2019s how you do it."
+    - "Peggy:\nI\u2019ll give you the first refill for free, sweetums\u2026"
+    - "Peggy:\n... but don\u2019t think it lasts forever. Ha!"
+    - "Peggy:\nNow that that\u2019s out of the way\u2026"
+    - 'Peggy:
 
-      Perfect, for now you can have an ammo refill for free but
-      don''t think this lasts forever.'
-    - 'Margarite:
+      I believe they hired you to keep the park safe, right?'
+    - 'Peggy:
 
-      Now, on to your task. You must defend the ride from the
-      beasts in order to give the generator enough power to activate it.'
-    - 'Margarite:
+      The carousel not far from here attracts those weird little animals
+      at night time.'
+    - 'Peggy:
 
-      But this old rusty generator needs multiple tries and you
-      need to help with it.'
-    - 'Margarite:
+      It would be nice if you took a look at that for me.'
+    - "Peggy:\nThey recently installed a new gate in an attempt to keep the animals
+      out, but\u2026"
+    - "Peggy:\n... I don\u2019t think they really thought it through."
+    - 'Peggy:
 
-      Okay but enough talking now, I opened up the generator so
-      now you can activate it and get going.'
+      You need to activate the generator to get to the carousel, which
+      is also powered by the generator.'
+    - "Peggy:\nThe damn thing is the only part they didn\u2019t think to replace,
+      though."
+    - "Peggy:\nYou\u2019ll probably need to push the button more than once\u2026"
+    - 'Peggy:
+
+      ... The boy that worked your job before they employed you used
+      to just hit it until it worked.'
+    - 'Peggy:
+
+      ... I miss him sometimes. What a creative young man.'
+    - "Peggy:\nBut, anyway\u2026 I\u2019m talking too much again, Hm?"
+    - "Peggy:\nI\u2019ll let you go now. Take care, sweetums."
     dialogueEndAction:
       m_PersistentCalls:
         m_Calls: []
   - situation: GotFirstFight
     dialogues:
-    - 'Margarite:
+    - 'Peggy:
 
-      Welcome back. So now that you know the basics, I''ve got
-      a new offer for you.'
-    - 'Margarite:
+      Come on over to the other window, hm?'
+    - "Peggy:\nThis is the Wheel of Fortune\u2026"
+    - "Peggy:\n... and you get to be the first one to try it out! Isn\u2019t that
+      exciting? Hmmm?."
+    - 'Peggy:
 
-      This is my newly purchased Fortune Wheel. You are the first
-      one to try it before I show it to customers.'
-    - 'Margarite:
+      A spin only costs you 150 tickets.'
+    - "Peggy:\nFor now,  it\u2019s just for you! If you roll a new weapon, I\u2019ll
+      craft it for you."
+    - "Peggy:\nAnd if you don\u2019t\u2026 well, there\u2019s always a second chance."
+    - "Peggy:\nYou can also win more tickets, or more ammo\u2026"
+    - "Peggy:\nI hope I\u2019ll remember to replace the rewards before the park opens
+      to guests again."
+    - 'Peggy:
 
-      A spin only costs a few tickets and you can get some amazing
-      prizes.'
-    - 'Margarite:
-
-      That is everything you need to know to start your job. Have
-      fun at your Night Shift.'
+      ... But, that is all you need to know!'
+    - "Peggy:\nTake care during your shift, sweetums\u2026 I\u2019ll stay here in
+      case you need anything."
     dialogueEndAction:
       m_PersistentCalls:
         m_Calls: []
   dialogueWalkieTalkie:
   - situation: ReceivingWalkieTalkie
     dialogues:
-    - Works like a charm.
-    - Now go ahead and shoot the target <nobr>\u00A0\u00A0<sprite name="char_side_fin_0"></nobr> 
-      on the shooting range.
+    - "Peggy:\nWorks like a charm, don\u2019t it?"
+    - "Peggy:\nTry to shoot those targets <nobr>\_\_<sprite name=\"char_side_fin_0\"></nobr> 
+      for me, please."
     dialogueEndAction:
       m_PersistentCalls:
         m_Calls: []
   - situation: ShotAllSigns
     dialogues:
-    - 'Margarite:
+    - 'Peggy:
 
-      Nicely done! Come back to my shop and refill your ammo to
-      finally start your shift.'
+      Oh, thank God it still shoots.'
+    - 'Peggy:
+
+      Come and see me at the shop again, I want to show you how to
+      refill it.'
     dialogueEndAction:
       m_PersistentCalls:
         m_Calls: []
   - situation: BeforeStartingFirstGenerator
     dialogues:
-    - 'Margarite:
+    - 'Peggy:
 
-      I forgot to mention! Every beast you kill gets you tickets!'
-    - 'Margarite:
-
-      With these tickets you can buy things to make your job easier
-      here.'
-    - 'Margarite:
-
-      Now good luck with your first fight!'
+      Ah, hold on!'
+    - "Peggy:\nI forgot to tell you, but if you find tickets around the carousel,
+      please bring them to me, won\u2019t you?"
+    - "Peggy:\nI like to recycle them\u2026"
+    - "Peggy:\nIn turn, I\u2019ll give you some things to help you around the park.
+      How\u2019s that sound?"
+    - "Peggy:\nNow I\u2019ll leave you be. Good luck!"
     dialogueEndAction:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 1681847468}
+          m_TargetAssemblyTypeName: InGameUIManager, Assembly-CSharp
+          m_MethodName: SetGeneratorUI
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - situation: AfterFirstFight
     dialogues:
-    - "Margarite: \nGreat job! For your first time securing the ride, it wasn't that
-      bad!"
-    - "Margarite: \nGo ahead and visit my shop. I have a special gift for you!"
+    - "Peggy: \nWow, you did so well, sweetums! Are you sure this is your first day?"
+    - "Peggy: \nCome and visit me in the shop please, I fixed you up a little something
+      for your efforts!"
     dialogueEndAction:
       m_PersistentCalls:
         m_Calls: []
   - situation: AfterSecondFight
     dialogues:
-    - "Margarite: \nGood job! You are getting some good tickets there!"
+    - "Peggy: \nGood job! You are getting some good tickets there!"
     dialogueEndAction:
       m_PersistentCalls:
         m_Calls: []
   - situation: AfterThirdFight
     dialogues:
-    - "Margarite: \nNice one, just like that! "
-    - "Margarite: \nThe fights are getting harder so don't forget to upgrade weapons
+    - "Peggy: \nNice one, just like that! "
+    - "Peggy: \nThe fights are getting harder so don't forget to upgrade weapons
       here and there."
     dialogueEndAction:
       m_PersistentCalls:
         m_Calls: []
   - situation: AfterFourthFight
     dialogues:
-    - "Margarite: \nWell done sweetie. The ride seems to work fine again."
-    - "Margarite: \nI hope to see you again at your next Night Shift."
+    - "Peggy: \nWell done sweetie. The ride seems to work fine again."
+    - "Peggy: \nI hope to see you again at your next Night Shift."
     dialogueEndAction:
       m_PersistentCalls:
         m_Calls:
@@ -12074,6 +12252,7 @@ MonoBehaviour:
   dialogueCountWalkieTalkie: 0
   currentDialogueCount: 0
   maxTextDisplaySpeed: 0.0005
+  timeBetweenTextSkip: 0.3
   radioAnim: {fileID: 1046655514}
   walkieTalkieDialogueBoxAnim: {fileID: 1181395887}
   dialogueState: 0

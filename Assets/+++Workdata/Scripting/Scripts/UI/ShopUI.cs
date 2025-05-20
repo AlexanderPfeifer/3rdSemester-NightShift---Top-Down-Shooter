@@ -99,11 +99,7 @@ public class ShopUI : MonoBehaviour
                 break;
             }
         }
-        else
-        {
-            //Show that the upgrade cannot be achieved
-        }
-        
+
         ResetWeaponDescriptions();
     }
 
@@ -179,11 +175,6 @@ public class ShopUI : MonoBehaviour
         
         StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].weaponDescription, null));
 
-        if (header == PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon)
-        {
-            equipWeaponButton.interactable = false;
-        }
-        
         descriptionImage.color = Color.white;
         bulletDamageTextField.text = collectedItemsDictionary[header].bulletDamageText;
         bulletDelayTextField.text = collectedItemsDictionary[header].shotDelayText;
@@ -227,33 +218,64 @@ public class ShopUI : MonoBehaviour
             switch (header)
             {
                 case "Magnum magnum" :
-                    upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO, 
-                        magnumMagnumUpgradeTiers));
+                    SetUpgradeButton(header, magnumMagnumUpgradeTiers);
                     break;
                             
                 case "French Fries AR" :
-                    upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO, 
-                        assaultRifleUpgradeTiers));
+                    SetUpgradeButton(header, assaultRifleUpgradeTiers);
                     break;
                             
                 case "Lollipop Shotgun" :
-                    upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO, 
-                        lollipopShotgunUpgradeTiers));
+                    SetUpgradeButton(header, lollipopShotgunUpgradeTiers);
                     break;
                             
                 case "Corn Dog Hunting Rifle" :
-                    upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO, 
-                        huntingRifleUpgradeTiers));
+                    SetUpgradeButton(header, huntingRifleUpgradeTiers);
                     break;
                             
                 case "Popcorn Launcher" :
-                    upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO, 
-                        popcornLauncherUpgradeTiers));
+                    SetUpgradeButton(header, popcornLauncherUpgradeTiers);
                     break;
+                
                 case "Broken Pistol" :
                     upgradeWeaponButton.interactable = false;
                     break;
             }
+        }
+        
+        if (header == PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon)
+        {
+            equipWeaponButton.interactable = false;
+        }
+        
+        if (PlayerBehaviour.Instance.weaponBehaviour.ammunitionBackUpSize ==
+            PlayerBehaviour.Instance.weaponBehaviour.ammunitionInBackUp)
+        {
+            fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "AMMO FULL";
+            fillWeaponAmmoButton.interactable = false;   
+        }
+        else if (!PlayerBehaviour.Instance.playerCurrency.SpendCurrency(fillAmmoCost))
+        {
+            fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO MONEY";
+        }
+    }
+
+    private void SetUpgradeButton(string header, WeaponObjectSO[] upgradeTiers)
+    {
+        if (collectedItemsDictionary[header].weaponObjectSO.upgradeTier >= upgradeTiers.Length)
+        {
+            upgradeWeaponButton.interactable = false;
+            upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "MAX LEVEL";
+        }
+        else if (!PlayerBehaviour.Instance.playerCurrency.SpendCurrency(tierCosts[collectedItemsDictionary[header].weaponObjectSO.upgradeTier]))
+        {
+            upgradeWeaponButton.interactable = false;
+            upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO MONEY";
+        }
+        else
+        {
+            upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO, 
+                upgradeTiers));
         }
     }
 
