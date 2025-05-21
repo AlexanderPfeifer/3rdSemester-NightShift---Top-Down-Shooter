@@ -18,8 +18,8 @@ MonoBehaviour:
   shootDelay: 0.8
   clipSize: 10
   reloadTime: 1.8
-  weaponDescription: The Lollipop Shotgun, a classic. Although the grip is a little
-    sticky, the smell is a nice change of pace. Suck it, beasts!
+  weaponDescription: "Peggy:\nTell those beasts to suck it! \u2026Try to ignore how
+    sticky the grip is."
   weaponAbilityDescription: 
   playerKnockBack: 6
   enemyKnockBackPerBullet: 1

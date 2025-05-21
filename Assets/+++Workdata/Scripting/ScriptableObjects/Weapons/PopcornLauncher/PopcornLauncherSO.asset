@@ -18,8 +18,10 @@ MonoBehaviour:
   shootDelay: 0.7
   clipSize: 9
   reloadTime: 1.5
-  weaponDescription: The Popcorn Launcher. The trigger is buttery-smooth, but luckily
-    this thing is more bark than bite. The noise wakes me right up, though.
+  weaponDescription: 'Peggy:
+
+    The Popcorn Pistol is pretty loud, but the trigger
+    stays buttery smooth, even if you use it more often.'
   weaponAbilityDescription: 
   playerKnockBack: 2.5
   enemyKnockBackPerBullet: 2

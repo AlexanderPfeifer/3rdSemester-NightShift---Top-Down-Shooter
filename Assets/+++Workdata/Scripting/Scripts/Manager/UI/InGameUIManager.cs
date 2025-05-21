@@ -52,6 +52,9 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     public GameObject weaponDecisionWeaponImage;
     public TextMeshProUGUI weaponDecisionWeaponAbilityText;
     public TextMeshProUGUI weaponDecisionWeaponName;
+
+    [Header("WalkieTalkie")] 
+    [SerializeField] private TextMeshProUGUI walkieTalkieQuestLog;
     
     private void Start()
     {
@@ -81,6 +84,12 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         CloseShop();
         
         CloseGeneratorUI();
+    }
+
+    public void SetWalkieTalkieQuestLog(string text)
+    {
+        if(!TutorialManager.Instance.tutorialDone)
+            StartCoroutine(dialogueUI.TypeTextCoroutine(text, null, walkieTalkieQuestLog));
     }
     
     public void GoToMainMenu()
@@ -185,9 +194,13 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     {
         if (shopScreen.activeSelf && !dialogueUI.IsDialoguePlaying())
         {
+            dialogueUI.currentTextBox.text = "";
+            
             dialogueUI.SetDialogueBox(false);
             dialogueUI.SetDialogueBoxState(false, true);
+            
             shopScreen.SetActive(false);
+            
         
             AudioManager.Instance.FadeOut("ShopMusic", "InGameMusic");
 

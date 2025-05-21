@@ -23,8 +23,8 @@ public class WeaponBehaviour : MonoBehaviour
     [Range(.1f, .3f), SerializeField] private float bulletSpread = .2f;
     
     [Header("Ammo/Reload")]
-    private int maxClipSize;
-    private int ammunitionInClip;
+    [HideInInspector] public int maxClipSize;
+    [HideInInspector] public int ammunitionInClip;
     [HideInInspector] public int ammunitionInBackUp;
     public int ammunitionBackUpSize { private set; get; }
     private Coroutine currentReloadCoroutine;
@@ -165,7 +165,7 @@ public class WeaponBehaviour : MonoBehaviour
             return;
 
         
-        if (PlayerBehaviour.Instance.playerVisual.activeSelf || GetComponent<MeleeWeaponBehaviour>().hitCollider.isActiveAndEnabled || (Mathf.Abs(weaponToMouse.x) <= currentGetMeleeWeaponOutRange && 
+        if (GetCurrentWeaponObjectSO() == null || GetComponent<MeleeWeaponBehaviour>().hitCollider.isActiveAndEnabled || (Mathf.Abs(weaponToMouse.x) <= currentGetMeleeWeaponOutRange && 
             Mathf.Abs(weaponToMouse.y) <= currentGetMeleeWeaponOutRange &&
             Mathf.Abs(weaponToMouse.x) >= 0 && 
             Mathf.Abs(weaponToMouse.y) >= 0)) 
@@ -389,7 +389,7 @@ public class WeaponBehaviour : MonoBehaviour
             InGameUIManager.Instance.ammunitionInClipText.text = clipAmmo;
         
         if(backUpAmmo != null)
-            InGameUIManager.Instance.ammunitionInBackUpText.text = "/" + backUpAmmo;
+            InGameUIManager.Instance.ammunitionInBackUpText.text = " " + backUpAmmo;
     }
 
     public void ObtainAmmoDrop(AmmoDrop ammoDrop, int setAmmoManually, bool fillClipAmmo)

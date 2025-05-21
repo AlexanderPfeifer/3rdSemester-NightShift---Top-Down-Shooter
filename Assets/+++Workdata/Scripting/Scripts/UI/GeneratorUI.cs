@@ -67,6 +67,7 @@ public class GeneratorUI : MonoBehaviour
             {          
                 _generator.GetComponent<Generator>().gateAnim.SetBool("OpenGate", true);
                 _generator.GetComponent<Generator>().interactable = false;
+                InGameUIManager.Instance.SetWalkieTalkieQuestLog(TutorialManager.Instance.activateRide);
             }
         }
         else

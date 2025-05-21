@@ -342,7 +342,6 @@ GameObject:
   - component: {fileID: 79722160}
   - component: {fileID: 79722162}
   - component: {fileID: 79722161}
-  - component: {fileID: 79722163}
   m_Layer: 5
   m_Name: IMG_Stall
   m_TagString: Untagged
@@ -409,18 +408,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 79722159}
   m_CullTransparentMesh: 1
---- !u!225 &79722163
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 79722159}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &81450573
 GameObject:
   m_ObjectHideFlags: 0
@@ -2471,7 +2458,6 @@ GameObject:
   - component: {fileID: 491576563}
   - component: {fileID: 491576565}
   - component: {fileID: 491576564}
-  - component: {fileID: 491576566}
   m_Layer: 5
   m_Name: IMG_Vines_02
   m_TagString: Untagged
@@ -2536,18 +2522,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 491576562}
   m_CullTransparentMesh: 1
---- !u!225 &491576566
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 491576562}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &496972066
 GameObject:
   m_ObjectHideFlags: 0
@@ -2559,7 +2533,6 @@ GameObject:
   - component: {fileID: 496972067}
   - component: {fileID: 496972069}
   - component: {fileID: 496972068}
-  - component: {fileID: 496972070}
   m_Layer: 5
   m_Name: IMG_Light_Orange
   m_TagString: Untagged
@@ -2624,18 +2597,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 496972066}
   m_CullTransparentMesh: 1
---- !u!225 &496972070
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 496972066}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &515976909
 GameObject:
   m_ObjectHideFlags: 0
@@ -2683,7 +2644,6 @@ GameObject:
   - component: {fileID: 544925475}
   - component: {fileID: 544925477}
   - component: {fileID: 544925476}
-  - component: {fileID: 544925478}
   m_Layer: 5
   m_Name: IMG_Vines_03
   m_TagString: Untagged
@@ -2748,18 +2708,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 544925474}
   m_CullTransparentMesh: 1
---- !u!225 &544925478
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 544925474}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &594231418
 GameObject:
   m_ObjectHideFlags: 0
@@ -2771,7 +2719,6 @@ GameObject:
   - component: {fileID: 594231419}
   - component: {fileID: 594231423}
   - component: {fileID: 594231422}
-  - component: {fileID: 594231421}
   - component: {fileID: 594231420}
   m_Layer: 5
   m_Name: IMG_Stall_Shutter (2)
@@ -2821,18 +2768,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!225 &594231421
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 594231418}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!114 &594231422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3380,7 +3315,6 @@ GameObject:
   - component: {fileID: 622549176}
   - component: {fileID: 622549178}
   - component: {fileID: 622549177}
-  - component: {fileID: 622549179}
   m_Layer: 5
   m_Name: IMG_Light_Blue
   m_TagString: Untagged
@@ -3445,18 +3379,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 622549175}
   m_CullTransparentMesh: 1
---- !u!225 &622549179
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622549175}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &623570779
 GameObject:
   m_ObjectHideFlags: 0
@@ -3959,7 +3881,6 @@ GameObject:
   - component: {fileID: 708935855}
   - component: {fileID: 708935857}
   - component: {fileID: 708935856}
-  - component: {fileID: 708935858}
   m_Layer: 5
   m_Name: IMG_Vines_04
   m_TagString: Untagged
@@ -4024,18 +3945,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 708935854}
   m_CullTransparentMesh: 1
---- !u!225 &708935858
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 708935854}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &721657999
 GameObject:
   m_ObjectHideFlags: 0
@@ -4446,7 +4355,6 @@ GameObject:
   - component: {fileID: 842117601}
   - component: {fileID: 842117603}
   - component: {fileID: 842117602}
-  - component: {fileID: 842117604}
   m_Layer: 5
   m_Name: IMG_Light_Green
   m_TagString: Untagged
@@ -4511,18 +4419,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 842117600}
   m_CullTransparentMesh: 1
---- !u!225 &842117604
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 842117600}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &853656334
 GameObject:
   m_ObjectHideFlags: 0
@@ -4882,7 +4778,6 @@ GameObject:
   - component: {fileID: 902028296}
   - component: {fileID: 902028298}
   - component: {fileID: 902028297}
-  - component: {fileID: 902028299}
   m_Layer: 5
   m_Name: IMG_Light_Yellow
   m_TagString: Untagged
@@ -4947,18 +4842,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 902028295}
   m_CullTransparentMesh: 1
---- !u!225 &902028299
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 902028295}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &909526250
 GameObject:
   m_ObjectHideFlags: 0
@@ -6060,7 +5943,6 @@ GameObject:
   - component: {fileID: 1105816344}
   - component: {fileID: 1105816346}
   - component: {fileID: 1105816345}
-  - component: {fileID: 1105816347}
   m_Layer: 5
   m_Name: IMG_Light_Pink
   m_TagString: Untagged
@@ -6125,18 +6007,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1105816343}
   m_CullTransparentMesh: 1
---- !u!225 &1105816347
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1105816343}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &1109023298
 GameObject:
   m_ObjectHideFlags: 0
@@ -6148,7 +6018,6 @@ GameObject:
   - component: {fileID: 1109023299}
   - component: {fileID: 1109023301}
   - component: {fileID: 1109023300}
-  - component: {fileID: 1109023302}
   - component: {fileID: 1109023303}
   - component: {fileID: 1109023304}
   m_Layer: 5
@@ -6215,18 +6084,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1109023298}
   m_CullTransparentMesh: 1
---- !u!225 &1109023302
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1109023298}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!95 &1109023303
 Animator:
   serializedVersion: 7
@@ -8035,7 +7892,6 @@ GameObject:
   - component: {fileID: 1306431747}
   - component: {fileID: 1306431749}
   - component: {fileID: 1306431748}
-  - component: {fileID: 1306431750}
   m_Layer: 5
   m_Name: IMG_Vines_01
   m_TagString: Untagged
@@ -8100,18 +7956,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306431746}
   m_CullTransparentMesh: 1
---- !u!225 &1306431750
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306431746}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &1316587620
 GameObject:
   m_ObjectHideFlags: 0
@@ -8141,6 +7985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7749d7821f7a81c4aac402cd7f843e32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allCanvasGroups: []
 --- !u!4 &1316587622
 Transform:
   m_ObjectHideFlags: 0
@@ -8615,7 +8460,6 @@ GameObject:
   - component: {fileID: 1432396886}
   - component: {fileID: 1432396888}
   - component: {fileID: 1432396887}
-  - component: {fileID: 1432396889}
   m_Layer: 5
   m_Name: IMG_Vines_05
   m_TagString: Untagged
@@ -8680,18 +8524,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1432396885}
   m_CullTransparentMesh: 1
---- !u!225 &1432396889
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1432396885}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &1500788505
 GameObject:
   m_ObjectHideFlags: 0
@@ -13098,7 +12930,6 @@ GameObject:
   - component: {fileID: 2120776828}
   - component: {fileID: 2120776830}
   - component: {fileID: 2120776829}
-  - component: {fileID: 2120776831}
   m_Layer: 5
   m_Name: IMG_Vines_06
   m_TagString: Untagged
@@ -13163,18 +12994,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2120776827}
   m_CullTransparentMesh: 1
---- !u!225 &2120776831
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2120776827}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &2125441290
 GameObject:
   m_ObjectHideFlags: 0

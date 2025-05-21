@@ -18,8 +18,8 @@ MonoBehaviour:
   shootDelay: 0.1
   clipSize: 50
   reloadTime: 1
-  weaponDescription: Served hot and fresh. This thing is a whole new definition of
-    fast food.
+  weaponDescription: "Peggy:\nWhen the park began offering fast food, I imagined
+    it to be a bit\u2026 different. Serve it hot and fresh, boy."
   weaponAbilityDescription: Bullet Firerate increases.
   playerKnockBack: 2
   enemyKnockBackPerBullet: 4

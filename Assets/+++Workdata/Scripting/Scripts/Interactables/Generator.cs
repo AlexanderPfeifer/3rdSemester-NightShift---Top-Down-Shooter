@@ -30,7 +30,7 @@ public class Generator : MonoBehaviour
         Ride.Instance.ResetRide();
         gateAnim.SetBool("OpenGate", false);
         Ride.Instance.StartEnemyClusterCoroutines();
-
+        
         InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(false, false);
     }
 }

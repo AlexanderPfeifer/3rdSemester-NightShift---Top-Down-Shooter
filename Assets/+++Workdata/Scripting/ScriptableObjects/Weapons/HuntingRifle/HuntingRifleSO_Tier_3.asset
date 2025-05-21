@@ -18,8 +18,8 @@ MonoBehaviour:
   shootDelay: 0.5
   clipSize: 7
   reloadTime: 1.8
-  weaponDescription: "The Corn Dog Hunting Rifle. I\u2018ve had my fill of corny
-    one-liners with this one. "
+  weaponDescription: "Peggy:\nI\u2019m sure there are a lot of corny one-liners you
+    can come up with for this one. Ha!"
   weaponAbilityDescription: On Activation has no enemy penetration limit and every
     shot doubles to triple the incoming damage.
   playerKnockBack: 5

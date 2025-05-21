@@ -1,24 +1,16 @@
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class AllButtonsConfiguration : MonoBehaviour
+public class AllButtonsConfiguration : Singleton<AllButtonsConfiguration>
 {
-    [HideInInspector] public Button[] allInteractableButton = { };
+    public CanvasGroup inGameUICanvasGroup;
 
     private void Start()
     {
         foreach (Button _button in FindObjectsByType<Button>(FindObjectsSortMode.None))
         {
             AddHoverEvent(_button.gameObject);
-        }
-        
-        allInteractableButton = FindObjectsByType<Button>(FindObjectsSortMode.None).Where(button => button.interactable).ToArray();
-
-        if (PlayerBehaviour.Instance != null)
-        {
-            InGameUIManager.Instance.dialogueUI.allButtonsConfiguration = this;
         }
     }
 

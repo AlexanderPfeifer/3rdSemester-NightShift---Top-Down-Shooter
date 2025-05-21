@@ -1,5 +1,4 @@
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,6 +11,14 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     [HideInInspector] public bool talkedAboutCurrency;
     private bool playedFirstDialogue;
     private bool openedShopAfterFirstFight;
+    [HideInInspector] public bool tutorialDone;
+
+    [Header("QuestLogTexts")] 
+    [SerializeField] private string fillAmmo;
+    [SerializeField] private string activateGen;
+    [SerializeField] public string activateRide;
+    [SerializeField] private string getNewWeapons;
+    [SerializeField] private string doYourJob;
 
     protected override void Awake()
     {
@@ -49,6 +56,8 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
             InGameUIManager.Instance.dialogueUI.DisplayDialogue();
 
             openedShopAfterFirstFight = true;
+            
+            InGameUIManager.Instance.SetWalkieTalkieQuestLog(getNewWeapons);
         }
     }
 
@@ -58,6 +67,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         {
             InGameUIManager.Instance.dialogueUI.DisplayDialogue();
             Ride.Instance.generator.interactable = true;
+            InGameUIManager.Instance.SetWalkieTalkieQuestLog(activateGen);
         }
     }
 
@@ -68,6 +78,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         if (shotSigns == 3)
         {
             InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
+            InGameUIManager.Instance.SetWalkieTalkieQuestLog(fillAmmo);
         }
     }
 
@@ -75,9 +86,10 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     {
         if (newWeaponsCanBeUnlocked)
         {
-            //Todo: Make this an animation of the shutter
             InGameUIManager.Instance.changeShopWindowButton.SetActive(true);
             InGameUIManager.Instance.shopUI.switchWindowButtons.SetActive(true);
+            tutorialDone = true;
+            InGameUIManager.Instance.SetWalkieTalkieQuestLog(doYourJob);
         }
     }
     

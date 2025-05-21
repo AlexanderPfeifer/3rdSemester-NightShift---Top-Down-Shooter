@@ -28,9 +28,7 @@ public class DialogueUI : MonoBehaviour
     [Header("DialogueState")]
     private int dialogueTextCount;
     [HideInInspector] public DialogueState dialogueState = DialogueState.DialogueNotPlaying;
-
-    [HideInInspector] public AllButtonsConfiguration allButtonsConfiguration;
-
+    
     public enum DialogueState
     {
         DialogueNotPlaying,
@@ -64,14 +62,14 @@ public class DialogueUI : MonoBehaviour
         {
             if (dialogueShop.Length >= currentDialogueCount)
             {
-                StartCoroutine(TypeTextCoroutine(dialogueShop[currentDialogueCount].dialogues[dialogueTextCount], dialogueShop));
+                StartCoroutine(TypeTextCoroutine(dialogueShop[currentDialogueCount].dialogues[dialogueTextCount], dialogueShop, currentTextBox));
             }
         }
         else
         {
             if (dialogueWalkieTalkie.Length >= currentDialogueCount)
             {
-                StartCoroutine(TypeTextCoroutine(dialogueWalkieTalkie[currentDialogueCount].dialogues[dialogueTextCount], dialogueWalkieTalkie));
+                StartCoroutine(TypeTextCoroutine(dialogueWalkieTalkie[currentDialogueCount].dialogues[dialogueTextCount], dialogueWalkieTalkie, currentTextBox));
             }
         }
         
@@ -107,21 +105,6 @@ public class DialogueUI : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
-        if (dialogueState != DialogueState.DialogueNotPlaying)
-        {
-            foreach (var _interactableButton in allButtonsConfiguration.allInteractableButton)
-            {
-                _interactableButton.interactable = false;
-            }   
-        }
-        else
-        {
-            foreach (var _interactableButton in allButtonsConfiguration.allInteractableButton)
-            {
-                _interactableButton.interactable = true;
-            }   
-        }
     }
 
     public bool IsDialoguePlaying()
@@ -129,35 +112,46 @@ public class DialogueUI : MonoBehaviour
         return dialogueState != DialogueState.DialogueNotPlaying;
     }
     
-    public IEnumerator TypeTextCoroutine(string text, Dialogues[] currentDialogue)
+    public IEnumerator TypeTextCoroutine(string text, Dialogues[] currentDialogue, TextMeshProUGUI textBox)
     {
-        if(currentDialogue != null)
+        if (currentDialogue != null)
+        {
+            AllButtonsConfiguration.Instance.inGameUICanvasGroup.interactable = false;
+
             dialogueState = DialogueState.DialoguePlaying;
+        }
         
-        currentTextBox.text = "";
-        currentTextBox.textWrappingMode = TextWrappingModes.Normal;
+        textBox.text = "";
+        textBox.textWrappingMode = TextWrappingModes.Normal;
 
         var _words = text.Split(' ');
         string _displayText = ""; 
-        float _availableWidth = currentTextBox.rectTransform.rect.width;
+        float _availableWidth = textBox.rectTransform.rect.width;
         int _bracketCount = 0;
 
         foreach (var _word in _words)
         {
             string _testLine = _displayText + _word + " ";
-            currentTextBox.text = _testLine;
-            currentTextBox.ForceMeshUpdate();
-            float _textWidth = currentTextBox.preferredWidth;
+            textBox.text = _testLine;
+            textBox.ForceMeshUpdate();
+            float _textWidth = textBox.preferredWidth;
 
             if (_textWidth > _availableWidth) // If word doesn't fit, move to a new line before typing
             {
                 _displayText += "\n";
             }
 
+            if (_word.Contains("Peggy:") || _word.Contains("???:"))
+            {
+                _displayText += _word + " ";
+                textBox.text = _displayText;
+                continue;
+            }
+
             // Update the text for each word, not each character, for performance reasons
             foreach (char _letter in _word + " ")
             {
-                if (_letter == '<' || (_bracketCount > 0 && _bracketCount < 3))
+                if (_letter == '<' || _bracketCount is > 0 and < 3)
                 {
                     _displayText += _letter;
 
@@ -175,7 +169,7 @@ public class DialogueUI : MonoBehaviour
 
                 _bracketCount = 0;
                 _displayText += _letter;
-                currentTextBox.text = _displayText;
+                textBox.text = _displayText;
                 yield return new WaitForSeconds(maxTextDisplaySpeed);
             }
         }
@@ -230,6 +224,8 @@ public class DialogueUI : MonoBehaviour
         currentTextBox.text = "";
 
         dialogueState = DialogueState.DialogueNotPlaying;
+        
+        AllButtonsConfiguration.Instance.inGameUICanvasGroup.interactable = true;
 
         if (currentTextBox != shopText)
         {

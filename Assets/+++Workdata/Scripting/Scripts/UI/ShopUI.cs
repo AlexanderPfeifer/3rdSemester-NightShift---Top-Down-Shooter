@@ -73,6 +73,11 @@ public class ShopUI : MonoBehaviour
         currentWeaponSelectionWindow = number;
         
         DisplayItem(selectionWindows[currentWeaponSelectionWindow]);
+        
+        if (fortuneWheel.activeSelf)
+        {
+            SetShopWindow();
+        }
     }
 
     private void UpgradeWeapon(WeaponObjectSO weapon, IReadOnlyList<WeaponObjectSO> upgradeTiers)
@@ -173,7 +178,8 @@ public class ShopUI : MonoBehaviour
             return;
         }
         
-        StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].weaponDescription, null));
+        if(InGameUIManager.Instance.dialogueUI.currentTextBox.text.Length == 0)
+            StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].weaponDescription, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
 
         descriptionImage.color = Color.white;
         bulletDamageTextField.text = collectedItemsDictionary[header].bulletDamageText;
@@ -248,15 +254,16 @@ public class ShopUI : MonoBehaviour
             equipWeaponButton.interactable = false;
         }
         
-        if (PlayerBehaviour.Instance.weaponBehaviour.ammunitionBackUpSize ==
-            PlayerBehaviour.Instance.weaponBehaviour.ammunitionInBackUp)
+        if (PlayerBehaviour.Instance.weaponBehaviour.ammunitionBackUpSize == PlayerBehaviour.Instance.weaponBehaviour.ammunitionInBackUp && 
+            PlayerBehaviour.Instance.weaponBehaviour.ammunitionInClip == PlayerBehaviour.Instance.weaponBehaviour.maxClipSize)
         {
             fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "AMMO FULL";
             fillWeaponAmmoButton.interactable = false;   
         }
-        else if (!PlayerBehaviour.Instance.playerCurrency.SpendCurrency(fillAmmoCost))
+        else if (!PlayerBehaviour.Instance.playerCurrency.SpendCurrency(fillAmmoCost) && !TutorialManager.Instance.fillAmmoForFree)
         {
             fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO MONEY";
+            fillWeaponAmmoButton.interactable = false;
         }
     }
 

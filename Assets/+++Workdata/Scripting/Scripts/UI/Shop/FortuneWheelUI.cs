@@ -14,6 +14,11 @@ public class FortuneWheelUI : MonoBehaviour
     [SerializeField] private float firstPieSliceBufferInDegree = 36f;
     [SerializeField] private int spinPrice;
 
+    [Header("Price Dialogue")] 
+    [SerializeField, TextArea(3, 10)] private string blankDialogue;
+    [SerializeField, TextArea(3, 10)] private string currencyDialogue;
+    [SerializeField, TextArea(3, 10)] private string largeCurrencyDialogue;
+
     [Header("Spinning Movement")] 
     [SerializeField] private Vector2Int timeUntilStop;
     [SerializeField] private float spinPower = 1250;
@@ -114,9 +119,24 @@ public class FortuneWheelUI : MonoBehaviour
         InGameUIManager.Instance.shopUI.ResetWeaponDescriptions();
     }
 
+    
+    public void WinBlank()
+    {
+        StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(blankDialogue, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
+    }   
+    
     public void WinMoney(int money)
     {
         PlayerBehaviour.Instance.playerCurrency.AddCurrency(money, true);
+        
+        StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(currencyDialogue, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
+    }    
+    
+    public void WinLargeCurrency(int money)
+    {
+        PlayerBehaviour.Instance.playerCurrency.AddCurrency(money, true);
+        
+        StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(largeCurrencyDialogue, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
     }
 
     private void OnDisable()
