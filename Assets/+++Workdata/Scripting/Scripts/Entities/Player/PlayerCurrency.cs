@@ -52,6 +52,16 @@ public class PlayerCurrency : MonoBehaviour
         return false;
     }
 
+    public bool CheckEnoughCurrency(int amount)
+    {
+        if (currency >= amount)
+        {
+            return true;
+        }
+        
+        return false;
+    }
+
     private void UpdateCurrencyTextNumberByNumber()
     {
         if (currencyText == currency)

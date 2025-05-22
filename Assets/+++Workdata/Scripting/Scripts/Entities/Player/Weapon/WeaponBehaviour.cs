@@ -19,8 +19,7 @@ public class WeaponBehaviour : MonoBehaviour
     [HideInInspector] public float bulletDamage;
     [HideInInspector] public float bulletSpeed = 38f;
     [HideInInspector] public int maxPenetrationCount;
-    private int bulletsPerShot;
-    [Range(.1f, .3f), SerializeField] private float bulletSpread = .2f;
+    [HideInInspector] public int bulletsPerShot;
     
     [Header("Ammo/Reload")]
     [HideInInspector] public int maxClipSize;
@@ -49,11 +48,12 @@ public class WeaponBehaviour : MonoBehaviour
     private float currentHitDelay;
 
     [Header("Shooting")]
-    public float accuracyWhenStandingStill = 0.00005f;
+    public float bulletDirectionSpreadStandingStill = 0.00005f;
+    [FormerlySerializedAs("currentWeaponAccuracy")] [HideInInspector] public float currentBulletDirectionSpread;
+    [FormerlySerializedAs("weaponAccuracy")] [HideInInspector] public float bulletDirectionSpread;
+    [SerializeField] private float bulletSpawnSpread = 0.5f;    
     private float maxShootingDelay;
     private float currentShootingDelay;
-    [HideInInspector] public float weaponAccuracy;
-    [HideInInspector] public float currentWeaponAccuracy;
     private bool isPressingLeftClick;
     
     [Header("Knock Back")]
@@ -111,7 +111,7 @@ public class WeaponBehaviour : MonoBehaviour
         GameInputManager.Instance.OnShootingAction += OnPressingShootingAction;
         GameInputManager.Instance.OnNotShootingAction += OnReleasingShootingAction;
         GameInputManager.Instance.OnReloadAction += OnPressingReloadingAction;
-        GameInputManager.Instance.OnMeleeWeaponAction += HitWithMelee;
+        GameInputManager.Instance.OnMeleeWeaponAction += OnPressingMeleeAction;
     }
     
     private void OnDisable()
@@ -119,7 +119,7 @@ public class WeaponBehaviour : MonoBehaviour
         GameInputManager.Instance.OnShootingAction -= OnPressingShootingAction;
         GameInputManager.Instance.OnNotShootingAction -= OnReleasingShootingAction;
         GameInputManager.Instance.OnReloadAction -= OnPressingReloadingAction;
-        GameInputManager.Instance.OnMeleeWeaponAction -= HitWithMelee;
+        GameInputManager.Instance.OnMeleeWeaponAction -= OnPressingMeleeAction;
     }
 
     private void Update()
@@ -155,6 +155,13 @@ public class WeaponBehaviour : MonoBehaviour
     private void OnPressingReloadingAction(object sender, EventArgs e)
     {
         currentReloadCoroutine ??= StartCoroutine(ReloadCoroutine());
+    }
+    
+    private void OnPressingMeleeAction(object sender, EventArgs eventArgs)
+    {
+        GetMeleeWeaponOut();
+        
+        HitAutomatic();
     }
 
     #endregion
@@ -222,13 +229,6 @@ public class WeaponBehaviour : MonoBehaviour
         meleeWeaponOut = true;
     }
 
-    private void HitWithMelee(object sender, EventArgs eventArgs)
-    {
-        GetMeleeWeaponOut();
-        
-        HitAutomatic();
-    }
-
     public void CamMovementUpdate()
     {
         float _targetCamSize = normalCamOrthoSize;
@@ -290,13 +290,15 @@ public class WeaponBehaviour : MonoBehaviour
         
         for (int _i = 0; _i < bulletsPerShot; _i++)
         {
-            Vector2 _bulletDirection = Random.insideUnitCircle.normalized;
-            _bulletDirection = Vector3.Slerp(_bulletDirection, weaponToMouse.normalized, 1.0f - currentWeaponAccuracy);
+            Vector2 _randomSpread = Random.insideUnitCircle * currentBulletDirectionSpread;            
+            Vector2 _bulletDirection = ((Vector2)weaponToMouse.normalized + _randomSpread).normalized;
 
-            Vector2 _perpendicularOffset = new Vector2(-_bulletDirection.y, _bulletDirection.x);
-            // This calculation is a perfect spread of bullets(ask ChatGPT) 
-            float _spreadOffset = (_i - (bulletsPerShot - 1) / 2f) * bulletSpread;
-            Vector3 _spawnPosition = weaponEndPoint.position + (Vector3)(_perpendicularOffset * _spreadOffset);
+            Vector2 _randomSpawnOffset = Vector2.zero;
+            if (bulletsPerShot > 1)
+            {
+                _randomSpawnOffset = Random.insideUnitCircle * bulletSpawnSpread;
+            }
+            Vector3 _spawnPosition = weaponEndPoint.position + new Vector3(_randomSpawnOffset.x, _randomSpawnOffset.y, 0f);
     
             var _bullet = BulletPoolingManager.Instance.GetInactiveBullet();
             _bullet.transform.SetPositionAndRotation(_spawnPosition, Quaternion.Euler(0, 0, weaponAimingAngle));
@@ -306,8 +308,8 @@ public class WeaponBehaviour : MonoBehaviour
 
         currentShootingDelay = PlayerBehaviour.Instance.abilityBehaviour.currentActiveAbility == 
                                AbilityBehaviour.CurrentAbility.FastBullets ? 
-            PlayerBehaviour.Instance.abilityBehaviour.fastBulletsDelay : 
-            maxShootingDelay;
+                                PlayerBehaviour.Instance.abilityBehaviour.fastBulletsDelay : 
+                                maxShootingDelay;
 
         StartCoroutine(WeaponVisualCoroutine());
 
@@ -445,14 +447,8 @@ public class WeaponBehaviour : MonoBehaviour
         if (!weapon.activeSelf) 
             return;
         
-        if (!meleeWeaponOut)
-        {
-            currentShootingDelay -= Time.deltaTime;   
-        }
-        else
-        {
-            currentHitDelay -= Time.deltaTime;
-        }
+        currentHitDelay -= Time.deltaTime;
+        currentShootingDelay -= Time.deltaTime;
     }
     
     public void GetWeapon(WeaponObjectSO weapon)
@@ -469,7 +465,7 @@ public class WeaponBehaviour : MonoBehaviour
         bulletDamage = weapon.bulletDamage;
         maxPenetrationCount = weapon.penetrationCount;
         maxShootingDelay = weapon.shootDelay;
-        weaponAccuracy = weapon.weaponSpread;
+        bulletDirectionSpread = weapon.weaponBulletSpread;
         this.weapon.transform.localScale = weapon.weaponScale;
         bulletsPerShot = weapon.bulletsPerShot;
         shootingKnockBack = weapon.playerKnockBack;
@@ -498,7 +494,6 @@ public class WeaponBehaviour : MonoBehaviour
         
         myWeapon = weapon.weaponName switch
         {
-            
             "Magnum magnum" => MyWeapon.Magnum,
             "French Fries AR" => MyWeapon.AssaultRifle,
             "Lollipop Shotgun" => MyWeapon.Shotgun,
@@ -564,5 +559,13 @@ public class WeaponBehaviour : MonoBehaviour
         }
         
         GetComponent<MeleeWeaponBehaviour>().hitCollider.enabled = false;
+
+        meleeWeaponOut = false;
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(weaponEndPoint.position, bulletSpawnSpread);
     }
 }

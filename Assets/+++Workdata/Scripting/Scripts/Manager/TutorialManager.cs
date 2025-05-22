@@ -17,7 +17,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     [SerializeField] private string fillAmmo;
     [SerializeField] private string activateGen;
     [SerializeField] public string activateRide;
-    [SerializeField] private string getNewWeapons;
+    public string getNewWeapons;
     [SerializeField] private string doYourJob;
 
     protected override void Awake()
@@ -38,27 +38,35 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
 
     public void CheckDialogue()
     {
-        MakeNewWeaponsUnlockable();
-            
-        PlayStartingDialogue();
-
-        FinishedFirstFight();
+        if (!playedFirstDialogue)
+        {
+            PlayStartingDialogue();
+        }
+        else if (Ride.Instance.GetCurrentWaveAsInt() > 0 && !openedShopAfterFirstFight)
+        {
+            FinishedFirstFight();
+        }
+        else if(!InGameUIManager.Instance.shopUI.fortuneWheel.activeSelf)
+        {
+            InGameUIManager.Instance.shopUI.ResetWeaponDescriptions();
+        }
     }
 
     private void FinishedFirstFight()
     {
-        if (Ride.Instance.GetCurrentWaveAsInt() > 0 && !openedShopAfterFirstFight)
-        {
-            InGameUIManager.Instance.shopUI.SetShopWindow();
+        InGameUIManager.Instance.shopUI.SetShopWindow();
 
-            InGameUIManager.Instance.dialogueUI.shopText.text = "";
+        InGameUIManager.Instance.dialogueUI.shopText.text = "";
             
-            InGameUIManager.Instance.dialogueUI.DisplayDialogue();
+        InGameUIManager.Instance.dialogueUI.DisplayDialogue();
 
-            openedShopAfterFirstFight = true;
+        openedShopAfterFirstFight = true;
             
-            InGameUIManager.Instance.SetWalkieTalkieQuestLog(getNewWeapons);
-        }
+        
+        InGameUIManager.Instance.changeShopWindowButton.SetActive(true);
+        InGameUIManager.Instance.shopUI.switchWindowButtons.SetActive(true);
+        InGameUIManager.Instance.SetWalkieTalkieQuestLog(doYourJob);
+        tutorialDone = true;
     }
 
     public void ExplainGenerator()
@@ -81,25 +89,11 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
             InGameUIManager.Instance.SetWalkieTalkieQuestLog(fillAmmo);
         }
     }
-
-    private void MakeNewWeaponsUnlockable()
-    {
-        if (newWeaponsCanBeUnlocked)
-        {
-            InGameUIManager.Instance.changeShopWindowButton.SetActive(true);
-            InGameUIManager.Instance.shopUI.switchWindowButtons.SetActive(true);
-            tutorialDone = true;
-            InGameUIManager.Instance.SetWalkieTalkieQuestLog(doYourJob);
-        }
-    }
     
     private void PlayStartingDialogue()
     {
-        if (!playedFirstDialogue)
-        {
-            InGameUIManager.Instance.dialogueUI.DisplayDialogue();
-            playedFirstDialogue = true;
-        }
+        InGameUIManager.Instance.dialogueUI.DisplayDialogue();
+        playedFirstDialogue = true;
     }
     
     public void GetFirstWeaponAndWalkieTalkie()

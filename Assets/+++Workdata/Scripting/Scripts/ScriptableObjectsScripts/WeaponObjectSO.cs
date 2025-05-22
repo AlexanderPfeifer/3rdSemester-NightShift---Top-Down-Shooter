@@ -26,7 +26,7 @@ public class WeaponObjectSO : ScriptableObject
     
     [Header("Bullets")]
     public int bulletsPerShot;
-    public float weaponSpread;
+    [Range(0,1)] public float weaponBulletSpread;
     public int penetrationCount;
     
     [Header("Visuals")]

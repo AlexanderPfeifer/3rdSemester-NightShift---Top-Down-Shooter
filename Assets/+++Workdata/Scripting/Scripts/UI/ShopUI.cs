@@ -21,7 +21,7 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private GameObject buttonsGameObject;
 
     [Header("ShopWindow")] 
-    [SerializeField] private GameObject fortuneWheel;
+    public GameObject fortuneWheel;
     [SerializeField] private GameObject weapons;
     private int currentWeaponSelectionWindow;
     [SerializeField] private string[] selectionWindows;
@@ -73,11 +73,6 @@ public class ShopUI : MonoBehaviour
         currentWeaponSelectionWindow = number;
         
         DisplayItem(selectionWindows[currentWeaponSelectionWindow]);
-        
-        if (fortuneWheel.activeSelf)
-        {
-            SetShopWindow();
-        }
     }
 
     private void UpgradeWeapon(WeaponObjectSO weapon, IReadOnlyList<WeaponObjectSO> upgradeTiers)
@@ -111,9 +106,7 @@ public class ShopUI : MonoBehaviour
     private void FillWeaponAmmo(WeaponObjectSO weapon)
     {
         //Checks for broken pistol because there refilling ammo does not cost
-        if (TutorialManager.Instance.fillAmmoForFree || 
-            (PlayerBehaviour.Instance.playerCurrency.SpendCurrency(fillAmmoCost) && 
-             PlayerBehaviour.Instance.weaponBehaviour.ammunitionInBackUp != PlayerBehaviour.Instance.weaponBehaviour.ammunitionBackUpSize))
+        if (TutorialManager.Instance.fillAmmoForFree || PlayerBehaviour.Instance.playerCurrency.SpendCurrency(fillAmmoCost))
         {
             PlayerBehaviour.Instance.weaponBehaviour.ObtainAmmoDrop(null, weapon.ammunitionBackUpSize, true);
 
@@ -131,6 +124,7 @@ public class ShopUI : MonoBehaviour
         {
             fortuneWheel.SetActive(false);
             weapons.SetActive(true);
+            ResetWeaponDescriptions();
         }
         else
         {
@@ -177,9 +171,11 @@ public class ShopUI : MonoBehaviour
             buttonsGameObject.SetActive(false);
             return;
         }
-        
-        if(InGameUIManager.Instance.dialogueUI.currentTextBox.text.Length == 0)
+
+        if (InGameUIManager.Instance.dialogueUI.currentTextBox.text.Length == 0)
+        {
             StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].weaponDescription, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
+        }
 
         descriptionImage.color = Color.white;
         bulletDamageTextField.text = collectedItemsDictionary[header].bulletDamageText;
@@ -188,6 +184,7 @@ public class ShopUI : MonoBehaviour
         clipSizeTextField.text = collectedItemsDictionary[header].clipSizeText;
         descriptionHeader.text = collectedItemsDictionary[header].header;
         descriptionImage.sprite = collectedItemsDictionary[header].sprite;
+        levelFillImage.fillAmount = collectedItemsDictionary[header].levelFill;
 
         buttonsGameObject.SetActive(true);
 
@@ -260,7 +257,7 @@ public class ShopUI : MonoBehaviour
             fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "AMMO FULL";
             fillWeaponAmmoButton.interactable = false;   
         }
-        else if (!PlayerBehaviour.Instance.playerCurrency.SpendCurrency(fillAmmoCost) && !TutorialManager.Instance.fillAmmoForFree)
+        else if (!PlayerBehaviour.Instance.playerCurrency.CheckEnoughCurrency(fillAmmoCost) && !TutorialManager.Instance.fillAmmoForFree)
         {
             fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO MONEY";
             fillWeaponAmmoButton.interactable = false;
@@ -274,7 +271,7 @@ public class ShopUI : MonoBehaviour
             upgradeWeaponButton.interactable = false;
             upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "MAX LEVEL";
         }
-        else if (!PlayerBehaviour.Instance.playerCurrency.SpendCurrency(tierCosts[collectedItemsDictionary[header].weaponObjectSO.upgradeTier]))
+        else if (!PlayerBehaviour.Instance.playerCurrency.CheckEnoughCurrency(tierCosts[collectedItemsDictionary[header].weaponObjectSO.upgradeTier]))
         {
             upgradeWeaponButton.interactable = false;
             upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO MONEY";

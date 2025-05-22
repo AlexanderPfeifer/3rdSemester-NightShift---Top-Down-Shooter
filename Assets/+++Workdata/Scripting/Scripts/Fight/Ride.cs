@@ -129,7 +129,8 @@ public class Ride : Singleton<Ride>
 
     private void WonWave()
     {
-        TutorialManager.Instance.newWeaponsCanBeUnlocked = true;
+        InGameUIManager.Instance.SetWalkieTalkieQuestLog(TutorialManager.Instance.getNewWeapons);
+        
         AudioManager.Instance.Play("FightMusicWon");
         RemoveEnemiesFromStage(false);
 
@@ -139,7 +140,6 @@ public class Ride : Singleton<Ride>
         SetFightState();
 
         InGameUIManager.Instance.fightUI.SetActive(false);
-        InGameUIManager.Instance.abilityFillBar.SetActive(false);
         
         if(InGameUIManager.Instance.dialogueUI.dialogueCountWalkieTalkie < InGameUIManager.Instance.dialogueUI.dialogueWalkieTalkie.Length)
         {

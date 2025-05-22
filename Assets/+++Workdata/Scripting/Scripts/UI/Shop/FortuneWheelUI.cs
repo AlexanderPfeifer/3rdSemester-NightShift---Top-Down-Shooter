@@ -21,7 +21,7 @@ public class FortuneWheelUI : MonoBehaviour
 
     [Header("Spinning Movement")] 
     [SerializeField] private Vector2Int timeUntilStop;
-    [SerializeField] private float spinPower = 1250;
+    [SerializeField] private Vector2Int fullSpinsUntilStop;
     [SerializeField] private Rigidbody2D rb;
     private bool receivingPrize;
     [SerializeField] private Image mark;
@@ -43,44 +43,44 @@ public class FortuneWheelUI : MonoBehaviour
 
     private IEnumerator WheelOverTimeCoroutine()
     {
-        float _elapsed = 0f;
         float _timeUntilStop = Random.Range(timeUntilStop.x, timeUntilStop.y);
-
+        int _randomPrize = Random.Range(0, prizes.Length);
+        
+        float _startRotation = rb.rotation % 360f;
+        
+        float _pieSize = 360f / fortuneWheelPieCount;
+        
+        int _fullSpins = Random.Range(fullSpinsUntilStop.x, fullSpinsUntilStop.y); 
+        float _endRotation = _startRotation + _fullSpins * 360f + _randomPrize * _pieSize;
+        
+        float _elapsed = 0f;
         while (_elapsed < _timeUntilStop)
         {
             _elapsed += Time.deltaTime;
+            float _t = Mathf.SmoothStep(0f, 1f, _elapsed / _timeUntilStop);
+            float _currentRotation = Mathf.Lerp(_startRotation, _endRotation, _t);
 
-            float _currentVelocity = Mathf.Lerp(spinPower, 0f, _elapsed / _timeUntilStop);
-
-            rb.angularVelocity = _currentVelocity;
-
+            rb.MoveRotation(_currentRotation); 
             yield return null;
         }
 
-        rb.angularVelocity = 0f;
+        rb.MoveRotation(_endRotation);
 
-        GetRewardPosition();
-    }
-    
-    public void SpinWheel()
-    {
-        if (rb.angularVelocity > 0 || receivingPrize || !PlayerBehaviour.Instance.playerCurrency.SpendCurrency(spinPrice)) 
-            return;
-        
-        rb.AddTorque(spinPower);
-        StartCoroutine(WheelOverTimeCoroutine());
-    }
-
-    private void GetRewardPosition()
-    {
-        float _pieSize = 360f / fortuneWheelPieCount;
-        
         int _priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + firstPieSliceBufferInDegree) / _pieSize) % fortuneWheelPieCount;
         StartCoroutine(LocationHighlight(_priceIndex));
         
         receivingPrize = true;
     }
     
+    public void SpinWheel()
+    {
+        if (rb.angularVelocity > 0 || receivingPrize || !PlayerBehaviour.Instance.playerCurrency.SpendCurrency(spinPrice)) 
+            return;
+
+        AllButtonsConfiguration.Instance.inGameUICanvasGroup.interactable = false;
+        StartCoroutine(WheelOverTimeCoroutine());
+    }
+
     private IEnumerator LocationHighlight(int priceIndex)
     {
         mark.transform.localScale = new Vector3(2, 2, 1);
@@ -110,6 +110,8 @@ public class FortuneWheelUI : MonoBehaviour
         prizes[priceIndex]?.Invoke();
 
         receivingPrize = false;
+        
+        AllButtonsConfiguration.Instance.inGameUICanvasGroup.interactable = true;
     }
 
     public void WinWeapon(WeaponObjectSO weapon)
@@ -118,7 +120,6 @@ public class FortuneWheelUI : MonoBehaviour
         
         InGameUIManager.Instance.shopUI.ResetWeaponDescriptions();
     }
-
     
     public void WinBlank()
     {

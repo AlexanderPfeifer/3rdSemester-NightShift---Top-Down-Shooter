@@ -24,7 +24,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     [Header("Ability")]
     public GameObject pressSpace;
     public Image abilityProgressImage;
-    public GameObject abilityFillBar;
 
     [Header("Shop")] 
     public GameObject changeShopWindowButton;
@@ -101,8 +100,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         
         fightUI.SetActive(false);
         
-        abilityFillBar.SetActive(false);
-
         pauseMenuUI.ClosePauseMenu();
         GameSaveStateManager.Instance.GoToMainMenu();
     }
@@ -184,8 +181,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
             PlayerBehaviour.Instance.SetPlayerBusy(true);
 
-            shopUI.ResetWeaponDescriptions();
-            
             TutorialManager.Instance.CheckDialogue();
         }
     }

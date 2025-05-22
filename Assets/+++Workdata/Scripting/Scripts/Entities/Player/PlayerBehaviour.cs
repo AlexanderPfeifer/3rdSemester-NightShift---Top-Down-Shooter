@@ -199,20 +199,22 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         if (playerVisual.activeSelf)
         {
             anim.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);
-
-            if (GameInputManager.Instance.GetMovementVectorNormalized().sqrMagnitude <= 0)
-            {
-                weaponBehaviour.currentWeaponAccuracy = weaponBehaviour.accuracyWhenStandingStill;
-                return;
-            }
-
-            weaponBehaviour.currentWeaponAccuracy = weaponBehaviour.weaponAccuracy;
             moveDirection = GameInputManager.Instance.GetMovementVectorNormalized();
             anim.SetFloat("MoveDirX", moveDirection.x);
             anim.SetFloat("MoveDirY", moveDirection.y);
         }
         else
         {
+            if (GameInputManager.Instance.GetMovementVectorNormalized().sqrMagnitude <= 0)
+            {
+                if (weaponBehaviour.bulletsPerShot <= 1)
+                {
+                    weaponBehaviour.currentBulletDirectionSpread = weaponBehaviour.bulletDirectionSpreadStandingStill;
+                }
+            }
+
+            weaponBehaviour.currentBulletDirectionSpread = weaponBehaviour.bulletDirectionSpread;
+            
             var _snapAngle = weaponBehaviour.LastSnappedAngle;
             animNoHand.SetBool("MovingUp", _snapAngle is >= 337.5f or <= 22.5f);
             //right
@@ -286,7 +288,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if(ammoText.text.Contains(weaponBehaviour.noAmmoString))
+        if(!ammoText.text.Contains(weaponBehaviour.noAmmoString))
         {
             ammoText.text = "";
         }

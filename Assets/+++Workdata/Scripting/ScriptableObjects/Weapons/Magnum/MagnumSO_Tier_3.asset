@@ -24,7 +24,7 @@ MonoBehaviour:
   playerKnockBack: 4
   enemyKnockBackPerBullet: 10
   bulletsPerShot: 1
-  weaponSpread: 0.005
+  weaponBulletSpread: 0.2
   penetrationCount: 2
   uiWeaponVisual: {fileID: -1145309252, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
   inGameWeaponVisual: {fileID: 4202869945850092962, guid: cdad9a5716385f44eaba4354cba76481, type: 3}

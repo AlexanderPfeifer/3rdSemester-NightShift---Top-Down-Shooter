@@ -20,11 +20,7 @@ public class Generator : MonoBehaviour
         fightMusic.Play();
         AudioManager.Instance.Stop("InGameMusic");
         Ride.Instance.rideLight.SetActive(true);
-
-        if (PlayerBehaviour.Instance.abilityBehaviour.hasAbilityUpgrade)
-        {
-            InGameUIManager.Instance.abilityFillBar.gameObject.SetActive(true);
-        }
+        
         InGameUIManager.Instance.fightUI.SetActive(true);
         Ride.Instance.waveStarted = true;
         Ride.Instance.ResetRide();
