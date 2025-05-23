@@ -7,8 +7,10 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     private PlayerInputActions playerInputActions;
     [HideInInspector] public bool mouseIsLastUsedDevice = true;
     Vector2 virtualCursorPos;
+    private Vector2 aimScreenPosition;
 
-    public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnNotShootingAction, OnReloadAction, OnMeleeWeaponAction;
+    public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnNotShootingAction, OnReloadAction, OnMeleeWeaponAction, 
+        OnSkipDialogueWithController;
 
     protected override void Awake()
     {
@@ -24,6 +26,7 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
         playerInputActions.player.ability.performed += OnPlayerUsingAbility;
         playerInputActions.player.reload.performed += OnPlayerReloading;
         playerInputActions.player.melee.performed += OnPlayerMeleeAttack;
+        playerInputActions.player.skipDialogueWithController.performed += OnPlayerSkipDialogueWithController;
     }
 
     private void Start()
@@ -66,6 +69,11 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     {
         OnMeleeWeaponAction?.Invoke(this, EventArgs.Empty);
     }
+    
+    private void OnPlayerSkipDialogueWithController(InputAction.CallbackContext context)
+    {
+        OnSkipDialogueWithController?.Invoke(this, EventArgs.Empty);
+    }
 
     public Vector2 GetMovementVectorNormalized()
     {
@@ -78,9 +86,10 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     public Vector3 GetAimingVector()
     {
         Vector2 _mouseDelta = Mouse.current.delta.ReadValue();
-        Vector2 _stickInput = Gamepad.current?.rightStick.ReadValue() ?? Vector2.zero;
-        
-        if (_stickInput.sqrMagnitude > 0.01f)
+        Vector2 _rightStickInput = Gamepad.current?.rightStick.ReadValue() ?? Vector2.zero;
+        Vector2 _leftStickInput = Gamepad.current.leftStick.ReadValue();
+
+        if (_rightStickInput.sqrMagnitude > 0.01f || _leftStickInput.sqrMagnitude > 0.01f)
         {
             mouseIsLastUsedDevice = false;
         }
@@ -93,12 +102,18 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-            
-            Vector2 _readValue = Gamepad.current.rightStick.ReadValue();
             Vector3 _playerScreenPos = PlayerBehaviour.Instance.weaponBehaviour.mainCamera.WorldToScreenPoint(PlayerBehaviour.Instance.transform.position);
-            Vector3 _aimScreenPos = _playerScreenPos + new Vector3(_readValue.x, _readValue.y, 0f) * Screen.width;
+            
+            if(_rightStickInput.sqrMagnitude > 0.1f)
+            {
+                aimScreenPosition = _playerScreenPos + new Vector3(_rightStickInput.x, _rightStickInput.y, 0f) * ((float)Screen.width / 2);
+            }
+            else if (_leftStickInput.sqrMagnitude > 0.1f)
+            {
+                aimScreenPosition = _playerScreenPos + new Vector3(_leftStickInput.x, _leftStickInput.y, 0f) * ((float)Screen.width / 2);
+            }
 
-            return PlayerBehaviour.Instance.weaponBehaviour.mainCamera.ScreenToWorldPoint(new Vector3(_aimScreenPos.x, _aimScreenPos.y, _playerScreenPos.z));
+            return PlayerBehaviour.Instance.weaponBehaviour.mainCamera.ScreenToWorldPoint(new Vector3(aimScreenPosition.x, aimScreenPosition.y, _playerScreenPos.z));
         }
 
         Cursor.visible = true;

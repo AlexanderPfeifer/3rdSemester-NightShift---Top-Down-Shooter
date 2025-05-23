@@ -43,6 +43,8 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     [SerializeField] private AudioMixer audioMixer;
 
     [SerializeField] private GameObject sunnyBackground;
+    [SerializeField] private GameObject wishlistButton;
+    [SerializeField] private GameObject joinDiscordButton;
 
     private void Start()
     {
@@ -70,6 +72,16 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     public void LinkedInMartinViegehls()
     {
         Application.OpenURL("https://www.linkedin.com/in/martin-viegehls-41a959279/");
+    }
+    
+    public void JoinOurDiscord()
+    {
+        Application.OpenURL("https://discord.gg/mmYek3rY/");
+    }
+
+    public void WishlistOnSteam()
+    {
+        Application.OpenURL("https://store.steampowered.com/app/3206760/Night_Shift/");
     }
 
     #endregion
@@ -103,7 +115,7 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     {
         StartCoroutine(SetScreen(false, true, false, true, false, true));
         EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(loadButton);
+        EventSystem.current.SetSelectedGameObject(joinDiscordButton);
     }
 
     public void OpenCreditsMenu()

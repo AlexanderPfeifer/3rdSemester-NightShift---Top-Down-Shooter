@@ -20,7 +20,8 @@ MonoBehaviour:
   reloadTime: 1
   weaponDescription: "Peggy:\nWhen the park began offering fast food, I imagined
     it to be a bit\u2026 different. Serve it hot and fresh, boy."
-  weaponAbilityDescription: Bullet Firerate increases.
+  weaponAbilityDescription: When activating your special ability, your firerate greatly
+    increases.
   playerKnockBack: 2
   enemyKnockBackPerBullet: 4
   bulletsPerShot: 1
@@ -31,10 +32,12 @@ MonoBehaviour:
   screenShake: 4
   weaponScale: {x: 1, y: 1, z: 1}
   bulletSize: {x: 0.5, y: 0.5}
+  bulletSprite: {fileID: 1774756159, guid: bfbf8265ac6ceae4ea0cc7645f8a71c4, type: 3}
   ammunitionInClip: 25
   ammunitionBackUpSize: 150
   ammunitionInBackUp: 150
   hasAbilityUpgrade: 1
+  abilityBulletSprite: {fileID: 21300000, guid: b6292af61cf9b4949a67d8e1e646d9e5, type: 3}
   shotSound: {fileID: 6418180475301049370, guid: 6d76990b337c49a45ab3fff78b5fbb8f, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 7b5340328516d8346aee236cfda4d4b7, type: 2}
   repetitionSound: {fileID: 0}

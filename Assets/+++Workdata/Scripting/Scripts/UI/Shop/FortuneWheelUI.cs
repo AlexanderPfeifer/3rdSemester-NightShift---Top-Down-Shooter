@@ -57,7 +57,7 @@ public class FortuneWheelUI : MonoBehaviour
         while (_elapsed < _timeUntilStop)
         {
             _elapsed += Time.deltaTime;
-            float _t = Mathf.SmoothStep(0f, 1f, _elapsed / _timeUntilStop);
+            float _t = Mathf.Sin((_elapsed / _timeUntilStop) * Mathf.PI * 0.5f); 
             float _currentRotation = Mathf.Lerp(_startRotation, _endRotation, _t);
 
             rb.MoveRotation(_currentRotation); 

@@ -11,7 +11,7 @@ public class DialogueUI : MonoBehaviour
     [FormerlySerializedAs("dialogue")] public Dialogues[] dialogueShop;
     public Dialogues[] dialogueWalkieTalkie;
     public TextMeshProUGUI shopText;
-    [FormerlySerializedAs("dialogueText")] [SerializeField] private TextMeshProUGUI walkieTalkieText;
+    [FormerlySerializedAs("dialogueText")] public TextMeshProUGUI walkieTalkieText;
     [HideInInspector] public TextMeshProUGUI currentTextBox;
     [HideInInspector] public int dialogueCountShop;
     [HideInInspector] public int dialogueCountWalkieTalkie;
@@ -35,6 +35,16 @@ public class DialogueUI : MonoBehaviour
         DialoguePlaying,
         DialogueAbleToGoNext,
         DialogueAbleToEnd,
+    }
+
+    private void OnEnable()
+    {
+        GameInputManager.Instance.OnSkipDialogueWithController += GameInputManagerOnSkipDialogueWithControllerAction;
+    }
+    
+    private void GameInputManagerOnSkipDialogueWithControllerAction(object sender, EventArgs e)
+    {
+        SetDialogueState();
     }
 
     public void EndGame()
@@ -62,14 +72,14 @@ public class DialogueUI : MonoBehaviour
         {
             if (dialogueShop.Length >= currentDialogueCount)
             {
-                StartCoroutine(TypeTextCoroutine(dialogueShop[currentDialogueCount].dialogues[dialogueTextCount], dialogueShop, currentTextBox));
+                StopCurrentAndTypeNewTextCoroutine(dialogueShop[currentDialogueCount].dialogues[dialogueTextCount], dialogueShop, currentTextBox);
             }
         }
         else
         {
             if (dialogueWalkieTalkie.Length >= currentDialogueCount)
             {
-                StartCoroutine(TypeTextCoroutine(dialogueWalkieTalkie[currentDialogueCount].dialogues[dialogueTextCount], dialogueWalkieTalkie, currentTextBox));
+                StopCurrentAndTypeNewTextCoroutine(dialogueWalkieTalkie[currentDialogueCount].dialogues[dialogueTextCount], dialogueWalkieTalkie, currentTextBox);
             }
         }
         
@@ -110,6 +120,15 @@ public class DialogueUI : MonoBehaviour
     public bool IsDialoguePlaying()
     {
         return dialogueState != DialogueState.DialogueNotPlaying;
+    }
+
+    public void StopCurrentAndTypeNewTextCoroutine(string text, Dialogues[] currentDialogue, TextMeshProUGUI textBox)
+    {
+        StopAllCoroutines();
+
+        textBox.text = "";
+
+        StartCoroutine(TypeTextCoroutine(text, currentDialogue, textBox));
     }
     
     public IEnumerator TypeTextCoroutine(string text, Dialogues[] currentDialogue, TextMeshProUGUI textBox)
@@ -209,6 +228,8 @@ public class DialogueUI : MonoBehaviour
             }
             else
             {
+                StopAllCoroutines();
+                InGameUIManager.Instance.dialogueUI.walkieTalkieText.text = "";
                 walkieTalkieText.gameObject.SetActive(true);
                 PlayerBehaviour.Instance.SetPlayerBusy(true);
             }   
@@ -236,6 +257,7 @@ public class DialogueUI : MonoBehaviour
         }
 
         dialogueShop[dialogueCountShop].dialogueEndAction?.Invoke();
+        StartCoroutine(TypeTextCoroutine("Peggy:" + "\n" + "...", null, currentTextBox));
         dialogueCountShop++;
     }
 

@@ -76,6 +76,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "skipDialogueWithController",
+                    "type": "Button",
+                    "id": "a344e04d-e97a-4e63-a980-42a923ed31c7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -214,7 +223,7 @@
                 {
                     "name": "",
                     "id": "083e04d3-8ec6-4f99-8924-cdc3cef4c860",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -269,7 +278,7 @@
                 {
                     "name": "",
                     "id": "a72f0a6b-56ca-4b98-8702-674dcd1607d2",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -296,6 +305,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "melee",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "334b069c-096b-4237-bd93-d728e97c81d4",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "skipDialogueWithController",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

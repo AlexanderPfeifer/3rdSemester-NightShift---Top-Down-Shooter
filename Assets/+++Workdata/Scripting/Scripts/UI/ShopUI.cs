@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -17,7 +18,7 @@ public class ShopUI : MonoBehaviour
     [Header("Shop Weapon Buttons")]
     [SerializeField] private Button equipWeaponButton;
     [SerializeField] private Button upgradeWeaponButton;
-    [SerializeField] private Button fillWeaponAmmoButton;
+    public Button fillWeaponAmmoButton;
     [SerializeField] private GameObject buttonsGameObject;
 
     [Header("ShopWindow")] 
@@ -26,6 +27,11 @@ public class ShopUI : MonoBehaviour
     private int currentWeaponSelectionWindow;
     [SerializeField] private string[] selectionWindows;
     public GameObject switchWindowButtons;
+    [SerializeField, TextArea(3, 10)] private string fortuneWheelText;
+    
+    [Header("Controller Selection")]
+    [SerializeField] private Button changeWindowButton;
+    public Button spinFortuneWheelButton;
     
     [Header("ShopCosts")]
     [SerializeField] private int[] tierCosts;
@@ -122,16 +128,26 @@ public class ShopUI : MonoBehaviour
     {
         if (fortuneWheel.activeSelf)
         {
+            Navigation _nav = changeWindowButton.navigation;
+            _nav.selectOnUp = fillWeaponAmmoButton;
+            changeWindowButton.navigation = _nav;    
+            
             fortuneWheel.SetActive(false);
             weapons.SetActive(true);
             ResetWeaponDescriptions();
         }
         else
         {
-            InGameUIManager.Instance.dialogueUI.shopText.text = "";
+            Navigation _nav = changeWindowButton.navigation;
+            _nav.selectOnUp = spinFortuneWheelButton;
+            changeWindowButton.navigation = _nav;   
+            
+            InGameUIManager.Instance.dialogueUI.StopCurrentAndTypeNewTextCoroutine(fortuneWheelText, null, InGameUIManager.Instance.dialogueUI.currentTextBox);
             fortuneWheel.SetActive(true);
             weapons.SetActive(false);
         }
+        
+        EventSystem.current.SetSelectedGameObject(changeWindowButton.gameObject);
     }
 
     private void EquipNewWeapon(WeaponObjectSO weaponObjectSO)
@@ -174,7 +190,7 @@ public class ShopUI : MonoBehaviour
 
         if (InGameUIManager.Instance.dialogueUI.currentTextBox.text.Length == 0)
         {
-            StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(collectedItemsDictionary[header].weaponDescription, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
+            InGameUIManager.Instance.dialogueUI.StopCurrentAndTypeNewTextCoroutine(collectedItemsDictionary[header].weaponDescription, null, InGameUIManager.Instance.dialogueUI.currentTextBox);
         }
 
         descriptionImage.color = Color.white;
@@ -324,10 +340,6 @@ public class ShopUI : MonoBehaviour
         {
             var _headerText = "";
             var _weaponDescription = "";
-            var _bulletDamageText = "";
-            var _bulletDelayText = "";
-            var _reloadSpeedText = "";
-            var _clipSizeText = "";
             var _weapon = PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == _identifier);
             
             if (_weapon == null)
@@ -337,15 +349,13 @@ public class ShopUI : MonoBehaviour
             _weaponDescription += _weapon.weaponDescription;
             if (_weapon.hasAbilityUpgrade)
             {
-                _weaponDescription += "\n" + "\n" + "Special Ability:" + "\n" + _weapon.weaponAbilityDescription;
+                _weaponDescription += " " + _weapon.weaponAbilityDescription;
             }
-            else
-            {
-                _bulletDamageText = "Bullet Damage: " + "\n" + _weapon.bulletDamage;
-                _clipSizeText = "Clip Size: " + "\n" + _weapon.clipSize;
-                _bulletDelayText = "Shoot Delay: " + "\n" + _weapon.shootDelay; 
-                _reloadSpeedText = "Reload Speed: " + "\n" + _weapon.reloadTime;
-            }
+            
+            var _bulletDamageText = "Bullet Damage: " + "\n" + _weapon.bulletDamage;
+            var _clipSizeText = "Clip Size: " + "\n" + _weapon.clipSize;
+            var _bulletDelayText = "Shoot Delay: " + "\n" + _weapon.shootDelay; 
+            var _reloadSpeedText = "Reload Speed: " + "\n" + _weapon.reloadTime;
             
             var _spriteWeapon = _weapon.uiWeaponVisual;
             

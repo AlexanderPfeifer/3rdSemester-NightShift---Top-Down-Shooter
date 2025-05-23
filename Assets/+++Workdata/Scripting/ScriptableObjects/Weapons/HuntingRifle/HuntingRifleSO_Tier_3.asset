@@ -20,8 +20,8 @@ MonoBehaviour:
   reloadTime: 1.8
   weaponDescription: "Peggy:\nI\u2019m sure there are a lot of corny one-liners you
     can come up with for this one. Ha!"
-  weaponAbilityDescription: On Activation has no enemy penetration limit and every
-    shot doubles to triple the incoming damage.
+  weaponAbilityDescription: On Activation of special ability your weapon has no enemy
+    penetration limit and every shot has a chance to triple the incoming damage.
   playerKnockBack: 5
   enemyKnockBackPerBullet: 15
   bulletsPerShot: 1
@@ -32,10 +32,12 @@ MonoBehaviour:
   screenShake: 6
   weaponScale: {x: 1.1, y: 1.1, z: 1}
   bulletSize: {x: 1, y: 1}
+  bulletSprite: {fileID: 1774756159, guid: bfbf8265ac6ceae4ea0cc7645f8a71c4, type: 3}
   ammunitionInClip: 4
   ammunitionBackUpSize: 24
   ammunitionInBackUp: 24
   hasAbilityUpgrade: 1
+  abilityBulletSprite: {fileID: 21300000, guid: d916e2e990b80eb449fcbbc48a9a77e6, type: 3}
   shotSound: {fileID: 6418180475301049370, guid: 0d4e17e37b49ccb428be875f5dcb55eb, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 247ed1a333d2ddf49a6ee3957d3a556e, type: 2}
   repetitionSound: {fileID: 6418180475301049370, guid: 124b41101aad9c14a8d22399d2937576, type: 2}

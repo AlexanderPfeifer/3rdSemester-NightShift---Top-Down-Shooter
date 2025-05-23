@@ -20,7 +20,8 @@ MonoBehaviour:
   reloadTime: 1.6
   weaponDescription: "Peggy:\nTell those beasts to suck it! \u2026Try to ignore how
     sticky the grip is."
-  weaponAbilityDescription: Bullets stick to enemies and deal damage over time.
+  weaponAbilityDescription: When activating your special ability on this one, bullets
+    stick to enemies and deal damage over time.
   playerKnockBack: 6
   enemyKnockBackPerBullet: 1
   bulletsPerShot: 12
@@ -31,10 +32,12 @@ MonoBehaviour:
   screenShake: 6
   weaponScale: {x: 1, y: 1, z: 1}
   bulletSize: {x: 0.3, y: 0.3}
+  bulletSprite: {fileID: 1774756159, guid: bfbf8265ac6ceae4ea0cc7645f8a71c4, type: 3}
   ammunitionInClip: 5
   ammunitionBackUpSize: 30
   ammunitionInBackUp: 30
   hasAbilityUpgrade: 1
+  abilityBulletSprite: {fileID: 21300000, guid: 74e4fc86dbde8d3478467f0ef7c8c49c, type: 3}
   shotSound: {fileID: 6418180475301049370, guid: cd7fd8453ae6564468fed3e22ddb002e, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: a6e38dbd56aa45640b7b13bc5017cd46, type: 2}
   repetitionSound: {fileID: 6418180475301049370, guid: 4bf2c47f9bfe7e04e912f5049c610f0b, type: 2}

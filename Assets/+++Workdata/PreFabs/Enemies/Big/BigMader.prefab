@@ -179,7 +179,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6977436177281883007, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5278834610747708766}
+      addedObject: {fileID: 2225019733203376027}
     - targetCorrespondingSourceObject: {fileID: 6977436177281883007, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 463340498562284012}
@@ -192,7 +192,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6977436177281883007, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
   m_PrefabInstance: {fileID: 6697148857819849918}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5278834610747708766
+--- !u!114 &2225019733203376027
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,10 +201,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4334108101828116417}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 188c6ce960693ec4fb52946b4243da15, type: 3}
+  m_Script: {fileID: 11500000, guid: 054b2c3548f06b242b3e347462af390c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.7
+  moveSpeed: 1.3
+  zigzagAmplitude: 30
+  zigzagFrequency: 6
 --- !u!212 &463340498562284012
 SpriteRenderer:
   m_ObjectHideFlags: 0

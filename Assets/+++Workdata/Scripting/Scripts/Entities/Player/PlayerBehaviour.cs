@@ -205,15 +205,17 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         }
         else
         {
-            if (GameInputManager.Instance.GetMovementVectorNormalized().sqrMagnitude <= 0)
+            if (GameInputManager.Instance.GetMovementVectorNormalized().sqrMagnitude <= 0.01f)
             {
                 if (weaponBehaviour.bulletsPerShot <= 1)
                 {
                     weaponBehaviour.currentBulletDirectionSpread = weaponBehaviour.bulletDirectionSpreadStandingStill;
                 }
+                else
+                {
+                    weaponBehaviour.currentBulletDirectionSpread = weaponBehaviour.bulletDirectionSpread;
+                }
             }
-
-            weaponBehaviour.currentBulletDirectionSpread = weaponBehaviour.bulletDirectionSpread;
             
             var _snapAngle = weaponBehaviour.LastSnappedAngle;
             animNoHand.SetBool("MovingUp", _snapAngle is >= 337.5f or <= 22.5f);

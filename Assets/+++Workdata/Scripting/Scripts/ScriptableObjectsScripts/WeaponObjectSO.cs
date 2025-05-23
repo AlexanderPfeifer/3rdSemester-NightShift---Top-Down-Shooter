@@ -35,6 +35,7 @@ public class WeaponObjectSO : ScriptableObject
     public float screenShake;
     public Vector3 weaponScale;
     public Vector2 bulletSize;
+    public Sprite bulletSprite;
 
     [Header("Ammo")]
     public int ammunitionInClip;
@@ -43,6 +44,7 @@ public class WeaponObjectSO : ScriptableObject
     
     [Header("Ability")]
     [FormerlySerializedAs("showAbilityFill")] public bool hasAbilityUpgrade;
+    public Sprite abilityBulletSprite;
 
     [Header("Sounds")] 
     public AudioResource shotSound;

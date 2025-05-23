@@ -31,10 +31,12 @@ MonoBehaviour:
   screenShake: 5
   weaponScale: {x: 1, y: 1, z: 1}
   bulletSize: {x: 0.75, y: 0.75}
+  bulletSprite: {fileID: 1774756159, guid: bfbf8265ac6ceae4ea0cc7645f8a71c4, type: 3}
   ammunitionInClip: 7
   ammunitionBackUpSize: 42
   ammunitionInBackUp: 42
   hasAbilityUpgrade: 0
+  abilityBulletSprite: {fileID: 21300000, guid: 61522d1da2417b449993939ad0e9939b, type: 3}
   shotSound: {fileID: 6418180475301049370, guid: d035078986ad0e34fb2a3308f64e60a6, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 0a58044c5f91a4241b716e15157ce968, type: 2}
   repetitionSound: {fileID: 0}

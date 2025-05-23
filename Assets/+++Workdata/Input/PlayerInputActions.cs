@@ -98,6 +98,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""skipDialogueWithController"",
+                    ""type"": ""Button"",
+                    ""id"": ""a344e04d-e97a-4e63-a980-42a923ed31c7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -236,7 +245,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""083e04d3-8ec6-4f99-8924-cdc3cef4c860"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -291,7 +300,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a72f0a6b-56ca-4b98-8702-674dcd1607d2"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -320,6 +329,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""melee"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""334b069c-096b-4237-bd93-d728e97c81d4"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""skipDialogueWithController"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -336,6 +356,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_player_ability = m_player.FindAction("ability", throwIfNotFound: true);
         m_player_reload = m_player.FindAction("reload", throwIfNotFound: true);
         m_player_melee = m_player.FindAction("melee", throwIfNotFound: true);
+        m_player_skipDialogueWithController = m_player.FindAction("skipDialogueWithController", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -410,6 +431,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_player_ability;
     private readonly InputAction m_player_reload;
     private readonly InputAction m_player_melee;
+    private readonly InputAction m_player_skipDialogueWithController;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -422,6 +444,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @ability => m_Wrapper.m_player_ability;
         public InputAction @reload => m_Wrapper.m_player_reload;
         public InputAction @melee => m_Wrapper.m_player_melee;
+        public InputAction @skipDialogueWithController => m_Wrapper.m_player_skipDialogueWithController;
         public InputActionMap Get() { return m_Wrapper.m_player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -455,6 +478,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @melee.started += instance.OnMelee;
             @melee.performed += instance.OnMelee;
             @melee.canceled += instance.OnMelee;
+            @skipDialogueWithController.started += instance.OnSkipDialogueWithController;
+            @skipDialogueWithController.performed += instance.OnSkipDialogueWithController;
+            @skipDialogueWithController.canceled += instance.OnSkipDialogueWithController;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -483,6 +509,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @melee.started -= instance.OnMelee;
             @melee.performed -= instance.OnMelee;
             @melee.canceled -= instance.OnMelee;
+            @skipDialogueWithController.started -= instance.OnSkipDialogueWithController;
+            @skipDialogueWithController.performed -= instance.OnSkipDialogueWithController;
+            @skipDialogueWithController.canceled -= instance.OnSkipDialogueWithController;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -510,5 +539,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnAbility(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnMelee(InputAction.CallbackContext context);
+        void OnSkipDialogueWithController(InputAction.CallbackContext context);
     }
 }

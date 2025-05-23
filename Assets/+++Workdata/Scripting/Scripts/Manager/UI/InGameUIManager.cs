@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
@@ -139,13 +140,9 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             
             generatorScreen.SetActive(true);
         }
-        else
-        {
-            CloseGeneratorUI();
-        }
     }
 
-    private void CloseGeneratorUI()
+    public void CloseGeneratorUI()
     {
         if (generatorScreen.activeSelf)
         {
@@ -179,6 +176,15 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             dialogueUI.SetDialogueBox(true); 
             dialogueUI.SetDialogueBoxState(false, false);
 
+            if (!shopUI.fortuneWheel.activeSelf)
+            {
+                EventSystem.current.SetSelectedGameObject(shopUI.fillWeaponAmmoButton.gameObject);
+            }
+            else
+            {
+                EventSystem.current.SetSelectedGameObject(shopUI.spinFortuneWheelButton.gameObject);
+            }
+            
             PlayerBehaviour.Instance.SetPlayerBusy(true);
 
             TutorialManager.Instance.CheckDialogue();

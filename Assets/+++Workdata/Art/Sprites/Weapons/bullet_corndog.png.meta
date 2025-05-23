@@ -1,7 +1,10 @@
 fileFormatVersion: 2
-guid: b465af2af39e67245b5384caae4ac2f4
+guid: d916e2e990b80eb449fcbbc48a9a77e6
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -1565327000715512300
+    second: bullet_corndog_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -43,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -94,7 +97,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Server
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -106,62 +109,27 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player_Spritesheet_Side_Flipped_0
+      name: bullet_corndog_0
       rect:
         serializedVersion: 2
-        x: 13
-        y: 17
-        width: 25
-        height: 45
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 0
+        y: 11
+        width: 32
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: aafb5f8727c98d34ca493c5d97678d0f
-      internalID: -2037168267
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Spritesheet_Side_Flipped_1
-      rect:
-        serializedVersion: 2
-        x: 56
-        y: 17
-        width: 25
-        height: 46
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b356059edeb135f4093ca0d77c17d9fd
-      internalID: 963950709
+      spriteID: 4163605e267d64ae0800000000000000
+      internalID: -1565327000715512300
       vertices: []
       indices: 
       edges: []
@@ -180,8 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Player_Spritesheet_Side_Flipped_0: -2037168267
-      Player_Spritesheet_Side_Flipped_1: 963950709
+      bullet_corndog_0: -1565327000715512300
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
