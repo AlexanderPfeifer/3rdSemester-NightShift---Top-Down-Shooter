@@ -44,6 +44,11 @@ public class AbilityBehaviour : MonoBehaviour
     {
         canGetAbilityGain = false;
         InGameUIManager.Instance.pressSpace.SetActive(false);
+        
+        foreach (var _bullet in BulletPoolingManager.Instance.GetBulletList())
+        {
+            _bullet.GetComponentInChildren<SpriteRenderer>().sprite = PlayerBehaviour.Instance.weaponBehaviour.GetCurrentWeaponObjectSO().abilityBulletSprite;
+        }
 
         currentActiveAbility = PlayerBehaviour.Instance.weaponBehaviour.myWeapon switch
         {
@@ -63,6 +68,11 @@ public class AbilityBehaviour : MonoBehaviour
         }
         
         currentActiveAbility = CurrentAbility.None;
+        
+        foreach (var _bullet in BulletPoolingManager.Instance.GetBulletList())
+        {
+            _bullet.GetComponentInChildren<SpriteRenderer>().sprite = PlayerBehaviour.Instance.weaponBehaviour.GetCurrentWeaponObjectSO().bulletSprite;
+        }
 
         canGetAbilityGain = true;
     }

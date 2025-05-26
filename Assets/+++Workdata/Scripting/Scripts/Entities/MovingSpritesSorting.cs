@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MovingSpritesSorting : MonoBehaviour
@@ -11,7 +12,7 @@ public class MovingSpritesSorting : MonoBehaviour
         lastPosition = transform.position;
         UpdateSortingOrder();
     }
-
+    
     private void Update()
     {
         if (transform.position != lastPosition) // Only update if moved
@@ -24,5 +25,10 @@ public class MovingSpritesSorting : MonoBehaviour
     public void UpdateSortingOrder()
     {
         spriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100);
+        
+        if (TryGetComponent(out TrailRenderer _trailRenderer))
+        {
+            _trailRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100) - 100;
+        }
     }
 }

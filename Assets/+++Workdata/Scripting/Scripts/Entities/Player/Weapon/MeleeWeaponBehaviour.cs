@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class MeleeWeaponBehaviour : MonoBehaviour
 {
-    [HideInInspector] public BoxCollider2D hitCollider;
+    [HideInInspector] public CapsuleCollider2D hitCollider;
     [SerializeField] private float damage;
     public float knockBack = 5;
 
     private void Start()
     {
-        hitCollider = GetComponent<BoxCollider2D>();
+        hitCollider = GetComponent<CapsuleCollider2D>();
     }
 
     public void SetActiveHitCollider()

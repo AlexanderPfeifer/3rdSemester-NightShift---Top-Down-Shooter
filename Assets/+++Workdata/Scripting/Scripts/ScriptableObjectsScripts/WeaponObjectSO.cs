@@ -45,6 +45,7 @@ public class WeaponObjectSO : ScriptableObject
     [Header("Ability")]
     [FormerlySerializedAs("showAbilityFill")] public bool hasAbilityUpgrade;
     public Sprite abilityBulletSprite;
+    public Color abilityFillColor;
 
     [Header("Sounds")] 
     public AudioResource shotSound;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -52,11 +53,14 @@ public class EnemyBase : MonoBehaviour
             EnemyFreezeTime -= Time.deltaTime;
     }
     
-    public void HitVisual()
+    public IEnumerator HitVisual()
     {
-        GetComponent<Animator>().SetTrigger("Hurt");
-        
         AudioManager.Instance.Play("EnemyHit");
+        sr.color = Color.red;
+
+        yield return new WaitForSeconds(.1f);
+        
+        sr.color = Color.white;
     }
     
     private void OnCollisionEnter2D(Collision2D other)

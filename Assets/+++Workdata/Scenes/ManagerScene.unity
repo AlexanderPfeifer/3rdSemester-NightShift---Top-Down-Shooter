@@ -9865,7 +9865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 0
-  equipWeapon: 0
+  equipWeapon: {fileID: 0}
   UnlockWeapons:
   - weaponName: Lollipop Shotgun
     getWeapon: 0
@@ -12127,8 +12127,8 @@ MonoBehaviour:
     - 'Peggy:
 
       Ah, hold on!'
-    - "Peggy:\nI forgot to tell you, but if you find tickets around the carousel,
-      please bring them to me, won\u2019t you?"
+    - "Peggy:\nI forgot to tell you, if you find tickets around the carousel, please
+      bring them to me, won\u2019t you?"
     - "Peggy:\nI like to recycle them\u2026"
     - "Peggy:\nIn turn, I\u2019ll give you some things to help you around the park.
       How\u2019s that sound?"
@@ -12255,7 +12255,7 @@ MonoBehaviour:
   fillAmmoCost: 150
   descriptionHeader: {fileID: 75838877}
   descriptionImage: {fileID: 631215903}
-  levelFillImage: {fileID: 1458062554}
+  levelFillImage: {fileID: 449458133}
   bulletDamageTextField: {fileID: 950976627}
   bulletDelayTextField: {fileID: 979890682}
   reloadSpeedTextField: {fileID: 597335843}

@@ -117,6 +117,8 @@ public class ShopUI : MonoBehaviour
             PlayerBehaviour.Instance.weaponBehaviour.ObtainAmmoDrop(null, weapon.ammunitionBackUpSize, true);
 
             TutorialManager.Instance.ExplainGenerator();
+            
+            PlayerBehaviour.Instance.ammoText.text = "";
         }
         else
         {

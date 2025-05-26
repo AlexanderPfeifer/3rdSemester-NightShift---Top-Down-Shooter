@@ -176,7 +176,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
     private void HandleMovementFixedUpdate()
     {
-        if (IsPlayerBusy()) 
+        if (IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.walkieTalkieText.gameObject.activeSelf) 
             return;
         
         rb.linearVelocity = GameInputManager.Instance.GetMovementVectorNormalized() * currentMoveSpeed + weaponBehaviour.currentKnockBack;
@@ -186,13 +186,10 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     
     private void SetAnimationParameterLateUpdate()
     {
-        if (IsPlayerBusy() || InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())
+        if (IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.IsDialoguePlaying() && playerNoHandVisual.activeSelf)
         {
-            if (playerNoHandVisual.activeSelf)
-            {
-                animNoHand.SetFloat("MoveSpeed", 0);
-            }
-            
+            animNoHand.SetFloat("MoveSpeed", 0);
+
             return;
         }
 

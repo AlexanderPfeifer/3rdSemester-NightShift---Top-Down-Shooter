@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 public class DebugMode : SingletonPersistent<DebugMode>
@@ -9,22 +8,11 @@ public class DebugMode : SingletonPersistent<DebugMode>
     public bool debugMode;
     
     [Header("Settings")]
-    public ChoosableWeapons equipWeapon;
+    public WeaponObjectSO equipWeapon;
     public UnlockWeapons[] UnlockWeapons;
     public bool activateRide;
     public int currencyAtStart;
 
-    public enum ChoosableWeapons
-    {
-        None,
-        Shotgun, 
-        AR,
-        PopcornPistol,
-        HuntingRifle,
-        MagnumMagnum,
-        BrokenPistol
-    }
-    
     protected override void Awake()
     {
         base.Awake();
@@ -52,42 +40,12 @@ public class DebugMode : SingletonPersistent<DebugMode>
             }
         }
         
-        switch (equipWeapon)
-        {
-            case ChoosableWeapons.None :
-                break;
-            
-            case ChoosableWeapons.Shotgun :
-                GetDebuggedWeapon("Lollipop Shotgun");
-                break;
-            
-            case ChoosableWeapons.AR :
-                GetDebuggedWeapon("French Fries AR");
-                break;
-            
-            case ChoosableWeapons.MagnumMagnum :
-                GetDebuggedWeapon("Magnum magnum");
-                break;
-            
-            case ChoosableWeapons.PopcornPistol :
-                GetDebuggedWeapon("Popcorn Launcher");
-                break;
-            
-            case ChoosableWeapons.HuntingRifle :
-                GetDebuggedWeapon("Corn Dog Hunting Rifle");
-                break;
-            case ChoosableWeapons.BrokenPistol :
-                GetDebuggedWeapon("Broken Pistol");
-                break;
-            
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        GetDebuggedWeapon(equipWeapon);
     }
 
-    private void GetDebuggedWeapon(string weaponName)
+    private void GetDebuggedWeapon(WeaponObjectSO weapon)
     {
-        PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == weaponName));
+        PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weapon);
     }
 }
 

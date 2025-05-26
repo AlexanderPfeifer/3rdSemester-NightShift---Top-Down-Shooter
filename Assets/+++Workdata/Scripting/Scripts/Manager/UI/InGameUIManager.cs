@@ -202,7 +202,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             
             shopScreen.SetActive(false);
             
-        
             AudioManager.Instance.FadeOut("ShopMusic", "InGameMusic");
 
             PlayerBehaviour.Instance.SetPlayerBusy(false);   

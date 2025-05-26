@@ -82,7 +82,7 @@ public class Bullet : MonoBehaviour
             {
                 tickCount--;
                 GetComponentInParent<EnemyHealthPoints>().TakeDamage(tickStickyBulletDamage, null);
-                GetComponentInParent<EnemyBase>().HitVisual();
+                StartCoroutine(GetComponentInParent<EnemyBase>().HitVisual());
                 stickyBulletTimer = maxStickyBulletTimer;
                 
                 if (tickCount <= 0)

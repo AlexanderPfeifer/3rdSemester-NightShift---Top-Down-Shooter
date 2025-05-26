@@ -87,7 +87,7 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     {
         Vector2 _mouseDelta = Mouse.current.delta.ReadValue();
         Vector2 _rightStickInput = Gamepad.current?.rightStick.ReadValue() ?? Vector2.zero;
-        Vector2 _leftStickInput = Gamepad.current.leftStick.ReadValue();
+        Vector2 _leftStickInput = Gamepad.current?.leftStick.ReadValue() ?? Vector2.zero;
 
         if (_rightStickInput.sqrMagnitude > 0.01f || _leftStickInput.sqrMagnitude > 0.01f)
         {

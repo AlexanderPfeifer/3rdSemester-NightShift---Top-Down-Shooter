@@ -20,7 +20,7 @@ public class EnemyHealthPoints : MonoBehaviour
         currentHitPoints -= damageAmount;
         
         var _enemy = gameObject.GetComponent<EnemyBase>();
-        _enemy.HitVisual();
+        StartCoroutine(_enemy.HitVisual());
 
         if (currentHitPoints <= 0)
         {

@@ -229,7 +229,6 @@ public class DialogueUI : MonoBehaviour
             else
             {
                 StopAllCoroutines();
-                InGameUIManager.Instance.dialogueUI.walkieTalkieText.text = "";
                 walkieTalkieText.gameObject.SetActive(true);
                 PlayerBehaviour.Instance.SetPlayerBusy(true);
             }   
@@ -256,8 +255,8 @@ public class DialogueUI : MonoBehaviour
             return;
         }
 
-        dialogueShop[dialogueCountShop].dialogueEndAction?.Invoke();
         StartCoroutine(TypeTextCoroutine("Peggy:" + "\n" + "...", null, currentTextBox));
+        dialogueShop[dialogueCountShop].dialogueEndAction?.Invoke();
         dialogueCountShop++;
     }
 

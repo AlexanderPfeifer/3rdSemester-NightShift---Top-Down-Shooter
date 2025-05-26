@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -46,6 +45,8 @@ public class WeaponBehaviour : MonoBehaviour
     private bool meleeWeaponOut;
     [SerializeField] private float maxHitDelay;
     private float currentHitDelay;
+    [Tooltip("The swing time has 3 phases - swinging back to get force, applying force, swinging back")]
+    [SerializeField] private float[] swingTime;
 
     [Header("Shooting")]
     public float bulletDirectionSpreadStandingStill = 0.00005f;
@@ -170,7 +171,6 @@ public class WeaponBehaviour : MonoBehaviour
     {
         if (!weapon.activeSelf || PlayerBehaviour.Instance.IsPlayerBusy()) 
             return;
-
         
         if (GetCurrentWeaponObjectSO() == null || GetComponent<MeleeWeaponBehaviour>().hitCollider.isActiveAndEnabled || (Mathf.Abs(weaponToMouse.x) <= currentGetMeleeWeaponOutRange && 
             Mathf.Abs(weaponToMouse.y) <= currentGetMeleeWeaponOutRange &&
@@ -218,7 +218,7 @@ public class WeaponBehaviour : MonoBehaviour
     private void GetMeleeWeaponOut()
     {
         currentEnemyKnockBack = GetComponent<MeleeWeaponBehaviour>().knockBack;
-            
+
         weapon.GetComponent<SpriteRenderer>().sprite = meleeWeapon;
             
         weaponToMouse = GameInputManager.Instance.GetAimingVector() - PlayerBehaviour.Instance.transform.position;
@@ -479,6 +479,7 @@ public class WeaponBehaviour : MonoBehaviour
         AudioManager.Instance.ChangeSound("Shooting", weapon.shotSound);
         AudioManager.Instance.ChangeSound("Reload", weapon.reloadSound);
         AudioManager.Instance.ChangeSound("Repetition", weapon.repetitionSound);
+        InGameUIManager.Instance.abilityProgressImage.color = weapon.abilityFillColor;
         foreach (var _bullet in BulletPoolingManager.Instance.GetBulletList())
         {
             _bullet.transform.localScale = weapon.bulletSize;
@@ -530,33 +531,62 @@ public class WeaponBehaviour : MonoBehaviour
     {
         var _steps = new[]
         {
-            (-50f, 0.08f),
-            (230f, 0.25f),
-            (-170f, 0.45f),
+            (-50f, swingTime[0]),
+            (230f, swingTime[1]),
+            (-170f, swingTime[2]),
         };
+
+        TrailRenderer _trailRendererBaton = GetComponentInChildren<TrailRenderer>();
 
         for (var _index = 0; _index < _steps.Length; _index++)
         {
             if (_index == 1)
             {
+                _trailRendererBaton.emitting = true;
                 GetComponent<MeleeWeaponBehaviour>().hitCollider.enabled = true;
             }
             
             (float _deltaZ, float _duration) = _steps[_index];
             float _elapsed = 0f;
+            
             float _startZ = transform.localRotation.eulerAngles.z;
             float _targetZ = _startZ + _deltaZ;
+            
+            float _startZBaton = _trailRendererBaton.transform.localRotation.eulerAngles.z;
+            float _swingTargetZBaton = _startZBaton - 90;
+            float _pullBackZBaton = _startZBaton + 90;
 
             while (_elapsed < _duration)
             {
                 _elapsed += Time.deltaTime;
+                
                 float _currentZ = Mathf.Lerp(_startZ, _targetZ, _elapsed / _duration);
                 transform.localRotation = Quaternion.Euler(0f, 0f, _currentZ);
+                
+                switch (_index)
+                {
+                    case 0:
+                    {
+                        float _currentZBat = Mathf.Lerp(_startZBaton, _swingTargetZBaton, _elapsed / _duration);
+                        _trailRendererBaton.transform.localRotation = Quaternion.Euler(0f, 0f, _currentZBat);
+                        break;
+                    }
+                    case 2:
+                    {
+                        float _currentZBat = Mathf.Lerp(_startZBaton, _pullBackZBaton, _elapsed / _duration);
+                        _trailRendererBaton.transform.localRotation = Quaternion.Euler(0f, 0f, _currentZBat);
+                        break;
+                    }
+                }
+
                 yield return null;
             }
             
             transform.localRotation = Quaternion.Euler(0f, 0f, _targetZ);
         }
+        
+        _trailRendererBaton.Clear();
+        _trailRendererBaton.emitting = false;
         
         GetComponent<MeleeWeaponBehaviour>().hitCollider.enabled = false;
 

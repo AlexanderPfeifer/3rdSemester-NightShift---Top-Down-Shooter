@@ -38,6 +38,7 @@ MonoBehaviour:
   ammunitionInBackUp: 42
   hasAbilityUpgrade: 1
   abilityBulletSprite: {fileID: 21300000, guid: 61522d1da2417b449993939ad0e9939b, type: 3}
+  abilityFillColor: {r: 0.16862746, g: 0.08627451, b: 0.06666667, a: 1}
   shotSound: {fileID: 6418180475301049370, guid: d035078986ad0e34fb2a3308f64e60a6, type: 2}
   reloadSound: {fileID: 6418180475301049370, guid: 0a58044c5f91a4241b716e15157ce968, type: 2}
   repetitionSound: {fileID: 0}
