@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Corn Dog Hunting Rifle
   upgradeTier: 0
-  bulletDamage: 6
+  bulletDamage: 10
   shootDelay: 0.75
   clipSize: 4
   reloadTime: 2.8

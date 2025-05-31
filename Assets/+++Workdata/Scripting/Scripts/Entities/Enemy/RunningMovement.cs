@@ -21,9 +21,8 @@ public class RunningMovement : MonoBehaviour
         if(!enemyBase.enemyCanMove)
             return;
 
-        var _ridePosition = Ride.Instance.transform.position; 
-        enemyBase.rbEnemy.MovePosition(transform.position =  Vector2.MoveTowards(transform.position, _ridePosition, moveSpeed * Time.deltaTime));
+        enemyBase.rbEnemy.MovePosition(transform.position =  Vector2.MoveTowards(transform.position, enemyBase.target.position, moveSpeed * Time.deltaTime));
 
-        enemyBase.sr.flipX = !(transform.InverseTransformPoint(_ridePosition).x > 0);
+        enemyBase.sr.flipX = !(transform.InverseTransformPoint(enemyBase.target.position).x > 0);
     }
 }

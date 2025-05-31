@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerBehaviour : Singleton<PlayerBehaviour>
 {
@@ -22,6 +24,11 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     [Header("CharacterMovement")] 
     public float baseMoveSpeed = 6.25f;
     public float slowDownSpeed;
+    [SerializeField] private float hitVisualTime = .05f;
+    [SerializeField] private float hitVignetteFadeTime = .2f;
+    [SerializeField] private Volume hitVignette;
+    [SerializeField] private float stunTimeOnEnemyCollision = 3;
+    [HideInInspector] public bool gotHit;
     [SerializeField] private float knockBackDecay = 5f; 
     [HideInInspector] public float currentMoveSpeed;
     private Vector2 moveDirection = Vector2.down;
@@ -173,20 +180,78 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     #endregion
 
     #region Movement
+    
+    public void StartHitVisual()
+    {
+        if (gotHit)
+            return;
+        
+        playerNoHandVisual.GetComponent<SpriteRenderer>().color = Color.red;
+
+        StartCoroutine(HitStop());
+    }
+    
+    private IEnumerator HitStop()
+    {
+        gotHit = true;
+        Time.timeScale = 0.1f;
+
+        yield return new WaitForSecondsRealtime(hitVisualTime);
+        
+        Time.timeScale = 1f;
+        
+        playerNoHandVisual.GetComponent<SpriteRenderer>().color = Color.white;
+        
+        var _elapsedTime = 0f;
+
+        while (_elapsedTime < hitVignetteFadeTime)
+        {
+            hitVignette.weight = Mathf.Lerp(hitVignette.weight, 1, _elapsedTime / hitVignetteFadeTime);
+            
+            _elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        currentMoveSpeed = slowDownSpeed;
+
+        foreach (Transform _children in Ride.Instance.enemyParent.transform)
+        {
+            if (_children.TryGetComponent(out EnemyBase _enemyBase))
+            {
+                _enemyBase.target = Ride.Instance.transform;
+            }
+        }
+        
+        yield return new WaitForSeconds(stunTimeOnEnemyCollision);
+        
+        currentMoveSpeed = baseMoveSpeed;
+        
+        _elapsedTime = 0;
+        
+        while (_elapsedTime < hitVignetteFadeTime)
+        {
+            hitVignette.weight = Mathf.Lerp(hitVignette.weight, 0, _elapsedTime / hitVignetteFadeTime);
+        
+            _elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        gotHit = false;
+    }
 
     private void HandleMovementFixedUpdate()
     {
-        if (IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.walkieTalkieText.gameObject.activeSelf) 
+        if ((IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.walkieTalkieText.gameObject.activeSelf) || TutorialManager.Instance.isExplainingCurrencyDialogue) 
             return;
         
         rb.linearVelocity = GameInputManager.Instance.GetMovementVectorNormalized() * currentMoveSpeed + weaponBehaviour.currentKnockBack;
 
         weaponBehaviour.currentKnockBack = Vector2.Lerp(weaponBehaviour.currentKnockBack, Vector2.zero, Time.fixedDeltaTime * knockBackDecay);
     }
-    
+
     private void SetAnimationParameterLateUpdate()
     {
-        if (IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.IsDialoguePlaying() && playerNoHandVisual.activeSelf)
+        if ((IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.IsDialoguePlaying() && playerNoHandVisual.activeSelf) || TutorialManager.Instance.isExplainingCurrencyDialogue)
         {
             animNoHand.SetFloat("MoveSpeed", 0);
 
@@ -202,16 +267,13 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         }
         else
         {
-            if (GameInputManager.Instance.GetMovementVectorNormalized().sqrMagnitude <= 0.01f)
+            if (GameInputManager.Instance.GetMovementVectorNormalized().sqrMagnitude <= 0.01f && weaponBehaviour.bulletsPerShot <= 1)
             {
-                if (weaponBehaviour.bulletsPerShot <= 1)
-                {
-                    weaponBehaviour.currentBulletDirectionSpread = weaponBehaviour.bulletDirectionSpreadStandingStill;
-                }
-                else
-                {
-                    weaponBehaviour.currentBulletDirectionSpread = weaponBehaviour.bulletDirectionSpread;
-                }
+                weaponBehaviour.currentBulletDirectionSpread = weaponBehaviour.bulletDirectionSpreadStandingStill;
+            }
+            else
+            {
+                weaponBehaviour.currentBulletDirectionSpread = weaponBehaviour.bulletDirectionSpread;
             }
             
             var _snapAngle = weaponBehaviour.LastSnappedAngle;

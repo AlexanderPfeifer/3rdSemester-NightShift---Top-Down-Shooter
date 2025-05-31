@@ -168,6 +168,10 @@ PrefabInstance:
       propertyPath: maximumHitPoints
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 7295137754459367048, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: followsPlayerOnBeingShot
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3243028556199545185, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}

@@ -169,7 +169,7 @@ public class WeaponBehaviour : MonoBehaviour
 
     private void HandleAimingUpdate()
     {
-        if (!weapon.activeSelf || PlayerBehaviour.Instance.IsPlayerBusy()) 
+        if (!weapon.activeSelf || TutorialManager.Instance.isExplainingCurrencyDialogue || (PlayerBehaviour.Instance.IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())) 
             return;
         
         if (GetCurrentWeaponObjectSO() == null || GetComponent<MeleeWeaponBehaviour>().hitCollider.isActiveAndEnabled || (Mathf.Abs(weaponToMouse.x) <= currentGetMeleeWeaponOutRange && 
@@ -188,7 +188,7 @@ public class WeaponBehaviour : MonoBehaviour
             weaponToMouse = GameInputManager.Instance.GetAimingVector() - weaponEndPoint.transform.position;
             weaponToMouse.z = 0;
             
-            currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange - getMeleeWeaponOutRange / 2;
+            currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange - getMeleeWeaponOutRange / 4;
             
             meleeWeaponOut = false;
         }
@@ -224,7 +224,7 @@ public class WeaponBehaviour : MonoBehaviour
         weaponToMouse = GameInputManager.Instance.GetAimingVector() - PlayerBehaviour.Instance.transform.position;
         weaponToMouse.z = 0;
 
-        currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange + getMeleeWeaponOutRange / 2;
+        currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange + getMeleeWeaponOutRange / 4;
 
         meleeWeaponOut = true;
     }
@@ -327,7 +327,7 @@ public class WeaponBehaviour : MonoBehaviour
 
     private void HitAutomatic()
     {
-        if (currentHitDelay > 0) 
+        if (currentHitDelay > 0 || PlayerBehaviour.Instance.IsPlayerBusy() || InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())
             return;
 
         StartCoroutine(MeleeWeaponSwingCoroutine());
@@ -340,7 +340,7 @@ public class WeaponBehaviour : MonoBehaviour
     private IEnumerator ReloadCoroutine()
     {
         //If statement translation: no ammo overall or weapon already full or no weapon is equipped
-        if (ammunitionInBackUp <= 0 || ammunitionInClip == maxClipSize || !weapon.activeSelf)
+        if (ammunitionInBackUp <= 0 || ammunitionInClip == maxClipSize || !weapon.activeSelf || PlayerBehaviour.Instance.gotHit)
         {
             //return and make some vfx
             yield break;
@@ -406,10 +406,10 @@ public class WeaponBehaviour : MonoBehaviour
             {
                 ammunitionInBackUp += myWeapon switch
                 {
-                    MyWeapon.AssaultRifle => ammoDrop.ammoCount * 5,
-                    MyWeapon.Magnum => ammoDrop.ammoCount * 2,
-                    MyWeapon.PopcornLauncher => ammoDrop.ammoCount * 3,
-                    MyWeapon.HuntingRifle => Mathf.RoundToInt(ammoDrop.ammoCount * 1.5f),
+                    MyWeapon.AssaultRifle => Mathf.RoundToInt(ammoDrop.ammoCount * 3.5f),
+                    MyWeapon.Magnum => Mathf.RoundToInt(ammoDrop.ammoCount * 1.5f),
+                    MyWeapon.PopcornLauncher => Mathf.RoundToInt(ammoDrop.ammoCount * 2.5f),
+                    MyWeapon.HuntingRifle => ammoDrop.ammoCount,
                     MyWeapon.Shotgun => ammoDrop.ammoCount,
                     _ => throw new ArgumentOutOfRangeException()
                 };
@@ -531,9 +531,9 @@ public class WeaponBehaviour : MonoBehaviour
     {
         var _steps = new[]
         {
-            (-50f, swingTime[0]),
-            (230f, swingTime[1]),
-            (-170f, swingTime[2]),
+            (-50f, Random.Range(swingTime[0] - .01f, swingTime[0] + .01f)),
+            (230f, Random.Range(swingTime[1] - .01f, swingTime[1] + .01f)),
+            (-170f, Random.Range(swingTime[2] - .01f, swingTime[2] + .01f)),
         };
 
         TrailRenderer _trailRendererBaton = GetComponentInChildren<TrailRenderer>();

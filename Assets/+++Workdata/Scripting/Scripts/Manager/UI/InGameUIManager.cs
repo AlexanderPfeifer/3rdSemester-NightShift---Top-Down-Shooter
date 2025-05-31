@@ -19,7 +19,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     public GameObject inGameUIWeaponVisual;
     
     [Header("Ride")]
-    public TextMeshProUGUI rideTimeText;
     public Image rideHpImage;
     
     [Header("Ability")]
@@ -137,7 +136,8 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
                 TutorialManager.Instance.ExplainCurrency();
                 return;
             }
-            
+
+            TutorialManager.Instance.isExplainingCurrencyDialogue = false;
             generatorScreen.SetActive(true);
         }
     }

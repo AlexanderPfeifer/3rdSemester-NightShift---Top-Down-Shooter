@@ -38,7 +38,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: rideAttackDamage
-      value: 15
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: maxEnemyKnockBack
@@ -122,7 +122,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6641996682267424595, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: m_Mass
-      value: 30
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 6840275919477036929, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: m_LocalScale.x
@@ -178,7 +178,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7295137754459367048, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: maximumHitPoints
-      value: 70
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7295137754459367048, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: followsPlayerOnBeingShot
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

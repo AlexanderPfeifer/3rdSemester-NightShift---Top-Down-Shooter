@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -14,6 +15,7 @@ public class EnemyBase : MonoBehaviour
     [NonSerialized] public float EnemyFreezeTime;
     [HideInInspector] public Rigidbody2D rbEnemy;
     [HideInInspector] public SpriteRenderer sr;
+    [HideInInspector] public Transform target;
 
     [Header("Particles")]
     [SerializeField] private GameObject enemyDeathMark;
@@ -38,11 +40,23 @@ public class EnemyBase : MonoBehaviour
     {
         rbEnemy = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        target = Ride.Instance.transform;
     }
 
     private void Update()
     {
         EnemyFreezeUpdate();
+
+        ChangeTargetOnRange();
+    }
+
+    private void ChangeTargetOnRange()
+    {
+        if (Vector2.Distance(transform.position, Ride.Instance.transform.position) <
+            Vector2.Distance(transform.position, PlayerBehaviour.Instance.transform.position))
+        {
+            target = Ride.Instance.transform;
+        }
     }
 
     private void EnemyFreezeUpdate()
@@ -73,7 +87,6 @@ public class EnemyBase : MonoBehaviour
             if (_ride.currentRideHealth <= 0)
             {
                 _ride.LostWave();
-                AudioManager.Instance.Play("RideShutDown");
             }
             else
             {
@@ -83,10 +96,27 @@ public class EnemyBase : MonoBehaviour
             gotKilledFromRide = true;
             Destroy(gameObject);
         }
+        else if (other.gameObject.TryGetComponent(out PlayerBehaviour _playerBehaviour) && target == _playerBehaviour.transform)
+        {
+            _playerBehaviour.StartHitVisual();
+            
+            gotKilledFromRide = true;
+            Destroy(gameObject);
+        }
     }
 
     private void OnDestroy()
     {
+        if (Ride.Instance.canWinGame)
+        {
+            int _enemies = Ride.Instance.enemyParent.transform.Cast<Transform>().Count(child => child.GetComponent<EnemyBase>());
+
+            if (_enemies <= 1)
+            {
+                Ride.Instance.WonWave();
+            }
+        }
+        
         if(!gameObject.scene.isLoaded || gotKilledFromRide) 
             return;
 

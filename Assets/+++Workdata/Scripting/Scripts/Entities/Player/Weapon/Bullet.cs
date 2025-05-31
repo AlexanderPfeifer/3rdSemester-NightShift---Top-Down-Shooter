@@ -134,7 +134,7 @@ public class Bullet : MonoBehaviour
         {
             if (_shootingSignBehaviour.canGetHit)
             {
-                _shootingSignBehaviour.StartCoroutine(_shootingSignBehaviour.SnapDownOnHit());
+                _shootingSignBehaviour.StartCoroutine(_shootingSignBehaviour.SnapDownOnHit(true));
             }
             
             DeactivateBullet();

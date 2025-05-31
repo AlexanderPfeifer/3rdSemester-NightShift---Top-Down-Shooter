@@ -100,23 +100,17 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
         
         if (!mouseIsLastUsedDevice)
         {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
             Vector3 _playerScreenPos = PlayerBehaviour.Instance.weaponBehaviour.mainCamera.WorldToScreenPoint(PlayerBehaviour.Instance.transform.position);
             
-            if(_rightStickInput.sqrMagnitude > 0.1f)
+            if(_rightStickInput.sqrMagnitude > 0.8f)
             {
-                aimScreenPosition = _playerScreenPos + new Vector3(_rightStickInput.x, _rightStickInput.y, 0f) * ((float)Screen.width / 2);
-            }
-            else if (_leftStickInput.sqrMagnitude > 0.1f)
-            {
-                aimScreenPosition = _playerScreenPos + new Vector3(_leftStickInput.x, _leftStickInput.y, 0f) * ((float)Screen.width / 2);
+                aimScreenPosition = _playerScreenPos + new Vector3(_rightStickInput.x, _rightStickInput.y, 0f) * ((float)Screen.width / 6);
+                Mouse.current.WarpCursorPosition(aimScreenPosition);
             }
 
             return PlayerBehaviour.Instance.weaponBehaviour.mainCamera.ScreenToWorldPoint(new Vector3(aimScreenPosition.x, aimScreenPosition.y, _playerScreenPos.z));
         }
 
-        Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         return PlayerBehaviour.Instance.weaponBehaviour.mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
     }

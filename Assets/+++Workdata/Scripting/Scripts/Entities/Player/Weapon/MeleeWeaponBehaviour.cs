@@ -11,17 +11,19 @@ public class MeleeWeaponBehaviour : MonoBehaviour
         hitCollider = GetComponent<CapsuleCollider2D>();
     }
 
-    public void SetActiveHitCollider()
-    {
-        hitCollider.enabled = !hitCollider.enabled;
-    }
-
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.TryGetComponent(out EnemyHealthPoints _enemyHealthPoints))
         {
             _enemyHealthPoints.TakeDamage(damage, null);
             _enemyHealthPoints.StartCoroutine(_enemyHealthPoints.EnemyKnockBack(0, _enemyHealthPoints.transform.position - transform.position));
+        }
+        else if (col.TryGetComponent(out ShootingSignBehaviour _shootingSignBehaviour))
+        {
+            if (_shootingSignBehaviour.canGetHit)
+            {
+                _shootingSignBehaviour.StartCoroutine(_shootingSignBehaviour.SnapDownOnHit(false));
+            }
         }
     }
 }

@@ -1,10 +1,16 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class TutorialManager : SingletonPersistent<TutorialManager>
 {
     [HideInInspector] public int shotSigns;
+    private int hitSigns;
+
+    [HideInInspector] public bool explainedRideSequences;
 
     [FormerlySerializedAs("openShutterWheelOfFortune")] [HideInInspector] public bool newWeaponsCanBeUnlocked;
     [HideInInspector] public bool fillAmmoForFree;
@@ -15,10 +21,14 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
 
     [Header("QuestLogTexts")] 
     [SerializeField] private string fillAmmo;
+    [SerializeField] private string hitSignsQuestLog;
     [SerializeField] private string activateGen;
     [SerializeField] public string activateRide;
     public string getNewWeapons;
     [SerializeField] private string doYourJob;
+
+    [Header("Dialogue")] 
+    [HideInInspector] public bool isExplainingCurrencyDialogue;
 
     protected override void Awake()
     {
@@ -30,6 +40,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     {
         if (!talkedAboutCurrency)
         {
+            isExplainingCurrencyDialogue = true;
             InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
             InGameUIManager.Instance.currencyUI.GetCurrencyText().gameObject.SetActive(true);
             talkedAboutCurrency = true;
@@ -52,6 +63,30 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         }
     }
 
+    public void ExplainStartupSequences()
+    {
+        AudioManager.Instance.Play("RideShutDown");
+        Ride.Instance.rideLight.SetActive(false);
+
+        StartCoroutine(WaitForShutdown());
+        
+        explainedRideSequences = true;
+    }
+
+    private IEnumerator WaitForShutdown()
+    {
+        while (AudioManager.Instance.IsPlaying("RideShutDown"))
+        {
+            yield return null;
+        }
+        
+        Ride.Instance.generator.gateAnim.SetBool("OpenGate", true);
+        
+        InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
+
+        yield return null;
+    }
+
     private void FinishedFirstFight()
     {
         InGameUIManager.Instance.shopUI.SetShopWindow();
@@ -71,11 +106,25 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
 
     public void ExplainGenerator()
     {
-        if (shotSigns >= 3 && Ride.Instance.GetCurrentWaveAsInt() == 0 && Ride.Instance.generator.interactable == false)
+        if (hitSigns >= 1 && Ride.Instance.GetCurrentWaveAsInt() == 0 && Ride.Instance.generator.interactable == false)
         {
             InGameUIManager.Instance.dialogueUI.DisplayDialogue();
             Ride.Instance.generator.interactable = true;
             InGameUIManager.Instance.SetWalkieTalkieQuestLog(activateGen);
+        }
+    }
+    
+    public void AddAndCheckHitSigns()
+    {
+        if (shotSigns >= 3)
+        {
+            hitSigns++;
+        
+            if (hitSigns == 1)
+            {
+                InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
+                InGameUIManager.Instance.SetWalkieTalkieQuestLog(fillAmmo);
+            }   
         }
     }
 
@@ -86,7 +135,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         if (shotSigns == 3)
         {
             InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
-            InGameUIManager.Instance.SetWalkieTalkieQuestLog(fillAmmo);
+            InGameUIManager.Instance.SetWalkieTalkieQuestLog(hitSignsQuestLog);
         }
     }
     

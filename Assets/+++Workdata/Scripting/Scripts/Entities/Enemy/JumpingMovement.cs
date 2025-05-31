@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class JumpingMovement : MonoBehaviour
@@ -18,15 +17,14 @@ public class JumpingMovement : MonoBehaviour
         if(!enemyBase.enemyCanMove)
             return;
 
-        var _ridePosition = Ride.Instance.transform.position;
 
         if (bunnyCanJump)
         {
             //I set bunnyCanJump on true in an animation because the movement of the bunny is in jumps, not a consistent running
-            enemyBase.rbEnemy.MovePosition(transform.position = Vector2.MoveTowards(transform.position, Ride.Instance.transform.position, bunnyJumpSpeed * Time.deltaTime));
+            enemyBase.rbEnemy.MovePosition(transform.position = Vector2.MoveTowards(transform.position, enemyBase.target.position, bunnyJumpSpeed * Time.deltaTime));
         }
         
-        enemyBase.sr.flipX = !(transform.InverseTransformPoint(_ridePosition).x > 0);
+        enemyBase.sr.flipX = !(transform.InverseTransformPoint(enemyBase.target.position).x > 0);
     }
     
     //Animation event

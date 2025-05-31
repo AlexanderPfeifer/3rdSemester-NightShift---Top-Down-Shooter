@@ -7,8 +7,11 @@ public class EnemyHealthPoints : MonoBehaviour
     [SerializeField] private int maximumHitPoints = 5;
     private float currentHitPoints;
     
-    [Header("Knockback")] 
+    [Header("Knock Back")] 
     [SerializeField] private float knockBackTime = .15f;
+
+    [Header("Follow")]
+    [SerializeField] private bool followsPlayerOnBeingShot;
 
     private void Start()
     {
@@ -26,6 +29,11 @@ public class EnemyHealthPoints : MonoBehaviour
         {
             Destroy(gameObject);
             return;
+        }
+
+        if (followsPlayerOnBeingShot && !PlayerBehaviour.Instance.gotHit)
+        {
+            _enemy.target = PlayerBehaviour.Instance.transform;
         }
 
         if (bulletTransform != null)

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -7,9 +6,9 @@ public class Ride : Singleton<Ride>
 {
     [Header("Spawning")] [SerializeField] private Wave[] waves;
     [HideInInspector] public bool waveStarted;
-    private float waveTimer;
     public GameObject enemyParent;
-
+    [SerializeField] private float radiusInsideGroupSpawning = 2;
+    
     [Header("Square Spawn Point")] [SerializeField]
     private Transform spawnCenter;
 
@@ -29,32 +28,16 @@ public class Ride : Singleton<Ride>
     public GameObject rideLight;
     public Generator generator;
 
+    [Header("Win")] 
+    [SerializeField] private ParticleSystem winConfettiParticles;
+    private float latestSpawnedEnemy;
+    private float timeUntilLastEnemy;
+    [HideInInspector] public bool canWinGame;
+
     private void Start()
     {
         InGameUIManager.Instance.dialogueUI.dialogueCountShop = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
         rideAnimator = GetComponentInChildren<Animator>();
-    }
-
-    private void Update()
-    {
-        TimerUpdate();
-    }
-    
-    private void TimerUpdate()
-    {
-        if (!waveStarted)
-        {
-            return;
-        }
-        
-        TimeSpan _timeSpan = TimeSpan.FromSeconds(waveTimer);
-        InGameUIManager.Instance.rideTimeText.text = _timeSpan.ToString(@"mm\:ss");        
-        waveTimer -= Time.deltaTime;
-
-        if (waveTimer <= 0)
-        {
-            WonWave();
-        }
     }
 
     private Wave GetCurrentWave()
@@ -67,13 +50,31 @@ public class Ride : Singleton<Ride>
         return GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
     }
 
+    private void Update()
+    {
+        if (waveStarted)
+        {
+            timeUntilLastEnemy += Time.deltaTime;
+        }
+    }
+
     #region EnemySpawning
 
     public void StartEnemyClusterCoroutines()
     {
+        latestSpawnedEnemy = 0;
+        timeUntilLastEnemy = 0;
+
         foreach (var _enemyCluster in GetCurrentWave().enemyClusters)
         {
             StartCoroutine(SpawnEnemiesDelayed(_enemyCluster));
+
+            float _timeWhenEnemyStopsSpawning = _enemyCluster.spawnStartTime + _enemyCluster.repeatCount * _enemyCluster.timeBetweenSpawns;
+
+            if (latestSpawnedEnemy < _timeWhenEnemyStopsSpawning)
+            {
+                latestSpawnedEnemy = _timeWhenEnemyStopsSpawning;
+            }
         }
     }
 
@@ -85,34 +86,48 @@ public class Ride : Singleton<Ride>
         {
             for (int _enemyIndex = 0; _enemyIndex < enemyCluster.spawnCount; _enemyIndex++)
             {
-                Instantiate(enemyCluster.enemyPrefab, GetRandomEdgePosition(), Quaternion.identity, enemyParent.transform);
+                Vector2 _groupPos = GetRandomEdgePosition();
+                
+                foreach (var _enemy in enemyCluster.enemyPrefab)
+                {
+                    Vector2 _randomOffset = Random.insideUnitCircle * radiusInsideGroupSpawning;
+                    Instantiate(_enemy, _groupPos + new Vector2(_randomOffset.x, _randomOffset.y), Quaternion.identity, enemyParent.transform);
+                }
             }
             
-            yield return new WaitForSeconds(enemyCluster.timeBetweenSpawns);
+            if(enemyCluster.repeatCount != _i - 1)
+                yield return new WaitForSeconds(enemyCluster.timeBetweenSpawns);
+        }
+        
+        //I add a buffer of -1 if the timeUntilLastEnemy is a bit too late for some reason
+        if (timeUntilLastEnemy >= latestSpawnedEnemy - 1)
+        {
+            canWinGame = true;
         }
     }
     
-    private Vector3 GetRandomEdgePosition()
+    private Vector2 GetRandomEdgePosition()
     {
         float _halfSizeY = squareSizeY / 2f;
         float _halfSizeX = squareSizeX / 2f;
-        Vector3 _spawnPos = spawnCenter.position;
+        Vector2 _spawnPos = spawnCenter.position;
 
         switch (Random.Range(0, 4))
         {
             case 0: // Top Edge
-                _spawnPos += new Vector3(Random.Range(-_halfSizeY, _halfSizeY), _halfSizeY, 0);
+                _spawnPos += new Vector2(Random.Range(-_halfSizeY, _halfSizeY), _halfSizeY);
                 break;
             case 1: // Right Edge
-                _spawnPos += new Vector3(_halfSizeX, Random.Range(-_halfSizeX, _halfSizeX), 0);
+                _spawnPos += new Vector2(_halfSizeX, Random.Range(-_halfSizeX, _halfSizeX));
                 break;
             case 2: // Bottom Edge
-                _spawnPos += new Vector3(Random.Range(-_halfSizeY, _halfSizeY), -_halfSizeY, 0);
+                _spawnPos += new Vector2(Random.Range(-_halfSizeY, _halfSizeY), -_halfSizeY);
                 break;
             case 3: // Left Edge
-                _spawnPos += new Vector3(-_halfSizeX, Random.Range(-_halfSizeX, _halfSizeX), 0);
+                _spawnPos += new Vector2(-_halfSizeX, Random.Range(-_halfSizeX, _halfSizeX));
                 break;
         }
+        
         return _spawnPos;
     }
 
@@ -124,21 +139,31 @@ public class Ride : Singleton<Ride>
         
         RemoveEnemiesFromStage(true);
         
+        rideLight.SetActive(false);
+
         SetFightState();
     }
 
-    private void WonWave()
+    public void WonWave()
     {
+        winConfettiParticles.Play();
+            
         InGameUIManager.Instance.SetWalkieTalkieQuestLog(TutorialManager.Instance.getNewWeapons);
         
-        AudioManager.Instance.Play("FightMusicWon");
         RemoveEnemiesFromStage(false);
 
         PlayerBehaviour.Instance.playerCurrency.AddCurrency(
             Mathf.RoundToInt(GetCurrentWave().currencyPrize * (currentRideHealth / maxRideHealth)), true);
         
         SetFightState();
+        
+        AudioManager.Instance.Play("FightMusicWon");
 
+        if (TutorialManager.Instance.explainedRideSequences)
+        {
+            StartCoroutine(PlayRideSoundsAfterOneAnother());
+        }
+        
         InGameUIManager.Instance.fightUI.SetActive(false);
         
         if(InGameUIManager.Instance.dialogueUI.dialogueCountWalkieTalkie < InGameUIManager.Instance.dialogueUI.dialogueWalkieTalkie.Length)
@@ -156,11 +181,23 @@ public class Ride : Singleton<Ride>
         
         GameSaveStateManager.Instance.SaveGame();
     }
+    
+    private IEnumerator PlayRideSoundsAfterOneAnother()
+    {
+        while (AudioManager.Instance.IsPlaying("FightMusicWon"))
+        {
+            yield return null;
+        }
+        
+        AudioManager.Instance.Play("RideShutDown");
+        rideLight.SetActive(false);
+
+        yield return null;
+    }
 
     private void SetFightState()
     {
         waveStarted = false;
-        rideLight.SetActive(false);
         StopAllCoroutines();
         ResetRide();
         generator.fightMusic.Stop();
@@ -188,9 +225,12 @@ public class Ride : Singleton<Ride>
 
     public void ResetRide()
     {
-        generator.gateAnim.SetBool("OpenGate", true);
-        waveTimer = GetCurrentWave().maxWaveTime;
+        if(TutorialManager.Instance.explainedRideSequences)
+            generator.gateAnim.SetBool("OpenGate", true);
+        
         currentRideHealth = maxRideHealth;
+        InGameUIManager.Instance.rideHpImage.fillAmount = currentRideHealth / maxRideHealth;
+        canWinGame = false;
         
         Time.timeScale = 1f;
         rideRenderer.color = Color.white;
@@ -199,20 +239,21 @@ public class Ride : Singleton<Ride>
 
     public void StartRideHitVisual()
     {
+        hitParticles.Play();
+        
         if (rideGotHit)
             return;
-
+        
         rideGotHit = true;
-
+        
         rideRenderer.color = Color.red;
-        hitParticles.Play();
-
+        
         Time.timeScale = 0.1f;
         
-        StartCoroutine(StopRideHitVisual());
+        StartCoroutine(HitStop());
     }
     
-    private IEnumerator StopRideHitVisual()
+    private IEnumerator HitStop()
     {
         yield return new WaitForSecondsRealtime(hitVisualTime);
         

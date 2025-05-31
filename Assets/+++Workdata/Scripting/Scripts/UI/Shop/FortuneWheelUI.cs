@@ -13,6 +13,7 @@ public class FortuneWheelUI : MonoBehaviour
     [SerializeField] private int fortuneWheelPieCount = 5;
     [SerializeField] private float firstPieSliceBufferInDegree = 36f;
     [SerializeField] private int spinPrice;
+    [SerializeField] private int[] weaponPrizePlaces = { 0, 9, 13, 18, 22 };
 
     [Header("Price Dialogue")] 
     [SerializeField, TextArea(3, 10)] private string blankDialogue;
@@ -44,8 +45,14 @@ public class FortuneWheelUI : MonoBehaviour
     private IEnumerator WheelOverTimeCoroutine()
     {
         float _timeUntilStop = Random.Range(timeUntilStop.x, timeUntilStop.y);
+
         int _randomPrize = Random.Range(0, prizes.Length);
-        
+
+        if (PlayerBehaviour.Instance.weaponBehaviour.GetCurrentWeaponObjectSO() == null)
+        {
+            _randomPrize = weaponPrizePlaces[Random.Range(0, weaponPrizePlaces.Length - 1)];
+        }
+
         float _startRotation = rb.rotation % 360f;
         
         float _pieSize = 360f / fortuneWheelPieCount;

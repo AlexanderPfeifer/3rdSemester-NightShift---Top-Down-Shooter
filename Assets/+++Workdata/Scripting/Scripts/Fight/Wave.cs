@@ -9,9 +9,9 @@ public class EnemyClusterData
 {
     [FormerlySerializedAs("clusterBeginTime")] [SerializeField, ReadOnly] private string clusterName;
 
-    [Header("WHO")]
-    public GameObject enemyPrefab;
-    
+    [Header("WHO"), Tooltip("If multiple enemies are assigned, then they all spawn together")]
+    public GameObject[] enemyPrefab;
+
     [FormerlySerializedAs("timeToSpawn")]
     [Header("WHEN")]
     [Min(0)] public float spawnStartTime;
@@ -30,9 +30,14 @@ public class EnemyClusterData
 
     public void UpdateClusterName()
     {
-        clusterName = enemyPrefab.name + " | " + spawnStartTime.ToString(CultureInfo.CurrentCulture) + " -> " + (repeatCount * timeBetweenSpawns + spawnStartTime);
+        clusterName = enemyPrefab[0].name + " | " + spawnStartTime.ToString(CultureInfo.CurrentCulture) + " -> " + (repeatCount * timeBetweenSpawns + spawnStartTime);
 
         stopsSpawningAtTime = repeatCount * timeBetweenSpawns + spawnStartTime;
+
+        if (repeatCount <= 1)
+        {
+            timeBetweenSpawns = 0;
+        }
     }
 }
 
@@ -42,8 +47,6 @@ public class Wave
     [ReadOnly] public string waveName;
     
     public int currencyPrize;
-
-    [Min(1)] public float maxWaveTime = 120f;
-
+    
     public List<EnemyClusterData> enemyClusters = new();
 }
