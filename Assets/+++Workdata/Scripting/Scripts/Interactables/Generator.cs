@@ -21,7 +21,6 @@ public class Generator : MonoBehaviour
         AudioManager.Instance.Stop("InGameMusic");
         Ride.Instance.rideLight.SetActive(true);
         
-        InGameUIManager.Instance.fightUI.SetActive(true);
         Ride.Instance.waveStarted = true;
         Ride.Instance.ResetRide();
         gateAnim.SetBool("OpenGate", false);

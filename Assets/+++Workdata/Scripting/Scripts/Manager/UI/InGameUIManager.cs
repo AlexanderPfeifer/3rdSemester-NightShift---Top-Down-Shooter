@@ -17,10 +17,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     [Header("Weapon")] 
     public GameObject weaponSlot;
     public GameObject inGameUIWeaponVisual;
-    
-    [Header("Ride")]
-    public Image rideHpImage;
-    
+
     [Header("Ability")]
     public GameObject pressSpace;
     public Image abilityProgressImage;
@@ -29,7 +26,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     public GameObject changeShopWindowButton;
     
     [Header("UI Screens")]
-    public GameObject fightUI;
     public GameObject weaponSwapScreen;
     [FormerlySerializedAs("inGameUIScreen")] public GameObject playerHUD;
     public GameObject shopScreen;
@@ -43,6 +39,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     [Header("References")]
     public GeneratorUI generatorUI;
     [HideInInspector] public CurrencyUI currencyUI;
+    public FortuneWheelUI fortuneWheelUI;
     [HideInInspector] public DialogueUI dialogueUI;
     [FormerlySerializedAs("weaponDescriptionUI")] [FormerlySerializedAs("inventoryUI")] [HideInInspector] public ShopUI shopUI;
     [HideInInspector] public PauseMenuUI pauseMenuUI;
@@ -98,8 +95,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
         inGameUIWeaponVisual.SetActive(false);
         
-        fightUI.SetActive(false);
-        
         pauseMenuUI.ClosePauseMenu();
         GameSaveStateManager.Instance.GoToMainMenu();
     }
@@ -152,11 +147,11 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
     public void OpenShop()
     {
-        if (dialogueUI.IsDialoguePlaying())
+        if (dialogueUI.IsDialoguePlaying() || dialogueUI.walkieTalkieText.gameObject.activeSelf)
         {
             return;
         }
-        
+
         if (!PlayerBehaviour.Instance.IsPlayerBusy())
         {
             shopScreen.SetActive(true);
@@ -183,6 +178,7 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             else
             {
                 EventSystem.current.SetSelectedGameObject(shopUI.spinFortuneWheelButton.gameObject);
+                StartCoroutine(dialogueUI.TypeTextCoroutine("Peggy:" + "\n" + "...", null, dialogueUI.currentTextBox));
             }
             
             PlayerBehaviour.Instance.SetPlayerBusy(true);
@@ -195,6 +191,11 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     {
         if (shopScreen.activeSelf && !dialogueUI.IsDialoguePlaying())
         {
+            if (fortuneWheelUI.gameObject.activeSelf && (fortuneWheelUI.rb.angularVelocity > 0 || fortuneWheelUI.receivingPrize))
+            {
+                return;
+            }
+            
             dialogueUI.currentTextBox.text = "";
             
             dialogueUI.SetDialogueBox(false);

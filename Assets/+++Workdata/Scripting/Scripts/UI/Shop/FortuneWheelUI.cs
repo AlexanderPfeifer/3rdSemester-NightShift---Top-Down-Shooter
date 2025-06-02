@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -13,18 +14,22 @@ public class FortuneWheelUI : MonoBehaviour
     [SerializeField] private int fortuneWheelPieCount = 5;
     [SerializeField] private float firstPieSliceBufferInDegree = 36f;
     [SerializeField] private int spinPrice;
-    [SerializeField] private int[] weaponPrizePlaces = { 0, 9, 13, 18, 22 };
+    [FormerlySerializedAs("weaponPrizePlaces")] [SerializeField] private int[] winPrizePlaces = { 0, 9, 13, 18, 22 };
+    [SerializeField] private int spinCounter;
+    [SerializeField] private AnimationCurve winProbability;
+    [SerializeField] private int maxSpinsUntilWin;
 
     [Header("Price Dialogue")] 
     [SerializeField, TextArea(3, 10)] private string blankDialogue;
     [SerializeField, TextArea(3, 10)] private string currencyDialogue;
+    [SerializeField, TextArea(3, 10)] private string smallCurrencyDialogue;
     [SerializeField, TextArea(3, 10)] private string largeCurrencyDialogue;
 
     [Header("Spinning Movement")] 
     [SerializeField] private Vector2Int timeUntilStop;
     [SerializeField] private Vector2Int fullSpinsUntilStop;
-    [SerializeField] private Rigidbody2D rb;
-    private bool receivingPrize;
+    public Rigidbody2D rb;
+    [HideInInspector] public bool receivingPrize;
     [SerializeField] private Image mark;
     
     [Header("EventSystem Controlling")]
@@ -48,13 +53,18 @@ public class FortuneWheelUI : MonoBehaviour
 
         int _randomPrize = Random.Range(0, prizes.Length);
 
-        if (PlayerBehaviour.Instance.weaponBehaviour.GetCurrentWeaponObjectSO() == null)
+        if (GameSaveStateManager.Instance.saveGameDataManager.collectedWeaponsIdentifiers.Count == 1 && spinCounter < 8)
         {
-            _randomPrize = weaponPrizePlaces[Random.Range(0, weaponPrizePlaces.Length - 1)];
+            spinCounter = 8;
+        }
+        
+        float _probabilityOfWin = Random.value;
+        if (_probabilityOfWin < winProbability.Evaluate((float)spinCounter / maxSpinsUntilWin))
+        {
+            _randomPrize = winPrizePlaces[Random.Range(0, winPrizePlaces.Length)];
         }
 
         float _startRotation = rb.rotation % 360f;
-        
         float _pieSize = 360f / fortuneWheelPieCount;
         
         int _fullSpins = Random.Range(fullSpinsUntilStop.x, fullSpinsUntilStop.y); 
@@ -72,6 +82,8 @@ public class FortuneWheelUI : MonoBehaviour
         }
 
         rb.MoveRotation(_endRotation);
+
+        spinCounter++;
 
         int _priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + firstPieSliceBufferInDegree) / _pieSize) % fortuneWheelPieCount;
         StartCoroutine(LocationHighlight(_priceIndex));
@@ -113,12 +125,12 @@ public class FortuneWheelUI : MonoBehaviour
         mark.transform.localScale = new Vector3(1, 1, 1);
         
         yield return new WaitForSeconds(.3f);
-        
+
         prizes[priceIndex]?.Invoke();
 
-        receivingPrize = false;
-        
         AllButtonsConfiguration.Instance.inGameUICanvasGroup.interactable = true;
+        
+        receivingPrize = false;
     }
 
     public void WinWeapon(WeaponObjectSO weapon)
@@ -126,6 +138,8 @@ public class FortuneWheelUI : MonoBehaviour
         PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weapon);
         
         InGameUIManager.Instance.shopUI.ResetWeaponDescriptions();
+
+        spinCounter = 0;
     }
     
     public void WinBlank()
@@ -133,7 +147,14 @@ public class FortuneWheelUI : MonoBehaviour
         StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(blankDialogue, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
     }   
     
-    public void WinMoney(int money)
+    public void WinSmallMoney(int money)
+    {
+        PlayerBehaviour.Instance.playerCurrency.AddCurrency(money, true);
+        
+        StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(smallCurrencyDialogue, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
+    }  
+    
+    public void WinMediumMoney(int money)
     {
         PlayerBehaviour.Instance.playerCurrency.AddCurrency(money, true);
         
@@ -145,6 +166,8 @@ public class FortuneWheelUI : MonoBehaviour
         PlayerBehaviour.Instance.playerCurrency.AddCurrency(money, true);
         
         StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(largeCurrencyDialogue, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
+        
+        spinCounter = 0;
     }
 
     private void OnDisable()

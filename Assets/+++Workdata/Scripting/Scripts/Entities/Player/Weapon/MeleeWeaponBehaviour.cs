@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class MeleeWeaponBehaviour : MonoBehaviour
@@ -5,6 +7,7 @@ public class MeleeWeaponBehaviour : MonoBehaviour
     [HideInInspector] public CapsuleCollider2D hitCollider;
     [SerializeField] private float damage;
     public float knockBack = 5;
+    [SerializeField] private float onHitScreenShakeValue = 3.5f;
 
     private void Start()
     {
@@ -15,6 +18,7 @@ public class MeleeWeaponBehaviour : MonoBehaviour
     {
         if (col.gameObject.TryGetComponent(out EnemyHealthPoints _enemyHealthPoints))
         {
+            StartCoroutine(WeaponVisualCoroutine());
             _enemyHealthPoints.TakeDamage(damage, null);
             _enemyHealthPoints.StartCoroutine(_enemyHealthPoints.EnemyKnockBack(0, _enemyHealthPoints.transform.position - transform.position));
         }
@@ -22,8 +26,20 @@ public class MeleeWeaponBehaviour : MonoBehaviour
         {
             if (_shootingSignBehaviour.canGetHit)
             {
+                StartCoroutine(WeaponVisualCoroutine());
                 _shootingSignBehaviour.StartCoroutine(_shootingSignBehaviour.SnapDownOnHit(false));
             }
         }
+    }
+    
+    public IEnumerator WeaponVisualCoroutine()
+    {
+        PlayerBehaviour.Instance.weaponBehaviour.playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = onHitScreenShakeValue;
+        
+        //AudioManager.Instance.Play("Shooting");
+        
+        yield return new WaitForSeconds(.1f);
+        
+        PlayerBehaviour.Instance.weaponBehaviour.playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
     }
 }

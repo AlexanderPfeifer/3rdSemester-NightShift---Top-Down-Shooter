@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9dccd94222846d845be1cc59ad4efa6c
+guid: 6d4a605262d1d204b829ba991ea62773
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4080347966105848933
-    second: currency_icon_0
+      213: -6197677799121179794
+    second: Fortune_Wheel_shadow_overlay_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: currency_icon_0
+      name: Fortune_Wheel_shadow_overlay_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 33
-        height: 28
+        x: 11
+        y: 11
+        width: 171
+        height: 171
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 56c0ab74bde40a830800000000000000
-      internalID: 4080347966105848933
+      spriteID: e6bae0fd0ec6df9a0800000000000000
+      internalID: -6197677799121179794
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      currency_icon_0: 4080347966105848933
+      Fortune_Wheel_shadow_overlay_0: -6197677799121179794
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

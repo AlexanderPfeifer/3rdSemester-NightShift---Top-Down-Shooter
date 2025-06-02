@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Ride : Singleton<Ride>
@@ -16,6 +17,7 @@ public class Ride : Singleton<Ride>
     [SerializeField] private float squareSizeX;
 
     [Header("Health")] 
+    public Image rideHealthFill;
     public float maxRideHealth;  
     [SerializeField] private float hitVisualTime = .05f;
     [SerializeField] private ParticleSystem hitParticles;
@@ -31,7 +33,8 @@ public class Ride : Singleton<Ride>
     [Header("Win")] 
     [SerializeField] private ParticleSystem winConfettiParticles;
     private float latestSpawnedEnemy;
-    private float timeUntilLastEnemy;
+    private int currentSpawnedEnemies;
+    private int spawnedEnemiesInCluster;
     [HideInInspector] public bool canWinGame;
 
     private void Start()
@@ -50,31 +53,24 @@ public class Ride : Singleton<Ride>
         return GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
     }
 
-    private void Update()
-    {
-        if (waveStarted)
-        {
-            timeUntilLastEnemy += Time.deltaTime;
-        }
-    }
-
     #region EnemySpawning
 
     public void StartEnemyClusterCoroutines()
     {
         latestSpawnedEnemy = 0;
-        timeUntilLastEnemy = 0;
 
         foreach (var _enemyCluster in GetCurrentWave().enemyClusters)
         {
-            StartCoroutine(SpawnEnemiesDelayed(_enemyCluster));
-
             float _timeWhenEnemyStopsSpawning = _enemyCluster.spawnStartTime + _enemyCluster.repeatCount * _enemyCluster.timeBetweenSpawns;
 
             if (latestSpawnedEnemy < _timeWhenEnemyStopsSpawning)
             {
                 latestSpawnedEnemy = _timeWhenEnemyStopsSpawning;
             }
+
+            spawnedEnemiesInCluster += _enemyCluster.enemyPrefab.Length * _enemyCluster.spawnCount * _enemyCluster.repeatCount;
+            
+            StartCoroutine(SpawnEnemiesDelayed(_enemyCluster));
         }
     }
 
@@ -92,6 +88,7 @@ public class Ride : Singleton<Ride>
                 {
                     Vector2 _randomOffset = Random.insideUnitCircle * radiusInsideGroupSpawning;
                     Instantiate(_enemy, _groupPos + new Vector2(_randomOffset.x, _randomOffset.y), Quaternion.identity, enemyParent.transform);
+                    currentSpawnedEnemies++;
                 }
             }
             
@@ -99,8 +96,7 @@ public class Ride : Singleton<Ride>
                 yield return new WaitForSeconds(enemyCluster.timeBetweenSpawns);
         }
         
-        //I add a buffer of -1 if the timeUntilLastEnemy is a bit too late for some reason
-        if (timeUntilLastEnemy >= latestSpawnedEnemy - 1)
+        if (spawnedEnemiesInCluster == currentSpawnedEnemies)
         {
             canWinGame = true;
         }
@@ -163,8 +159,6 @@ public class Ride : Singleton<Ride>
         {
             StartCoroutine(PlayRideSoundsAfterOneAnother());
         }
-        
-        InGameUIManager.Instance.fightUI.SetActive(false);
         
         if(InGameUIManager.Instance.dialogueUI.dialogueCountWalkieTalkie < InGameUIManager.Instance.dialogueUI.dialogueWalkieTalkie.Length)
         {
@@ -229,7 +223,7 @@ public class Ride : Singleton<Ride>
             generator.gateAnim.SetBool("OpenGate", true);
         
         currentRideHealth = maxRideHealth;
-        InGameUIManager.Instance.rideHpImage.fillAmount = currentRideHealth / maxRideHealth;
+        rideHealthFill.fillAmount = currentRideHealth / maxRideHealth;
         canWinGame = false;
         
         Time.timeScale = 1f;

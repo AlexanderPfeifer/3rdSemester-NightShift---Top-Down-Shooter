@@ -34,7 +34,7 @@ public class AbilityBehaviour : MonoBehaviour
     
     private void GameInputManagerOnUsingAbilityAction(object sender, EventArgs e)
     {
-        if (currentAbilityTime >= maxAbilityTime && InGameUIManager.Instance.fightUI.activeSelf && hasAbilityUpgrade)
+        if (currentAbilityTime >= maxAbilityTime && Ride.Instance.waveStarted && hasAbilityUpgrade)
         {
             StartCoroutine(StartWeaponAbility());
         }

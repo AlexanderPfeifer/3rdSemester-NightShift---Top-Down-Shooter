@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9dccd94222846d845be1cc59ad4efa6c
+guid: edd80673ddff3db43823ee2d3a6014f0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4080347966105848933
-    second: currency_icon_0
+      213: -8484865524206863341
+    second: carousel_health_overlay_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: currency_icon_0
+      name: carousel_health_overlay_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 33
-        height: 28
+        width: 102
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 56c0ab74bde40a830800000000000000
-      internalID: 4080347966105848933
+      spriteID: 31cf0bea2c3bf3a80800000000000000
+      internalID: -8484865524206863341
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      currency_icon_0: 4080347966105848933
+      carousel_health_overlay_0: -8484865524206863341
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

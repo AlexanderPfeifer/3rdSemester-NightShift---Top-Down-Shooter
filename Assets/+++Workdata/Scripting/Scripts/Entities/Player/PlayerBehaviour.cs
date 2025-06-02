@@ -317,7 +317,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         }
         else
         {
-            rideSpriteRenderer.sprite = rideSprite;
+            rideSpriteRenderer.sprite = null;
         }
     }
     
