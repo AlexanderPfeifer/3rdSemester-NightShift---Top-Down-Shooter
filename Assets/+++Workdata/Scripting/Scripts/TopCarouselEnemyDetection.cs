@@ -5,6 +5,7 @@ public class TopCarouselEnemyDetection : MonoBehaviour
     private CapsuleCollider2D capsuleCollider;
     private SpriteRenderer sr;
     [SerializeField] private Color alphaOnEnemyDetection;
+    [SerializeField] private LayerMask enemyLayer;
 
     private void Start()
     {
@@ -15,8 +16,11 @@ public class TopCarouselEnemyDetection : MonoBehaviour
     private void Update()
     { 
         Collider2D[] _results = new Collider2D[10];
-        int _count = capsuleCollider.Overlap(new ContactFilter2D().NoFilter(), _results);
+        ContactFilter2D _filter = new ContactFilter2D();
+        _filter.SetLayerMask(enemyLayer);
+        _filter.useLayerMask = true;
+        int _count = capsuleCollider.Overlap(_filter, _results);
         
-        sr.color = _count > 1 ? alphaOnEnemyDetection : Color.white;
+        sr.color = _count >= 1 ? alphaOnEnemyDetection : Color.white;
     }
 }

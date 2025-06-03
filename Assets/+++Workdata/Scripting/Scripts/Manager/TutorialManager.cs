@@ -16,6 +16,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     private bool playedFirstDialogue;
     private bool openedShopAfterFirstFight;
     [HideInInspector] public bool tutorialDone;
+    [SerializeField] private GameObject escapeInShop;
 
     [Header("QuestLogTexts")] 
     [SerializeField] private string fillAmmo;
@@ -109,6 +110,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
             InGameUIManager.Instance.dialogueUI.DisplayDialogue();
             Ride.Instance.generator.interactable = true;
             InGameUIManager.Instance.SetWalkieTalkieQuestLog(activateGen);
+            escapeInShop.SetActive(true);
         }
     }
     

@@ -340,7 +340,7 @@ public class WeaponBehaviour : MonoBehaviour
     private IEnumerator ReloadCoroutine()
     {
         //If statement translation: no ammo overall or weapon already full or no weapon is equipped
-        if (ammunitionInBackUp <= 0 || ammunitionInClip == maxClipSize || !weapon.activeSelf || PlayerBehaviour.Instance.gotHit)
+        if (ammunitionInBackUp <= 0 || ammunitionInClip == maxClipSize || !weapon.activeSelf || PlayerBehaviour.Instance.gotHit || (PlayerBehaviour.Instance.IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.IsDialoguePlaying()))
         {
             //return and make some vfx
             yield break;

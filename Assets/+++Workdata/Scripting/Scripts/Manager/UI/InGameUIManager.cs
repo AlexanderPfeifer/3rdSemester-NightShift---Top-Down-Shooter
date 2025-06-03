@@ -35,6 +35,9 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     [HideInInspector] public bool changeLight;
     public Animator endScreen;
     static float t;
+
+    [Header("LooseGame")] 
+    public Image shutterLooseImage;
     
     [Header("References")]
     public GeneratorUI generatorUI;

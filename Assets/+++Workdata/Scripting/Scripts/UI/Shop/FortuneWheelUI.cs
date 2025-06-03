@@ -18,6 +18,7 @@ public class FortuneWheelUI : MonoBehaviour
     [SerializeField] private int spinCounter;
     [SerializeField] private AnimationCurve winProbability;
     [SerializeField] private int maxSpinsUntilWin;
+    private int priceIndex;
 
     [Header("Price Dialogue")] 
     [SerializeField, TextArea(3, 10)] private string blankDialogue;
@@ -85,8 +86,8 @@ public class FortuneWheelUI : MonoBehaviour
 
         spinCounter++;
 
-        int _priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + firstPieSliceBufferInDegree) / _pieSize) % fortuneWheelPieCount;
-        StartCoroutine(LocationHighlight(_priceIndex));
+        priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + firstPieSliceBufferInDegree) / _pieSize) % fortuneWheelPieCount;
+        StartCoroutine(LocationHighlight());
         
         receivingPrize = true;
     }
@@ -100,7 +101,7 @@ public class FortuneWheelUI : MonoBehaviour
         StartCoroutine(WheelOverTimeCoroutine());
     }
 
-    private IEnumerator LocationHighlight(int priceIndex)
+    private IEnumerator LocationHighlight()
     {
         mark.transform.localScale = new Vector3(2, 2, 1);
         
@@ -127,7 +128,7 @@ public class FortuneWheelUI : MonoBehaviour
         yield return new WaitForSeconds(.3f);
 
         prizes[priceIndex]?.Invoke();
-
+        
         AllButtonsConfiguration.Instance.inGameUICanvasGroup.interactable = true;
         
         receivingPrize = false;
@@ -135,11 +136,21 @@ public class FortuneWheelUI : MonoBehaviour
 
     public void WinWeapon(WeaponObjectSO weapon)
     {
-        PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weapon);
-        
-        InGameUIManager.Instance.shopUI.ResetWeaponDescriptions();
-
-        spinCounter = 0;
+        if (!GameSaveStateManager.Instance.saveGameDataManager.HasWeapon(weapon.weaponName))
+        {
+            PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weapon);
+            
+            InGameUIManager.Instance.shopUI.ResetWeaponDescriptions();
+            
+            rb.transform.GetChild(priceIndex).GetComponent<Image>().color = Color.gray;
+            rb.transform.GetChild(priceIndex).transform.GetChild(0).GetComponent<Image>().color = Color.gray;
+            
+            spinCounter = 0;
+        }
+        else
+        {
+            StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(blankDialogue, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
+        }
     }
     
     public void WinBlank()

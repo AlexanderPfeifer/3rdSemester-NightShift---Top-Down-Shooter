@@ -102,9 +102,9 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
         {
             Vector3 _playerScreenPos = PlayerBehaviour.Instance.weaponBehaviour.mainCamera.WorldToScreenPoint(PlayerBehaviour.Instance.transform.position);
             
-            if(_rightStickInput.sqrMagnitude > 0.8f)
+            if(_rightStickInput.sqrMagnitude > 0.25f)
             {
-                aimScreenPosition = _playerScreenPos + new Vector3(_rightStickInput.x, _rightStickInput.y, 0f) * ((float)Screen.width / 6);
+                aimScreenPosition = _playerScreenPos + new Vector3(_rightStickInput.x, _rightStickInput.y, 0f).normalized * ((float)Screen.width / 6);
                 Mouse.current.WarpCursorPosition(aimScreenPosition);
             }
 

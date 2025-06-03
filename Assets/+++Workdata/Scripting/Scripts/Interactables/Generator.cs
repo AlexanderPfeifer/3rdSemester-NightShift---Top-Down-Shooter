@@ -17,12 +17,12 @@ public class Generator : MonoBehaviour
 
     public void SetUpFightArena()
     {
+        Ride.Instance.ResetRide();
         fightMusic.Play();
         AudioManager.Instance.Stop("InGameMusic");
         Ride.Instance.rideLight.SetActive(true);
-        
         Ride.Instance.waveStarted = true;
-        Ride.Instance.ResetRide();
+        
         gateAnim.SetBool("OpenGate", false);
         Ride.Instance.StartEnemyClusterCoroutines();
         

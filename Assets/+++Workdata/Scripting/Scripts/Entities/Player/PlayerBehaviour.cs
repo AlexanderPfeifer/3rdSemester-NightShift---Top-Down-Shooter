@@ -25,7 +25,8 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     public float baseMoveSpeed = 6.25f;
     public float slowDownSpeed;
     [SerializeField] private float hitVisualTime = .05f;
-    [SerializeField] private float hitVignetteFadeTime = .2f;
+    [SerializeField] private float hitVignetteFadeInTime = .2f;
+    [SerializeField] private float hitVignetteFadeOutTime = .2f;
     [SerializeField] private Volume hitVignette;
     [SerializeField] private float stunTimeOnEnemyCollision = 3;
     [HideInInspector] public bool gotHit;
@@ -204,9 +205,9 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         
         var _elapsedTime = 0f;
 
-        while (_elapsedTime < hitVignetteFadeTime)
+        while (_elapsedTime < hitVignetteFadeInTime)
         {
-            hitVignette.weight = Mathf.Lerp(hitVignette.weight, 1, _elapsedTime / hitVignetteFadeTime);
+            hitVignette.weight = Mathf.Lerp(hitVignette.weight, 1, _elapsedTime / hitVignetteFadeInTime);
             
             _elapsedTime += Time.deltaTime;
             yield return null;
@@ -228,9 +229,9 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         
         _elapsedTime = 0;
         
-        while (_elapsedTime < hitVignetteFadeTime)
+        while (_elapsedTime < hitVignetteFadeOutTime)
         {
-            hitVignette.weight = Mathf.Lerp(hitVignette.weight, 0, _elapsedTime / hitVignetteFadeTime);
+            hitVignette.weight = Mathf.Lerp(hitVignette.weight, 0, _elapsedTime / hitVignetteFadeOutTime);
         
             _elapsedTime += Time.deltaTime;
             yield return null;
@@ -344,6 +345,11 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         if (other.gameObject.TryGetComponent(out AmmoDrop _ammoDrop))
         {
             weaponBehaviour.ObtainAmmoDrop(_ammoDrop, 0, false);
+        }
+        else if (other.gameObject.TryGetComponent(out CurrencyDrop _currencyDrop))
+        {
+            playerCurrency.AddCurrency(_currencyDrop.currencyCount, false);
+            Destroy(other.gameObject);
         }
     }
 

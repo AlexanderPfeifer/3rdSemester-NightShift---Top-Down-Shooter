@@ -29,8 +29,8 @@ public class EnemyBase : MonoBehaviour
     [FormerlySerializedAs("addCurrencyOnDeath")]
     [Header("Drops")] 
     [HideInInspector] public bool addHelpDropsOnDeath = true;
-    [HideInInspector] public bool destroyWithoutEffect;
     [SerializeField] private GameObject ammoDropPrefab;
+    [SerializeField] private GameObject currencyDropPrefab;
     [FormerlySerializedAs("enemyAbilityGain")] [SerializeField] private float enemyAbilityGainForPlayer = 1;
     [SerializeField] private Vector2Int ammunitionAmountDropRange;
     [Range(0,1), SerializeField] private float ammunitionDropChancePercentage;
@@ -110,6 +110,8 @@ public class EnemyBase : MonoBehaviour
         {
             int _enemies = Ride.Instance.enemyParent.transform.Cast<Transform>().Count(child => child.GetComponent<EnemyBase>());
 
+            Debug.Log("Tried To Win Game");
+
             if (_enemies <= 1)
             {
                 Ride.Instance.WonWave();
@@ -119,19 +121,17 @@ public class EnemyBase : MonoBehaviour
         if(!gameObject.scene.isLoaded || gotKilledFromRide) 
             return;
 
-        if (!destroyWithoutEffect)
-        {
-            var _transform = transform;
-            Instantiate(enemyDeathMark, _transform.position, Quaternion.identity, _transform.parent);
+        var _transform = transform;
+        Instantiate(enemyDeathMark, _transform.position, Quaternion.identity, _transform.parent);
             
-            var _confetti = Instantiate(enemyConfetti, _transform.position, Quaternion.identity, _transform.parent);
-            _confetti.GetComponent<ParticleSystem>().Play();
-        }
+        var _confetti = Instantiate(enemyConfetti, _transform.position, Quaternion.identity, _transform.parent);
+        _confetti.GetComponent<ParticleSystem>().Play();
 
         if (addHelpDropsOnDeath)
         {
-            PlayerBehaviour.Instance.playerCurrency.AddCurrency(Random.Range((int)currencyDropRange.x, (int)currencyDropRange.y), false);
             PlayerBehaviour.Instance.abilityBehaviour.AddAbilityFill(enemyAbilityGainForPlayer);
+            GameObject _currencyDrop = Instantiate(currencyDropPrefab, transform.position, Quaternion.identity);
+            _currencyDrop.GetComponent<CurrencyDrop>().currencyCount = Random.Range((int)currencyDropRange.x, (int)currencyDropRange.y);
 
             if (Random.value <= ammunitionDropChancePercentage)
             {

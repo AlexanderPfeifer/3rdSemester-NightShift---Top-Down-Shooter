@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -81,18 +82,28 @@ public class ShopUI : MonoBehaviour
         DisplayItem(selectionWindows[currentWeaponSelectionWindow]);
     }
 
-    private void UpgradeWeapon(WeaponObjectSO weapon, IReadOnlyList<WeaponObjectSO> upgradeTiers)
+    public void UpgradeWeapon(WeaponObjectSO weapon)
     {
+        WeaponObjectSO[] _upgradeTiers = weapon.name switch
+        {
+            "Magnum magnum" => magnumMagnumUpgradeTiers,
+            "French Fries AR" => assaultRifleUpgradeTiers,
+            "Lollipop Shotgun" => lollipopShotgunUpgradeTiers,
+            "Corn Dog Hunting Rifle" => huntingRifleUpgradeTiers,
+            "Popcorn Launcher" => popcornLauncherUpgradeTiers,
+            _ => null
+        };
+
         int _currentTierOnUpgradingWeapon = weapon.upgradeTier;
 
-        if (_currentTierOnUpgradingWeapon < upgradeTiers.Count && PlayerBehaviour.Instance.playerCurrency.SpendCurrency(tierCosts[_currentTierOnUpgradingWeapon]))
+        if (_upgradeTiers != null && _currentTierOnUpgradingWeapon < _upgradeTiers.Length && PlayerBehaviour.Instance.playerCurrency.SpendCurrency(tierCosts[_currentTierOnUpgradingWeapon]))
         {
             for (int _i = 0; _i < PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.Count; _i++)
             {
                 if (PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes[_i] != weapon) 
                     continue;
                 
-                PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes[_i] = upgradeTiers[_currentTierOnUpgradingWeapon];
+                PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes[_i] = _upgradeTiers[_currentTierOnUpgradingWeapon];
                 PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes[_i]);
                 foreach (var _selected in selectionWindows)
                 {
@@ -117,8 +128,11 @@ public class ShopUI : MonoBehaviour
             PlayerBehaviour.Instance.weaponBehaviour.ObtainAmmoDrop(null, weapon.ammunitionBackUpSize, true);
 
             TutorialManager.Instance.ExplainGenerator();
-            
             PlayerBehaviour.Instance.ammoText.text = "";
+            
+            fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "AMMO FULL";
+            fillWeaponAmmoButton.interactable = false;   
+
         }
         else
         {
@@ -236,32 +250,7 @@ public class ShopUI : MonoBehaviour
                 upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "UPGRADE" + "\n" + tierCosts[collectedItemsDictionary[header].weaponObjectSO.upgradeTier];
             }
             
-            switch (header)
-            {
-                case "Magnum magnum" :
-                    SetUpgradeButton(header, magnumMagnumUpgradeTiers);
-                    break;
-                            
-                case "French Fries AR" :
-                    SetUpgradeButton(header, assaultRifleUpgradeTiers);
-                    break;
-                            
-                case "Lollipop Shotgun" :
-                    SetUpgradeButton(header, lollipopShotgunUpgradeTiers);
-                    break;
-                            
-                case "Corn Dog Hunting Rifle" :
-                    SetUpgradeButton(header, huntingRifleUpgradeTiers);
-                    break;
-                            
-                case "Popcorn Launcher" :
-                    SetUpgradeButton(header, popcornLauncherUpgradeTiers);
-                    break;
-                
-                case "Broken Pistol" :
-                    upgradeWeaponButton.interactable = false;
-                    break;
-            }
+            SetUpgradeButton(header);
         }
         
         if (header == PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon)
@@ -277,14 +266,20 @@ public class ShopUI : MonoBehaviour
         }
         else if (!PlayerBehaviour.Instance.playerCurrency.CheckEnoughCurrency(fillAmmoCost) && !TutorialManager.Instance.fillAmmoForFree)
         {
-            fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO MONEY";
+            //fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO MONEY";
             fillWeaponAmmoButton.interactable = false;
+        }
+
+        if (header == "Broken Pistol")
+        {
+            upgradeWeaponButton.interactable = false;
         }
     }
 
-    private void SetUpgradeButton(string header, WeaponObjectSO[] upgradeTiers)
+    private void SetUpgradeButton(string header)
     {
-        if (collectedItemsDictionary[header].weaponObjectSO.upgradeTier >= upgradeTiers.Length)
+        //I take a random weapon as a reference of how many upgrades a weapon has, assault rifle in this case
+        if (collectedItemsDictionary[header].weaponObjectSO.upgradeTier >= assaultRifleUpgradeTiers.Length)
         {
             upgradeWeaponButton.interactable = false;
             upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "MAX LEVEL";
@@ -292,12 +287,11 @@ public class ShopUI : MonoBehaviour
         else if (!PlayerBehaviour.Instance.playerCurrency.CheckEnoughCurrency(tierCosts[collectedItemsDictionary[header].weaponObjectSO.upgradeTier]))
         {
             upgradeWeaponButton.interactable = false;
-            upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO MONEY";
+            //upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO MONEY";
         }
         else
         {
-            upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO, 
-                upgradeTiers));
+            upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO));
         }
     }
 
