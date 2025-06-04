@@ -133,6 +133,11 @@ public class Ride : Singleton<Ride>
     public void WonWave()
     {
         winConfettiParticles.Play();
+
+        foreach (var _balloonCart in FindObjectsByType<BalloonCartBehaviour>(FindObjectsSortMode.None))
+        {
+            _balloonCart.ResetBalloons();
+        }
             
         InGameUIManager.Instance.SetWalkieTalkieQuestLog(TutorialManager.Instance.getNewWeapons);
         

@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 public class TutorialManager : SingletonPersistent<TutorialManager>
 {
     [HideInInspector] public int shotSigns;
-    private int hitSigns;
+    [HideInInspector] public int hitSigns;
 
     [HideInInspector] public bool explainedRideSequences;
 

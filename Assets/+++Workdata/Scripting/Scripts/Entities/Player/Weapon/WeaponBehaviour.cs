@@ -571,6 +571,11 @@ public class WeaponBehaviour : MonoBehaviour
                         _trailRendererBaton.transform.localRotation = Quaternion.Euler(0f, 0f, _currentZBat);
                         break;
                     }
+                    case 1:
+                    {
+                        AudioManager.Instance.Play("BatonSwing");
+                        break;
+                    }
                     case 2:
                     {
                         float _currentZBat = Mathf.Lerp(_startZBaton, _pullBackZBaton, _elapsed / _duration);

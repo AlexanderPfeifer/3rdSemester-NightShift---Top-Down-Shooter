@@ -18,7 +18,7 @@ public class MeleeWeaponBehaviour : MonoBehaviour
     {
         if (col.gameObject.TryGetComponent(out EnemyHealthPoints _enemyHealthPoints))
         {
-            StartCoroutine(WeaponVisualCoroutine());
+            WeaponEffects();    
             _enemyHealthPoints.TakeDamage(damage, null);
             _enemyHealthPoints.StartCoroutine(_enemyHealthPoints.EnemyKnockBack(0, _enemyHealthPoints.transform.position - transform.position));
         }
@@ -26,10 +26,16 @@ public class MeleeWeaponBehaviour : MonoBehaviour
         {
             if (_shootingSignBehaviour.canGetHit)
             {
-                StartCoroutine(WeaponVisualCoroutine());
+                WeaponEffects();
                 _shootingSignBehaviour.StartCoroutine(_shootingSignBehaviour.SnapDownOnHit(false));
             }
         }
+    }
+
+    private void WeaponEffects()
+    {
+        StartCoroutine(WeaponVisualCoroutine());
+        AudioManager.Instance.Play("BatonHit");
     }
     
     public IEnumerator WeaponVisualCoroutine()

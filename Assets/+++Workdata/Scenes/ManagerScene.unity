@@ -7126,6 +7126,20 @@ MonoBehaviour:
       loop: 0
       pitch: 1
       audioSource: {fileID: 0}
+    - name: BatonHit
+      audioResource: {fileID: 6418180475301049370, guid: 95838a6b8c2e1a74b8fb374526e339e7, type: 2}
+      audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
+      volume: 1
+      loop: 0
+      pitch: 1
+      audioSource: {fileID: 0}
+    - name: BatonSwing
+      audioResource: {fileID: 6418180475301049370, guid: a8ce5c2a0436421408c1dfe16fa19819, type: 2}
+      audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
+      volume: 1
+      loop: 0
+      pitch: 1
+      audioSource: {fileID: 0}
   - name: Stand
     sounds:
     - name: DuckSound
@@ -7153,6 +7167,20 @@ MonoBehaviour:
       audioSource: {fileID: 0}
     - name: WalkieTalkie
       audioResource: {fileID: 8300000, guid: 3e1ed7b8396227a4cb72899adf733b62, type: 3}
+      audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
+      volume: 0.5
+      loop: 0
+      pitch: 1
+      audioSource: {fileID: 0}
+    - name: Equip
+      audioResource: {fileID: 8300000, guid: b585271be41c6b849ac1dc98a87a3656, type: 3}
+      audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
+      volume: 0.5
+      loop: 0
+      pitch: 1
+      audioSource: {fileID: 0}
+    - name: Upgrade
+      audioResource: {fileID: 8300000, guid: 65a84c59fbbf90c41977324322e5f316, type: 3}
       audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
       volume: 0.5
       loop: 0

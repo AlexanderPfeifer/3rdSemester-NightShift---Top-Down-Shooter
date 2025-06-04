@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -103,6 +102,7 @@ public class ShopUI : MonoBehaviour
                 if (PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes[_i] != weapon) 
                     continue;
                 
+                AudioManager.Instance.Play("Upgrade");
                 PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes[_i] = _upgradeTiers[_currentTierOnUpgradingWeapon];
                 PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes[_i]);
                 foreach (var _selected in selectionWindows)
@@ -130,6 +130,7 @@ public class ShopUI : MonoBehaviour
             TutorialManager.Instance.ExplainGenerator();
             PlayerBehaviour.Instance.ammoText.text = "";
             
+            AudioManager.Instance.Play("Reload");
             fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "AMMO FULL";
             fillWeaponAmmoButton.interactable = false;   
 
@@ -168,13 +169,16 @@ public class ShopUI : MonoBehaviour
 
     private void EquipNewWeapon(WeaponObjectSO weaponObjectSO)
     {
-        if(PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon != weaponObjectSO.weaponName)
+        if (PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon != weaponObjectSO.weaponName)
+        {
+            AudioManager.Instance.Play("Equip");
             PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weaponObjectSO);
+        }
     }
 
     private void DisplayItem(string header)
     {
-        if (collectedItemsDictionary.Count == 0)
+        if (collectedItemsDictionary.Count == 0 || TutorialManager.Instance.hitSigns < 1)
         {
             return;
         }
