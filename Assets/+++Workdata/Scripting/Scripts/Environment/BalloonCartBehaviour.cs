@@ -1,16 +1,19 @@
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BalloonCartBehaviour : MonoBehaviour
 {
     [SerializeField] private LayerMask bulletLayer;
-    private int balloonCount = 3; 
+    private int balloonCount; 
     private Animator anim;
     [SerializeField] private ParticleSystem balloonPopParticle;
     [SerializeField] private Vector2Int getCurrencyOnShot = new(2, 4);
 
     private void Start()
     {
+        balloonCount = 3;
         anim = GetComponent<Animator>();
+        anim.SetInteger("BalloonCount", balloonCount);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

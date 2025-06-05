@@ -26,7 +26,7 @@ public class Ride : Singleton<Ride>
     public SpriteRenderer rideRenderer;
 
     [Header("Activation")]
-    public GameObject rideLight;
+    public GameObject[] rideLight;
     public Generator generator;
 
     [Header("Win")] 
@@ -176,8 +176,10 @@ public class Ride : Singleton<Ride>
         }
         
         AudioManager.Instance.Play("RideShutDown");
-        rideLight.SetActive(false);
-
+        foreach (var _light in rideLight)
+        {
+            _light.SetActive(false);
+        }
         yield return null;
     }
 

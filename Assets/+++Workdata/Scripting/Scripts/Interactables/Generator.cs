@@ -19,7 +19,10 @@ public class Generator : MonoBehaviour
     {
         fightMusic.Play();
         AudioManager.Instance.Stop("InGameMusic");
-        Ride.Instance.rideLight.SetActive(true);
+        foreach (var _light in Ride.Instance.rideLight)
+        {
+            _light.SetActive(true);
+        }
         Ride.Instance.waveStarted = true;
         
         gateAnim.SetBool("OpenGate", false);

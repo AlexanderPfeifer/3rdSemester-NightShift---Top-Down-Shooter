@@ -65,8 +65,10 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     public void ExplainStartupSequences()
     {
         AudioManager.Instance.Play("RideShutDown");
-        Ride.Instance.rideLight.SetActive(false);
-
+        foreach (var _light in Ride.Instance.rideLight)
+        {
+            _light.SetActive(false);
+        }
         StartCoroutine(WaitForShutdown());
         
         explainedRideSequences = true;

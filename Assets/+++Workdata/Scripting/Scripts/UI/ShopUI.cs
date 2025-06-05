@@ -20,6 +20,8 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private Button upgradeWeaponButton;
     public Button fillWeaponAmmoButton;
     [SerializeField] private GameObject buttonsGameObject;
+    [SerializeField] private Sprite pinkButtonSprite;
+    [SerializeField] private Sprite blueButtonSprite;
 
     [Header("ShopWindow")] 
     public GameObject fortuneWheel;
@@ -132,8 +134,7 @@ public class ShopUI : MonoBehaviour
             
             AudioManager.Instance.Play("Reload");
             fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "AMMO FULL";
-            fillWeaponAmmoButton.interactable = false;   
-
+            ApplyHoverOnlyToButton(fillWeaponAmmoButton, false);
         }
         else
         {
@@ -190,8 +191,7 @@ public class ShopUI : MonoBehaviour
         bulletDelayTextField.gameObject.SetActive(true);
         reloadSpeedTextField.gameObject.SetActive(true);
         clipSizeTextField.gameObject.SetActive(true);
-        equipWeaponButton.interactable = true;
-        upgradeWeaponButton.interactable = true;
+
         InGameUIManager.Instance.dialogueUI.shopText.text = "";
         
         if (!collectedItemsDictionary.TryGetValue(header, out _))
@@ -226,7 +226,6 @@ public class ShopUI : MonoBehaviour
 
         if (collectedItemsDictionary[header].weaponObjectSO != null)
         {
-            equipWeaponButton.interactable = true;
             equipWeaponButton.onClick.RemoveAllListeners();
             equipWeaponButton.onClick.AddListener(() => EquipNewWeapon(collectedItemsDictionary[header].weaponObjectSO));
 
@@ -238,12 +237,10 @@ public class ShopUI : MonoBehaviour
             {
                 fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "REFILL" + "\n" + fillAmmoCost;
             }
-            
-            fillWeaponAmmoButton.interactable = true;
+
             fillWeaponAmmoButton.onClick.RemoveAllListeners();
             fillWeaponAmmoButton.onClick.AddListener(() => FillWeaponAmmo(collectedItemsDictionary[header].weaponObjectSO));
 
-            upgradeWeaponButton.interactable = true;
             upgradeWeaponButton.onClick.RemoveAllListeners();
             if (header == "Broken Pistol")
             {
@@ -259,24 +256,91 @@ public class ShopUI : MonoBehaviour
         
         if (header == PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon)
         {
-            equipWeaponButton.interactable = false;
+            ApplyHoverOnlyToButton(equipWeaponButton, false);
+        }
+        else
+        {
+            ApplyHoverOnlyToButton(equipWeaponButton, true);
         }
         
         if (PlayerBehaviour.Instance.weaponBehaviour.ammunitionBackUpSize == PlayerBehaviour.Instance.weaponBehaviour.ammunitionInBackUp && 
             PlayerBehaviour.Instance.weaponBehaviour.ammunitionInClip == PlayerBehaviour.Instance.weaponBehaviour.maxClipSize)
         {
             fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "AMMO FULL";
-            fillWeaponAmmoButton.interactable = false;   
+            ApplyHoverOnlyToButton(fillWeaponAmmoButton, false);   
         }
         else if (!PlayerBehaviour.Instance.playerCurrency.CheckEnoughCurrency(fillAmmoCost) && !TutorialManager.Instance.fillAmmoForFree)
         {
             //fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO MONEY";
-            fillWeaponAmmoButton.interactable = false;
+            ApplyHoverOnlyToButton(fillWeaponAmmoButton, false);
+        }
+        else
+        {
+            ApplyHoverOnlyToButton(equipWeaponButton, true);
         }
 
         if (header == "Broken Pistol")
         {
-            upgradeWeaponButton.interactable = false;
+            ApplyHoverOnlyToButton(upgradeWeaponButton, false);
+        }
+    }
+    
+    void ApplyHoverOnlyToButton(Button originalButton, bool clickable)
+    {
+        if (originalButton == null) 
+            return;
+
+        if (originalButton.TryGetComponent(out HoverOnlyButton _hoverOnlyButton))
+        {
+            _hoverOnlyButton.disableClick = true;
+            _hoverOnlyButton.image.sprite = pinkButtonSprite;
+            
+            return;
+        }
+
+        var _transition = originalButton.transition;
+        var _onClickEvents = originalButton.onClick;
+        var _colors = originalButton.colors;
+        var _navigation = originalButton.navigation;
+        var _image = originalButton.image;
+        var _targetGraphic = originalButton.targetGraphic;
+        var _spriteState = originalButton.spriteState;
+        var _interactable = originalButton.interactable;
+        var _gameObject = originalButton.gameObject;
+        
+        DestroyImmediate(originalButton);
+
+        var _hoverOnly = _gameObject.AddComponent<HoverOnlyButton>();
+        
+        _hoverOnly.transition = _transition;
+        _hoverOnly.onClick = _onClickEvents;
+        _hoverOnly.colors = _colors;
+        _hoverOnly.navigation = _navigation;
+        _hoverOnly.image = _image;
+        _hoverOnly.spriteState = _spriteState;
+        _hoverOnly.targetGraphic = _targetGraphic;
+        _hoverOnly.interactable = _interactable;
+
+        if (clickable)
+        {
+            _hoverOnly.disableClick = false;
+            SpriteState spriteState = _hoverOnly.spriteState;
+            spriteState.selectedSprite = blueButtonSprite;
+            _hoverOnly.spriteState = spriteState;        
+        }
+        else
+        {
+            if (GameInputManager.Instance.mouseIsLastUsedDevice)
+            {
+                _hoverOnly.image.sprite = pinkButtonSprite;
+            }
+            else
+            {
+                _hoverOnly.disableClick = true;
+                SpriteState spriteState = _hoverOnly.spriteState;
+                spriteState.selectedSprite = pinkButtonSprite;
+                _hoverOnly.spriteState = spriteState;        
+            }
         }
     }
 
@@ -285,13 +349,12 @@ public class ShopUI : MonoBehaviour
         //I take a random weapon as a reference of how many upgrades a weapon has, assault rifle in this case
         if (collectedItemsDictionary[header].weaponObjectSO.upgradeTier >= assaultRifleUpgradeTiers.Length)
         {
-            upgradeWeaponButton.interactable = false;
+            ApplyHoverOnlyToButton(upgradeWeaponButton, false);
             upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "MAX LEVEL";
         }
         else if (!PlayerBehaviour.Instance.playerCurrency.CheckEnoughCurrency(tierCosts[collectedItemsDictionary[header].weaponObjectSO.upgradeTier]))
         {
-            upgradeWeaponButton.interactable = false;
-            //upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO MONEY";
+            ApplyHoverOnlyToButton(upgradeWeaponButton, false);
         }
         else
         {

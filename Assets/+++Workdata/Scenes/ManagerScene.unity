@@ -6213,6 +6213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSigns: 0
+  hitSigns: 0
   explainedRideSequences: 0
   newWeaponsCanBeUnlocked: 0
   fillAmmoForFree: 0
@@ -15189,6 +15190,8 @@ MonoBehaviour:
   upgradeWeaponButton: {fileID: 1959048874}
   fillWeaponAmmoButton: {fileID: 1779932097}
   buttonsGameObject: {fileID: 1349386883}
+  pinkButtonSprite: {fileID: 21300000, guid: 0f615c035e57ef847bcc843015956993, type: 3}
+  blueButtonSprite: {fileID: 21300000, guid: 7919a3dce5390894eb727b89222f4797, type: 3}
   fortuneWheel: {fileID: 337340316}
   weapons: {fileID: 52209058}
   selectionWindows:

@@ -69,6 +69,7 @@ public class GeneratorUI : MonoBehaviour
                 _generator.GetComponent<Generator>().interactable = false;
                 InGameUIManager.Instance.SetWalkieTalkieQuestLog(TutorialManager.Instance.activateRide);
                 Ride.Instance.ResetRide();
+                Ride.Instance.generator.interactable = false;
             }
         }
         else

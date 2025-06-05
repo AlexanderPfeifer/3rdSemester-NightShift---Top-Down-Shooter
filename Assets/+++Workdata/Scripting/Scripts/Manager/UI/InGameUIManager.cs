@@ -176,11 +176,14 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
             if (!shopUI.fortuneWheel.activeSelf)
             {
-                EventSystem.current.SetSelectedGameObject(shopUI.fillWeaponAmmoButton.gameObject);
+                if(!GameInputManager.Instance.mouseIsLastUsedDevice)
+                    EventSystem.current.SetSelectedGameObject(shopUI.fillWeaponAmmoButton.gameObject);
             }
             else
             {
-                EventSystem.current.SetSelectedGameObject(shopUI.spinFortuneWheelButton.gameObject);
+                if(!GameInputManager.Instance.mouseIsLastUsedDevice)
+                    EventSystem.current.SetSelectedGameObject(shopUI.spinFortuneWheelButton.gameObject);
+                
                 StartCoroutine(dialogueUI.TypeTextCoroutine("Peggy:" + "\n" + "...", null, dialogueUI.currentTextBox));
             }
             
