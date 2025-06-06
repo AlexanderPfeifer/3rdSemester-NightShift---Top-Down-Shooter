@@ -7196,7 +7196,7 @@ MonoBehaviour:
       loop: 0
       pitch: 1
       audioSource: {fileID: 0}
-    - name: Blank
+    - name: WeaponWin
       audioResource: {fileID: 6418180475301049370, guid: fe2f52cae62cf8c429964af875b66951, type: 2}
       audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
       volume: 0.6
