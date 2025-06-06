@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class DebugMode : SingletonPersistent<DebugMode>
 {
-    [Header("ACTIVATION")]
-    public bool debugMode;
-    
     [Header("Settings")]
     public WeaponObjectSO equipWeapon;
     public UnlockWeapons[] UnlockWeapons;
     public bool activateRide;
     public int currencyAtStart;
+    [SerializeField] private int playWave;
 
     protected override void Awake()
     {
@@ -28,6 +26,14 @@ public class DebugMode : SingletonPersistent<DebugMode>
         }
         
         UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("InGame");
+    }
+
+    public void AddWaves()
+    {
+        for (int _i = 0; _i < playWave; _i++)
+        {
+            GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount();
+        }
     }
     
     public void GetDebugWeapon()

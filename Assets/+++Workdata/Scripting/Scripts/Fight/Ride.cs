@@ -59,8 +59,15 @@ public class Ride : Singleton<Ride>
 
     public void StartEnemyClusterCoroutines()
     {
+        if (DebugMode.Instance != null)
+        {
+            DebugMode.Instance.AddWaves();
+        }
+        
         foreach (var _enemyCluster in GetCurrentWave().enemyClusters)
         {
+            Debug.Log(GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished());
+            
             spawnedEnemiesInCluster += _enemyCluster.enemyPrefab.Length * _enemyCluster.spawnCount * _enemyCluster.repeatCount;
             
             StartCoroutine(SpawnEnemiesDelayed(_enemyCluster));
@@ -85,7 +92,7 @@ public class Ride : Singleton<Ride>
                 }
             }
             
-            if(_i - 2 != enemyCluster.repeatCount)
+            if(_i != enemyCluster.repeatCount - 1)
                 yield return new WaitForSeconds(enemyCluster.timeBetweenSpawns);
         }
         
@@ -213,17 +220,20 @@ public class Ride : Singleton<Ride>
         AudioManager.Instance.Play("MetalShutterDown");
         
         float _elapsedTime = 0f;
-        float _startFill = InGameUIManager.Instance.shutterLooseImage.fillAmount;
-        float _targetFill = 1f;
+        var _rectTransform = InGameUIManager.Instance.shutterLooseImage.rectTransform.position;
+        float _startFill = _rectTransform.y;
+        float _targetPosition = 0f;
 
         while (_elapsedTime < shutterGoDownTime)
         {
             _elapsedTime += Time.deltaTime;
-            InGameUIManager.Instance.shutterLooseImage.fillAmount = Mathf.Lerp(_startFill, _targetFill, _elapsedTime / shutterGoDownTime);
+            InGameUIManager.Instance.shutterLooseImage.rectTransform.position = 
+                new Vector3(_rectTransform.x, Mathf.Lerp(_startFill, _targetPosition, _elapsedTime / shutterGoDownTime), _rectTransform.z);
             yield return null;
         }
 
-        InGameUIManager.Instance.shutterLooseImage.fillAmount = _targetFill;
+        InGameUIManager.Instance.shutterLooseImage.rectTransform.position = 
+            new Vector3(_rectTransform.x, _targetPosition, _rectTransform.z);
         PlayerBehaviour.Instance.transform.position = restartPosition;
         CleanUpStage();
 
@@ -233,19 +243,20 @@ public class Ride : Singleton<Ride>
         InGameUIManager.Instance.OpenShop();
 
         _elapsedTime = 0f;
-        _startFill = InGameUIManager.Instance.shutterLooseImage.fillAmount;
-        _targetFill = 0;
+        _startFill = InGameUIManager.Instance.shutterLooseImage.rectTransform.position.y;
+        _targetPosition = 1100f;
 
         while (_elapsedTime < shutterGoDownTime)
         {
             _elapsedTime += Time.deltaTime;
-            InGameUIManager.Instance.shutterLooseImage.fillAmount = Mathf.Lerp(_startFill, _targetFill, _elapsedTime / shutterGoDownTime);
+            InGameUIManager.Instance.shutterLooseImage.rectTransform.position = 
+                new Vector3(_rectTransform.x, Mathf.Lerp(_startFill, _targetPosition, _elapsedTime / shutterGoDownTime), _rectTransform.z);            
             yield return null;
         }
         
         InGameUIManager.Instance.dialogueUI.StopCurrentAndTypeNewTextCoroutine(peggyLooseText, null, InGameUIManager.Instance.dialogueUI.currentTextBox);
 
-        InGameUIManager.Instance.shutterLooseImage.fillAmount = _targetFill;
+        InGameUIManager.Instance.shutterLooseImage.fillAmount = _targetPosition;
     }
 
     private void CleanUpRide()

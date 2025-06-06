@@ -145,6 +145,8 @@ public class FortuneWheelUI : MonoBehaviour
             rb.transform.GetChild(priceIndex).GetComponent<Image>().color = Color.gray;
             rb.transform.GetChild(priceIndex).transform.GetChild(0).GetComponent<Image>().color = Color.gray;
             
+            AudioManager.Instance.Play("WeaponWin");
+
             spinCounter = 0;
         }
         else
@@ -156,6 +158,8 @@ public class FortuneWheelUI : MonoBehaviour
     public void WinBlank()
     {
         StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(blankDialogue, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
+        
+        AudioManager.Instance.Play("Blank");
     }   
     
     public void WinSmallMoney(int money)

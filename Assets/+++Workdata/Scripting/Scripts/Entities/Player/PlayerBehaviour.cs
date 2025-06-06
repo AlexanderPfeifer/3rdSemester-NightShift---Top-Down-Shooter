@@ -106,7 +106,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         currentMoveSpeed = baseMoveSpeed;
         playerCurrency = GetComponent<PlayerCurrency>();
 
-        if (DebugMode.Instance.debugMode)
+        if (DebugMode.Instance != null)
         {
             if (DebugMode.Instance.activateRide)
             {

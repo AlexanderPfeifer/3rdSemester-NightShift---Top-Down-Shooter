@@ -18,7 +18,7 @@ public class SceneManager : SingletonPersistent<SceneManager>
 
     private void Start()
     {
-        if(DebugMode.Instance.debugMode)
+        if(DebugMode.Instance != null)
             loadingScreenAnim.SetTrigger("Start");
     }
 

@@ -3,8 +3,8 @@ using UnityEngine.EventSystems;
 
 public class HoverOnlyButton : Button
 {
-    public bool disableClick = true;
-
+    public bool disableClick;
+    
     public override void OnPointerClick(PointerEventData eventData)
     {
         if (!disableClick)

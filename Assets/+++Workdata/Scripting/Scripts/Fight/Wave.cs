@@ -20,7 +20,7 @@ public class EnemyClusterData
     [Min(1)] public int spawnCount;
     
     [Header("HOW MANY REPETITIONS")]
-    [Min(1)] public int repeatCount;
+    [Min(0)] public int repeatCount;
     
     [Header("AT WHAT INTERVAL")]
     [Min(0)] public float timeBetweenSpawns;
@@ -34,7 +34,7 @@ public class EnemyClusterData
 
         stopsSpawningAtTime = repeatCount * timeBetweenSpawns + spawnStartTime;
 
-        if (repeatCount <= 1)
+        if (repeatCount == 0)
         {
             timeBetweenSpawns = 0;
         }

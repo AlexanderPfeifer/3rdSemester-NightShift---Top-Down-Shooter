@@ -82,12 +82,14 @@ public class AbilityBehaviour : MonoBehaviour
         if (canGetAbilityGain && hasAbilityUpgrade)
         {
             currentAbilityTime += enemyAbilityGainForPlayer;
-            InGameUIManager.Instance.abilityProgressImage.fillAmount = currentAbilityTime / maxAbilityTime;
 
             if (currentAbilityTime >= maxAbilityTime)
             {
                 InGameUIManager.Instance.pressSpace.SetActive(true);
+                currentAbilityTime = maxAbilityTime;
             }
+            
+            InGameUIManager.Instance.abilityProgressImage.fillAmount = currentAbilityTime / maxAbilityTime;
         }
     }
 }
