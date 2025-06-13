@@ -295,7 +295,7 @@ public class ShopUI : MonoBehaviour
         if (hoverOnlyButton == null) 
             return;
 
-        if (clickable)
+        if (!clickable)
         {
             if (GameInputManager.Instance.mouseIsLastUsedDevice)
             {
