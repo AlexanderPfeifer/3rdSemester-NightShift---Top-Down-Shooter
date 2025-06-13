@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class AllButtonsConfiguration : Singleton<AllButtonsConfiguration>
 {
-    public CanvasGroup inGameUICanvasGroup;
-
     private void Start()
     {
         foreach (Button _button in FindObjectsByType<Button>(FindObjectsSortMode.None))

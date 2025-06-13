@@ -135,7 +135,7 @@ public class DialogueUI : MonoBehaviour
     {
         if (currentDialogue != null)
         {
-            AllButtonsConfiguration.Instance.inGameUICanvasGroup.interactable = false;
+            InGameUIManager.Instance.inGameUICanvasGroup.interactable = false;
 
             dialogueState = DialogueState.DialoguePlaying;
         }
@@ -245,7 +245,7 @@ public class DialogueUI : MonoBehaviour
 
         dialogueState = DialogueState.DialogueNotPlaying;
         
-        AllButtonsConfiguration.Instance.inGameUICanvasGroup.interactable = true;
+        InGameUIManager.Instance.inGameUICanvasGroup.interactable = true;
 
         if (currentTextBox != shopText)
         {

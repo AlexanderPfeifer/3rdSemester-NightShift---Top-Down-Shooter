@@ -20,7 +20,7 @@ public class PauseMenuUI : MonoBehaviour
     
     public void OpenPauseMenu(object sender, EventArgs e)
     {
-        if (PlayerBehaviour.Instance == null || !PlayerBehaviour.Instance.IsPlayerBusy())
+        if (PlayerBehaviour.Instance == null || (PlayerBehaviour.Instance.IsPlayerBusy() && !inventoryIsOpened) || InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())
         {
             return;
         }
@@ -31,9 +31,6 @@ public class PauseMenuUI : MonoBehaviour
         }
         else
         {
-            if(PlayerBehaviour.Instance.IsPlayerBusy())
-                return;
-            
             inventory.SetActive(true);
             PlayerBehaviour.Instance.SetPlayerBusy(true);
             EventSystem.current.SetSelectedGameObject(firstPauseMenuSelected);

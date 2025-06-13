@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: b0a34fa459553bb41930c00722e23bf2
+guid: ffe176e04bcd86e48a2ab3c3cfb9cdaa
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4954228054548247253
-    second: esc_hover_0
+      213: 9075327903129334025
+    second: gamepad_shoot_chalk_0
+  - first:
+      213: -1873732047431163392
+    second: gamepad_shoot_chalk_1
+  - first:
+      213: 6439630889531301587
+    second: gamepad_shoot_chalk_2
+  - first:
+      213: 5617652329305744759
+    second: gamepad_shoot_chalk_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +55,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -113,13 +122,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: esc_hover_0
+      name: gamepad_shoot_chalk_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 24
-        height: 11
+        x: 23
+        y: 58
+        width: 11
+        height: 6
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +137,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5d27f9fba24f0c440800000000000000
-      internalID: 4954228054548247253
+      spriteID: 901f63e05aa02fd70800000000000000
+      internalID: 9075327903129334025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gamepad_shoot_chalk_1
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 56
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 002a99c51aa2ff5e0800000000000000
+      internalID: -1873732047431163392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gamepad_shoot_chalk_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 63
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3de5527ec2a2e5950800000000000000
+      internalID: 6439630889531301587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gamepad_shoot_chalk_3
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 31
+        width: 40
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7752ae7a709e5fd40800000000000000
+      internalID: 5617652329305744759
       vertices: []
       indices: 
       edges: []
@@ -138,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      esc_hover_0: 4954228054548247253
+      gamepad_shoot_chalk_0: 9075327903129334025
+      gamepad_shoot_chalk_1: -1873732047431163392
+      gamepad_shoot_chalk_2: 6439630889531301587
+      gamepad_shoot_chalk_3: 5617652329305744759
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

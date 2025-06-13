@@ -164,6 +164,9 @@ public class ShopUI : MonoBehaviour
             InGameUIManager.Instance.dialogueUI.StopCurrentAndTypeNewTextCoroutine(fortuneWheelText, null, InGameUIManager.Instance.dialogueUI.currentTextBox);
             fortuneWheel.SetActive(true);
             weapons.SetActive(false);
+
+            if(collectedItemsDictionary.Count != 0)
+                ResetWeaponDescriptions();
         }
         
         EventSystem.current.SetSelectedGameObject(changeWindowButton.gameObject);
@@ -180,7 +183,7 @@ public class ShopUI : MonoBehaviour
 
     private void DisplayItem(string header)
     {
-        if (collectedItemsDictionary.Count == 0 || TutorialManager.Instance.hitSigns < 1)
+        if (collectedItemsDictionary.Count == 0 || TutorialManager.Instance.shotSigns < TutorialManager.Instance.shotSignsToGoAhead)
         {
             return;
         }
@@ -296,9 +299,9 @@ public class ShopUI : MonoBehaviour
         {
             if (GameInputManager.Instance.mouseIsLastUsedDevice)
             {
-                hoverOnlyButton.interactable = false;
+                hoverOnlyButton.interactable = true;
             }
-            
+
             hoverOnlyButton.image.sprite = grayButtonSprite;
 
             hoverOnlyButton.disableClick = false;
@@ -312,7 +315,7 @@ public class ShopUI : MonoBehaviour
             if (GameInputManager.Instance.mouseIsLastUsedDevice)
             {
                 hoverOnlyButton.image.sprite = pinkButtonSprite;
-                hoverOnlyButton.interactable = true;
+                hoverOnlyButton.interactable = false;
             }
             
             hoverOnlyButton.disableClick = true;

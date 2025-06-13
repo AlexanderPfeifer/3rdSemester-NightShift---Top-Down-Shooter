@@ -12,6 +12,8 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnNotShootingAction, OnReloadAction, OnMeleeWeaponAction, 
         OnSkipDialogueWithController;
 
+
+
     protected override void Awake()
     {
         base.Awake();
@@ -83,6 +85,24 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
         return _inputVector;
     }
 
+    public bool MouseIsLastUsedDevice
+    {
+        get => mouseIsLastUsedDevice;
+        set
+        {
+            if (mouseIsLastUsedDevice != value)
+            {
+                mouseIsLastUsedDevice = value;
+                OnInputDeviceChanged(value);
+            }
+        }
+    }
+
+    private void OnInputDeviceChanged(bool isMouse)
+    {
+        InputGraphicsManager.Instance.SetInputGraphics(isMouse);
+    }
+
     public Vector3 GetAimingVector()
     {
         Vector2 _mouseDelta = Mouse.current.delta.ReadValue();
@@ -91,11 +111,11 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
 
         if (_rightStickInput.sqrMagnitude > 0.01f || _leftStickInput.sqrMagnitude > 0.01f)
         {
-            mouseIsLastUsedDevice = false;
+            MouseIsLastUsedDevice = false;
         }
         else if (_mouseDelta.sqrMagnitude > 0.01f)
         {
-            mouseIsLastUsedDevice = true;
+            MouseIsLastUsedDevice = true;
         }
         
         if (!mouseIsLastUsedDevice)

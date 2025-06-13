@@ -5131,7 +5131,7 @@ GameObject:
   - component: {fileID: 1076360096}
   - component: {fileID: 1076360095}
   m_Layer: 5
-  m_Name: BG (1)
+  m_Name: BGFinished
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7291,7 +7291,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7749d7821f7a81c4aac402cd7f843e32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inGameUICanvasGroup: {fileID: 0}
 --- !u!4 &1316587622
 Transform:
   m_ObjectHideFlags: 0

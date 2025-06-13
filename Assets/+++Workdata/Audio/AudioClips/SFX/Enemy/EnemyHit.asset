@@ -7,7 +7,7 @@ AudioRandomContainer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: EnemyHit
-  m_Volume: -8
+  m_Volume: -15
   m_Pitch: 0
   m_AutomaticTriggerTime: 0
   m_LoopCount: 1

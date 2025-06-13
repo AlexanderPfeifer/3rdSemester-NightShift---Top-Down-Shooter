@@ -9,7 +9,6 @@ public class GameSaveStateManager : SingletonPersistent<GameSaveStateManager>
     public const string InGameSceneName = "InGame";
 
     [Header("GameSaveText")]
-    [SerializeField] private TextMeshProUGUI gameSavingText; 
     [SerializeField] private float textAlphaChangeSpeed = 1;
     private bool changeAlpha;
     
@@ -37,7 +36,6 @@ public class GameSaveStateManager : SingletonPersistent<GameSaveStateManager>
 
     public void GoToMainMenu()
     {
-        InGameUIManager.Instance.playerHUD.SetActive(false);
         CurrentState = GameState.InMainMenu;
         SceneManager.Instance.SwitchScene(MainMenuSceneName);
     }
@@ -80,10 +78,10 @@ public class GameSaveStateManager : SingletonPersistent<GameSaveStateManager>
 
     private IEnumerator SetSaveGameText()
     {
-        gameSavingText.gameObject.SetActive(true);
+        InGameUIManager.Instance.gameSavingText.gameObject.SetActive(true);
         changeAlpha = true;
         yield return new WaitForSeconds(3);
-        gameSavingText.gameObject.SetActive(false);
+        InGameUIManager.Instance.gameSavingText.gameObject.SetActive(false);
         changeAlpha = false;
     }
 
@@ -91,7 +89,9 @@ public class GameSaveStateManager : SingletonPersistent<GameSaveStateManager>
     {
         if (changeAlpha)
         {
-            gameSavingText.color = new Color(gameSavingText.color.r, gameSavingText.color.g, gameSavingText.color.b, Mathf.PingPong(textAlphaChangeSpeed * Time.time, 1));
+            InGameUIManager.Instance.gameSavingText.color = new Color(InGameUIManager.Instance.gameSavingText.color.r, 
+                InGameUIManager.Instance.gameSavingText.color.g, InGameUIManager.Instance.gameSavingText.color.b, 
+                Mathf.PingPong(textAlphaChangeSpeed * Time.time, 1));
         }
     }
 

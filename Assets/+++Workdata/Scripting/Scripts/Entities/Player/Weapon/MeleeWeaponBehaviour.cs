@@ -27,15 +27,15 @@ public class MeleeWeaponBehaviour : MonoBehaviour
             if (_shootingSignBehaviour.canGetHit)
             {
                 WeaponEffects();
-                _shootingSignBehaviour.StartCoroutine(_shootingSignBehaviour.SnapDownOnHit(false));
+                _shootingSignBehaviour.StartCoroutine(_shootingSignBehaviour.SnapDownOnHit());
             }
         }
     }
 
     private void WeaponEffects()
     {
-        StartCoroutine(WeaponVisualCoroutine());
         AudioManager.Instance.Play("BatonHit");
+        StartCoroutine(WeaponVisualCoroutine());
     }
     
     public IEnumerator WeaponVisualCoroutine()

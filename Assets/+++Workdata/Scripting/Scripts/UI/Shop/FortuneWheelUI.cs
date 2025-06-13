@@ -97,39 +97,21 @@ public class FortuneWheelUI : MonoBehaviour
         if (rb.angularVelocity > 0 || receivingPrize || !PlayerBehaviour.Instance.playerCurrency.SpendCurrency(spinPrice)) 
             return;
 
-        AllButtonsConfiguration.Instance.inGameUICanvasGroup.interactable = false;
+        InGameUIManager.Instance.inGameUICanvasGroup.interactable = false;
         StartCoroutine(WheelOverTimeCoroutine());
     }
 
     private IEnumerator LocationHighlight()
     {
-        mark.transform.localScale = new Vector3(2, 2, 1);
-        
-        yield return new WaitForSeconds(.3f);
-        
-        mark.transform.localScale = new Vector3(1, 1, 1);
-
-        yield return new WaitForSeconds(.3f);
-        
-        mark.transform.localScale = new Vector3(2, 2, 1);
-
-        yield return new WaitForSeconds(.3f);
-        
-        mark.transform.localScale = new Vector3(1, 1, 1);
-        
-        yield return new WaitForSeconds(.3f);
-
-        mark.transform.localScale = new Vector3(2, 2, 1);
-        
-        yield return new WaitForSeconds(.3f);
-        
-        mark.transform.localScale = new Vector3(1, 1, 1);
-        
-        yield return new WaitForSeconds(.3f);
+        for (int i = 0; i < 6; i++)
+        {
+            mark.transform.localScale = (i % 2 == 0) ? new Vector3(2, 2, 1) : new Vector3(1, 1, 1);
+            yield return new WaitForSeconds(0.3f);
+        }
 
         prizes[priceIndex]?.Invoke();
-        
-        AllButtonsConfiguration.Instance.inGameUICanvasGroup.interactable = true;
+
+        InGameUIManager.Instance.inGameUICanvasGroup.interactable = true;
         
         receivingPrize = false;
     }

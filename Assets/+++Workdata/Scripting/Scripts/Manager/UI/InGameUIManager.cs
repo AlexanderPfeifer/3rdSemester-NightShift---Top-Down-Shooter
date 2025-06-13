@@ -22,15 +22,18 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     public GameObject pressSpace;
     public Image abilityProgressImage;
 
+    [Header("Saving")]
+    public TextMeshProUGUI gameSavingText;
+
     [Header("Shop")] 
     public GameObject changeShopWindowButton;
     
     [Header("UI Screens")]
-    public GameObject weaponSwapScreen;
     [FormerlySerializedAs("inGameUIScreen")] public GameObject playerHUD;
     public GameObject shopScreen;
     [SerializeField] private GameObject generatorScreen;
-    
+    public CanvasGroup inGameUICanvasGroup;
+
     [Header("End Sequence")]
     [HideInInspector] public bool changeLight;
     public Animator endScreen;
@@ -46,11 +49,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     [HideInInspector] public DialogueUI dialogueUI;
     [FormerlySerializedAs("weaponDescriptionUI")] [FormerlySerializedAs("inventoryUI")] [HideInInspector] public ShopUI shopUI;
     [HideInInspector] public PauseMenuUI pauseMenuUI;
-
-    [Header("WeaponSwap")]
-    public GameObject weaponDecisionWeaponImage;
-    public TextMeshProUGUI weaponDecisionWeaponAbilityText;
-    public TextMeshProUGUI weaponDecisionWeaponName;
 
     [Header("WalkieTalkie")] 
     [SerializeField] private TextMeshProUGUI walkieTalkieQuestLog;
@@ -102,11 +100,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         GameSaveStateManager.Instance.GoToMainMenu();
     }
     
-    public void PressButtonSound()
-    {
-        AudioManager.Instance.Play("ButtonClick");
-    }
-    
     private void SimulateDayLight()
     {
         if (changeLight)
@@ -127,7 +120,12 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
 
     public void SetGeneratorUI()
     {
-        if (!PlayerBehaviour.Instance.IsPlayerBusy())
+        if (!TutorialManager.Instance.isExplainingCurrencyDialogue && (dialogueUI.IsDialoguePlaying() || dialogueUI.walkieTalkieText.gameObject.activeSelf))
+        {
+            return;
+        }
+
+        if (!TutorialManager.Instance.isExplainingCurrencyDialogue && !PlayerBehaviour.Instance.IsPlayerBusy())
         {
             if (!TutorialManager.Instance.talkedAboutCurrency)
             {

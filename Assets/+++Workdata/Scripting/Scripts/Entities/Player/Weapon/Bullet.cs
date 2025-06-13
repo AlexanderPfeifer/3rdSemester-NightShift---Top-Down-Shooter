@@ -117,11 +117,9 @@ public class Bullet : MonoBehaviour
         }
         else if ((treeLayer & (1 << col.gameObject.layer)) != 0)
         {
-            if (TryGetComponent(out TreeBehaviour _treeBehaviour))
+            if (col.TryGetComponent(out TreeBehaviour _treeBehaviour))
             {
                 _treeBehaviour.TreeShrink();
-            
-                col.GetComponentInChildren<ParticleSystem>().Play();                
             }
 
             DeactivateBullet();
@@ -134,7 +132,7 @@ public class Bullet : MonoBehaviour
         {
             if (_shootingSignBehaviour.canGetHit)
             {
-                _shootingSignBehaviour.StartCoroutine(_shootingSignBehaviour.SnapDownOnHit(true));
+                _shootingSignBehaviour.StartCoroutine(_shootingSignBehaviour.SnapDownOnHit());
             }
             
             DeactivateBullet();

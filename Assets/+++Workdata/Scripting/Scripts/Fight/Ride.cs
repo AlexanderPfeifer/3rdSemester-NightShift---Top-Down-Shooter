@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Bson;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,7 +35,10 @@ public class Ride : Singleton<Ride>
     private int currentSpawnedEnemies;
     private int spawnedEnemiesInCluster;
     [HideInInspector] public bool canWinGame;
-    
+    public Image[] fuses;
+    public Sprite activeFuse;
+    public Sprite inActiveFuse;
+
     [Header("Loose")]
     [SerializeField] private Vector2 restartPosition;
     [SerializeField] private float shutterGoDownTime;
@@ -65,9 +69,7 @@ public class Ride : Singleton<Ride>
         }
         
         foreach (var _enemyCluster in GetCurrentWave().enemyClusters)
-        {
-            Debug.Log(GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished());
-            
+        {            
             spawnedEnemiesInCluster += _enemyCluster.enemyPrefab.Length * _enemyCluster.spawnCount * _enemyCluster.repeatCount;
             
             StartCoroutine(SpawnEnemiesDelayed(_enemyCluster));
@@ -155,16 +157,21 @@ public class Ride : Singleton<Ride>
         
         AudioManager.Instance.Play("FightMusicWon");
 
-        if (TutorialManager.Instance.explainedRideSequences)
+        if (TutorialManager.Instance.explainedRideSequences && waves.Length != GetCurrentWaveAsInt() + 2)
         {
             StartCoroutine(PlayRideSoundsAfterOneAnother());
+
+            if (InGameUIManager.Instance.dialogueUI.dialogueCountWalkieTalkie < InGameUIManager.Instance.dialogueUI.dialogueWalkieTalkie.Length)
+            {
+                InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
+            }
         }
-        
-        if(InGameUIManager.Instance.dialogueUI.dialogueCountWalkieTalkie < InGameUIManager.Instance.dialogueUI.dialogueWalkieTalkie.Length)
+
+        if (!TutorialManager.Instance.explainedRideSequences)
         {
             InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
         }
-        
+
         GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount();
 
         if(TutorialManager.Instance.explainedRideSequences)
@@ -187,7 +194,41 @@ public class Ride : Singleton<Ride>
         {
             _light.SetActive(false);
         }
+
+        while (AudioManager.Instance.IsPlaying("RideShutDown"))
+        {
+            yield return null;
+        }
+
+        InGameUIManager.Instance.generatorUI.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds (.5f);
+
+        for (int i = 0; i < 6; i++)
+        {
+            fuses[GetCurrentWaveAsInt() - 1].sprite = (i % 2 == 0) ? DeactivateFuse() : ActivateFuse();
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        yield return new WaitForSeconds(.5f);
+
+        InGameUIManager.Instance.generatorUI.gameObject.SetActive(false);
+
         yield return null;
+    }
+
+    public Sprite DeactivateFuse()
+    {
+        AudioManager.Instance.Play("FuseOff");
+
+        return inActiveFuse;
+    }
+
+    public Sprite ActivateFuse()
+    {
+        AudioManager.Instance.Play("FuseOn");
+
+        return activeFuse;
     }
 
     private void CleanUpStage()
@@ -220,19 +261,19 @@ public class Ride : Singleton<Ride>
         AudioManager.Instance.Play("MetalShutterDown");
         
         float _elapsedTime = 0f;
-        var _rectTransform = InGameUIManager.Instance.shutterLooseImage.rectTransform.position;
+        var _rectTransform = InGameUIManager.Instance.shutterLooseImage.rectTransform.localPosition;
         float _startFill = _rectTransform.y;
         float _targetPosition = 0f;
 
         while (_elapsedTime < shutterGoDownTime)
         {
             _elapsedTime += Time.deltaTime;
-            InGameUIManager.Instance.shutterLooseImage.rectTransform.position = 
+            InGameUIManager.Instance.shutterLooseImage.rectTransform.localPosition = 
                 new Vector3(_rectTransform.x, Mathf.Lerp(_startFill, _targetPosition, _elapsedTime / shutterGoDownTime), _rectTransform.z);
             yield return null;
         }
 
-        InGameUIManager.Instance.shutterLooseImage.rectTransform.position = 
+        InGameUIManager.Instance.shutterLooseImage.rectTransform.localPosition = 
             new Vector3(_rectTransform.x, _targetPosition, _rectTransform.z);
         PlayerBehaviour.Instance.transform.position = restartPosition;
         CleanUpStage();
@@ -243,20 +284,21 @@ public class Ride : Singleton<Ride>
         InGameUIManager.Instance.OpenShop();
 
         _elapsedTime = 0f;
-        _startFill = InGameUIManager.Instance.shutterLooseImage.rectTransform.position.y;
+        _startFill = InGameUIManager.Instance.shutterLooseImage.rectTransform.localPosition.y;
         _targetPosition = 1100f;
+        shutterGoDownTime = 0f;
 
         while (_elapsedTime < shutterGoDownTime)
         {
             _elapsedTime += Time.deltaTime;
-            InGameUIManager.Instance.shutterLooseImage.rectTransform.position = 
+            InGameUIManager.Instance.shutterLooseImage.rectTransform.localPosition = 
                 new Vector3(_rectTransform.x, Mathf.Lerp(_startFill, _targetPosition, _elapsedTime / shutterGoDownTime), _rectTransform.z);            
             yield return null;
         }
         
         InGameUIManager.Instance.dialogueUI.StopCurrentAndTypeNewTextCoroutine(peggyLooseText, null, InGameUIManager.Instance.dialogueUI.currentTextBox);
 
-        InGameUIManager.Instance.shutterLooseImage.fillAmount = _targetPosition;
+        InGameUIManager.Instance.shutterLooseImage.rectTransform.localPosition = new Vector3(_rectTransform.x, _targetPosition, _rectTransform.z);
     }
 
     private void CleanUpRide()

@@ -110,8 +110,6 @@ public class EnemyBase : MonoBehaviour
         {
             int _enemies = Ride.Instance.enemyParent.transform.Cast<Transform>().Count(child => child.GetComponent<EnemyBase>());
 
-            Debug.Log("Tried To Win Game");
-
             if (_enemies <= 1)
             {
                 Ride.Instance.WonWave();

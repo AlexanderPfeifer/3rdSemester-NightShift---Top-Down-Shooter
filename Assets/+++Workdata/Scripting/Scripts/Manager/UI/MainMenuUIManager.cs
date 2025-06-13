@@ -167,14 +167,14 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
                 string _saveStateName = _saveGameName;
 
                 var _loadButton = newLoadButton.GetComponent<Button>();
-                _loadButton.onClick.AddListener(PressButtonSound);
+                _loadButton.onClick.AddListener(() => AudioManager.Instance.Play("ButtonClick"));
                 _loadButton.onClick.AddListener(() => LoadGame(_saveStateName));
                 
                 newDeleteButton = Instantiate(deleteSaveStateButtonPrefab, saveStateLayoutGroup);
                 loadButtonsList.Add(newDeleteButton);
                 
                 var _deleteButton = newDeleteButton.GetComponent<Button>();
-                _deleteButton.onClick.AddListener(PressButtonSound);
+                _deleteButton.onClick.AddListener(() => AudioManager.Instance.Play("ButtonClick"));
                 _deleteButton.onClick.AddListener(delegate{SetDeleteSaveStateCheck(_saveStateName);});
             }
 
@@ -221,11 +221,6 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     }
 
     #endregion
-    
-    public void PressButtonSound()
-    {
-        InGameUIManager.Instance.PressButtonSound();
-    }
 
     public void SetLoadingScreen()
     {

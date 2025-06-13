@@ -2,11 +2,12 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class TutorialManager : SingletonPersistent<TutorialManager>
 {
     [HideInInspector] public int shotSigns;
-    [HideInInspector] public int hitSigns;
+    public int shotSignsToGoAhead = 5;
 
     [HideInInspector] public bool explainedRideSequences;
 
@@ -17,10 +18,10 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     private bool openedShopAfterFirstFight;
     [HideInInspector] public bool tutorialDone;
     [SerializeField] private GameObject escapeInShop;
+    private bool toldAboutAmmoRefill;
 
     [Header("QuestLogTexts")] 
     [SerializeField] private string fillAmmo;
-    [SerializeField] private string hitSignsQuestLog;
     [SerializeField] private string activateGen;
     [SerializeField] public string activateRide;
     public string getNewWeapons;
@@ -56,6 +57,11 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         {
             FinishedFirstFight();
         }
+        else if (shotSigns >= shotSignsToGoAhead && !toldAboutAmmoRefill)
+        {
+            InGameUIManager.Instance.dialogueUI.DisplayDialogue();         
+            toldAboutAmmoRefill = true;
+        }
         else if(!InGameUIManager.Instance.shopUI.fortuneWheel.activeSelf)
         {
             InGameUIManager.Instance.shopUI.ResetWeaponDescriptions();
@@ -81,9 +87,28 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
             yield return null;
         }
         
-        Ride.Instance.generator.gateAnim.SetBool("OpenGate", true);
-        
+        InGameUIManager.Instance.generatorUI.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(.5f);
+
+        for (int i = 0; i < 6; i++)
+        {
+            foreach (var fuse in Ride.Instance.fuses)
+            {
+                fuse.sprite = (i % 2 == 0) ? Ride.Instance.DeactivateFuse() : Ride.Instance.ActivateFuse();
+            }
+
+            yield return new WaitForSeconds(0.3f);
+        }
+
+
+        yield return new WaitForSeconds(.5f);
+
+        InGameUIManager.Instance.generatorUI.gameObject.SetActive(false);
+
         InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
+
+        Ride.Instance.generator.gateAnim.SetBool("OpenGate", true);
 
         yield return null;
     }
@@ -97,7 +122,6 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         InGameUIManager.Instance.dialogueUI.DisplayDialogue();
 
         openedShopAfterFirstFight = true;
-            
         
         InGameUIManager.Instance.changeShopWindowButton.SetActive(true);
         InGameUIManager.Instance.shopUI.switchWindowButtons.SetActive(true);
@@ -107,7 +131,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
 
     public void ExplainGenerator()
     {
-        if (hitSigns >= 1 && Ride.Instance.GetCurrentWaveAsInt() == 0 && Ride.Instance.generator.interactable == false)
+        if (shotSigns >= shotSignsToGoAhead && Ride.Instance.GetCurrentWaveAsInt() == 0 && Ride.Instance.generator.interactable == false)
         {
             InGameUIManager.Instance.dialogueUI.DisplayDialogue();
             Ride.Instance.generator.interactable = true;
@@ -115,29 +139,15 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
             escapeInShop.SetActive(true);
         }
     }
-    
-    public void AddAndCheckHitSigns()
-    {
-        if (shotSigns >= 3)
-        {
-            hitSigns++;
-        
-            if (hitSigns == 1)
-            {
-                InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
-                InGameUIManager.Instance.SetWalkieTalkieQuestLog(fillAmmo);
-            }   
-        }
-    }
 
     public void AddAndCheckShotSigns()
     {
         shotSigns++;
         
-        if (shotSigns == 3)
+        if (shotSigns == shotSignsToGoAhead)
         {
             InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
-            InGameUIManager.Instance.SetWalkieTalkieQuestLog(hitSignsQuestLog);
+            InGameUIManager.Instance.SetWalkieTalkieQuestLog(fillAmmo);
         }
     }
     
