@@ -110,7 +110,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         {
             if (DebugMode.Instance.activateRide)
             {
-                FindAnyObjectByType<Generator>().GetComponent<Generator>().SetUpFightArena();
+                FindAnyObjectByType<RideActivation>().GetComponent<RideActivation>().SetUpFightArena();
             
                 transform.position = new Vector3(36, 36, 0);   
             }
@@ -158,7 +158,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         }
         else if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator))
         {
-            if (_generator.GetComponent<Generator>().interactable)
+            if (_generator.GetComponent<RideActivation>().interactable)
             {
                 InGameUIManager.Instance.SetGeneratorUI();
                 GameSaveStateManager.Instance.SaveGame();
@@ -166,10 +166,10 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         }
         else if (GetInteractionObjectInRange(rideLayer, out Collider2D _ride))
         {
-            if (_ride.TryGetComponent(out Ride ride) && !ride.waveStarted && !ride.generator.interactable)
+            if (_ride.TryGetComponent(out Ride ride) && !ride.waveStarted && !ride.rideActivation.interactable)
             {
-                ride.generator.gateAnim.SetBool("OpenGate", false);
-                ride.generator.SetUpFightArena();
+                ride.rideActivation.gateAnim.SetBool("OpenGate", false);
+                ride.rideActivation.SetUpFightArena();
             }
         }
         else if (GetInteractionObjectInRange(duckLayer, out _))
@@ -188,6 +188,8 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
             return;
         
         playerNoHandVisual.GetComponent<SpriteRenderer>().color = Color.red;
+
+        AudioManager.Instance.Play("Paralyze");
 
         StartCoroutine(HitStop());
     }
@@ -299,7 +301,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
         if (GetInteractionObjectInRange(generatorLayer, out Collider2D _generator))
         {
-            if (_generator.TryGetComponent(out Generator _generatorBehaviour) && _generatorBehaviour.interactable)
+            if (_generator.TryGetComponent(out RideActivation _rideActivation) && _rideActivation.interactable)
             {
                 generatorSpriteRenderer.sprite = generatorSpriteHighlight;
             }
@@ -311,7 +313,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
         if (GetInteractionObjectInRange(rideLayer, out Collider2D _ride))
         {
-            if (_ride.TryGetComponent(out Ride _rideBehaviour) && !_rideBehaviour.waveStarted && !_rideBehaviour.generator.interactable)
+            if (_ride.TryGetComponent(out Ride _rideBehaviour) && !_rideBehaviour.waveStarted && !_rideBehaviour.rideActivation.interactable)
             {
                 rideSpriteRenderer.sprite = rideSpriteHighlight;
             }

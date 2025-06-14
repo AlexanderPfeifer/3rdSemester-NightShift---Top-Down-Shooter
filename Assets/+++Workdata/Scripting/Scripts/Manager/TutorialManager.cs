@@ -2,7 +2,6 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class TutorialManager : SingletonPersistent<TutorialManager>
 {
@@ -53,7 +52,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         {
             PlayStartingDialogue();
         }
-        else if (Ride.Instance.GetCurrentWaveAsInt() > 0 && !openedShopAfterFirstFight)
+        else if (GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() > 0 && !openedShopAfterFirstFight)
         {
             FinishedFirstFight();
         }
@@ -108,7 +107,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
 
         InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
 
-        Ride.Instance.generator.gateAnim.SetBool("OpenGate", true);
+        Ride.Instance.rideActivation.gateAnim.SetBool("OpenGate", true);
 
         yield return null;
     }
@@ -131,10 +130,10 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
 
     public void ExplainGenerator()
     {
-        if (shotSigns >= shotSignsToGoAhead && Ride.Instance.GetCurrentWaveAsInt() == 0 && Ride.Instance.generator.interactable == false)
+        if (shotSigns >= shotSignsToGoAhead && GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() == 0 && Ride.Instance.rideActivation.interactable == false)
         {
             InGameUIManager.Instance.dialogueUI.DisplayDialogue();
-            Ride.Instance.generator.interactable = true;
+            Ride.Instance.rideActivation.interactable = true;
             InGameUIManager.Instance.SetWalkieTalkieQuestLog(activateGen);
             escapeInShop.SetActive(true);
         }

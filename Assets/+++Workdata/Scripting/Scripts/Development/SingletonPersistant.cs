@@ -5,10 +5,6 @@ using UnityEngine;
 /// </summary>
 public class SingletonPersistent<T> : Singleton<T> where T : Component
 {
-
-    // ===============================================
-    // ============ UNITY EVENT FUNCTIONS ============
-    // ===============================================
     protected override void Awake()
     {
         base.Awake();

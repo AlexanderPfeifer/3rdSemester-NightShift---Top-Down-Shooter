@@ -82,7 +82,6 @@ public class Bullet : MonoBehaviour
             {
                 tickCount--;
                 GetComponentInParent<EnemyHealthPoints>().TakeDamage(tickStickyBulletDamage, null);
-                StartCoroutine(GetComponentInParent<EnemyBase>().HitVisual());
                 stickyBulletTimer = maxStickyBulletTimer;
                 
                 if (tickCount <= 0)
@@ -148,7 +147,7 @@ public class Bullet : MonoBehaviour
         switch (PlayerBehaviour.Instance.abilityBehaviour.currentActiveAbility)
         {
             case AbilityBehaviour.CurrentAbility.FreezeBullets:
-                enemyBase.EnemyFreezeTime = enemyFreezeTime;
+                StartCoroutine(enemyBase.EnemyFreezeCoroutine(enemyFreezeTime));
                 break;
             
             case AbilityBehaviour.CurrentAbility.PenetrationBullets:

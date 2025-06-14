@@ -3,11 +3,14 @@ using Random = UnityEngine.Random;
 
 public class BalloonCartBehaviour : MonoBehaviour
 {
+    [Header("Collision")]
     [SerializeField] private LayerMask bulletLayer;
-    private int balloonCount; 
-    private Animator anim;
     [SerializeField] private ParticleSystem balloonPopParticle;
     [SerializeField] private Vector2Int getCurrencyOnShot = new(2, 4);
+
+    [Header("Animation")]
+    private int balloonCount; 
+    private Animator anim;
 
     private void Start()
     {

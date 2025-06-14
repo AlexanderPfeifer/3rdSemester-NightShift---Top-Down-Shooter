@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class DebugMode : SingletonPersistent<DebugMode>
@@ -15,17 +14,6 @@ public class DebugMode : SingletonPersistent<DebugMode>
     {
         base.Awake();
         
-        //StartCoroutine(UnloadGameScene());
-    }
-
-    private IEnumerator UnloadGameScene()
-    {
-        while (!UnityEngine.SceneManagement.SceneManager.GetSceneByName("InGame").isLoaded)
-        {
-            yield return null;
-        }
-        
-        UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("InGame");
     }
 
     public void AddWaves()

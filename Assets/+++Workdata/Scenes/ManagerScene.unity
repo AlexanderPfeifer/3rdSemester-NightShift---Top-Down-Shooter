@@ -394,6 +394,13 @@ MonoBehaviour:
       loop: 0
       pitch: 1
       audioSource: {fileID: 0}
+    - name: Paralyze
+      audioResource: {fileID: 6418180475301049370, guid: 1f0d2793a0f058b45bfa87edfcb34d0c, type: 2}
+      audioMixer: {fileID: -743621776009367600, guid: f1205fc9585d8e949b45c0cb72a40f78, type: 2}
+      volume: 1
+      loop: 0
+      pitch: 1
+      audioSource: {fileID: 0}
   - name: Stand
     sounds:
     - name: DuckSound
@@ -883,7 +890,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 1
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 1

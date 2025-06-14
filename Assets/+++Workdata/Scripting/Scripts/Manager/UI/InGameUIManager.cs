@@ -166,8 +166,8 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
                 Destroy(_enemy.gameObject);
             }
             
-            if(Ride.Instance.generator.interactable)
-                Ride.Instance.generator.gateAnim.SetBool("OpenGate", false);
+            if(Ride.Instance.rideActivation.interactable)
+                Ride.Instance.rideActivation.gateAnim.SetBool("OpenGate", false);
 
             dialogueUI.SetDialogueBox(true); 
             dialogueUI.SetDialogueBoxState(false, false);

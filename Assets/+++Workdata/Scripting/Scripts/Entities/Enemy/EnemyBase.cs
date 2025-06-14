@@ -12,7 +12,6 @@ public class EnemyBase : MonoBehaviour
     [Header("Movement")]
     [FormerlySerializedAs("maxEnemyKnockBackResistance")] public float knockBackResistance = 10;
     [HideInInspector] public bool enemyCanMove = true;
-    [NonSerialized] public float EnemyFreezeTime;
     [HideInInspector] public Rigidbody2D rbEnemy;
     [HideInInspector] public SpriteRenderer sr;
     [HideInInspector] public Transform target;
@@ -45,8 +44,6 @@ public class EnemyBase : MonoBehaviour
 
     private void Update()
     {
-        EnemyFreezeUpdate();
-
         ChangeTargetOnRange();
     }
 
@@ -59,14 +56,13 @@ public class EnemyBase : MonoBehaviour
         }
     }
 
-    private void EnemyFreezeUpdate()
+    public IEnumerator EnemyFreezeCoroutine(float freezeTime)
     {
-        enemyCanMove = EnemyFreezeTime <= 0;
-
-        if(EnemyFreezeTime > 0)
-            EnemyFreezeTime -= Time.deltaTime;
+        enemyCanMove = false;
+        yield return new WaitForSecondsRealtime(freezeTime);
+        enemyCanMove = true;
     }
-    
+
     public IEnumerator HitVisual()
     {
         AudioManager.Instance.Play("EnemyHit");
@@ -81,24 +77,15 @@ public class EnemyBase : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out Ride _ride))
         {
-            _ride.currentRideHealth -= rideAttackDamage;
-            Ride.Instance.rideHealthFill.fillAmount = _ride.currentRideHealth / _ride.maxRideHealth;
-
-            if (_ride.currentRideHealth <= 0)
-            {
-                _ride.LostWave();
-            }
-            
-            Ride.Instance.StartRideHitVisual();
-            AudioManager.Instance.Play("RideHit");
-            
+            Ride.Instance.DealDamage(rideAttackDamage);
+                        
             gotKilledFromRide = true;
             Destroy(gameObject);
         }
         else if (other.gameObject.TryGetComponent(out PlayerBehaviour _playerBehaviour) && target == _playerBehaviour.transform)
         {
             _playerBehaviour.StartHitVisual();
-            
+
             gotKilledFromRide = true;
             Destroy(gameObject);
         }
@@ -106,6 +93,8 @@ public class EnemyBase : MonoBehaviour
 
     private void OnDestroy()
     {
+        StopAllCoroutines();
+
         if (Ride.Instance.canWinGame)
         {
             int _enemies = Ride.Instance.enemyParent.transform.Cast<Transform>().Count(child => child.GetComponent<EnemyBase>());

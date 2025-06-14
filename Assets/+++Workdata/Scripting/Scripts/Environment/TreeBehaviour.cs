@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class TreeBehaviour : MonoBehaviour
 {
-    private bool treeShrinking;
     [SerializeField] private GameObject needleFallingParticles;
+    private bool treeShrinking;
     private ParticleSystem spawnedNeedlesParticles;
 
     private IEnumerator TreeShrinkCoroutine()
@@ -27,8 +27,6 @@ public class TreeBehaviour : MonoBehaviour
         if(treeShrinking)
             return;
         
-        StartCoroutine(TreeShrinkCoroutine());
-        
         if (spawnedNeedlesParticles == null && needleFallingParticles != null)
         {
             spawnedNeedlesParticles = Instantiate(needleFallingParticles, 
@@ -36,5 +34,7 @@ public class TreeBehaviour : MonoBehaviour
         }
         
         spawnedNeedlesParticles.Play();
+
+        StartCoroutine(TreeShrinkCoroutine());
     }
 }

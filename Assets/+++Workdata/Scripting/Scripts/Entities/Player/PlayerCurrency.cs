@@ -5,11 +5,11 @@ public class PlayerCurrency : MonoBehaviour
 {
     [NonSerialized] private int currency;
     [SerializeField] private float timeBetweenAddingNumbers;
-    private float currentTimeBetweenAddingNumbers;
 
     [Header("ShowCurrencyNumberByNumber")] 
     [SerializeField] private int maxCurrencyNumberByNumberMultiplier = 10;
     [SerializeField] private int divisionNumberPerMultiplier = 100;
+    private float currentTimeBetweenAddingNumbers;
     private int currencyText;
 
     private bool playTschaTschingSFX;
