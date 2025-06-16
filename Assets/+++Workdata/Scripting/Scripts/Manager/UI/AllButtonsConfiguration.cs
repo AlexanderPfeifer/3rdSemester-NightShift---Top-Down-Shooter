@@ -10,11 +10,6 @@ public class AllButtonsConfiguration : Singleton<AllButtonsConfiguration>
         {
             AddHoverEvent(_button.gameObject);
         }
-
-        foreach (Toggle _toggle in FindObjectsByType<Toggle>(FindObjectsSortMode.None))
-        {
-            AddHoverEvent(_toggle.gameObject);
-        }
     }
 
     public void AddHoverEvent(GameObject buttonObject)

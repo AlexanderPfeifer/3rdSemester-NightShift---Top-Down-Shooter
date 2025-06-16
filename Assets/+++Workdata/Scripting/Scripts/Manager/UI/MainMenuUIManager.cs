@@ -35,21 +35,59 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     [SerializeField] private GameObject optionsButton;
     [SerializeField] private GameObject creditsButton;
     [SerializeField] private GameObject firstMainMenuSelected;
-
-    [Header("ShutterAnim")]
-    [SerializeField] private Animator stallShutterAnimator;
-    
-    [Header("Audio")]
-    [SerializeField] private AudioMixer audioMixer;
-
-    [SerializeField] private GameObject sunnyBackground;
     [SerializeField] private GameObject wishlistButton;
     [SerializeField] private GameObject joinDiscordButton;
 
+    [Header("Visuals")]
+    [SerializeField] private Animator stallShutterAnimator;
+    [SerializeField] private GameObject sunnyBackground;
+    [SerializeField] private Sprite counterOff;
+    [SerializeField] private Sprite counterOn;
+
+    [Header("Fullscreen")]
+    private const string FullScreenPlayerPrefs = "Fullscreen";
+    private int fullScreenInt = 1;
+    [SerializeField] private GameObject fullScreenCheck;
+    private bool isFullScreenOn;
+
+    [Header("AudioMixer")]
+    [SerializeField] private AudioMixer audioMixer;
+
+    [Header("AudioMaster")]
+    [SerializeField] private List<GameObject> masterPoints;
+    private int currentVolumePointMaster = 4;
+    private const string MasterVolumePlayerPrefs = "masterVolume";
+    private float masterVolume = .5f;
+    private int sameDirectionMinusMaster = 1;
+    private int sameDirectionPlusMaster;
+
+    [Header("AudioMusic")]
+    [SerializeField] private List<GameObject> musicPoints;
+    private int currentVolumePointMusic = 4;
+    private const string MusicVolumePlayerPrefs = "musicVolume";
+    private float musicVolume = .5f;
+    private int sameDirectionMinusMusic = 1;
+    private int sameDirectionPlusMusic;
+
+    [Header("AudioSFX")]
+    [SerializeField] private List<GameObject> sfxPoints;
+    private int currentVolumePointSfx = 4;
+    private const string SfxVolumePlayerPrefs = "sfxVolume";
+    private float sfxVolume = .5f;
+    private int sameDirectionMinusSfx = 1;
+    private int sameDirectionPlusSfx;
+
     private void Start()
     {
+        isFullScreenOn = Screen.fullScreen;
+
         EventSystem.current.SetSelectedGameObject(firstMainMenuSelected);
-        
+
+        audioMixer.SetFloat("SFX", Mathf.Log10(sfxVolume) * 20);
+        audioMixer.SetFloat("Music", Mathf.Log10(musicVolume) * 20);
+        audioMixer.SetFloat("Master", Mathf.Log10(masterVolume) * 20);
+
+
         loadScreen.SetActive(false);
         optionsScreen.SetActive(false);
         creditsScreen.SetActive(false);
@@ -60,20 +98,219 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
         {
             sunnyBackground.SetActive(true);
         }
+
+        SetPlayerPrefs();
     }
 
-    #region Links
+    private void SetPlayerPrefs()
+    {
+        fullScreenInt = PlayerPrefs.GetInt(FullScreenPlayerPrefs, fullScreenInt);
 
-    public void LinkedInAlexanderPfeifer()
-    {
-        Application.OpenURL("https://www.linkedin.com/in/alexander-pfeifer-5b858128b/");
+        PlayerPrefs.GetFloat(MasterVolumePlayerPrefs, masterVolume);
+        for (int i = 0; i < masterPoints.Count; i++)
+        {
+            if (masterVolume * 10 - 2 < i)
+            {
+                masterPoints[i].SetActive(true);
+            }
+        }
+
+        PlayerPrefs.GetFloat(MusicVolumePlayerPrefs, musicVolume);
+        for (int i = 0; i < musicPoints.Count; i++)
+        {
+            if (musicVolume * 10 - 2 < i)
+            {
+                musicPoints[i].SetActive(true);
+            }
+        }
+
+        PlayerPrefs.GetFloat(SfxVolumePlayerPrefs, sfxVolume);
+        for (int i = 0; i < sfxPoints.Count; i++)
+        {
+            if (sfxVolume * 10 - 2 < i)
+            {
+                sfxPoints[i].SetActive(true);
+            }
+        }
+
+        Screen.fullScreen = fullScreenInt == 1;
+        fullScreenCheck.SetActive(fullScreenInt == 1);
     }
-    
-    public void LinkedInMartinViegehls()
+
+    public void ChangeFullScreenMode()
     {
-        Application.OpenURL("https://www.linkedin.com/in/martin-viegehls-41a959279/");
+        Screen.fullScreen = isFullScreenOn;
+
+        fullScreenInt = isFullScreenOn ? 1 : 0;
+
+        fullScreenCheck.SetActive(isFullScreenOn);
+
+        PlayerPrefs.SetInt(FullScreenPlayerPrefs, fullScreenInt);
     }
-    
+
+    public void MusicVolumeMinus()
+    {
+        if (musicVolume <= 0)
+            return;
+
+        sameDirectionMinusMusic++;
+
+        if (sameDirectionPlusMusic > 0)
+        {
+            currentVolumePointMusic++;
+        }
+
+        sameDirectionPlusMusic = 0;
+
+        if (!(currentVolumePointMusic <= 0.2f))
+        {
+            currentVolumePointMusic--;
+            musicPoints[currentVolumePointMusic].GetComponent<Image>().sprite = counterOff;
+            ChangeMusicVolume(-.1f);
+        }
+    }
+
+    public void MusicVolumePlus()
+    {
+        if (musicVolume >= 1)
+            return;
+
+        sameDirectionPlusMusic++;
+
+        if (sameDirectionMinusMusic > 0)
+        {
+            currentVolumePointMusic--;
+        }
+
+        sameDirectionMinusMusic = 0;
+
+        if (!(musicVolume > 0.99f))
+        {
+            currentVolumePointMusic++;
+            musicPoints[currentVolumePointMusic].GetComponent<Image>().sprite = counterOn;
+            ChangeMusicVolume(.1f);
+        }
+    }
+
+    public void MasterVolumeMinus()
+    {
+        if (masterVolume <= 0)
+            return;
+
+        sameDirectionMinusMaster++;
+
+        if (sameDirectionPlusMaster > 0)
+        {
+            currentVolumePointMaster++;
+        }
+
+        sameDirectionPlusMaster = 0;
+
+        if (!(currentVolumePointMaster <= 0.2f))
+        {
+            currentVolumePointMaster--;
+            masterPoints[currentVolumePointMaster].GetComponent<Image>().sprite = counterOff;
+            ChangeMasterVolume(-.1f);
+            AudioManager.Instance.Play("Shooting");
+        }
+    }
+
+    public void MasterVolumePlus()
+    {
+        if (masterVolume >= 1)
+            return;
+
+        sameDirectionPlusMaster++;
+
+        if (sameDirectionMinusMaster > 0)
+        {
+            currentVolumePointMaster--;
+        }
+
+        sameDirectionMinusMaster = 0;
+
+        if (!(masterVolume > 0.99f))
+        {
+            currentVolumePointMaster++;
+            masterPoints[currentVolumePointMaster].GetComponent<Image>().sprite = counterOn;
+            ChangeMasterVolume(.1f);
+            AudioManager.Instance.Play("Shooting");
+        }
+    }
+
+    public void SfxVolumeMinus()
+    {
+        if (sfxVolume <= 0)
+            return;
+
+        sameDirectionMinusSfx++;
+
+        if (sameDirectionPlusSfx > 0)
+        {
+            currentVolumePointSfx++;
+        }
+
+        sameDirectionPlusSfx = 0;
+
+        if (!(currentVolumePointSfx <= 0.2f))
+        {
+            currentVolumePointSfx--;
+            sfxPoints[currentVolumePointSfx].GetComponent<Image>().sprite = counterOff;
+            ChangeSfxVolume(-.1f);
+            AudioManager.Instance.Play("Shooting");
+        }
+    }
+
+    public void SfxVolumePlus()
+    {
+        if (sfxVolume >= 1)
+            return;
+
+        sameDirectionPlusSfx++;
+
+        if (sameDirectionMinusSfx > 0)
+        {
+            currentVolumePointSfx--;
+        }
+
+        sameDirectionMinusSfx = 0;
+
+        if (!(sfxVolume > 0.99f))
+        {
+            currentVolumePointSfx++;
+            sfxPoints[currentVolumePointSfx].GetComponent<Image>().sprite = counterOn;
+            ChangeSfxVolume(.1f);
+            AudioManager.Instance.Play("Shooting");
+        }
+    }
+
+    private void ChangeMasterVolume(float value)
+    {
+        masterVolume += value;
+
+        audioMixer.SetFloat("Master", Mathf.Log10(masterVolume) * 20);
+
+        PlayerPrefs.SetFloat(MasterVolumePlayerPrefs, masterVolume);
+    }
+
+    private void ChangeMusicVolume(float value)
+    {
+        musicVolume += value;
+
+        audioMixer.SetFloat("Music", Mathf.Log10(musicVolume) * 20);
+
+        PlayerPrefs.SetFloat(MusicVolumePlayerPrefs, musicVolume);
+    }
+
+    private void ChangeSfxVolume(float value)
+    {
+        sfxVolume += value;
+
+        audioMixer.SetFloat("SFX", Mathf.Log10(sfxVolume) * 20);
+
+        PlayerPrefs.SetFloat(SfxVolumePlayerPrefs, sfxVolume);
+    }
+
     public void JoinOurDiscord()
     {
         Application.OpenURL("https://discord.gg/mmYek3rY/");
@@ -83,33 +320,6 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     {
         Application.OpenURL("https://store.steampowered.com/app/3206760/Night_Shift/");
     }
-
-    #endregion
-
-    #region Options
-
-    public void SetControlsImage()
-    {
-        if (keyboardControls.activeSelf)
-        {
-            keyboardControls.SetActive(false);
-            gamePadControls.SetActive(true);
-        }
-        else
-        {
-            keyboardControls.SetActive(true);
-            gamePadControls.SetActive(false);
-        }
-    }
-    
-    public void SetFullscreen(bool isFullscreen)
-    {
-        Screen.fullScreen = isFullscreen;
-    }
-
-    #endregion
-    
-    #region MainMenuButtons
 
     public void OpenOptionsMenu()
     {
@@ -130,8 +340,6 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
         AudioManager.Instance.Stop("MainMenuMusic");
         Application.Quit();
     }
-
-    #endregion
     
     #region SaveStates
 
@@ -199,25 +407,6 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
         GameSaveStateManager.Instance.LoadFromSave(saveName);
         AudioManager.Instance.FadeOut("MainMenuMusic", "InGameMusic");
         gameStateLoaded = false;
-    }
-
-    #endregion
-    
-    #region Volume
-
-    public void SetVolume(float volume)
-    {
-        audioMixer.SetFloat("Master", Mathf.Log10(volume) * 20);
-    }
-    
-    public void SetSfxVolume(float volume)
-    {
-        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
-    }
-    
-    public void SetMusicVolume(float volume)
-    {
-        audioMixer.SetFloat("Music", Mathf.Log10(volume) * 20);
     }
 
     #endregion

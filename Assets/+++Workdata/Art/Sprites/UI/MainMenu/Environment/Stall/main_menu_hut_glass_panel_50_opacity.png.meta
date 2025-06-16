@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d20a898952dee5840aad3f1a25b8b823
+guid: 0f91ee0c707b22b42b072b62950c26eb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8484185659041780057
-    second: main_menu_slider_handle_0
+      213: -5558044797951380157
+    second: main_menu_hut_glass_panel_50_opacity_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: main_menu_slider_handle_0
+      name: main_menu_hut_glass_panel_50_opacity_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 2
-        height: 8
+        y: 72
+        width: 87
+        height: 31
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7aee950281e124a80800000000000000
-      internalID: -8484185659041780057
+      spriteID: 345766c34bbddd2b0800000000000000
+      internalID: -5558044797951380157
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      main_menu_slider_handle_0: -8484185659041780057
+      main_menu_hut_glass_panel_50_opacity_0: -5558044797951380157
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
