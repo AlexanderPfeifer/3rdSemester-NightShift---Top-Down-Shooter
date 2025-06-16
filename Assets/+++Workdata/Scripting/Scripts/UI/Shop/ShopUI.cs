@@ -295,7 +295,7 @@ public class ShopUI : MonoBehaviour
         if (hoverOnlyButton == null) 
             return;
 
-        if (!clickable)
+        if (clickable)
         {
             if (GameInputManager.Instance.mouseIsLastUsedDevice)
             {
@@ -396,10 +396,10 @@ public class ShopUI : MonoBehaviour
                 _weaponDescription += " " + _weapon.weaponAbilityDescription;
             }
             
-            var _bulletDamageText = "Bullet Damage: " + "\n" + _weapon.bulletDamage;
-            var _clipSizeText = "Clip Size: " + "\n" + _weapon.clipSize;
-            var _bulletDelayText = "Shoot Delay: " + "\n" + _weapon.shootDelay; 
-            var _reloadSpeedText = "Reload Speed: " + "\n" + _weapon.reloadTime;
+            var _bulletDamageText = "Bullet" + "\n" + " Power" + "\n" + "\n" + _weapon.bulletDamage;
+            var _clipSizeText = "Ammo" + "\n" + "Capacity" + "\n" + "\n" + _weapon.clipSize;
+            var _bulletDelayText = "Rate of" + "\n" + "Fire" + "\n" + "\n" + _weapon.shootDelay; 
+            var _reloadSpeedText = "Refill" + "\n" + " Speed" + "\n" + "\n" + _weapon.reloadTime;
             
             var _spriteWeapon = _weapon.uiWeaponVisual;
             

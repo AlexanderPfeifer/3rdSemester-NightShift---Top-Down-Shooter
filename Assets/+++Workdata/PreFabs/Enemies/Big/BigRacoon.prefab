@@ -86,11 +86,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2257984013469163083, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: m_Size.x
-      value: 1.3339221
+      value: 2.74
       objectReference: {fileID: 0}
     - target: {fileID: 2257984013469163083, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: m_Size.y
-      value: 0.65125644
+      value: 1.31
       objectReference: {fileID: 0}
     - target: {fileID: 2257984013469163083, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: m_Offset.x
@@ -134,11 +134,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6840275919477036929, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 31.27
       objectReference: {fileID: 0}
     - target: {fileID: 6840275919477036929, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 36.95
       objectReference: {fileID: 0}
     - target: {fileID: 6840275919477036929, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -266,10 +266,10 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 1.1875, y: 0.5625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &5827425304345127425
@@ -282,7 +282,7 @@ Animator:
   m_GameObject: {fileID: 8984946173759417100}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a4b11b407df77834a91eec1bd9fbef29, type: 2}
+  m_Controller: {fileID: 9100000, guid: ba5b20b13f06f1e41a4cd72b3815cc2a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

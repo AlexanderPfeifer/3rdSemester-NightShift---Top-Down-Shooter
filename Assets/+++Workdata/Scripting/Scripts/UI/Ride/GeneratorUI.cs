@@ -12,6 +12,7 @@ public class GeneratorUI : MonoBehaviour
     private float finalAcc;
 
     [Header("Fill")]
+    [HideInInspector] public bool changeFill = true;
     [SerializeField] private float activateGeneratorFillAmount;
     [SerializeField] private Image generatorFillImage;
     [SerializeField] private float reduceFillSpeedMultiplier;
@@ -32,7 +33,10 @@ public class GeneratorUI : MonoBehaviour
 
     private void Update()
     {
-        SliderFillOverTime();   
+        if (changeFill)
+        {
+            SliderFillOverTime();
+        }
     }
 
     private void SliderFillOverTime()
@@ -61,8 +65,6 @@ public class GeneratorUI : MonoBehaviour
 
         if (generatorFillImage.fillAmount > activateGeneratorFillAmount)
         {
-            gameObject.SetActive(false);
-            
             if (PlayerBehaviour.Instance.GetInteractionObjectInRange(PlayerBehaviour.Instance.generatorLayer, out Collider2D _generator))
             {          
                 _generator.GetComponent<RideActivation>().gateAnim.SetBool("OpenGate", true);
@@ -74,6 +76,8 @@ public class GeneratorUI : MonoBehaviour
                 Ride.Instance.ResetRide();
                 Ride.Instance.rideActivation.interactable = false;
             }
+
+            gameObject.SetActive(false);
         }
         else
         {

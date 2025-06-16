@@ -347,7 +347,6 @@ public class WeaponBehaviour : MonoBehaviour
         }
         
         AudioManager.Instance.Play("Reload");
-        reloadProgress.gameObject.SetActive(true);
         PlayerBehaviour.Instance.currentMoveSpeed = PlayerBehaviour.Instance.slowDownSpeed;
 
         float _elapsedTime = 0f;
@@ -360,7 +359,6 @@ public class WeaponBehaviour : MonoBehaviour
             yield return null;
         }
 
-        reloadProgress.gameObject.SetActive(false);
         reloadProgress.fillAmount = 0;
         PlayerBehaviour.Instance.currentMoveSpeed = PlayerBehaviour.Instance.baseMoveSpeed;
 
@@ -487,7 +485,7 @@ public class WeaponBehaviour : MonoBehaviour
         weaponScreenShake = weapon.screenShake;
         enemyShootingKnockBack = weapon.enemyKnockBackPerBullet;
 
-        PlayerBehaviour.Instance.playerVisual.SetActive(false);
+        //PlayerBehaviour.Instance.playerVisual.SetActive(false);
         PlayerBehaviour.Instance.playerNoHandVisual.SetActive(true);
 
         InGameUIManager.Instance.inGameUIWeaponVisual.GetComponent<Image>().sprite = weapon.uiWeaponVisual;

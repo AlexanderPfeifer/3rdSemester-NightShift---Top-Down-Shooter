@@ -79,8 +79,6 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
 
     private void Start()
     {
-        isFullScreenOn = Screen.fullScreen;
-
         EventSystem.current.SetSelectedGameObject(firstMainMenuSelected);
 
         audioMixer.SetFloat("SFX", Mathf.Log10(sfxVolume) * 20);
@@ -139,6 +137,8 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
 
     public void ChangeFullScreenMode()
     {
+        isFullScreenOn = !isFullScreenOn;
+
         Screen.fullScreen = isFullScreenOn;
 
         fullScreenInt = isFullScreenOn ? 1 : 0;

@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: 9bf5d668470b67249bb1ec1de11ca80f
+guid: 6525077870ac36544a5b70ca04ecf9b4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4998604351867542767
-    second: carousel_health_background_0
+      213: -8232394263494950970
+    second: spacebar_down_animation_special_ability_0
+  - first:
+      213: 389386073426669822
+    second: spacebar_down_animation_special_ability_1
+  - first:
+      213: -1726582419857236447
+    second: spacebar_down_animation_special_ability_2
+  - first:
+      213: -216255711333893443
+    second: spacebar_down_animation_special_ability_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +55,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -113,23 +122,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: carousel_health_background_0
+      name: spacebar_down_animation_special_ability_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 98
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 68
+        height: 23
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 113a63263d361aab0800000000000000
-      internalID: -4998604351867542767
+      spriteID: 6cf7b61d809a0cd80800000000000000
+      internalID: -8232394263494950970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spacebar_down_animation_special_ability_2
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 0
+        width: 68
+        height: 23
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12e99fcdf62f908e0800000000000000
+      internalID: -1726582419857236447
       vertices: []
       indices: 
       edges: []
@@ -148,7 +179,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      carousel_health_background_0: -4998604351867542767
+      spacebar_down_animation_special_ability_0: -8232394263494950970
+      spacebar_down_animation_special_ability_1: 389386073426669822
+      spacebar_down_animation_special_ability_2: -1726582419857236447
+      spacebar_down_animation_special_ability_3: -216255711333893443
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

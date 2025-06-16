@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: 9bf5d668470b67249bb1ec1de11ca80f
+guid: 95f6acc43894c924aa18d6dcb96817c3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4998604351867542767
-    second: carousel_health_background_0
+      213: -7356567343255453682
+    second: R3_+_L3_down_animation_special_ability_0
+  - first:
+      213: -3105120544529510714
+    second: R3_+_L3_down_animation_special_ability_1
+  - first:
+      213: 6170430197586991704
+    second: R3_+_L3_down_animation_special_ability_2
+  - first:
+      213: -8683438351812842409
+    second: R3_+_L3_down_animation_special_ability_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +55,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -113,23 +122,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: carousel_health_background_0
+      name: R3_+_L3_down_animation_special_ability_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 98
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 27
+        height: 40
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 113a63263d361aab0800000000000000
-      internalID: -4998604351867542767
+      spriteID: e0005036af838e990800000000000000
+      internalID: -7356567343255453682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: R3_+_L3_down_animation_special_ability_2
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 0
+        width: 27
+        height: 40
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85a14868295c1a550800000000000000
+      internalID: 6170430197586991704
       vertices: []
       indices: 
       edges: []
@@ -148,7 +179,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      carousel_health_background_0: -4998604351867542767
+      R3_+_L3_down_animation_special_ability_0: -7356567343255453682
+      R3_+_L3_down_animation_special_ability_1: -3105120544529510714
+      R3_+_L3_down_animation_special_ability_2: 6170430197586991704
+      R3_+_L3_down_animation_special_ability_3: -8683438351812842409
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

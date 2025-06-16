@@ -261,7 +261,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
             return;
         }
 
-        if (playerVisual.activeSelf)
+        if (!playerNoHandVisual.activeSelf)
         {
             anim.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);
             moveDirection = GameInputManager.Instance.GetMovementVectorNormalized();

@@ -103,6 +103,7 @@ public class DialogueUI : MonoBehaviour
         switch (dialogueState)
         {
             case DialogueState.DialoguePlaying:
+                FinishDialogue();
                 break;
             case DialogueState.DialogueAbleToGoNext:
                 PlayNextDialogue();
@@ -114,6 +115,31 @@ public class DialogueUI : MonoBehaviour
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    private IEnumerator FinishDialogue()
+    {
+        StopAllCoroutines();
+
+        if (currentTextBox == shopText)
+        {
+            currentTextBox.text = dialogueShop[currentDialogueCount].dialogues[dialogueTextCount];
+        }
+        else
+        {
+            currentTextBox.text = dialogueWalkieTalkie[currentDialogueCount].dialogues[dialogueTextCount];
+        }
+
+        yield return new WaitForSeconds(timeBetweenTextSkip);
+
+        if (currentTextBox == shopText)
+        {
+            CheckDialogueEnd(dialogueShop);
+        }
+        else
+        {
+            CheckDialogueEnd(dialogueWalkieTalkie);
         }
     }
 
@@ -252,6 +278,11 @@ public class DialogueUI : MonoBehaviour
             SetDialogueBoxState(false, true);
             dialogueWalkieTalkie[dialogueCountWalkieTalkie].dialogueEndAction?.Invoke();
             dialogueCountWalkieTalkie++;
+
+            if(dialogueCountWalkieTalkie >= dialogueWalkieTalkie.Length)
+            {
+                EndGame();
+            }
             return;
         }
 

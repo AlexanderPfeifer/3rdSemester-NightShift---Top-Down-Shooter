@@ -60,10 +60,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         {
             InGameUIManager.Instance.dialogueUI.DisplayDialogue();         
             toldAboutAmmoRefill = true;
-        }
-        else if(!InGameUIManager.Instance.shopUI.fortuneWheel.activeSelf)
-        {
-            InGameUIManager.Instance.shopUI.ResetWeaponDescriptions();
+            InGameUIManager.Instance.inGameUICanvasGroup.interactable = true;
         }
     }
 
@@ -85,25 +82,29 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         {
             yield return null;
         }
-        
+
+        InGameUIManager.Instance.generatorUI.changeFill = false;
+
         InGameUIManager.Instance.generatorUI.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(.5f);
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 5; i++)
         {
             foreach (var fuse in Ride.Instance.fuses)
             {
                 fuse.sprite = (i % 2 == 0) ? Ride.Instance.DeactivateFuse() : Ride.Instance.ActivateFuse();
             }
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.6f);
         }
 
 
         yield return new WaitForSeconds(.5f);
 
         InGameUIManager.Instance.generatorUI.gameObject.SetActive(false);
+
+        InGameUIManager.Instance.generatorUI.changeFill = true;
 
         InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
 

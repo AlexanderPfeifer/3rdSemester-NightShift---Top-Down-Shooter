@@ -118,6 +118,12 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
         changeLight = true;
     }
 
+    public void ForceSetGeneratorUI()
+    {
+        TutorialManager.Instance.isExplainingCurrencyDialogue = false;
+        generatorScreen.SetActive(true);
+    }
+
     public void SetGeneratorUI()
     {
         if (!TutorialManager.Instance.isExplainingCurrencyDialogue && (dialogueUI.IsDialoguePlaying() || dialogueUI.walkieTalkieText.gameObject.activeSelf))
@@ -133,7 +139,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
                 return;
             }
 
-            TutorialManager.Instance.isExplainingCurrencyDialogue = false;
             generatorScreen.SetActive(true);
         }
     }
@@ -186,6 +191,11 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             }
             
             PlayerBehaviour.Instance.SetPlayerBusy(true);
+
+            if (TutorialManager.Instance.shotSigns >= TutorialManager.Instance.shotSignsToGoAhead && !shopUI.fortuneWheel.activeSelf)
+            {
+                shopUI.ResetWeaponDescriptions();
+            }
 
             TutorialManager.Instance.CheckDialogue();
         }

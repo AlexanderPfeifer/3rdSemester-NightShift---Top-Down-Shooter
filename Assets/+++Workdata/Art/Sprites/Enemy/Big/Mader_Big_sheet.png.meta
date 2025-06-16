@@ -1,10 +1,22 @@
 fileFormatVersion: 2
-guid: 9bf5d668470b67249bb1ec1de11ca80f
+guid: 5c0104f85589e99409141d28bc3acb54
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4998604351867542767
-    second: carousel_health_background_0
+      213: 924250005327774998
+    second: Mader_Big_sheet_0
+  - first:
+      213: -3099473030013406384
+    second: Mader_Big_sheet_1
+  - first:
+      213: -831472093900661446
+    second: Mader_Big_sheet_2
+  - first:
+      213: 8832873551270849829
+    second: Mader_Big_sheet_3
+  - first:
+      213: 4674435903390796720
+    second: Mader_Big_sheet_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +58,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -113,23 +125,111 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: carousel_health_background_0
+      name: Mader_Big_sheet_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 4
         y: 0
-        width: 98
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 93
+        height: 47
+      alignment: 9
+      pivot: {x: 0.43010753, y: 0.3617021}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 113a63263d361aab0800000000000000
-      internalID: -4998604351867542767
+      spriteID: 6150733ab7893dc00800000000000000
+      internalID: 924250005327774998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mader_Big_sheet_1
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 92
+        height: 46
+      alignment: 9
+      pivot: {x: 0.4130435, y: 0.3478261}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 053b52f63b57cf4d0800000000000000
+      internalID: -3099473030013406384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mader_Big_sheet_2
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 0
+        width: 91
+        height: 46
+      alignment: 9
+      pivot: {x: 0.4065934, y: 0.3478261}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3d966239840674f0800000000000000
+      internalID: -831472093900661446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mader_Big_sheet_3
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 0
+        width: 88
+        height: 46
+      alignment: 9
+      pivot: {x: 0.38636366, y: 0.32608697}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52d217142bba49a70800000000000000
+      internalID: 8832873551270849829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mader_Big_sheet_4
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 0
+        width: 85
+        height: 44
+      alignment: 9
+      pivot: {x: 0.3647059, y: 0.3409091}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bbc0fa10beeed040800000000000000
+      internalID: 4674435903390796720
       vertices: []
       indices: 
       edges: []
@@ -138,7 +238,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 2ee4985a74259ff468f22b36d7b88722
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +248,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      carousel_health_background_0: -4998604351867542767
+      Mader_Big_sheet_0: 924250005327774998
+      Mader_Big_sheet_1: -3099473030013406384
+      Mader_Big_sheet_2: -831472093900661446
+      Mader_Big_sheet_3: 8832873551270849829
+      Mader_Big_sheet_4: 4674435903390796720
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

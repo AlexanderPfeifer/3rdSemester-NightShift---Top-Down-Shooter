@@ -190,26 +190,21 @@ public class Ride : Singleton<Ride>
 
         var dialogueUI = InGameUIManager.Instance.dialogueUI;
 
+        GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount();
+
         if (TutorialManager.Instance.explainedRideSequences)
         {
-            rideActivation.gateAnim.SetBool("OpenGate", true);
-            int finishedWaves = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
-            if (waves.Length != finishedWaves + 2)
-            {
-                StartCoroutine(PlayRideSoundsAfterOneAnother());
+            StartCoroutine(PlayRideSoundsAfterOneAnother());
 
-                if (dialogueUI.dialogueCountWalkieTalkie < dialogueUI.dialogueWalkieTalkie.Length)
-                {
-                    dialogueUI.SetDialogueBoxState(true, true);
-                }
+            if (dialogueUI.dialogueCountWalkieTalkie < dialogueUI.dialogueWalkieTalkie.Length)
+            {
+                dialogueUI.SetDialogueBoxState(true, true);
             }
         }
         else
         {
             dialogueUI.SetDialogueBoxState(true, true);
         }
-
-        GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount();            
         
         AudioManager.Instance.FadeIn("InGameMusic");
 
@@ -218,6 +213,8 @@ public class Ride : Singleton<Ride>
     
     private IEnumerator PlayRideSoundsAfterOneAnother()
     {
+        PlayerBehaviour.Instance.SetPlayerBusy(true);
+
         while (AudioManager.Instance.IsPlaying("FightMusicWon"))
         {
             yield return null;
@@ -240,13 +237,15 @@ public class Ride : Singleton<Ride>
 
         for (int i = 0; i < 6; i++)
         {
-            fuses[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() - 1].sprite = (i % 2 == 0) ? DeactivateFuse() : ActivateFuse();
-            yield return new WaitForSeconds(0.3f);
+            fuses[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() - 2].sprite = (i % 2 == 0) ? DeactivateFuse() : ActivateFuse();
+            yield return new WaitForSeconds(0.6f);
         }
 
         yield return new WaitForSeconds(.5f);
 
         InGameUIManager.Instance.generatorUI.gameObject.SetActive(false);
+
+        rideActivation.gateAnim.SetBool("OpenGate", true);
 
         yield return null;
     }
