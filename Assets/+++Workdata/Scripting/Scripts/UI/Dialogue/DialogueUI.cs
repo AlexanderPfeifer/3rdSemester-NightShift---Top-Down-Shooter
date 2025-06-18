@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -20,6 +21,7 @@ public class DialogueUI : MonoBehaviour
     [Header("Typing Settings")]
     public float maxTextDisplaySpeed = 0.00005f;
     [SerializeField] private float timeBetweenTextSkip = 0.2f;
+    private bool isSkippingDialogue;
     
     [Header("Animations")]
     [SerializeField] private Animator radioAnim;
@@ -36,7 +38,6 @@ public class DialogueUI : MonoBehaviour
         DialogueAbleToGoNext,
         DialogueAbleToEnd,
     }
-
     private void OnEnable()
     {
         GameInputManager.Instance.OnSkipDialogueWithController += GameInputManagerOnSkipDialogueWithControllerAction;
@@ -47,12 +48,7 @@ public class DialogueUI : MonoBehaviour
         SetDialogueState();
     }
 
-    public void EndGame()
-    {
-        InGameUIManager.Instance.EndScreen();
-    }
-
-    public void SetDialogueBox(bool inShop)
+    public void SetCurrentDialogueBox(bool inShop)
     {
         if (inShop)
         {
@@ -66,7 +62,7 @@ public class DialogueUI : MonoBehaviour
         }
     }
     
-    public void DisplayDialogue()
+    public void DisplayNextDialogue()
     {
         if (currentTextBox == shopText)
         {
@@ -86,27 +82,19 @@ public class DialogueUI : MonoBehaviour
         dialogueTextCount++;
     }
 
-    public void ResetDialogueElements()
-    {
-        dialogueCountShop = 0;
-        dialogueCountWalkieTalkie = 0;
-        currentDialogueCount = 0;
-        dialogueTextCount = 0;
-        currentTextBox.text = "";
-        radioAnim.Rebind();
-        walkieTalkieDialogueBoxAnim.Rebind();
-        dialogueState = DialogueState.DialogueNotPlaying;
-    }
-
     public void SetDialogueState()
     {
         switch (dialogueState)
         {
             case DialogueState.DialoguePlaying:
-                FinishDialogue();
+                if(!isSkippingDialogue)
+                {
+                    //StopAllCoroutines();
+                    //StartCoroutine(TypeAllText());
+                }
                 break;
             case DialogueState.DialogueAbleToGoNext:
-                PlayNextDialogue();
+                PlayNextDialogueText();
                 break;
             case DialogueState.DialogueAbleToEnd:
                 EndDialogue();
@@ -118,17 +106,23 @@ public class DialogueUI : MonoBehaviour
         }
     }
 
-    private IEnumerator FinishDialogue()
+    private IEnumerator TypeAllText()
     {
-        StopAllCoroutines();
+        isSkippingDialogue = true;
 
         if (currentTextBox == shopText)
         {
-            currentTextBox.text = dialogueShop[currentDialogueCount].dialogues[dialogueTextCount];
+            if (dialogueShop.Length >= currentDialogueCount)
+            {
+                currentTextBox.text = dialogueShop[currentDialogueCount].dialogues[dialogueTextCount];
+            }
         }
         else
         {
-            currentTextBox.text = dialogueWalkieTalkie[currentDialogueCount].dialogues[dialogueTextCount];
+            if (dialogueWalkieTalkie.Length >= currentDialogueCount)
+            {
+                currentTextBox.text = dialogueWalkieTalkie[currentDialogueCount].dialogues[dialogueTextCount];
+            }
         }
 
         yield return new WaitForSeconds(timeBetweenTextSkip);
@@ -141,6 +135,8 @@ public class DialogueUI : MonoBehaviour
         {
             CheckDialogueEnd(dialogueWalkieTalkie);
         }
+
+        isSkippingDialogue = false;
     }
 
     public bool IsDialoguePlaying()
@@ -161,11 +157,10 @@ public class DialogueUI : MonoBehaviour
     {
         if (currentDialogue != null)
         {
-            InGameUIManager.Instance.inGameUICanvasGroup.interactable = false;
-
             dialogueState = DialogueState.DialoguePlaying;
+            InGameUIManager.Instance.inGameUICanvasGroup.interactable = false;
         }
-        
+
         textBox.text = "";
         textBox.textWrappingMode = TextWrappingModes.Normal;
 
@@ -239,7 +234,7 @@ public class DialogueUI : MonoBehaviour
         }
     }
 
-    public void SetDialogueBoxState(bool radioOn, bool putOn)
+    public void SetWalkieTalkieTextBoxAnimation(bool radioOn, bool putOn)
     {
         if (InGameUIManager.Instance.playerHUD.activeSelf)
         {
@@ -275,13 +270,13 @@ public class DialogueUI : MonoBehaviour
 
         if (currentTextBox != shopText)
         {
-            SetDialogueBoxState(false, true);
+            SetWalkieTalkieTextBoxAnimation(false, true);
             dialogueWalkieTalkie[dialogueCountWalkieTalkie].dialogueEndAction?.Invoke();
             dialogueCountWalkieTalkie++;
 
             if(dialogueCountWalkieTalkie >= dialogueWalkieTalkie.Length)
             {
-                EndGame();
+                InGameUIManager.Instance.EndScreen();
             }
             return;
         }
@@ -291,11 +286,11 @@ public class DialogueUI : MonoBehaviour
         dialogueCountShop++;
     }
 
-    public void PlayNextDialogue()
+    public void PlayNextDialogueText()
     {
         dialogueState = DialogueState.DialoguePlaying;
         currentTextBox.text = "";
 
-        DisplayDialogue();
+        DisplayNextDialogue();
     }
 }

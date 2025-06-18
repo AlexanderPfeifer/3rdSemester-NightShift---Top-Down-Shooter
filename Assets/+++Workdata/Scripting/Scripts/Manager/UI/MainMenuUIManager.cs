@@ -341,8 +341,6 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
         Application.Quit();
     }
     
-    #region SaveStates
-
     private void DeleteLoadMenuButtons()
     {
         loadButtonsList.ForEach(Destroy);
@@ -408,8 +406,6 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
         AudioManager.Instance.FadeOut("MainMenuMusic", "InGameMusic");
         gameStateLoaded = false;
     }
-
-    #endregion
 
     public void SetLoadingScreen()
     {

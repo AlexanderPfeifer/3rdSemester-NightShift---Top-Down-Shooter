@@ -198,12 +198,12 @@ public class Ride : Singleton<Ride>
 
             if (dialogueUI.dialogueCountWalkieTalkie < dialogueUI.dialogueWalkieTalkie.Length)
             {
-                dialogueUI.SetDialogueBoxState(true, true);
+                dialogueUI.SetWalkieTalkieTextBoxAnimation(true, true);
             }
         }
         else
         {
-            dialogueUI.SetDialogueBoxState(true, true);
+            dialogueUI.SetWalkieTalkieTextBoxAnimation(true, true);
         }
         
         AudioManager.Instance.FadeIn("InGameMusic");
@@ -231,6 +231,8 @@ public class Ride : Singleton<Ride>
             yield return null;
         }
 
+        InGameUIManager.Instance.generatorUI.changeFill = false;
+
         InGameUIManager.Instance.generatorUI.gameObject.SetActive(true);
 
         yield return new WaitForSeconds (.5f);
@@ -244,6 +246,8 @@ public class Ride : Singleton<Ride>
         yield return new WaitForSeconds(.5f);
 
         InGameUIManager.Instance.generatorUI.gameObject.SetActive(false);
+
+        InGameUIManager.Instance.generatorUI.changeFill = true;
 
         rideActivation.gateAnim.SetBool("OpenGate", true);
 

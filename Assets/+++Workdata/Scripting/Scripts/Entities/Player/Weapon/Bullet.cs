@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -26,14 +25,13 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float maxCriticalHuntingRifleDamageMultiplier = 4;
     [SerializeField] private float minCriticalHuntingRifleDamageMultiplier = 2;
     private int tickCount = 2;
+    private float criticalDamage;
 
     [Header("Game Fun Collision")] 
     [SerializeField] private LayerMask treeLayer;
     [SerializeField] private LayerMask balloonLayer;
     [SerializeField] private LayerMask shootingRangeLayer;
     
-    private float criticalDamage;
-
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();

@@ -1,10 +1,15 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AbilityBehaviour : MonoBehaviour
 {
-    [Header("Weapon Ability")]
+    [Header("UI")]
+    public GameObject pressSpace;
+    public Image abilityProgressImage;
+
+    [Header("Ability Time")]
     public float maxAbilityTime;
     public float fastBulletsDelay = 0.075f;
     [HideInInspector] public bool canGetAbilityGain = true;
@@ -12,6 +17,7 @@ public class AbilityBehaviour : MonoBehaviour
     [HideInInspector] public bool hasAbilityUpgrade;
     
     [HideInInspector] public CurrentAbility currentActiveAbility = CurrentAbility.None;
+
     public enum CurrentAbility
     {
         FastBullets,
@@ -43,7 +49,7 @@ public class AbilityBehaviour : MonoBehaviour
     private IEnumerator StartWeaponAbility()
     {
         canGetAbilityGain = false;
-        InGameUIManager.Instance.pressSpace.SetActive(false);
+        pressSpace.SetActive(false);
         
         foreach (var _bullet in BulletPoolingManager.Instance.GetBulletList())
         {
@@ -63,7 +69,7 @@ public class AbilityBehaviour : MonoBehaviour
         while (currentAbilityTime > 0)
         {
             currentAbilityTime -= Time.deltaTime;
-            InGameUIManager.Instance.abilityProgressImage.fillAmount = currentAbilityTime / maxAbilityTime;
+            abilityProgressImage.fillAmount = currentAbilityTime / maxAbilityTime;
             yield return null; 
         }
         
@@ -85,11 +91,11 @@ public class AbilityBehaviour : MonoBehaviour
 
             if (currentAbilityTime >= maxAbilityTime)
             {
-                InGameUIManager.Instance.pressSpace.SetActive(true);
+                pressSpace.SetActive(true);
                 currentAbilityTime = maxAbilityTime;
             }
             
-            InGameUIManager.Instance.abilityProgressImage.fillAmount = currentAbilityTime / maxAbilityTime;
+            abilityProgressImage.fillAmount = currentAbilityTime / maxAbilityTime;
         }
     }
 }

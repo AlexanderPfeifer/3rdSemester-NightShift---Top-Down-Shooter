@@ -12,8 +12,6 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnNotShootingAction, OnReloadAction, OnMeleeWeaponAction, 
         OnSkipDialogueWithController;
 
-
-
     protected override void Awake()
     {
         base.Awake();

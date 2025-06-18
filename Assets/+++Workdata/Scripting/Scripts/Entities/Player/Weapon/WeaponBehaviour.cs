@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -19,40 +20,35 @@ public class WeaponBehaviour : MonoBehaviour
     [HideInInspector] public float bulletSpeed = 38f;
     [HideInInspector] public int maxPenetrationCount;
     [HideInInspector] public int bulletsPerShot;
-    
-    [Header("Ammo/Reload")]
-    [HideInInspector] public int maxClipSize;
-    [HideInInspector] public int ammunitionInClip;
-    [HideInInspector] public int ammunitionInBackUp;
-    public int ammunitionBackUpSize { private set; get; }
-    private Coroutine currentReloadCoroutine;
-    private float reloadTime;
-    [SerializeField] private Image reloadProgress;
-    public string noAmmoString = "NO AMMO LEFT";
-    [SerializeField] private string ammoFullString = "AMMO FULL";
-
-    [Header("Aiming")]
-    public Transform weaponEndPoint;
-    private Vector3 changingWeaponToMouse;
-    private Vector3 weaponToMouse;
-    [SerializeField] private int weaponRotationSnapPoints;
-    [NonSerialized] public float LastSnappedAngle;
-    
-    [Header("Melee Weapon")]
-    [SerializeField] private float getMeleeWeaponOutRange = 2f;
-    private float currentGetMeleeWeaponOutRange;
-    [SerializeField] private Sprite meleeWeapon;
-    private bool meleeWeaponOut;
-    [SerializeField] private float maxHitDelay;
-    private float currentHitDelay;
-    [Tooltip("The swing time has 3 phases - swinging back to get force, applying force, swinging back")]
-    [SerializeField] private float[] swingTime;
-
-    [Header("Shooting")]
     public float bulletDirectionSpreadStandingStill = 0.00005f;
     [FormerlySerializedAs("currentWeaponAccuracy")] [HideInInspector] public float currentBulletDirectionSpread;
     [FormerlySerializedAs("weaponAccuracy")] [HideInInspector] public float bulletDirectionSpread;
     [SerializeField] private float bulletSpawnSpread = 0.5f;    
+    
+    [Header("Ammo")]
+    public int ammunitionBackUpSize { private set; get; }
+    [HideInInspector] public int maxClipSize;
+    [HideInInspector] public int ammunitionInClip;
+    [HideInInspector] public int ammunitionInBackUp;
+    public string noAmmoString = "NO AMMO LEFT";
+    [SerializeField] private string ammoFullString = "AMMO FULL";
+    public TextMeshProUGUI ammunitionInClipText;
+    public TextMeshProUGUI ammunitionInBackUpText;
+
+    [Header("Reload")]
+    [SerializeField] private Image reloadProgress;
+    private Coroutine currentReloadCoroutine;
+    private float reloadTime;
+
+    [Header("Aiming")]
+    public Transform weaponEndPoint;
+    private Vector3 changingWeaponToMouse;
+    [HideInInspector] public Vector3 weaponToMouse;
+    [SerializeField] private int weaponRotationSnapPoints;
+    [NonSerialized] public float LastSnappedAngle;
+    private float weaponAimingAngle;
+
+    [Header("Shooting")]
     private float maxShootingDelay;
     private float currentShootingDelay;
     private bool isPressingLeftClick;
@@ -76,10 +72,15 @@ public class WeaponBehaviour : MonoBehaviour
     
     [Header("Weapon Visuals")]
     [SerializeField] private GameObject muzzleFlashVisual;
-    [FormerlySerializedAs("longRangeWeapon")] [FormerlySerializedAs("weaponObject")] [SerializeField] private GameObject weapon;
+    [FormerlySerializedAs("longRangeWeapon")] [FormerlySerializedAs("weaponObject")] public GameObject weapon;
     private Sprite longRangeWeaponSprite;
-    private float weaponAimingAngle;
     private float weaponScreenShake;
+    public GameObject weaponSlot;
+    public GameObject inGameUIWeaponVisual;
+
+    [Header("Reference")]
+    private MeleeWeaponBehaviour meleeWeaponBehaviour;
+    private AbilityBehaviour abilityBehaviour;
 
     [HideInInspector] public string currentEquippedWeapon;
     
@@ -102,17 +103,11 @@ public class WeaponBehaviour : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange;
-    }
-
     private void OnEnable()
     {
         GameInputManager.Instance.OnShootingAction += OnPressingShootingAction;
         GameInputManager.Instance.OnNotShootingAction += OnReleasingShootingAction;
         GameInputManager.Instance.OnReloadAction += OnPressingReloadingAction;
-        GameInputManager.Instance.OnMeleeWeaponAction += OnPressingMeleeAction;
     }
     
     private void OnDisable()
@@ -120,7 +115,12 @@ public class WeaponBehaviour : MonoBehaviour
         GameInputManager.Instance.OnShootingAction -= OnPressingShootingAction;
         GameInputManager.Instance.OnNotShootingAction -= OnReleasingShootingAction;
         GameInputManager.Instance.OnReloadAction -= OnPressingReloadingAction;
-        GameInputManager.Instance.OnMeleeWeaponAction -= OnPressingMeleeAction;
+    }
+
+    private void Start()
+    {
+        meleeWeaponBehaviour = GetComponent<MeleeWeaponBehaviour>();
+        abilityBehaviour = GetComponent<AbilityBehaviour>();
     }
 
     private void Update()
@@ -133,8 +133,6 @@ public class WeaponBehaviour : MonoBehaviour
         
         CamMovementUpdate();
     }
-
-    #region Inputs
 
     private void OnReleasingShootingAction(object sender, EventArgs e)
     {
@@ -157,27 +155,18 @@ public class WeaponBehaviour : MonoBehaviour
     {
         currentReloadCoroutine ??= StartCoroutine(ReloadCoroutine());
     }
-    
-    private void OnPressingMeleeAction(object sender, EventArgs eventArgs)
-    {
-        GetMeleeWeaponOut();
-        
-        HitAutomatic();
-    }
-
-    #endregion
 
     private void HandleAimingUpdate()
     {
         if (!weapon.activeSelf || TutorialManager.Instance.isExplainingCurrencyDialogue || (PlayerBehaviour.Instance.IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())) 
             return;
         
-        if (GetCurrentWeaponObjectSO() == null || GetComponent<MeleeWeaponBehaviour>().hitCollider.isActiveAndEnabled || (Mathf.Abs(weaponToMouse.x) <= currentGetMeleeWeaponOutRange && 
-            Mathf.Abs(weaponToMouse.y) <= currentGetMeleeWeaponOutRange &&
+        if (GetCurrentWeaponObjectSO() == null || meleeWeaponBehaviour.hitCollider.isActiveAndEnabled || (Mathf.Abs(weaponToMouse.x) <= meleeWeaponBehaviour.currentGetMeleeWeaponOutRange && 
+            Mathf.Abs(weaponToMouse.y) <= meleeWeaponBehaviour.currentGetMeleeWeaponOutRange &&
             Mathf.Abs(weaponToMouse.x) >= 0 && 
             Mathf.Abs(weaponToMouse.y) >= 0)) 
         {
-            GetMeleeWeaponOut();
+            meleeWeaponBehaviour.GetMeleeWeaponOut();
         }
         else
         {
@@ -187,10 +176,8 @@ public class WeaponBehaviour : MonoBehaviour
             
             weaponToMouse = GameInputManager.Instance.GetAimingVector() - weaponEndPoint.transform.position;
             weaponToMouse.z = 0;
-            
-            currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange - getMeleeWeaponOutRange / 4;
-            
-            meleeWeaponOut = false;
+
+            meleeWeaponBehaviour.SetMeleeWeaponTakeOut();
         }
         
         weaponAimingAngle = Vector3.SignedAngle(Vector3.up, weaponToMouse, Vector3.forward);
@@ -213,20 +200,6 @@ public class WeaponBehaviour : MonoBehaviour
     public WeaponObjectSO GetCurrentWeaponObjectSO()
     {
         return PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == currentEquippedWeapon);
-    }
-
-    private void GetMeleeWeaponOut()
-    {
-        currentEnemyKnockBack = GetComponent<MeleeWeaponBehaviour>().knockBack;
-
-        weapon.GetComponent<SpriteRenderer>().sprite = meleeWeapon;
-            
-        weaponToMouse = GameInputManager.Instance.GetAimingVector() - PlayerBehaviour.Instance.transform.position;
-        weaponToMouse.z = 0;
-
-        currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange + getMeleeWeaponOutRange / 4;
-
-        meleeWeaponOut = true;
     }
 
     public void CamMovementUpdate()
@@ -262,9 +235,9 @@ public class WeaponBehaviour : MonoBehaviour
         if (!isPressingLeftClick) 
             return;
         
-        if (meleeWeaponOut)
+        if (meleeWeaponBehaviour.meleeWeaponOut)
         {
-            HitAutomatic();
+            meleeWeaponBehaviour.HitAutomatic();
             return;
         }
         
@@ -325,18 +298,6 @@ public class WeaponBehaviour : MonoBehaviour
         SetAmmunitionText(ammunitionInClip.ToString(), ammunitionInBackUp.ToString());
     }
 
-    private void HitAutomatic()
-    {
-        if (currentHitDelay > 0 || PlayerBehaviour.Instance.IsPlayerBusy() || InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())
-            return;
-
-        StartCoroutine(MeleeWeaponSwingCoroutine());
-        
-        currentHitDelay = maxHitDelay;
-    }
-
-    #region Ammo
-
     private IEnumerator ReloadCoroutine()
     {
         //If statement translation: no ammo overall or weapon already full or no weapon is equipped
@@ -386,10 +347,10 @@ public class WeaponBehaviour : MonoBehaviour
     private void SetAmmunitionText(string clipAmmo, string backUpAmmo)
     {
         if(clipAmmo != null)
-            InGameUIManager.Instance.ammunitionInClipText.text = clipAmmo;
+            ammunitionInClipText.text = clipAmmo;
         
         if(backUpAmmo != null)
-            InGameUIManager.Instance.ammunitionInBackUpText.text = " " + backUpAmmo;
+            ammunitionInBackUpText.text = " " + backUpAmmo;
     }
 
     public void ObtainAmmoDrop(AmmoDrop ammoDrop, int setAmmoManually, bool fillClipAmmo)
@@ -438,14 +399,12 @@ public class WeaponBehaviour : MonoBehaviour
         }
     }
 
-    #endregion
-
     private void WeaponTimerUpdate()
     {
         if (!weapon.activeSelf) 
             return;
         
-        currentHitDelay -= Time.deltaTime;
+        meleeWeaponBehaviour.currentHitDelay -= Time.deltaTime;
         currentShootingDelay -= Time.deltaTime;
     }
     
@@ -477,7 +436,7 @@ public class WeaponBehaviour : MonoBehaviour
         AudioManager.Instance.ChangeSound("Shooting", weapon.shotSound);
         AudioManager.Instance.ChangeSound("Reload", weapon.reloadSound);
         AudioManager.Instance.ChangeSound("Repetition", weapon.repetitionSound);
-        InGameUIManager.Instance.abilityProgressImage.color = weapon.abilityFillColor;
+        abilityBehaviour.abilityProgressImage.color = weapon.abilityFillColor;
         foreach (var _bullet in BulletPoolingManager.Instance.GetBulletList())
         {
             _bullet.transform.localScale = weapon.bulletSize;
@@ -488,8 +447,8 @@ public class WeaponBehaviour : MonoBehaviour
         //PlayerBehaviour.Instance.playerVisual.SetActive(false);
         PlayerBehaviour.Instance.playerNoHandVisual.SetActive(true);
 
-        InGameUIManager.Instance.inGameUIWeaponVisual.GetComponent<Image>().sprite = weapon.uiWeaponVisual;
-        InGameUIManager.Instance.inGameUIWeaponVisual.SetActive(true);
+        inGameUIWeaponVisual.GetComponent<Image>().sprite = weapon.uiWeaponVisual;
+        inGameUIWeaponVisual.SetActive(true);
         
         myWeapon = weapon.weaponName switch
         {
@@ -503,7 +462,7 @@ public class WeaponBehaviour : MonoBehaviour
         
         GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(weapon.weaponName);
     }
-    
+
     private IEnumerator WeaponVisualCoroutine()
     {
         muzzleFlashVisual.SetActive(true);
@@ -523,74 +482,6 @@ public class WeaponBehaviour : MonoBehaviour
         muzzleFlashVisual.SetActive(false);
         
         AudioManager.Instance.Play("Repetition");
-    }
-    
-    IEnumerator MeleeWeaponSwingCoroutine()
-    {
-        var _steps = new[]
-        {
-            (-50f, Random.Range(swingTime[0] - .01f, swingTime[0] + .01f)),
-            (230f, Random.Range(swingTime[1] - .01f, swingTime[1] + .01f)),
-            (-170f, Random.Range(swingTime[2] - .01f, swingTime[2] + .01f)),
-        };
-
-        TrailRenderer _trailRendererBaton = GetComponentInChildren<TrailRenderer>();
-
-        for (var _index = 0; _index < _steps.Length; _index++)
-        {
-            if (_index == 1)
-            {
-                _trailRendererBaton.emitting = true;
-                GetComponent<MeleeWeaponBehaviour>().hitCollider.enabled = true;
-            }
-            
-            (float _deltaZ, float _duration) = _steps[_index];
-            float _elapsed = 0f;
-            
-            float _startZ = transform.localRotation.eulerAngles.z;
-            float _targetZ = _startZ + _deltaZ;
-            
-            float _startZBaton = _trailRendererBaton.transform.localRotation.eulerAngles.z;
-            float _swingTargetZBaton = _startZBaton - 90;
-            float _pullBackZBaton = _startZBaton + 90;
-
-            while (_elapsed < _duration)
-            {
-                _elapsed += Time.deltaTime;
-                
-                float _currentZ = Mathf.Lerp(_startZ, _targetZ, _elapsed / _duration);
-                transform.localRotation = Quaternion.Euler(0f, 0f, _currentZ);
-                
-                switch (_index)
-                {
-                    case 0:
-                    {
-                        float _currentZBat = Mathf.Lerp(_startZBaton, _swingTargetZBaton, _elapsed / _duration);
-                        _trailRendererBaton.transform.localRotation = Quaternion.Euler(0f, 0f, _currentZBat);
-
-                        AudioManager.Instance.Play("BatonSwing");
-                            break;
-                    }
-                    case 2:
-                    {
-                        float _currentZBat = Mathf.Lerp(_startZBaton, _pullBackZBaton, _elapsed / _duration);
-                        _trailRendererBaton.transform.localRotation = Quaternion.Euler(0f, 0f, _currentZBat);
-                        break;
-                    }
-                }
-
-                yield return null;
-            }
-            
-            transform.localRotation = Quaternion.Euler(0f, 0f, _targetZ);
-        }
-        
-        _trailRendererBaton.Clear();
-        _trailRendererBaton.emitting = false;
-        
-        GetComponent<MeleeWeaponBehaviour>().hitCollider.enabled = false;
-
-        meleeWeaponOut = false;
     }
     
     private void OnDrawGizmos()

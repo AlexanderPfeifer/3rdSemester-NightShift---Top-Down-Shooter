@@ -10,23 +10,8 @@ using UnityEngine.Serialization;
 
 public class InGameUIManager : SingletonPersistent<InGameUIManager>
 {
-    [Header("Ammunition")] 
-    public TextMeshProUGUI ammunitionInClipText;
-    public TextMeshProUGUI ammunitionInBackUpText;
-
-    [Header("Weapon")] 
-    public GameObject weaponSlot;
-    public GameObject inGameUIWeaponVisual;
-
-    [Header("Ability")]
-    public GameObject pressSpace;
-    public Image abilityProgressImage;
-
     [Header("Saving")]
     public TextMeshProUGUI gameSavingText;
-
-    [Header("Shop")] 
-    public GameObject changeShopWindowButton;
     
     [Header("UI Screens")]
     [FormerlySerializedAs("inGameUIScreen")] public GameObject playerHUD;
@@ -44,22 +29,13 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     
     [Header("References")]
     public GeneratorUI generatorUI;
-    [HideInInspector] public CurrencyUI currencyUI;
     public FortuneWheelUI fortuneWheelUI;
-    [HideInInspector] public DialogueUI dialogueUI;
-    [FormerlySerializedAs("weaponDescriptionUI")] [FormerlySerializedAs("inventoryUI")] [HideInInspector] public ShopUI shopUI;
-    [HideInInspector] public PauseMenuUI pauseMenuUI;
+    public DialogueUI dialogueUI;
+    public ShopUI shopUI;
+    public PauseMenuUI pauseMenuUI;
 
     [Header("WalkieTalkie")] 
     [SerializeField] private TextMeshProUGUI walkieTalkieQuestLog;
-    
-    private void Start()
-    {
-        currencyUI = GetComponent<CurrencyUI>();
-        dialogueUI = GetComponent<DialogueUI>();
-        shopUI = GetComponent<ShopUI>();
-        pauseMenuUI = GetComponent<PauseMenuUI>();
-    }
 
     private void OnEnable()
     {
@@ -91,12 +67,6 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
     
     public void GoToMainMenu()
     {
-        dialogueUI.ResetDialogueElements();
-        StopAllCoroutines();
-
-        inGameUIWeaponVisual.SetActive(false);
-        
-        pauseMenuUI.ClosePauseMenu();
         GameSaveStateManager.Instance.GoToMainMenu();
     }
     
@@ -174,8 +144,8 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             if(Ride.Instance.rideActivation.interactable)
                 Ride.Instance.rideActivation.gateAnim.SetBool("OpenGate", false);
 
-            dialogueUI.SetDialogueBox(true); 
-            dialogueUI.SetDialogueBoxState(false, false);
+            dialogueUI.SetCurrentDialogueBox(true); 
+            dialogueUI.SetWalkieTalkieTextBoxAnimation(false, false);
 
             if (!shopUI.fortuneWheel.activeSelf)
             {
@@ -212,8 +182,8 @@ public class InGameUIManager : SingletonPersistent<InGameUIManager>
             
             dialogueUI.currentTextBox.text = "";
             
-            dialogueUI.SetDialogueBox(false);
-            dialogueUI.SetDialogueBoxState(false, true);
+            dialogueUI.SetCurrentDialogueBox(false);
+            dialogueUI.SetWalkieTalkieTextBoxAnimation(false, true);
             
             shopScreen.SetActive(false);
             

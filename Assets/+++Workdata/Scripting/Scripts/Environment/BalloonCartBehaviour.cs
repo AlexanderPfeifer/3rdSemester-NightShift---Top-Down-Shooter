@@ -28,7 +28,7 @@ public class BalloonCartBehaviour : MonoBehaviour
             Instantiate(balloonPopParticle, GetComponent<CircleCollider2D>().bounds.center, Quaternion.identity).Play();
             int _randomCurrency = Random.Range(getCurrencyOnShot.x, getCurrencyOnShot.y);
             PlayerBehaviour.Instance.playerCurrency.AddCurrency(_randomCurrency, false);
-            InGameUIManager.Instance.currencyUI.GetCurrencyText().gameObject.SetActive(true);
+            PlayerBehaviour.Instance.playerCurrency.currencyBackground.gameObject.SetActive(true);
         }
     }
 

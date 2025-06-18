@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -31,7 +32,8 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private string[] selectionWindows;
     public GameObject switchWindowButtons;
     [SerializeField, TextArea(3, 10)] private string fortuneWheelText;
-    
+    public GameObject changeShopWindowButton;
+
     [Header("Controller Selection")]
     [SerializeField] private Button changeWindowButton;
     public Button spinFortuneWheelButton;
@@ -63,6 +65,8 @@ public class ShopUI : MonoBehaviour
 
     public void DisplayWeaponWindowAdding(int windowSwitch)
     {
+        //For buttons in shop
+
         currentWeaponSelectionWindow += windowSwitch;
 
         if (currentWeaponSelectionWindow == selectionWindows.Length)
@@ -143,6 +147,15 @@ public class ShopUI : MonoBehaviour
         }
     }
 
+    private void EquipNewWeapon(WeaponObjectSO weaponObjectSO)
+    {
+        if (PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon != weaponObjectSO.weaponName)
+        {
+            AudioManager.Instance.Play("Equip");
+            PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weaponObjectSO);
+        }
+    }
+
     public void SetShopWindow()
     {
         if (fortuneWheel.activeSelf)
@@ -170,15 +183,6 @@ public class ShopUI : MonoBehaviour
         }
         
         EventSystem.current.SetSelectedGameObject(changeWindowButton.gameObject);
-    }
-
-    private void EquipNewWeapon(WeaponObjectSO weaponObjectSO)
-    {
-        if (PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon != weaponObjectSO.weaponName)
-        {
-            AudioManager.Instance.Play("Equip");
-            PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weaponObjectSO);
-        }
     }
 
     private void DisplayItem(string header)
@@ -228,66 +232,11 @@ public class ShopUI : MonoBehaviour
 
         buttonsGameObject.SetActive(true);
 
-        if (collectedItemsDictionary[header].weaponObjectSO != null)
-        {
-            equipWeaponButton.onClick.RemoveAllListeners();
-            equipWeaponButton.onClick.AddListener(() => EquipNewWeapon(collectedItemsDictionary[header].weaponObjectSO));
+        SetEquipWeaponButtonFunctionality(header);
 
-            if (TutorialManager.Instance.fillAmmoForFree)
-            {
-                fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "REFILL" + "\n" + "free";
-            }
-            else
-            {
-                fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "REFILL" + "\n" + fillAmmoCost;
-            }
-            
-            fillWeaponAmmoButton.onClick.RemoveAllListeners();
-            fillWeaponAmmoButton.onClick.AddListener(() => FillWeaponAmmo(collectedItemsDictionary[header].weaponObjectSO));
+        SetFillWeaponButtonFunctionality(header);
 
-            upgradeWeaponButton.onClick.RemoveAllListeners();
-            
-            if (header == "Broken Pistol")
-            {
-                upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO UPGRADE";
-            }
-            else
-            {
-                upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "UPGRADE" + "\n" + tierCosts[collectedItemsDictionary[header].weaponObjectSO.upgradeTier];
-            }
-            
-            SetUpgradeButton(header);
-        }
-        
-        if (header == PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon)
-        {
-            ApplyHoverOnlyState(equipWeaponButton, false);
-        }
-        else
-        {
-            ApplyHoverOnlyState(equipWeaponButton, true);
-        }
-        
-        if (PlayerBehaviour.Instance.weaponBehaviour.ammunitionBackUpSize == PlayerBehaviour.Instance.weaponBehaviour.ammunitionInBackUp && 
-            PlayerBehaviour.Instance.weaponBehaviour.ammunitionInClip == PlayerBehaviour.Instance.weaponBehaviour.maxClipSize)
-        {
-            fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "AMMO FULL";
-            ApplyHoverOnlyState(fillWeaponAmmoButton, false);   
-        }
-        else if (!TutorialManager.Instance.fillAmmoForFree && !PlayerBehaviour.Instance.playerCurrency.CheckEnoughCurrency(fillAmmoCost))
-        {
-            //fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO MONEY";
-            ApplyHoverOnlyState(fillWeaponAmmoButton, false);
-        }
-        else
-        {
-            ApplyHoverOnlyState(fillWeaponAmmoButton, true);
-        }
-
-        if (header == "Broken Pistol")
-        {
-            ApplyHoverOnlyState(upgradeWeaponButton, false);
-        }
+        SetUpgradeButtonFunctionality(header);
     }
     
     void ApplyHoverOnlyState(HoverOnlyButton hoverOnlyButton, bool clickable)
@@ -325,20 +274,88 @@ public class ShopUI : MonoBehaviour
         }
     }
 
-    private void SetUpgradeButton(string header)
+    private void SetEquipWeaponButtonFunctionality(string header)
     {
-        //I take a random weapon as a reference of how many upgrades a weapon has, assault rifle in this case
-        if (collectedItemsDictionary[header].weaponObjectSO.upgradeTier >= assaultRifleUpgradeTiers.Length)
+        if (collectedItemsDictionary[header].weaponObjectSO == null)
         {
-            ApplyHoverOnlyState(upgradeWeaponButton, false);
-            upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "MAX LEVEL";
-        }
-        else if (!PlayerBehaviour.Instance.playerCurrency.CheckEnoughCurrency(tierCosts[collectedItemsDictionary[header].weaponObjectSO.upgradeTier]))
-        {
-            ApplyHoverOnlyState(upgradeWeaponButton, false);
+            equipWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "???";
+            ApplyHoverOnlyState(equipWeaponButton, false);
         }
         else
         {
+            equipWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "EQUIP";
+
+            if(header != PlayerBehaviour.Instance.weaponBehaviour.currentEquippedWeapon)
+            {
+                ApplyHoverOnlyState(equipWeaponButton, true);
+                equipWeaponButton.onClick.RemoveAllListeners();
+                equipWeaponButton.onClick.AddListener(() => EquipNewWeapon(collectedItemsDictionary[header].weaponObjectSO));
+            }
+            else
+            {
+                ApplyHoverOnlyState(equipWeaponButton, false);
+            }
+        }
+    }
+
+    private void SetFillWeaponButtonFunctionality(string header)
+    {
+        var weaponSO = collectedItemsDictionary[header].weaponObjectSO;
+        var buttonText = fillWeaponAmmoButton.GetComponentInChildren<TextMeshProUGUI>();
+        var weaponBehaviour = PlayerBehaviour.Instance.weaponBehaviour;
+
+        fillWeaponAmmoButton.onClick.RemoveAllListeners();
+        ApplyHoverOnlyState(fillWeaponAmmoButton, false);
+
+        if (weaponSO == null)
+        {
+            buttonText.text = "???";
+        }
+        else if (weaponBehaviour.ammunitionBackUpSize == weaponBehaviour.ammunitionInBackUp &&
+                 weaponBehaviour.ammunitionInClip == weaponBehaviour.maxClipSize)
+        {
+            buttonText.text = "AMMO FULL";
+        }
+        else
+        {
+            bool isFree = TutorialManager.Instance.fillAmmoForFree;
+            buttonText.text = isFree ? "REFILL\nFREE" : $"REFILL\n{fillAmmoCost}";
+
+            if (isFree || PlayerBehaviour.Instance.playerCurrency.CheckEnoughCurrency(fillAmmoCost))
+            {
+                fillWeaponAmmoButton.onClick.AddListener(() => FillWeaponAmmo(weaponSO));
+                ApplyHoverOnlyState(fillWeaponAmmoButton, true);
+            }
+        }
+    }
+
+    private void SetUpgradeButtonFunctionality(string header)
+    {
+        ApplyHoverOnlyState(upgradeWeaponButton, false);
+
+        if (collectedItemsDictionary[header].weaponObjectSO == null)
+        {
+            upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "???";
+            return;
+        }
+
+        if (header == "Broken Pistol")
+        {
+            upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO UPGRADE";
+        }
+        //I take a random weapon as a reference of how many upgrades a weapon has, assault rifle in this case
+        else if (collectedItemsDictionary[header].weaponObjectSO.upgradeTier >= assaultRifleUpgradeTiers.Length)
+        {
+            upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "MAX LEVEL";
+        }
+        else
+        {
+            upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "UPGRADE" + "\n" + tierCosts[collectedItemsDictionary[header].weaponObjectSO.upgradeTier];
+        }
+ 
+        if(PlayerBehaviour.Instance.playerCurrency.CheckEnoughCurrency(tierCosts[collectedItemsDictionary[header].weaponObjectSO.upgradeTier]))
+        {
+            upgradeWeaponButton.onClick.RemoveAllListeners();
             upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO));
         }
     }

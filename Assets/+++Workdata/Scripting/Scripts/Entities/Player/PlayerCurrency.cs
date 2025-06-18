@@ -1,8 +1,11 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class PlayerCurrency : MonoBehaviour
 {
+    public TextMeshProUGUI currencyText;
+    public GameObject currencyBackground;
     [NonSerialized] private int currency;
     [SerializeField] private float timeBetweenAddingNumbers;
 
@@ -10,7 +13,7 @@ public class PlayerCurrency : MonoBehaviour
     [SerializeField] private int maxCurrencyNumberByNumberMultiplier = 10;
     [SerializeField] private int divisionNumberPerMultiplier = 100;
     private float currentTimeBetweenAddingNumbers;
-    private int currencyText;
+    private int currencyAmount;
 
     private bool playTschaTschingSFX;
 
@@ -38,7 +41,7 @@ public class PlayerCurrency : MonoBehaviour
 
     private void SetCurrencyText()
     {
-        InGameUIManager.Instance.currencyUI.GetCurrencyText().text = currencyText.ToString();
+        currencyText.text = currencyAmount.ToString();
     }
 
     public bool SpendCurrency(int amount)
@@ -64,21 +67,21 @@ public class PlayerCurrency : MonoBehaviour
 
     private void UpdateCurrencyTextNumberByNumber()
     {
-        if (currencyText == currency)
+        if (currencyAmount == currency)
             return;
         
-        float _addNumberMultiplier = Mathf.Clamp(Mathf.Abs(currency - currencyText) / divisionNumberPerMultiplier, 1, maxCurrencyNumberByNumberMultiplier);
+        float _addNumberMultiplier = Mathf.Clamp(Mathf.Abs(currency - currencyAmount) / divisionNumberPerMultiplier, 1, maxCurrencyNumberByNumberMultiplier);
 
         if (currentTimeBetweenAddingNumbers < 0)
         {
             //Mathf Sign to subtract or add numbers if needed - so if it is -1, it decreases number accordingly
-            int _step = Mathf.CeilToInt(_addNumberMultiplier * Mathf.Sign(currency - currencyText));
-            currencyText += _step;
+            int _step = Mathf.CeilToInt(_addNumberMultiplier * Mathf.Sign(currency - currencyAmount));
+            currencyAmount += _step;
             AudioManager.Instance.Play("CurrencyAdd");
 
-            if ((_step > 0 && currencyText > currency) || (_step < 0 && currencyText < currency) || currencyText == currency)
+            if ((_step > 0 && currencyAmount > currency) || (_step < 0 && currencyAmount < currency) || currencyAmount == currency)
             {
-                currencyText = currency;
+                currencyAmount = currency;
 
                 if (playTschaTschingSFX)
                 {

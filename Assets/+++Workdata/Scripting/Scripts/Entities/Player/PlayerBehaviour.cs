@@ -14,11 +14,9 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     }
     [SerializeField] private PlayerSaveData playerSaveData;
     
-    [Header("Weapon")] 
+    [Header("References")] 
     [HideInInspector] public WeaponBehaviour weaponBehaviour;
     [HideInInspector] public AbilityBehaviour abilityBehaviour;
-
-    [Header("Currency")] 
     [HideInInspector] public PlayerCurrency playerCurrency;
 
     [Header("CharacterMovement")] 
@@ -68,9 +66,6 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         if (playerSaveData.PositionBySceneName.TryGetValue(gameObject.scene.name, out var _position))
             transform.position = _position;
     }
-
-    #region MonoBehaviourMethods
-
     protected override void Awake()
     {
         base.Awake();
@@ -118,8 +113,8 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
             DebugMode.Instance.GetDebugWeapon();
             
             InGameUIManager.Instance.playerHUD.SetActive(true);
-            
-            InGameUIManager.Instance.currencyUI.GetCurrencyText().gameObject.SetActive(true);
+
+            PlayerBehaviour.Instance.playerCurrency.currencyBackground.gameObject.SetActive(true);
             
             playerCurrency.AddCurrency(DebugMode.Instance.currencyAtStart, true);
         }
@@ -145,10 +140,6 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         
         SetAnimationParameterLateUpdate();
     }
-
-    #endregion
-
-    #region Input
 
     private void GameInputManagerOnInteractAction(object sender, EventArgs e)
     {
@@ -176,12 +167,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         {
             AudioManager.Instance.Play("DuckSound");
         }
-    }
-
-    #endregion
-
-    #region Movement
-    
+    }    
     public void StartHitVisual()
     {
         if (gotHit)
@@ -280,21 +266,14 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
             }
             
             var _snapAngle = weaponBehaviour.LastSnappedAngle;
-            animNoHand.SetBool("MovingUp", _snapAngle is >= 337.5f or <= 22.5f);
-            //right
+            animNoHand.SetBool("MovingUp", _snapAngle is >= 337.5f or <= 22.5f); //right
             animNoHand.SetBool("MovingSideWaysNoHand", _snapAngle is > 225f and < 337.5f);
             animNoHand.SetBool("MovingDown", _snapAngle is >= 157.5f and <= 225f);
-            //left
-            animNoHand.SetBool("MovingSideWaysHand", _snapAngle is > 22.5f and < 157.5f);
-        
+            animNoHand.SetBool("MovingSideWaysHand", _snapAngle is > 22.5f and < 157.5f); //left
+
             animNoHand.SetFloat("MoveSpeed", rb.linearVelocity.sqrMagnitude);   
         }
-    }
-
-    #endregion
-
-    #region Interaction
-    
+    }    
     private void HandleInteractionSpriteSwitch()
     {
         shopSpriteRenderer.sprite = GetInteractionObjectInRange(shopLayer, out _) ? shopSpriteHighlight : shopSprite;
@@ -338,10 +317,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     public bool IsPlayerBusy()
     {
         return isPlayerBusy;
-    }
-
-    #endregion
-    
+    }    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent(out AmmoDrop _ammoDrop))

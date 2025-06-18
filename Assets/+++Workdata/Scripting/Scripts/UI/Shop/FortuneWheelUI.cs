@@ -11,14 +11,17 @@ public class FortuneWheelUI : MonoBehaviour
 {
     [Header("Price Settings")] 
     [SerializeField] private UnityEvent[] prizes;
-    [SerializeField] private int fortuneWheelPieCount = 5;
-    [SerializeField] private float firstPieSliceBufferInDegree = 36f;
+    [Tooltip("Starts higher because the first time the probability of winning should be higher")]
     [SerializeField] private int spinPrice;
     [FormerlySerializedAs("weaponPrizePlaces")] [SerializeField] private int[] winPrizePlaces = { 0, 9, 13, 18, 22 };
     [SerializeField] private int spinCounter;
     [SerializeField] private AnimationCurve winProbability;
     [SerializeField] private int maxSpinsUntilWin;
     private int priceIndex;
+
+    [Header("Prize Visual")]
+    [SerializeField] private Animator newWeaponAnim;
+    [SerializeField] private Image weaponImage;
 
     [Header("Price Dialogue")] 
     [SerializeField, TextArea(3, 10)] private string blankDialogue;
@@ -49,28 +52,18 @@ public class FortuneWheelUI : MonoBehaviour
     }
 
     private IEnumerator WheelOverTimeCoroutine()
-    {
-        float _timeUntilStop = Random.Range(timeUntilStop.x, timeUntilStop.y);
-
+    {        
         int _randomPrize = Random.Range(0, prizes.Length);
-
-        if (GameSaveStateManager.Instance.saveGameDataManager.collectedWeaponsIdentifiers.Count == 1 && spinCounter < 8)
-        {
-            spinCounter = 8;
-        }
-        
-        float _probabilityOfWin = Random.value;
-        if (_probabilityOfWin < winProbability.Evaluate((float)spinCounter / maxSpinsUntilWin))
+        if (Random.value < winProbability.Evaluate((float)spinCounter / maxSpinsUntilWin))
         {
             _randomPrize = winPrizePlaces[Random.Range(0, winPrizePlaces.Length)];
         }
-
+        
         float _startRotation = rb.rotation % 360f;
-        float _pieSize = 360f / fortuneWheelPieCount;
+        float _pieSize = 360f / prizes.Length;
+        float _endRotation = _startRotation + Random.Range(fullSpinsUntilStop.x, fullSpinsUntilStop.y) * 360f + _randomPrize * _pieSize;
         
-        int _fullSpins = Random.Range(fullSpinsUntilStop.x, fullSpinsUntilStop.y); 
-        float _endRotation = _startRotation + _fullSpins * 360f + _randomPrize * _pieSize;
-        
+        float _timeUntilStop = Random.Range(timeUntilStop.x, timeUntilStop.y);
         float _elapsed = 0f;
         while (_elapsed < _timeUntilStop)
         {
@@ -86,7 +79,7 @@ public class FortuneWheelUI : MonoBehaviour
 
         spinCounter++;
 
-        priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z + firstPieSliceBufferInDegree) / _pieSize) % fortuneWheelPieCount;
+        priceIndex = Mathf.FloorToInt((rb.transform.eulerAngles.z) / _pieSize) % prizes.Length;
         StartCoroutine(LocationHighlight());
         
         receivingPrize = true;
@@ -109,17 +102,19 @@ public class FortuneWheelUI : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
         }
 
-        prizes[priceIndex]?.Invoke();
-
         InGameUIManager.Instance.inGameUICanvasGroup.interactable = true;
         
         receivingPrize = false;
+
+        prizes[priceIndex]?.Invoke();
     }
 
     public void WinWeapon(WeaponObjectSO weapon)
     {
         if (!GameSaveStateManager.Instance.saveGameDataManager.HasWeapon(weapon.weaponName))
         {
+            receivingPrize = true;
+
             PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weapon);
             
             InGameUIManager.Instance.shopUI.ResetWeaponDescriptions();
@@ -129,6 +124,8 @@ public class FortuneWheelUI : MonoBehaviour
             
             AudioManager.Instance.Play("WeaponWin");
 
+            StartCoroutine(WinWeaponVisual(weapon));
+
             spinCounter = 0;
         }
         else
@@ -136,7 +133,23 @@ public class FortuneWheelUI : MonoBehaviour
             StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(blankDialogue, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
         }
     }
-    
+
+    private IEnumerator WinWeaponVisual(WeaponObjectSO weapon)
+    {
+        weaponImage.sprite = weapon.uiWeaponVisual;
+
+        newWeaponAnim.SetBool("NewWeaponScreenActive", true);
+
+        while (AudioManager.Instance.IsPlaying("WeaponWin"))
+        {
+            yield return null;
+        }
+
+        receivingPrize = false;
+
+        newWeaponAnim.SetBool("NewWeaponScreenActive", false);
+    }
+
     public void WinBlank()
     {
         StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(blankDialogue, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
@@ -186,7 +199,7 @@ public class FortuneWheelUI : MonoBehaviour
         RectTransform _rt = rb.GetComponent<RectTransform>();
         Vector3 _center = _rt.position;
         float _radius = _rt.rect.width * _rt.lossyScale.x * 0.5f;
-        float _angleStep = 360f / fortuneWheelPieCount;
+        float _angleStep = 360f / prizes.Length;
         float _imageRotation = _rt.eulerAngles.z;
 
 #if UNITY_EDITOR
@@ -203,11 +216,11 @@ public class FortuneWheelUI : MonoBehaviour
 
         Gizmos.color = Color.white;
 
-        for (int _i = 0; _i < fortuneWheelPieCount; _i++)
+        for (int _i = 0; _i < prizes.Length; _i++)
         {
-            int _currentIndex = _i % fortuneWheelPieCount;
+            int _currentIndex = _i % prizes.Length;
             //Add 90 degrees to make the fortune wheel start at "12 o'clock" otherwise unity default is pointing to right(3 o'clock)
-            float _startAngle = -(_currentIndex * _angleStep) + _imageRotation + firstPieSliceBufferInDegree + 90f;
+            float _startAngle = -(_currentIndex * _angleStep) + _imageRotation + 90f;
             float _midAngle = _startAngle - _angleStep / 2f;
 
             float _radStart = _startAngle * Mathf.Deg2Rad;

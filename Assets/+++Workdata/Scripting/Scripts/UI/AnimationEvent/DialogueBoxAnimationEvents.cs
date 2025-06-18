@@ -4,6 +4,6 @@ public class DialogueBoxAnimationEvents : MonoBehaviour
 {
     public void ShowDialogue()
     {
-        InGameUIManager.Instance.dialogueUI.DisplayDialogue();
+        InGameUIManager.Instance.dialogueUI.DisplayNextDialogue();
     }
 }

@@ -1,30 +1,37 @@
+using NUnit.Framework;
 using System.Collections;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Serialization;
+using static UnityEngine.Rendering.DebugUI.Table;
+using static WeaponBehaviour;
 
 public class TutorialManager : SingletonPersistent<TutorialManager>
 {
+    [Header("Shooting Signs")]
     [HideInInspector] public int shotSigns;
     public int shotSignsToGoAhead = 5;
 
-    [HideInInspector] public bool explainedRideSequences;
+    [Header("Shop Elements")]
+    [SerializeField] private GameObject escapeInShop;
 
+    [Header("Finished Sequences")]
     [FormerlySerializedAs("openShutterWheelOfFortune")] [HideInInspector] public bool newWeaponsCanBeUnlocked;
+    [HideInInspector] public bool explainedRideSequences;
     [HideInInspector] public bool fillAmmoForFree;
+    [HideInInspector] public bool tutorialDone;
     [HideInInspector] public bool talkedAboutCurrency;
     private bool playedFirstDialogue;
     private bool openedShopAfterFirstFight;
-    [HideInInspector] public bool tutorialDone;
-    [SerializeField] private GameObject escapeInShop;
     private bool toldAboutAmmoRefill;
 
     [Header("QuestLogTexts")] 
     [SerializeField] private string fillAmmo;
     [SerializeField] private string activateGen;
     [SerializeField] public string activateRide;
-    public string getNewWeapons;
     [SerializeField] private string doYourJob;
+    public string getNewWeapons;
 
     [Header("Dialogue")] 
     [HideInInspector] public bool isExplainingCurrencyDialogue;
@@ -40,8 +47,8 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         if (!talkedAboutCurrency)
         {
             isExplainingCurrencyDialogue = true;
-            InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
-            InGameUIManager.Instance.currencyUI.GetCurrencyText().gameObject.SetActive(true);
+            InGameUIManager.Instance.dialogueUI.SetWalkieTalkieTextBoxAnimation(true, true);
+            PlayerBehaviour.Instance.playerCurrency.currencyBackground.gameObject.SetActive(true);
             talkedAboutCurrency = true;
         }    
     }
@@ -58,9 +65,9 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         }
         else if (shotSigns >= shotSignsToGoAhead && !toldAboutAmmoRefill)
         {
-            InGameUIManager.Instance.dialogueUI.DisplayDialogue();         
             toldAboutAmmoRefill = true;
             InGameUIManager.Instance.inGameUICanvasGroup.interactable = true;
+            InGameUIManager.Instance.dialogueUI.StopCurrentAndTypeNewTextCoroutine("Peggy:\nNow go ahead and refill your weapon, momma doesn't have time all day.", null, InGameUIManager.Instance.dialogueUI.currentTextBox);
         }
     }
 
@@ -106,7 +113,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
 
         InGameUIManager.Instance.generatorUI.changeFill = true;
 
-        InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
+        InGameUIManager.Instance.dialogueUI.SetWalkieTalkieTextBoxAnimation(true, true);
 
         Ride.Instance.rideActivation.gateAnim.SetBool("OpenGate", true);
 
@@ -119,11 +126,11 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
 
         InGameUIManager.Instance.dialogueUI.shopText.text = "";
             
-        InGameUIManager.Instance.dialogueUI.DisplayDialogue();
+        InGameUIManager.Instance.dialogueUI.DisplayNextDialogue();
 
         openedShopAfterFirstFight = true;
         
-        InGameUIManager.Instance.changeShopWindowButton.SetActive(true);
+        InGameUIManager.Instance.shopUI.changeShopWindowButton.SetActive(true);
         InGameUIManager.Instance.shopUI.switchWindowButtons.SetActive(true);
         InGameUIManager.Instance.SetWalkieTalkieQuestLog(doYourJob);
         tutorialDone = true;
@@ -133,7 +140,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     {
         if (shotSigns >= shotSignsToGoAhead && GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() == 0 && Ride.Instance.rideActivation.interactable == false)
         {
-            InGameUIManager.Instance.dialogueUI.DisplayDialogue();
+            InGameUIManager.Instance.dialogueUI.DisplayNextDialogue();
             Ride.Instance.rideActivation.interactable = true;
             InGameUIManager.Instance.SetWalkieTalkieQuestLog(activateGen);
             escapeInShop.SetActive(true);
@@ -146,14 +153,14 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
         
         if (shotSigns == shotSignsToGoAhead)
         {
-            InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);
+            InGameUIManager.Instance.dialogueUI.SetWalkieTalkieTextBoxAnimation(true, true);
             InGameUIManager.Instance.SetWalkieTalkieQuestLog(fillAmmo);
         }
     }
     
     private void PlayStartingDialogue()
     {
-        InGameUIManager.Instance.dialogueUI.DisplayDialogue();
+        InGameUIManager.Instance.dialogueUI.DisplayNextDialogue();
         playedFirstDialogue = true;
     }
     
@@ -166,11 +173,11 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
             WeaponObjectSO _brokenPistol = PlayerBehaviour.Instance.weaponBehaviour.allWeaponPrizes.FirstOrDefault(w => w.weaponName == "Broken Pistol");
         
             PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(_brokenPistol);
-            InGameUIManager.Instance.weaponSlot.SetActive(true);
+            PlayerBehaviour.Instance.weaponBehaviour.weaponSlot.SetActive(true);
             
             InGameUIManager.Instance.CloseShop();
 
-            InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(true, true);   
+            InGameUIManager.Instance.dialogueUI.SetWalkieTalkieTextBoxAnimation(true, true);   
         }
     }
 }

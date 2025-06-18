@@ -22,7 +22,7 @@ public class RideActivation : MonoBehaviour
         AudioManager.Instance.Stop("InGameMusic");
         fightMusic.Play();
 
-        InGameUIManager.Instance.dialogueUI.SetDialogueBoxState(false, false);
+        InGameUIManager.Instance.dialogueUI.SetWalkieTalkieTextBoxAnimation(false, false);
 
         Ride.Instance.waveStarted = true;
         Ride.Instance.StartEnemyClusterCoroutines();
