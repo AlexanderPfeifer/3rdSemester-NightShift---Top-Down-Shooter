@@ -27,7 +27,7 @@
                     "name": "shoot",
                     "type": "Button",
                     "id": "ab4f16cf-1f8f-47d1-b90e-78714f4a9005",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -54,7 +54,7 @@
                     "name": "ability",
                     "type": "Button",
                     "id": "edbd92e8-301c-4bd2-8b99-411b62d050bb",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -81,6 +81,15 @@
                     "name": "skipDialogueWithController",
                     "type": "Button",
                     "id": "a344e04d-e97a-4e63-a980-42a923ed31c7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "sprint",
+                    "type": "Button",
+                    "id": "9568032a-1855-4751-93c8-fd77c74540b1",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -371,6 +380,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "skipDialogueWithController",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7a2ebb04-9e05-464a-b143-95a572a237eb",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8d97062f-dd41-4c37-954d-60b66833cef9",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

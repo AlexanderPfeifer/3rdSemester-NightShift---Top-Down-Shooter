@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 
-public class InGameUIManager : SingletonPersistent<InGameUIManager>
+public class InGameUIManager : Singleton<InGameUIManager>
 {
     [Header("Saving")]
     public TextMeshProUGUI gameSavingText;

@@ -21,6 +21,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
     [Header("CharacterMovement")] 
     public float baseMoveSpeed = 6.25f;
+    [SerializeField] private float sprintSpeed;
     public float slowDownSpeed;
     [SerializeField] private float hitVisualTime = .05f;
     [SerializeField] private float hitVignetteFadeInTime = .2f;
@@ -83,12 +84,16 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     private void OnEnable()
     {
         GameInputManager.Instance.OnInteractAction += GameInputManagerOnInteractAction;
+        GameInputManager.Instance.OnSprinting += GameInputManagerOnSprintingAction;
+        GameInputManager.Instance.OnNotSprinting += GameInputManagerOnSprintingAction;
         AudioManager.Instance.Play("InGameMusic");
     }
 
     private void OnDisable()
     {
         GameInputManager.Instance.OnInteractAction -= GameInputManagerOnInteractAction;
+        GameInputManager.Instance.OnSprinting -= GameInputManagerOnSprintingAction;
+        GameInputManager.Instance.OnNotSprinting -= GameInputManagerOnSprintingAction;
     }
 
     private void Start()
@@ -168,6 +173,24 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
             AudioManager.Instance.Play("DuckSound");
         }
     }    
+
+    private void GameInputManagerOnSprintingAction(object sender, EventArgs e)
+    {
+        if(gotHit)
+        {
+            return;
+        }
+
+        if(currentMoveSpeed == baseMoveSpeed)
+        {
+            currentMoveSpeed = sprintSpeed;
+        }
+        else if(currentMoveSpeed == sprintSpeed)
+        {
+            currentMoveSpeed = baseMoveSpeed;
+        }
+    }
+
     public void StartHitVisual()
     {
         if (gotHit)
@@ -179,7 +202,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
         StartCoroutine(HitStop());
     }
-    
+ 
     private IEnumerator HitStop()
     {
         gotHit = true;

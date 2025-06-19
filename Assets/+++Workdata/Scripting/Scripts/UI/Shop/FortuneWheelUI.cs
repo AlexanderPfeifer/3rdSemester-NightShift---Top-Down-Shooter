@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -22,6 +23,7 @@ public class FortuneWheelUI : MonoBehaviour
     [Header("Prize Visual")]
     [SerializeField] private Animator newWeaponAnim;
     [SerializeField] private Image weaponImage;
+    [SerializeField] private TextMeshProUGUI weaponName;
 
     [Header("Price Dialogue")] 
     [SerializeField, TextArea(3, 10)] private string blankDialogue;
@@ -138,12 +140,16 @@ public class FortuneWheelUI : MonoBehaviour
     {
         weaponImage.sprite = weapon.uiWeaponVisual;
 
+        weaponName.text = weapon.weaponName;
+
         newWeaponAnim.SetBool("NewWeaponScreenActive", true);
 
         while (AudioManager.Instance.IsPlaying("WeaponWin"))
         {
             yield return null;
         }
+
+        yield return new WaitForSeconds(2.5f);
 
         receivingPrize = false;
 

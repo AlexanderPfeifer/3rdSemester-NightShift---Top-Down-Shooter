@@ -249,6 +249,11 @@ public class Ride : Singleton<Ride>
 
         InGameUIManager.Instance.generatorUI.changeFill = true;
 
+        if (fuses.Length == GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() - 2)
+        {
+            InGameUIManager.Instance.EndScreen();
+        }
+
         rideActivation.gateAnim.SetBool("OpenGate", true);
 
         yield return null;

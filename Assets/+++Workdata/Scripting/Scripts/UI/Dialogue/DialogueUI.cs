@@ -273,11 +273,6 @@ public class DialogueUI : MonoBehaviour
             SetWalkieTalkieTextBoxAnimation(false, true);
             dialogueWalkieTalkie[dialogueCountWalkieTalkie].dialogueEndAction?.Invoke();
             dialogueCountWalkieTalkie++;
-
-            if(dialogueCountWalkieTalkie >= dialogueWalkieTalkie.Length)
-            {
-                InGameUIManager.Instance.EndScreen();
-            }
             return;
         }
 

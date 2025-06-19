@@ -10,7 +10,7 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     private Vector2 aimScreenPosition;
 
     public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnNotShootingAction, OnReloadAction, OnMeleeWeaponAction, 
-        OnSkipDialogueWithController;
+        OnSkipDialogueWithController, OnSprinting, OnNotSprinting;
 
     protected override void Awake()
     {
@@ -27,6 +27,8 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
         playerInputActions.player.reload.performed += OnPlayerReloading;
         playerInputActions.player.melee.performed += OnPlayerMeleeAttack;
         playerInputActions.player.skipDialogueWithController.performed += OnPlayerSkipDialogueWithController;
+        playerInputActions.player.sprint.started += OnPlayerSprinting;
+        playerInputActions.player.sprint.canceled += OnPlayerNotSprinting;
     }
 
     private void Start()
@@ -48,6 +50,16 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     private void OnPlayerNotShooting(InputAction.CallbackContext context)
     {
         OnNotShootingAction?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnPlayerSprinting(InputAction.CallbackContext context)
+    {
+        OnSprinting?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnPlayerNotSprinting(InputAction.CallbackContext context)
+    {
+        OnNotSprinting?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnGamePaused(InputAction.CallbackContext context)

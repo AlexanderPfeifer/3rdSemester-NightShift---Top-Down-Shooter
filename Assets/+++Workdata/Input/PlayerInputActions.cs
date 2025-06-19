@@ -49,7 +49,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""shoot"",
                     ""type"": ""Button"",
                     ""id"": ""ab4f16cf-1f8f-47d1-b90e-78714f4a9005"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -76,7 +76,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""ability"",
                     ""type"": ""Button"",
                     ""id"": ""edbd92e8-301c-4bd2-8b99-411b62d050bb"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -103,6 +103,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""skipDialogueWithController"",
                     ""type"": ""Button"",
                     ""id"": ""a344e04d-e97a-4e63-a980-42a923ed31c7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""9568032a-1855-4751-93c8-fd77c74540b1"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -395,6 +404,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""skipDialogueWithController"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7a2ebb04-9e05-464a-b143-95a572a237eb"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d97062f-dd41-4c37-954d-60b66833cef9"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -412,6 +443,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_player_reload = m_player.FindAction("reload", throwIfNotFound: true);
         m_player_melee = m_player.FindAction("melee", throwIfNotFound: true);
         m_player_skipDialogueWithController = m_player.FindAction("skipDialogueWithController", throwIfNotFound: true);
+        m_player_sprint = m_player.FindAction("sprint", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -487,6 +519,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_player_reload;
     private readonly InputAction m_player_melee;
     private readonly InputAction m_player_skipDialogueWithController;
+    private readonly InputAction m_player_sprint;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -500,6 +533,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @reload => m_Wrapper.m_player_reload;
         public InputAction @melee => m_Wrapper.m_player_melee;
         public InputAction @skipDialogueWithController => m_Wrapper.m_player_skipDialogueWithController;
+        public InputAction @sprint => m_Wrapper.m_player_sprint;
         public InputActionMap Get() { return m_Wrapper.m_player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -536,6 +570,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @skipDialogueWithController.started += instance.OnSkipDialogueWithController;
             @skipDialogueWithController.performed += instance.OnSkipDialogueWithController;
             @skipDialogueWithController.canceled += instance.OnSkipDialogueWithController;
+            @sprint.started += instance.OnSprint;
+            @sprint.performed += instance.OnSprint;
+            @sprint.canceled += instance.OnSprint;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -567,6 +604,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @skipDialogueWithController.started -= instance.OnSkipDialogueWithController;
             @skipDialogueWithController.performed -= instance.OnSkipDialogueWithController;
             @skipDialogueWithController.canceled -= instance.OnSkipDialogueWithController;
+            @sprint.started -= instance.OnSprint;
+            @sprint.performed -= instance.OnSprint;
+            @sprint.canceled -= instance.OnSprint;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -595,5 +635,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnReload(InputAction.CallbackContext context);
         void OnMelee(InputAction.CallbackContext context);
         void OnSkipDialogueWithController(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
     }
 }
