@@ -230,7 +230,9 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
     private void HandleMovementFixedUpdate()
     {
-        if (IsPlayerBusy() || InGameUIManager.Instance.dialogueUI.walkieTalkieText.gameObject.activeSelf || TutorialManager.Instance.isExplainingCurrencyDialogue) 
+        if (IsPlayerBusy() || InGameUIManager.Instance.dialogueUI.walkieTalkieText == null ||
+            InGameUIManager.Instance.dialogueUI.walkieTalkieText.gameObject.activeSelf || 
+            TutorialManager.Instance.isExplainingCurrencyDialogue) 
             return;
         
         rb.linearVelocity = GameInputManager.Instance.GetMovementVectorNormalized() * currentMoveSpeed + weaponBehaviour.currentKnockBack;
