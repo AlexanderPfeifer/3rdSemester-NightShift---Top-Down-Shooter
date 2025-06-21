@@ -3,7 +3,6 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -43,7 +42,7 @@ public class FortuneWheelUI : MonoBehaviour
 
     private void OnEnable()
     {
-        EventSystem.current.SetSelectedGameObject(firstFortuneWheelButtonSelected);
+        GameInputManager.Instance.SetNewButtonAsSelected(firstFortuneWheelButtonSelected);
         
         mark.transform.localScale = new Vector3(1, 1, 1);
     }
@@ -117,6 +116,8 @@ public class FortuneWheelUI : MonoBehaviour
         {
             receivingPrize = true;
 
+            InGameUIManager.Instance.inGameUICanvasGroup.interactable = false;
+
             PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weapon);
             
             InGameUIManager.Instance.shopUI.ResetWeaponDescriptions();
@@ -184,11 +185,6 @@ public class FortuneWheelUI : MonoBehaviour
         StartCoroutine(InGameUIManager.Instance.dialogueUI.TypeTextCoroutine(largeCurrencyDialogue, null, InGameUIManager.Instance.dialogueUI.currentTextBox));
         
         spinCounter = 0;
-    }
-
-    private void OnDisable()
-    {
-        EventSystem.current.SetSelectedGameObject(null);
     }
     
     [Header("Debugging Stuff")]

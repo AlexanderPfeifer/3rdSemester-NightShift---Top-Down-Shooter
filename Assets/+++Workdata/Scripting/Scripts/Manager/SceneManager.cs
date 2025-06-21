@@ -10,6 +10,10 @@ public class SceneManager : SingletonPersistent<SceneManager>
     [Header("LoadingScreen")]
     public Animator loadingScreenAnim;
 
+    [Header("Fullscreen")]
+    private const string FullScreenPlayerPrefs = "Fullscreen";
+    private int fullScreenInt = 1;
+
     protected override void Awake()
     {
         base.Awake();
@@ -54,5 +58,30 @@ public class SceneManager : SingletonPersistent<SceneManager>
         UnityEngine.SceneManagement.SceneManager.SetActiveScene(_newScene);
         
         currentScene = newSceneName;
+    }
+
+    public void SetFullscreenPlayerPrefs(GameObject fullScreenCheck)
+    {
+        fullScreenInt = PlayerPrefs.GetInt(FullScreenPlayerPrefs, fullScreenInt);
+        Screen.fullScreen = fullScreenInt == 1;
+        fullScreenCheck.SetActive(fullScreenInt == 1);
+    }
+
+    public void ChangeFullScreenMode(GameObject fullScreenCheck)
+    {
+        if (fullScreenInt == 0)
+        {
+            Screen.fullScreen = true;
+            fullScreenInt = 1;
+            fullScreenCheck.SetActive(true);
+        }
+        else
+        {
+            Screen.fullScreen = false;
+            fullScreenInt = 0;
+            fullScreenCheck.SetActive(false);
+        }
+
+        PlayerPrefs.SetInt(FullScreenPlayerPrefs, fullScreenInt);
     }
 }

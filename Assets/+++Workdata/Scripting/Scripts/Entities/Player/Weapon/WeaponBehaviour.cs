@@ -366,7 +366,7 @@ public class WeaponBehaviour : MonoBehaviour
                 ammunitionInBackUp += myWeapon switch
                 {
                     MyWeapon.AssaultRifle => Mathf.RoundToInt(ammoDrop.ammoCount * 3.5f),
-                    MyWeapon.Magnum => Mathf.RoundToInt(ammoDrop.ammoCount * 1.5f),
+                    MyWeapon.Magnum => Mathf.RoundToInt(ammoDrop.ammoCount),
                     MyWeapon.PopcornLauncher => Mathf.RoundToInt(ammoDrop.ammoCount * 2.5f),
                     MyWeapon.HuntingRifle => ammoDrop.ammoCount,
                     MyWeapon.Shotgun => ammoDrop.ammoCount,

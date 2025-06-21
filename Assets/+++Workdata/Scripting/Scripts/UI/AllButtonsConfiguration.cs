@@ -9,6 +9,7 @@ public class AllButtonsConfiguration : Singleton<AllButtonsConfiguration>
         foreach (Button _button in FindObjectsByType<Button>(FindObjectsSortMode.None))
         {
             AddHoverEvent(_button.gameObject);
+            _button.onClick.AddListener(() => AudioManager.Instance.Play("ButtonClick"));
         }
     }
 
@@ -30,6 +31,6 @@ public class AllButtonsConfiguration : Singleton<AllButtonsConfiguration>
 
     private void OnHover(GameObject buttonObject)
     {
-        EventSystem.current.SetSelectedGameObject(buttonObject);
+        GameInputManager.Instance.SetNewButtonAsSelected(buttonObject);
     }
 }

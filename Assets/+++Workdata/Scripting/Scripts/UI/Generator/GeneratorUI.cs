@@ -27,7 +27,7 @@ public class GeneratorUI : MonoBehaviour
     private void OnEnable()
     {
         PlayerBehaviour.Instance.SetPlayerBusy(true);
-        EventSystem.current.SetSelectedGameObject(firstGeneratorSelected);            
+        GameInputManager.Instance.SetNewButtonAsSelected(firstGeneratorSelected);
         buttonSpriteRenderer.sprite = buttonOff;
     }
 

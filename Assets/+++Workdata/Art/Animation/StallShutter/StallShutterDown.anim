@@ -23,7 +23,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 546.36
+        value: 362.5
         inSlope: -1.2513582
         outSlope: -1.2513582
         tangentMode: 0
@@ -140,7 +140,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 546.36
+        value: 362.5
         inSlope: -1.2513582
         outSlope: -1.2513582
         tangentMode: 0
@@ -207,7 +207,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0
+  - time: 0.125
     functionName: MetalShutterDownSound
     data: 
     objectReferenceParameter: {fileID: 0}

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class GameInputManager : SingletonPersistent<GameInputManager>
@@ -35,6 +36,18 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
+    }
+
+    public void SetNewButtonAsSelected(GameObject current)
+    {
+        if (!mouseIsLastUsedDevice)
+        {
+            EventSystem.current.SetSelectedGameObject(current);
+        }
+        else
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
     }
 
     private void OnPlayerUsingAbility(InputAction.CallbackContext context)

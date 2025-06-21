@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -181,8 +179,8 @@ public class ShopUI : MonoBehaviour
             if(collectedItemsDictionary.Count != 0)
                 ResetWeaponDescriptions();
         }
-        
-        EventSystem.current.SetSelectedGameObject(changeWindowButton.gameObject);
+
+        GameInputManager.Instance.SetNewButtonAsSelected(changeWindowButton.gameObject);
     }
 
     private void DisplayItem(string header)
@@ -323,6 +321,7 @@ public class ShopUI : MonoBehaviour
 
             if (isFree || PlayerBehaviour.Instance.playerCurrency.CheckEnoughCurrency(fillAmmoCost))
             {
+                
                 fillWeaponAmmoButton.onClick.AddListener(() => FillWeaponAmmo(weaponSO));
                 ApplyHoverOnlyState(fillWeaponAmmoButton, true);
             }
@@ -355,6 +354,7 @@ public class ShopUI : MonoBehaviour
  
         if(PlayerBehaviour.Instance.playerCurrency.CheckEnoughCurrency(tierCosts[collectedItemsDictionary[header].weaponObjectSO.upgradeTier]))
         {
+            ApplyHoverOnlyState(upgradeWeaponButton, true);
             upgradeWeaponButton.onClick.RemoveAllListeners();
             upgradeWeaponButton.onClick.AddListener(() => UpgradeWeapon(collectedItemsDictionary[header].weaponObjectSO));
         }

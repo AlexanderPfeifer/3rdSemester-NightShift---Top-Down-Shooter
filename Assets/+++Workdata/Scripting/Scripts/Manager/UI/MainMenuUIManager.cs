@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
@@ -41,274 +40,54 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     [Header("Visuals")]
     [SerializeField] private Animator stallShutterAnimator;
     [SerializeField] private GameObject sunnyBackground;
-    [SerializeField] private Sprite counterOff;
-    [SerializeField] private Sprite counterOn;
-
-    [Header("Fullscreen")]
-    private const string FullScreenPlayerPrefs = "Fullscreen";
-    private int fullScreenInt = 1;
-    [SerializeField] private GameObject fullScreenCheck;
-    private bool isFullScreenOn;
-
-    [Header("AudioMixer")]
-    [SerializeField] private AudioMixer audioMixer;
 
     [Header("AudioMaster")]
-    [SerializeField] private List<GameObject> masterPoints;
-    private int currentVolumePointMaster = 4;
-    private const string MasterVolumePlayerPrefs = "masterVolume";
-    private float masterVolume = .5f;
-    private int sameDirectionMinusMaster = 1;
-    private int sameDirectionPlusMaster;
+    [SerializeField] private GameObject[] masterPoints;
+    [SerializeField] Button minusMasterButton;
+    [SerializeField] Button plusMasterButton;
 
-    [Header("AudioMusic")]
-    [SerializeField] private List<GameObject> musicPoints;
-    private int currentVolumePointMusic = 4;
-    private const string MusicVolumePlayerPrefs = "musicVolume";
-    private float musicVolume = .5f;
-    private int sameDirectionMinusMusic = 1;
-    private int sameDirectionPlusMusic;
+    [Header("AudioMusic")]  
+    [SerializeField] private GameObject[] musicPoints;
+    [SerializeField] Button minusMusicButton;
+    [SerializeField] Button plusMusicButton;
 
     [Header("AudioSFX")]
-    [SerializeField] private List<GameObject> sfxPoints;
-    private int currentVolumePointSfx = 4;
-    private const string SfxVolumePlayerPrefs = "sfxVolume";
-    private float sfxVolume = .5f;
-    private int sameDirectionMinusSfx = 1;
-    private int sameDirectionPlusSfx;
+    [SerializeField] private GameObject[] sfxPoints;
+    [SerializeField] Button minusSFXButton;
+    [SerializeField] Button plusSFXButton;
+
+    [Header("Fullscreen")]
+    [SerializeField] private GameObject fullScreenCheck;
+    [SerializeField] private Button fullScreenButton;
 
     private void Start()
     {
-        EventSystem.current.SetSelectedGameObject(firstMainMenuSelected);
+        GameInputManager.Instance.SetNewButtonAsSelected(firstMainMenuSelected);
 
-        audioMixer.SetFloat("SFX", Mathf.Log10(sfxVolume) * 20);
-        audioMixer.SetFloat("Music", Mathf.Log10(musicVolume) * 20);
-        audioMixer.SetFloat("Master", Mathf.Log10(masterVolume) * 20);
+        AudioManager.Instance.SetAudioPlayerPrefs(masterPoints, musicPoints, sfxPoints);
+        SceneManager.Instance.SetFullscreenPlayerPrefs(fullScreenCheck);
 
+        minusMasterButton.onClick.AddListener(() => AudioManager.Instance.ChangeSpecificVolume(AudioManager.VolumeType.Master, masterPoints, false));
+        plusMasterButton.onClick.AddListener(() => AudioManager.Instance.ChangeSpecificVolume(AudioManager.VolumeType.Master, masterPoints, true));
+
+        minusMusicButton.onClick.AddListener(() => AudioManager.Instance.ChangeSpecificVolume(AudioManager.VolumeType.Music, musicPoints, false));
+        plusMusicButton.onClick.AddListener(() => AudioManager.Instance.ChangeSpecificVolume(AudioManager.VolumeType.Music, musicPoints, true));
+
+        minusSFXButton.onClick.AddListener(() => AudioManager.Instance.ChangeSpecificVolume(AudioManager.VolumeType.Sfx, sfxPoints, false));
+        plusSFXButton.onClick.AddListener(() => AudioManager.Instance.ChangeSpecificVolume(AudioManager.VolumeType.Sfx, sfxPoints, true));
+
+        fullScreenButton.onClick.AddListener(() => SceneManager.Instance.ChangeFullScreenMode(fullScreenCheck));
 
         loadScreen.SetActive(false);
         optionsScreen.SetActive(false);
         creditsScreen.SetActive(false);
         
         AudioManager.Instance.Play("MainMenuMusic");
-        
+
         if (GameSaveStateManager.Instance.gameGotFinished)
         {
             sunnyBackground.SetActive(true);
         }
-
-        SetPlayerPrefs();
-    }
-
-    private void SetPlayerPrefs()
-    {
-        fullScreenInt = PlayerPrefs.GetInt(FullScreenPlayerPrefs, fullScreenInt);
-
-        PlayerPrefs.GetFloat(MasterVolumePlayerPrefs, masterVolume);
-        for (int i = 0; i < masterPoints.Count; i++)
-        {
-            if (masterVolume * 10 - 2 < i)
-            {
-                masterPoints[i].SetActive(true);
-            }
-        }
-
-        PlayerPrefs.GetFloat(MusicVolumePlayerPrefs, musicVolume);
-        for (int i = 0; i < musicPoints.Count; i++)
-        {
-            if (musicVolume * 10 - 2 < i)
-            {
-                musicPoints[i].SetActive(true);
-            }
-        }
-
-        PlayerPrefs.GetFloat(SfxVolumePlayerPrefs, sfxVolume);
-        for (int i = 0; i < sfxPoints.Count; i++)
-        {
-            if (sfxVolume * 10 - 2 < i)
-            {
-                sfxPoints[i].SetActive(true);
-            }
-        }
-
-        Screen.fullScreen = fullScreenInt == 1;
-        fullScreenCheck.SetActive(fullScreenInt == 1);
-    }
-
-    public void ChangeFullScreenMode()
-    {
-        isFullScreenOn = !isFullScreenOn;
-
-        Screen.fullScreen = isFullScreenOn;
-
-        fullScreenInt = isFullScreenOn ? 1 : 0;
-
-        fullScreenCheck.SetActive(isFullScreenOn);
-
-        PlayerPrefs.SetInt(FullScreenPlayerPrefs, fullScreenInt);
-    }
-
-    public void MusicVolumeMinus()
-    {
-        if (musicVolume <= 0)
-            return;
-
-        sameDirectionMinusMusic++;
-
-        if (sameDirectionPlusMusic > 0)
-        {
-            currentVolumePointMusic++;
-        }
-
-        sameDirectionPlusMusic = 0;
-
-        if (!(currentVolumePointMusic <= 0.2f))
-        {
-            currentVolumePointMusic--;
-            musicPoints[currentVolumePointMusic].GetComponent<Image>().sprite = counterOff;
-            ChangeMusicVolume(-.1f);
-        }
-    }
-
-    public void MusicVolumePlus()
-    {
-        if (musicVolume >= 1)
-            return;
-
-        sameDirectionPlusMusic++;
-
-        if (sameDirectionMinusMusic > 0)
-        {
-            currentVolumePointMusic--;
-        }
-
-        sameDirectionMinusMusic = 0;
-
-        if (!(musicVolume > 0.99f))
-        {
-            currentVolumePointMusic++;
-            musicPoints[currentVolumePointMusic].GetComponent<Image>().sprite = counterOn;
-            ChangeMusicVolume(.1f);
-        }
-    }
-
-    public void MasterVolumeMinus()
-    {
-        if (masterVolume <= 0)
-            return;
-
-        sameDirectionMinusMaster++;
-
-        if (sameDirectionPlusMaster > 0)
-        {
-            currentVolumePointMaster++;
-        }
-
-        sameDirectionPlusMaster = 0;
-
-        if (!(currentVolumePointMaster <= 0.2f))
-        {
-            currentVolumePointMaster--;
-            masterPoints[currentVolumePointMaster].GetComponent<Image>().sprite = counterOff;
-            ChangeMasterVolume(-.1f);
-            AudioManager.Instance.Play("Shooting");
-        }
-    }
-
-    public void MasterVolumePlus()
-    {
-        if (masterVolume >= 1)
-            return;
-
-        sameDirectionPlusMaster++;
-
-        if (sameDirectionMinusMaster > 0)
-        {
-            currentVolumePointMaster--;
-        }
-
-        sameDirectionMinusMaster = 0;
-
-        if (!(masterVolume > 0.99f))
-        {
-            currentVolumePointMaster++;
-            masterPoints[currentVolumePointMaster].GetComponent<Image>().sprite = counterOn;
-            ChangeMasterVolume(.1f);
-            AudioManager.Instance.Play("Shooting");
-        }
-    }
-
-    public void SfxVolumeMinus()
-    {
-        if (sfxVolume <= 0)
-            return;
-
-        sameDirectionMinusSfx++;
-
-        if (sameDirectionPlusSfx > 0)
-        {
-            currentVolumePointSfx++;
-        }
-
-        sameDirectionPlusSfx = 0;
-
-        if (!(currentVolumePointSfx <= 0.2f))
-        {
-            currentVolumePointSfx--;
-            sfxPoints[currentVolumePointSfx].GetComponent<Image>().sprite = counterOff;
-            ChangeSfxVolume(-.1f);
-            AudioManager.Instance.Play("Shooting");
-        }
-    }
-
-    public void SfxVolumePlus()
-    {
-        if (sfxVolume >= 1)
-            return;
-
-        sameDirectionPlusSfx++;
-
-        if (sameDirectionMinusSfx > 0)
-        {
-            currentVolumePointSfx--;
-        }
-
-        sameDirectionMinusSfx = 0;
-
-        if (!(sfxVolume > 0.99f))
-        {
-            currentVolumePointSfx++;
-            sfxPoints[currentVolumePointSfx].GetComponent<Image>().sprite = counterOn;
-            ChangeSfxVolume(.1f);
-            AudioManager.Instance.Play("Shooting");
-        }
-    }
-
-    private void ChangeMasterVolume(float value)
-    {
-        masterVolume += value;
-
-        audioMixer.SetFloat("Master", Mathf.Log10(masterVolume) * 20);
-
-        PlayerPrefs.SetFloat(MasterVolumePlayerPrefs, masterVolume);
-    }
-
-    private void ChangeMusicVolume(float value)
-    {
-        musicVolume += value;
-
-        audioMixer.SetFloat("Music", Mathf.Log10(musicVolume) * 20);
-
-        PlayerPrefs.SetFloat(MusicVolumePlayerPrefs, musicVolume);
-    }
-
-    private void ChangeSfxVolume(float value)
-    {
-        sfxVolume += value;
-
-        audioMixer.SetFloat("SFX", Mathf.Log10(sfxVolume) * 20);
-
-        PlayerPrefs.SetFloat(SfxVolumePlayerPrefs, sfxVolume);
     }
 
     public void JoinOurDiscord()
@@ -323,16 +102,12 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
 
     public void OpenOptionsMenu()
     {
-        StartCoroutine(SetScreen(false, true, false, true, false, true));
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(joinDiscordButton);
+        StartCoroutine(SetScreen(false, true, false));
     }
 
     public void OpenCreditsMenu()
     {
-        StartCoroutine(SetScreen(false, false, true, true, true, false));
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(optionsButton);
+        StartCoroutine(SetScreen(false, false, true));
     }
     
     public void QuitGame()
@@ -340,7 +115,7 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
         AudioManager.Instance.Stop("MainMenuMusic");
         Application.Quit();
     }
-    
+
     private void DeleteLoadMenuButtons()
     {
         loadButtonsList.ForEach(Destroy);
@@ -357,7 +132,7 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     
     public void CreateLoadMenuButtons()
     {
-        StartCoroutine(SetScreen(true, false, false, false, true, true));
+        StartCoroutine(SetScreen(true, false, false));
 
         if (!gameStateLoaded)
         {
@@ -412,16 +187,22 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
         SceneManager.Instance.loadingScreenAnim.SetTrigger("Start");
     }
 
-    private IEnumerator SetScreen(bool shouldSetLoadScreen, bool shouldSetOptionsScreen, bool shouldSetCreditsScreen, bool loadButtonIsInteractable, bool optionsButtonIsInteractable, bool creditsButtonIsInteractable)
+    private IEnumerator SetScreen(bool shouldSetLoadScreen, bool shouldSetOptionsScreen, bool shouldSetCreditsScreen)
     {
-        yield return new WaitForSeconds(0.7f);
+        if (!optionsScreen.activeSelf)
+            SetAnimation();
+
+        if (!stallShutterAnimator.GetBool("GoUp"))
+        {
+            yield return new WaitForSeconds(0.7f);
+        }
+
         loadScreen.SetActive(shouldSetLoadScreen);
-        optionsScreen.SetActive(shouldSetOptionsScreen);
+
+        if(!optionsScreen.activeSelf)
+            optionsScreen.SetActive(shouldSetOptionsScreen);
+
         creditsScreen.SetActive(shouldSetCreditsScreen);
-        
-        loadButton.GetComponent<Button>().interactable = loadButtonIsInteractable;
-        optionsButton.GetComponent<Button>().interactable = optionsButtonIsInteractable;
-        creditsButton.GetComponent<Button>().interactable = creditsButtonIsInteractable;
     }
 
     public void SetAnimation()

@@ -149,13 +149,11 @@ public class InGameUIManager : Singleton<InGameUIManager>
 
             if (!shopUI.fortuneWheel.activeSelf)
             {
-                if(!GameInputManager.Instance.mouseIsLastUsedDevice)
-                    EventSystem.current.SetSelectedGameObject(shopUI.fillWeaponAmmoButton.gameObject);
+                GameInputManager.Instance.SetNewButtonAsSelected(shopUI.fillWeaponAmmoButton.gameObject);
             }
             else
             {
-                if(!GameInputManager.Instance.mouseIsLastUsedDevice)
-                    EventSystem.current.SetSelectedGameObject(shopUI.spinFortuneWheelButton.gameObject);
+                GameInputManager.Instance.SetNewButtonAsSelected(shopUI.spinFortuneWheelButton.gameObject);
                 
                 StartCoroutine(dialogueUI.TypeTextCoroutine("Peggy:" + "\n" + "...", null, dialogueUI.currentTextBox));
             }
