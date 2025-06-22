@@ -161,10 +161,10 @@ public class WeaponBehaviour : MonoBehaviour
         if (!weapon.activeSelf || TutorialManager.Instance.isExplainingCurrencyDialogue || (PlayerBehaviour.Instance.IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())) 
             return;
         
-        if (GetCurrentWeaponObjectSO() == null || meleeWeaponBehaviour.hitCollider.isActiveAndEnabled || (Mathf.Abs(weaponToMouse.x) <= meleeWeaponBehaviour.currentGetMeleeWeaponOutRange && 
+        if (GetCurrentWeaponObjectSO() == null || meleeWeaponBehaviour.hitCollider.isActiveAndEnabled || 
+            (Mathf.Abs(weaponToMouse.x) <= meleeWeaponBehaviour.currentGetMeleeWeaponOutRange && 
             Mathf.Abs(weaponToMouse.y) <= meleeWeaponBehaviour.currentGetMeleeWeaponOutRange &&
-            Mathf.Abs(weaponToMouse.x) >= 0 && 
-            Mathf.Abs(weaponToMouse.y) >= 0)) 
+            Mathf.Abs(weaponToMouse.x) >= 0 && Mathf.Abs(weaponToMouse.y) >= 0) && GameInputManager.Instance.mouseIsLastUsedDevice) 
         {
             meleeWeaponBehaviour.GetMeleeWeaponOut();
         }

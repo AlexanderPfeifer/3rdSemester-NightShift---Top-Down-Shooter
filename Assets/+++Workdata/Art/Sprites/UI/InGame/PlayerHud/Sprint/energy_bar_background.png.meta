@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 49da6c67e17af5942a3dbdca43d2f1ff
+guid: b3de256ef0829484290f7dae1ef44f32
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4405486344088569935
-    second: ui_reload_image_0
+      213: 7258740753074196268
+    second: energy_bar_background_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ui_reload_image_0
+      name: energy_bar_background_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 25
-        height: 25
+        width: 32
+        height: 9
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1b734c5e2819cd2c0800000000000000
-      internalID: -4405486344088569935
+      spriteID: c2f83a7a14a3cb460800000000000000
+      internalID: 7258740753074196268
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ui_reload_image_0: -4405486344088569935
+      energy_bar_background_0: 7258740753074196268
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

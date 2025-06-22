@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class PlayerBehaviour : Singleton<PlayerBehaviour>
 {
@@ -19,10 +20,19 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     [HideInInspector] public AbilityBehaviour abilityBehaviour;
     [HideInInspector] public PlayerCurrency playerCurrency;
 
-    [Header("CharacterMovement")] 
+    [Header("CharacterMovement")]
+    [SerializeField] private float maxSprintTime;
+    [SerializeField] private Image sprintBarFill;
+    [SerializeField] private GameObject sprintBarImage;
+    private float currentSprintTime;
     public float baseMoveSpeed = 6.25f;
     [SerializeField] private float sprintSpeed;
     public float slowDownSpeed;
+    [HideInInspector] public float currentMoveSpeed;
+    private Vector2 moveDirection = Vector2.down;
+    private Rigidbody2D rb;
+
+    [Header("Hit")]
     [SerializeField] private float hitVisualTime = .05f;
     [SerializeField] private float hitVignetteFadeInTime = .2f;
     [SerializeField] private float hitVignetteFadeOutTime = .2f;
@@ -30,9 +40,8 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     [SerializeField] private float stunTimeOnEnemyCollision = 3;
     [HideInInspector] public bool gotHit;
     [SerializeField] private float knockBackDecay = 5f; 
-    [HideInInspector] public float currentMoveSpeed;
-    private Vector2 moveDirection = Vector2.down;
-    private Rigidbody2D rb;
+
+    [Header("Visuals")]
     public GameObject playerVisual;
     [SerializeField] private Animator anim;
     [SerializeField] private Animator animNoHand;
@@ -85,7 +94,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     {
         GameInputManager.Instance.OnInteractAction += GameInputManagerOnInteractAction;
         GameInputManager.Instance.OnSprinting += GameInputManagerOnSprintingAction;
-        GameInputManager.Instance.OnNotSprinting += GameInputManagerOnSprintingAction;
+        GameInputManager.Instance.OnNotSprinting += GameInputManagerOnNotSprintingAction;
         AudioManager.Instance.Play("InGameMusic");
     }
 
@@ -93,11 +102,12 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     {
         GameInputManager.Instance.OnInteractAction -= GameInputManagerOnInteractAction;
         GameInputManager.Instance.OnSprinting -= GameInputManagerOnSprintingAction;
-        GameInputManager.Instance.OnNotSprinting -= GameInputManagerOnSprintingAction;
+        GameInputManager.Instance.OnNotSprinting -= GameInputManagerOnNotSprintingAction;
     }
 
     private void Start()
     {
+        currentSprintTime = maxSprintTime;
         weaponBehaviour = GetComponentInChildren<WeaponBehaviour>();
         abilityBehaviour = GetComponentInChildren<AbilityBehaviour>();
         SceneManager.Instance.loadingScreenAnim.SetTrigger("End");
@@ -128,6 +138,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     private void Update()
     {
         HandleInteractionSpriteSwitch();
+        UpdateSprintTime();
     }
 
     private void FixedUpdate()
@@ -185,7 +196,16 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         {
             currentMoveSpeed = sprintSpeed;
         }
-        else if(currentMoveSpeed == sprintSpeed)
+    }
+
+    private void GameInputManagerOnNotSprintingAction(object sender, EventArgs e)
+    {
+        if (gotHit)
+        {
+            return;
+        }
+
+        if (currentMoveSpeed == sprintSpeed)
         {
             currentMoveSpeed = baseMoveSpeed;
         }
@@ -263,6 +283,42 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         weaponBehaviour.currentKnockBack = Vector2.Lerp(weaponBehaviour.currentKnockBack, Vector2.zero, Time.fixedDeltaTime * knockBackDecay);
     }
 
+    private void UpdateSprintTime()
+    {
+        float previousSprintTime = currentSprintTime;
+
+        if (!gotHit)
+        {
+            if (currentSprintTime <= 0)
+            {
+                currentMoveSpeed = baseMoveSpeed;
+            }
+
+            if (currentMoveSpeed >= sprintSpeed)
+            {
+                currentSprintTime -= Time.deltaTime;
+                sprintBarFill.fillAmount = currentSprintTime / maxSprintTime;
+            }
+            else if (currentMoveSpeed == baseMoveSpeed && currentSprintTime < maxSprintTime)
+            {
+                currentSprintTime += Time.deltaTime;
+                sprintBarFill.fillAmount = currentSprintTime / maxSprintTime;
+            }
+        }
+
+        if (Mathf.Abs(currentSprintTime - previousSprintTime) > Mathf.Epsilon)
+        {
+            sprintBarImage.SetActive(true);
+        }
+        else
+        {
+            if (!gotHit)
+            {
+                sprintBarImage.SetActive(false);
+            }
+        }
+    }
+
     private void SetAnimationParameterLateUpdate()
     {
         if ((IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.IsDialoguePlaying() && playerNoHandVisual.activeSelf) || TutorialManager.Instance.isExplainingCurrencyDialogue)
@@ -336,6 +392,8 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
     public void SetPlayerBusy(bool isBusy)
     {
+        currentMoveSpeed = baseMoveSpeed;
+
         isPlayerBusy = isBusy;
     }
 

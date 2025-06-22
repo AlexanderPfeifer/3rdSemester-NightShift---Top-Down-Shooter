@@ -188,22 +188,15 @@ public class Ride : Singleton<Ride>
         
         AudioManager.Instance.Play("FightMusicWon");
 
-        var dialogueUI = InGameUIManager.Instance.dialogueUI;
-
         GameSaveStateManager.Instance.saveGameDataManager.AddWaveCount();
 
         if (TutorialManager.Instance.explainedRideSequences)
         {
             StartCoroutine(PlayRideSoundsAfterOneAnother());
-
-            if (dialogueUI.dialogueCountWalkieTalkie < dialogueUI.dialogueWalkieTalkie.Length)
-            {
-                dialogueUI.SetWalkieTalkieTextBoxAnimation(true, true);
-            }
         }
         else
         {
-            dialogueUI.SetWalkieTalkieTextBoxAnimation(true, true);
+            InGameUIManager.Instance.dialogueUI.SetWalkieTalkieTextBoxAnimation(true, true);
         }
         
         AudioManager.Instance.FadeIn("InGameMusic");
@@ -252,6 +245,11 @@ public class Ride : Singleton<Ride>
         if (fuses.Length == GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() - 2)
         {
             InGameUIManager.Instance.EndScreen();
+        }
+
+        if (InGameUIManager.Instance.dialogueUI.dialogueCountWalkieTalkie < InGameUIManager.Instance.dialogueUI.dialogueWalkieTalkie.Length)
+        {
+            InGameUIManager.Instance.dialogueUI.SetWalkieTalkieTextBoxAnimation(true, true);
         }
 
         rideActivation.gateAnim.SetBool("OpenGate", true);
