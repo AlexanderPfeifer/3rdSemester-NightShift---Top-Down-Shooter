@@ -175,12 +175,7 @@ public class ShopUI : MonoBehaviour
             InGameUIManager.Instance.dialogueUI.StopCurrentAndTypeNewTextCoroutine(fortuneWheelText, null, InGameUIManager.Instance.dialogueUI.currentTextBox);
             fortuneWheel.SetActive(true);
             weapons.SetActive(false);
-
-            if(collectedItemsDictionary.Count != 0)
-                ResetWeaponDescriptions();
         }
-
-        GameInputManager.Instance.SetNewButtonAsSelected(changeWindowButton.gameObject);
     }
 
     private void DisplayItem(string header)

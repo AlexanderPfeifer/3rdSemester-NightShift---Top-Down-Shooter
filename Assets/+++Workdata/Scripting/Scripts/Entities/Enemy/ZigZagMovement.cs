@@ -3,7 +3,6 @@ using UnityEngine;
 public class ZigZagMovement : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed;
     [SerializeField] private float zigzagAmplitude = 1f;
     [SerializeField] private float zigzagFrequency = 2f;
     private float zigzagTimer;
@@ -35,7 +34,7 @@ public class ZigZagMovement : MonoBehaviour
         Vector2 _zigzagOffset = new Vector2(-_direction.y, _direction.x) * _offsetAmount;
         
         Vector2 _zigzagTarget = enemyBase.target.position + (Vector3)_zigzagOffset;
-        Vector2 _newPos = Vector2.MoveTowards(_position, _zigzagTarget, moveSpeed * Time.deltaTime);
+        Vector2 _newPos = Vector2.MoveTowards(_position, _zigzagTarget, enemyBase.currentSpeed * Time.deltaTime);
         enemyBase.rbEnemy.MovePosition(_position = _newPos);
         transform.position = _position;
 

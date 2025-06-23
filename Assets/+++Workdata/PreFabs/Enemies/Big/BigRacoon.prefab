@@ -9,11 +9,19 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: speed
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: bigEnemy
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: moveSpeed
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: speedOnRide
       value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
@@ -216,7 +224,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 188c6ce960693ec4fb52946b4243da15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.6
 --- !u!212 &217206317517097728
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -15,6 +15,9 @@ public class EnemyBase : MonoBehaviour
     [HideInInspector] public Rigidbody2D rbEnemy;
     [HideInInspector] public SpriteRenderer sr;
     [HideInInspector] public Transform target;
+    [NonSerialized] public float currentSpeed;
+    [SerializeField] private float speedOnRide;
+    [HideInInspector] public float speedOnHit;
 
     [Header("Particles")]
     [SerializeField] private GameObject enemyDeathMark;
@@ -40,6 +43,8 @@ public class EnemyBase : MonoBehaviour
         rbEnemy = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         target = Ride.Instance.transform;
+        currentSpeed = speedOnRide;
+        speedOnHit = speedOnRide * 2;
     }
 
     private void Update()
@@ -53,6 +58,7 @@ public class EnemyBase : MonoBehaviour
             Vector2.Distance(transform.position, PlayerBehaviour.Instance.transform.position))
         {
             target = Ride.Instance.transform;
+            currentSpeed = speedOnRide;
         }
     }
 

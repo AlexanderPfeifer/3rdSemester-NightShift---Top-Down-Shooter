@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShootingSignBehaviour : MonoBehaviour
@@ -14,7 +15,10 @@ public class ShootingSignBehaviour : MonoBehaviour
 
         transform.localScale = new Vector3(_scale, shrinkYSizeOnShot, _scale);
 
-        TutorialManager.Instance.AddAndCheckShotSigns();
+        if (TutorialManager.Instance.playedFirstDialogue)
+        {
+            TutorialManager.Instance.AddAndCheckShotSigns();
+        }
 
         yield return new WaitForSeconds(1);
         

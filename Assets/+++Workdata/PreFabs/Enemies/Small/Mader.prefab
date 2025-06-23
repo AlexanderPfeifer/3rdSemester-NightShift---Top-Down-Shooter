@@ -9,8 +9,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: speed
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: moveSpeed
       value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: speedOnRide
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: enemyConfetti
@@ -196,7 +204,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054b2c3548f06b242b3e347462af390c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3.5
   zigzagAmplitude: 30
   zigzagFrequency: 6
 --- !u!212 &463340498562284012
@@ -251,7 +258,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &4658524845394387636

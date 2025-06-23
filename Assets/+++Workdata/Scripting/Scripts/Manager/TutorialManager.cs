@@ -22,7 +22,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
     [HideInInspector] public bool fillAmmoForFree;
     [HideInInspector] public bool tutorialDone;
     [HideInInspector] public bool talkedAboutCurrency;
-    private bool playedFirstDialogue;
+    [HideInInspector] public bool playedFirstDialogue;
     private bool openedShopAfterFirstFight;
     private bool toldAboutAmmoRefill;
 

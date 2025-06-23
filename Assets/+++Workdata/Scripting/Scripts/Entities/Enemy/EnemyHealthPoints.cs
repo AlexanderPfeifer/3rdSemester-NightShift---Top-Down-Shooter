@@ -34,6 +34,7 @@ public class EnemyHealthPoints : MonoBehaviour
         if (followsPlayerOnBeingShot && !PlayerBehaviour.Instance.gotHit)
         {
             _enemy.target = PlayerBehaviour.Instance.transform;
+            _enemy.currentSpeed = _enemy.speedOnHit;
         }
 
         if (bulletTransform != null)

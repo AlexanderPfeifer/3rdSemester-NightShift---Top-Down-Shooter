@@ -4,7 +4,6 @@ public class JumpingMovement : MonoBehaviour
 {
     [Header("Movement")]
     private bool bunnyCanJump;
-    [SerializeField] private float bunnyJumpSpeed;
     private EnemyBase enemyBase;
 
     private void Start()
@@ -21,7 +20,7 @@ public class JumpingMovement : MonoBehaviour
         if (bunnyCanJump)
         {
             //I set bunnyCanJump on true in an animation because the movement of the bunny is in jumps, not a consistent running
-            enemyBase.rbEnemy.MovePosition(transform.position = Vector2.MoveTowards(transform.position, enemyBase.target.position, bunnyJumpSpeed * Time.deltaTime));
+            enemyBase.rbEnemy.MovePosition(transform.position = Vector2.MoveTowards(transform.position, enemyBase.target.position, enemyBase.currentSpeed * Time.deltaTime));
         }
         
         enemyBase.sr.flipX = !(transform.InverseTransformPoint(enemyBase.target.position).x > 0);

@@ -36,6 +36,7 @@ public class FortuneWheelUI : MonoBehaviour
     public Rigidbody2D rb;
     [HideInInspector] public bool receivingPrize;
     [SerializeField] private Image mark;
+    [SerializeField] private float easeOutStrength = 3f;
     
     [Header("EventSystem Controlling")]
     [SerializeField] private GameObject firstFortuneWheelButtonSelected;
@@ -69,10 +70,26 @@ public class FortuneWheelUI : MonoBehaviour
         while (_elapsed < _timeUntilStop)
         {
             _elapsed += Time.deltaTime;
-            float _t = Mathf.Sin((_elapsed / _timeUntilStop) * Mathf.PI * 0.5f); 
+            float _t = 1f - Mathf.Pow(1f - _elapsed / _timeUntilStop, easeOutStrength);
             float _currentRotation = Mathf.Lerp(_startRotation, _endRotation, _t);
 
-            rb.MoveRotation(_currentRotation); 
+            int GetPrizeIndex(float rotation)
+            {
+                float normalized = (rotation % 360f + 360f) % 360f;
+                return Mathf.FloorToInt(normalized / _pieSize) % prizes.Length;
+            }
+
+            int oldIndex = GetPrizeIndex(rb.rotation);
+
+            rb.MoveRotation(_currentRotation);
+
+            int newIndex = GetPrizeIndex(_currentRotation);
+
+            if (oldIndex != newIndex)
+            {
+                AudioManager.Instance.Play("WheelPrizeChanged");
+            }
+
             yield return null;
         }
 
@@ -155,6 +172,8 @@ public class FortuneWheelUI : MonoBehaviour
         receivingPrize = false;
 
         newWeaponAnim.SetBool("NewWeaponScreenActive", false);
+
+        InGameUIManager.Instance.inGameUICanvasGroup.interactable = true;
     }
 
     public void WinBlank()

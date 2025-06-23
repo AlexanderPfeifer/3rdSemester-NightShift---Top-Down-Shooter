@@ -10,12 +10,6 @@ public class DebugMode : SingletonPersistent<DebugMode>
     public int currencyAtStart;
     [SerializeField] private int playWave;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        
-    }
-
     public void AddWaves()
     {
         for (int _i = 0; _i < playWave; _i++)
@@ -26,6 +20,9 @@ public class DebugMode : SingletonPersistent<DebugMode>
     
     public void GetDebugWeapon()
     {
+        if(equipWeapon == null)
+            return;
+
         foreach (var _unlockWeapon in UnlockWeapons)
         {
             if (_unlockWeapon.getWeapon)

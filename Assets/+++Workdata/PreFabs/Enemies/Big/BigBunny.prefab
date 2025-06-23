@@ -9,12 +9,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: speed
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: isBunny
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: bigEnemy
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: speedOnRide
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: enemyConfetti
@@ -208,7 +216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889dc3e666285394cb2242d0f12a3774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bunnyJumpSpeed: 1.3
 --- !u!212 &122594675430805002
 SpriteRenderer:
   m_ObjectHideFlags: 0
