@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: d324e3288cd40624fb754e662a8973d8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 871727031524917197
+    second: sprint_left_trigger_gamepad_chalk_0
+  - first:
+      213: 1813867688070110881
+    second: sprint_left_trigger_gamepad_chalk_1
+  - first:
+      213: -9064860799507276811
+    second: sprint_left_trigger_gamepad_chalk_2
+  - first:
+      213: -3914221443788661206
+    second: sprint_left_trigger_gamepad_chalk_3
+  - first:
+      213: -5125555332173447185
+    second: sprint_left_trigger_gamepad_chalk_4
+  - first:
+      213: -194527586012606625
+    second: sprint_left_trigger_gamepad_chalk_5
+  - first:
+      213: -8732416267813145641
+    second: sprint_left_trigger_gamepad_chalk_6
+  - first:
+      213: -406166265186830105
+    second: sprint_left_trigger_gamepad_chalk_7
+  - first:
+      213: -2131966503341485037
+    second: sprint_left_trigger_gamepad_chalk_8
+  - first:
+      213: -1582655116433538217
+    second: sprint_left_trigger_gamepad_chalk_9
+  - first:
+      213: -4032476873606082235
+    second: sprint_left_trigger_gamepad_chalk_10
+  - first:
+      213: 7885724518098372383
+    second: sprint_left_trigger_gamepad_chalk_11
+  - first:
+      213: 3549027201378149297
+    second: sprint_left_trigger_gamepad_chalk_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_0
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 50
+        width: 35
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcff527dd1ff81c00800000000000000
+      internalID: 871727031524917197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_1
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 78
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ae5af05d072c2910800000000000000
+      internalID: 1813867688070110881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 72
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fb510b6125233280800000000000000
+      internalID: -9064860799507276811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 55
+        width: 20
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2e92c6d554eda9c0800000000000000
+      internalID: -3914221443788661206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 51
+        width: 21
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fef313de49e5ed8b0800000000000000
+      internalID: -5125555332173447185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_5
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 49
+        width: 18
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5f44b0f036ec4df0800000000000000
+      internalID: -194527586012606625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_6
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 49
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d3b726bba930d680800000000000000
+      internalID: -8732416267813145641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_7
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 51
+        width: 13
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e8bacb0fe10d5af0800000000000000
+      internalID: -406166265186830105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_8
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 0
+        width: 65
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3149c47c2cbb962e0800000000000000
+      internalID: -2131966503341485037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_9
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 31
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 753460f8e87490ae0800000000000000
+      internalID: -1582655116433538217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_10
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 20
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5415bbff5a3c908c0800000000000000
+      internalID: -4032476873606082235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_11
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 20
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1787d93ba8bf6d60800000000000000
+      internalID: 7885724518098372383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint_left_trigger_gamepad_chalk_12
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 13
+        width: 11
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b3e754af6da04130800000000000000
+      internalID: 3549027201378149297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      sprint_left_trigger_gamepad_chalk_0: 871727031524917197
+      sprint_left_trigger_gamepad_chalk_1: 1813867688070110881
+      sprint_left_trigger_gamepad_chalk_10: -4032476873606082235
+      sprint_left_trigger_gamepad_chalk_11: 7885724518098372383
+      sprint_left_trigger_gamepad_chalk_12: 3549027201378149297
+      sprint_left_trigger_gamepad_chalk_2: -9064860799507276811
+      sprint_left_trigger_gamepad_chalk_3: -3914221443788661206
+      sprint_left_trigger_gamepad_chalk_4: -5125555332173447185
+      sprint_left_trigger_gamepad_chalk_5: -194527586012606625
+      sprint_left_trigger_gamepad_chalk_6: -8732416267813145641
+      sprint_left_trigger_gamepad_chalk_7: -406166265186830105
+      sprint_left_trigger_gamepad_chalk_8: -2131966503341485037
+      sprint_left_trigger_gamepad_chalk_9: -1582655116433538217
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
