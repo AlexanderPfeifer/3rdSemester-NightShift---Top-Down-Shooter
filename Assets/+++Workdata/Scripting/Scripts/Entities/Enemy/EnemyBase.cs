@@ -38,6 +38,10 @@ public class EnemyBase : MonoBehaviour
     [Range(0,1), SerializeField] private float ammunitionDropChancePercentage;
     [SerializeField] private Vector2 currencyDropRange;
 
+    [Header("Health")]
+    [SerializeField] private Material hitWhiteMaterial;
+    [SerializeField] private Material standartMaterial;
+
     private void Start()
     {
         rbEnemy = GetComponent<Rigidbody2D>();
@@ -65,25 +69,29 @@ public class EnemyBase : MonoBehaviour
     public IEnumerator EnemyFreezeCoroutine(float freezeTime)
     {
         enemyCanMove = false;
+        sr.color = Color.blue;
+
         yield return new WaitForSecondsRealtime(freezeTime);
+
+        sr.color = Color.white;
         enemyCanMove = true;
     }
 
     public IEnumerator HitVisual()
     {
         AudioManager.Instance.Play("EnemyHit");
-        sr.color = Color.red;
+        sr.material = hitWhiteMaterial;
 
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(0.05f);
         
-        sr.color = Color.white;
+        sr.material = standartMaterial;
     }
     
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.TryGetComponent(out Ride _ride))
         {
-            Ride.Instance.DealDamage(rideAttackDamage);
+            Ride.Instance.ReceiveDamage(rideAttackDamage);
                         
             gotKilledFromRide = true;
             Destroy(gameObject);

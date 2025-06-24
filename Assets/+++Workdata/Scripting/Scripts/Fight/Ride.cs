@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -23,7 +25,11 @@ public class Ride : Singleton<Ride>
     [SerializeField] private float hitVisualTime = .05f;
     [SerializeField] private ParticleSystem hitParticles;
     private bool rideGotHit;
-    public SpriteRenderer rideRenderer;
+    [SerializeField] private SpriteRenderer bottomRideRenderer;
+    [SerializeField] private SpriteRenderer topRideRenderer;
+    [SerializeField] private float rideHitScreenShakeStrength;
+    [SerializeField] private Material hitWhiteMaterial;
+    [SerializeField] private Material standartMaterial;
 
     [Header("Activation")]
     public GameObject[] rideLight;
@@ -46,6 +52,7 @@ public class Ride : Singleton<Ride>
     private void Start()
     {
         InGameUIManager.Instance.dialogueUI.dialogueCountShop = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
+        
     }
 
     public void StartEnemyClusterCoroutines()
@@ -290,14 +297,15 @@ public class Ride : Singleton<Ride>
     {
         StopAllCoroutines();
         Time.timeScale = 1f;
-        rideRenderer.color = Color.white;
+        bottomRideRenderer.material = standartMaterial;
+        topRideRenderer.material = standartMaterial;
         rideGotHit = false;
         waveStarted = false;
         rideActivation.fightMusic.Stop();
         rideActivation.interactable = true;
     }
 
-    public void DealDamage(float rideAttackDamage)
+    public void ReceiveDamage(float rideAttackDamage)
     {
         currentRideHealth -= rideAttackDamage;
         rideHealthFill.fillAmount = currentRideHealth / maxRideHealth;
@@ -314,16 +322,19 @@ public class Ride : Singleton<Ride>
 
     public void StartRideHitVisual()
     {
-        hitParticles.Play();
-        
         if (rideGotHit)
             return;
-        
+
         rideGotHit = true;
-        
-        rideRenderer.color = Color.red;
-        
-        Time.timeScale = 0.1f;
+
+        hitParticles.Play();
+
+        PlayerBehaviour.Instance.weaponBehaviour.playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = rideHitScreenShakeStrength;
+
+        bottomRideRenderer.material = hitWhiteMaterial;
+        topRideRenderer.material = hitWhiteMaterial;
+
+        Time.timeScale = 0f;
         
         StartCoroutine(HitStop());
     }
@@ -331,9 +342,11 @@ public class Ride : Singleton<Ride>
     private IEnumerator HitStop()
     {
         yield return new WaitForSecondsRealtime(hitVisualTime);
-        
+
+        PlayerBehaviour.Instance.weaponBehaviour.playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
         Time.timeScale = 1f;
-        rideRenderer.color = Color.white;
+        bottomRideRenderer.material = standartMaterial;
+        topRideRenderer.material = standartMaterial;
         rideGotHit = false;
     }
     

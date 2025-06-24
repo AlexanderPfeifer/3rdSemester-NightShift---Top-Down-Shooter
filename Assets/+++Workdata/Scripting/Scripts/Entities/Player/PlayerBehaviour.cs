@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -34,12 +36,13 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
 
     [Header("Hit")]
     [SerializeField] private float hitVisualTime = .05f;
-    [SerializeField] private float hitVignetteFadeInTime = .2f;
     [SerializeField] private float hitVignetteFadeOutTime = .2f;
     [SerializeField] private Volume hitVignette;
     [SerializeField] private float stunTimeOnEnemyCollision = 3;
     [HideInInspector] public bool gotHit;
-    [SerializeField] private float knockBackDecay = 5f; 
+    [SerializeField] private float knockBackDecay = 5f;
+    [SerializeField] private Material hitWhiteMaterial;
+    [SerializeField] private Material standartMaterial;
 
     [Header("Visuals")]
     public GameObject playerVisual;
@@ -115,6 +118,8 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         rb = GetComponent<Rigidbody2D>();
         currentMoveSpeed = baseMoveSpeed;
         playerCurrency = GetComponent<PlayerCurrency>();
+        standartMaterial = playerNoHandVisual.GetComponent<SpriteRenderer>().material;
+
 
         if (DebugMode.Instance != null)
         {
@@ -129,7 +134,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
             
             InGameUIManager.Instance.playerHUD.SetActive(true);
 
-            PlayerBehaviour.Instance.playerCurrency.currencyBackground.gameObject.SetActive(true);
+            playerCurrency.currencyBackground.gameObject.SetActive(true);
             
             playerCurrency.AddCurrency(DebugMode.Instance.currencyAtStart, true);
         }
@@ -215,10 +220,6 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     {
         if (gotHit)
             return;
-        
-        playerNoHandVisual.GetComponent<SpriteRenderer>().color = Color.red;
-
-        AudioManager.Instance.Play("Paralyze");
 
         StartCoroutine(HitStop());
     }
@@ -226,25 +227,19 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
     private IEnumerator HitStop()
     {
         gotHit = true;
-        Time.timeScale = 0.1f;
+
+        playerNoHandVisual.GetComponent<SpriteRenderer>().material = hitWhiteMaterial;
+        AudioManager.Instance.Play("Paralyze");
+        hitVignette.weight = 1;
+        Time.timeScale = 0f;
 
         yield return new WaitForSecondsRealtime(hitVisualTime);
         
         Time.timeScale = 1f;
-        
-        playerNoHandVisual.GetComponent<SpriteRenderer>().color = Color.white;
-        
-        var _elapsedTime = 0f;
-
-        while (_elapsedTime < hitVignetteFadeInTime)
-        {
-            hitVignette.weight = Mathf.Lerp(hitVignette.weight, 1, _elapsedTime / hitVignetteFadeInTime);
-            
-            _elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        
+        playerNoHandVisual.GetComponent<SpriteRenderer>().material = standartMaterial;
         currentMoveSpeed = slowDownSpeed;
+
+        var _elapsedTime = 0f;
 
         foreach (Transform _children in Ride.Instance.enemyParent.transform)
         {

@@ -69,7 +69,7 @@ public class AudioManager : SingletonPersistent<AudioManager>
         masterVolume = PlayerPrefs.GetFloat(MasterVolumePlayerPrefs, masterVolume);
         for (int i = 0; i < masterPoints.Length; i++)
         {
-            if (Mathf.RoundToInt(masterVolume * 10) - 1 > i)
+            if (Mathf.RoundToInt(masterVolume * 10) > i)
             {
                 masterPoints[i].GetComponent<Image>().sprite = counterOn;
             }
@@ -90,7 +90,7 @@ public class AudioManager : SingletonPersistent<AudioManager>
         musicVolume = PlayerPrefs.GetFloat(MusicVolumePlayerPrefs, musicVolume);
         for (int i = 0; i < musicPoints.Length; i++)
         {
-            if (Mathf.RoundToInt(musicVolume * 10) - 1 > i)
+            if (Mathf.RoundToInt(musicVolume * 10) > i)
             {
                 musicPoints[i].GetComponent<Image>().sprite = counterOn;
             }
@@ -111,7 +111,7 @@ public class AudioManager : SingletonPersistent<AudioManager>
         sfxVolume = PlayerPrefs.GetFloat(SfxVolumePlayerPrefs, sfxVolume);
         for (int i = 0; i < sfxPoints.Length; i++)
         {
-            if (Mathf.RoundToInt(sfxVolume * 10) - 1 > i)
+            if (Mathf.RoundToInt(sfxVolume * 10) > i)
             {
                 sfxPoints[i].GetComponent<Image>().sprite = counterOn;
             }

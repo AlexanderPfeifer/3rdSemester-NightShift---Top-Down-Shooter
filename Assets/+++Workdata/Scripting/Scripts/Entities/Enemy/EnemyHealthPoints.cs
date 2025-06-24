@@ -6,7 +6,7 @@ public class EnemyHealthPoints : MonoBehaviour
     [Header("HealthPoints")]
     [SerializeField] private int maximumHitPoints = 5;
     private float currentHitPoints;
-    
+
     [Header("Knock Back")] 
     [SerializeField] private float knockBackTime = .15f;
 

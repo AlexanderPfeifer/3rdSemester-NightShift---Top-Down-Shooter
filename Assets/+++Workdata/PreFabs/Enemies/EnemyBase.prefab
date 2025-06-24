@@ -205,6 +205,8 @@ MonoBehaviour:
   rbEnemy: {fileID: 0}
   sr: {fileID: 0}
   target: {fileID: 0}
+  speedOnRide: 0
+  speedOnHit: 0
   enemyDeathMark: {fileID: 4290859008780889418, guid: 5201ca6a6521a604e9dac64a9e5c9a82, type: 3}
   enemyConfetti: {fileID: 0}
   enemyShotConfetti: {fileID: 7808308972302223588, guid: 1cf185cb36f7e2a47a5cd5bab96760a7, type: 3}
@@ -216,6 +218,8 @@ MonoBehaviour:
   ammunitionAmountDropRange: {x: 0, y: 0}
   ammunitionDropChancePercentage: 0
   currencyDropRange: {x: 0, y: 0}
+  hitWhiteMaterial: {fileID: 2100000, guid: 02ac32ce0c404094ea0400b8e63ea718, type: 2}
+  standartMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
 --- !u!114 &7295137754459367048
 MonoBehaviour:
   m_ObjectHideFlags: 0
