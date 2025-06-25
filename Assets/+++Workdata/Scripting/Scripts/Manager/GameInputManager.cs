@@ -7,8 +7,9 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
 {
     private PlayerInputActions playerInputActions;
     [HideInInspector] public bool mouseIsLastUsedDevice = true;
-    Vector2 virtualCursorPos;
     private Vector2 aimScreenPosition;
+    private Vector2 mouseDelta;
+    private Vector2 rightStickInput;
 
     public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnNotShootingAction, OnReloadAction, OnMeleeWeaponAction, 
         OnSkipDialogueWithController, OnSprinting, OnNotSprinting;
@@ -36,6 +37,11 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
+    }
+
+    private void Update()
+    {
+        CheckForCurrentInput();
     }
 
     public void SetNewButtonAsSelected(GameObject current)
@@ -121,33 +127,37 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
         }
     }
 
-    private void OnInputDeviceChanged(bool isMouse)
+    public void OnInputDeviceChanged(bool isMouse)
     {
-        InputGraphicsManager.Instance.SetInputGraphics(isMouse);
+        if(InputGraphicsManager.Instance != null)
+            InputGraphicsManager.Instance.SetInputGraphics(isMouse);
     }
 
-    public Vector3 GetAimingVector()
+    private void CheckForCurrentInput()
     {
-        Vector2 _mouseDelta = Mouse.current.delta.ReadValue();
-        Vector2 _rightStickInput = Gamepad.current?.rightStick.ReadValue() ?? Vector2.zero;
         Vector2 _leftStickInput = Gamepad.current?.leftStick.ReadValue() ?? Vector2.zero;
+        mouseDelta = Mouse.current.delta.ReadValue();
+        rightStickInput = Gamepad.current?.rightStick.ReadValue() ?? Vector2.zero;
 
-        if (_rightStickInput.sqrMagnitude > 0.01f || _leftStickInput.sqrMagnitude > 0.01f)
+        if (rightStickInput.sqrMagnitude > 0.01f || _leftStickInput.sqrMagnitude > 0.01f)
         {
             MouseIsLastUsedDevice = false;
         }
-        else if (_mouseDelta.sqrMagnitude > 0.01f)
+        else if (mouseDelta.sqrMagnitude > 0.01f)
         {
             MouseIsLastUsedDevice = true;
         }
-        
+    }
+
+    public Vector3 GetAimingVector()
+    {        
         if (!mouseIsLastUsedDevice)
         {
             Vector3 _playerScreenPos = PlayerBehaviour.Instance.weaponBehaviour.mainCamera.WorldToScreenPoint(PlayerBehaviour.Instance.transform.position);
             
-            if(_rightStickInput.sqrMagnitude > 0.25f)
+            if(rightStickInput.sqrMagnitude > 0.25f)
             {
-                aimScreenPosition = _playerScreenPos + new Vector3(_rightStickInput.x, _rightStickInput.y, 0f).normalized * ((float)Screen.width / 6);
+                aimScreenPosition = _playerScreenPos + new Vector3(rightStickInput.x, rightStickInput.y, 0f).normalized * ((float)Screen.width / 6);
                 Mouse.current.WarpCursorPosition(aimScreenPosition);
             }
 

@@ -62,7 +62,8 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
 
     private void Start()
     {
-        GameInputManager.Instance.SetNewButtonAsSelected(firstMainMenuSelected);
+        //Here I do not set it via GameInputManager because it should be selected always
+        EventSystem.current.SetSelectedGameObject(firstMainMenuSelected);
 
         AudioManager.Instance.SetAudioPlayerPrefs(masterPoints, musicPoints, sfxPoints);
         SceneManager.Instance.SetFullscreenPlayerPrefs(fullScreenCheck);

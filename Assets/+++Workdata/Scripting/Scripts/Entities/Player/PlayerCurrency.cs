@@ -4,34 +4,34 @@ using UnityEngine;
 
 public class PlayerCurrency : MonoBehaviour
 {
-    public TextMeshProUGUI currencyText;
+    public TextMeshProUGUI playerCurrencyText;
     public GameObject currencyBackground;
-    [NonSerialized] private int currency;
+    [NonSerialized] private int playerCurrency;
     [SerializeField] private float timeBetweenAddingNumbers;
 
     [Header("ShowCurrencyNumberByNumber")] 
     [SerializeField] private int maxCurrencyNumberByNumberMultiplier = 10;
     [SerializeField] private int divisionNumberPerMultiplier = 100;
     private float currentTimeBetweenAddingNumbers;
-    private int currencyAmount;
+    private int countedCurrency;
 
     private bool playTschaTschingSFX;
 
     private void Start()
     {
-        SetCurrencyText();
+        playerCurrencyText.text = countedCurrency.ToString();
 
         currentTimeBetweenAddingNumbers = timeBetweenAddingNumbers;
     }
 
     private void Update()
     {
-        UpdateCurrencyTextNumberByNumber();
+        UpdateCurrencyTextNumberByNumber(playerCurrency, ref countedCurrency, playerCurrencyText);
     }
 
     public void AddCurrency(int amount, bool playTschaTschingSFX)
     {
-        currency += amount;
+        playerCurrency += amount;
         
         if (playTschaTschingSFX)
         {
@@ -39,16 +39,11 @@ public class PlayerCurrency : MonoBehaviour
         }
     }
 
-    private void SetCurrencyText()
-    {
-        currencyText.text = currencyAmount.ToString();
-    }
-
     public bool SpendCurrency(int amount)
     {
-        if (currency >= amount)
+        if (playerCurrency >= amount)
         {
-            currency -= amount;
+            playerCurrency -= amount;
             return true;
         }
         
@@ -57,7 +52,7 @@ public class PlayerCurrency : MonoBehaviour
 
     public bool CheckEnoughCurrency(int amount)
     {
-        if (currency >= amount)
+        if (playerCurrency >= amount)
         {
             return true;
         }
@@ -65,23 +60,23 @@ public class PlayerCurrency : MonoBehaviour
         return false;
     }
 
-    private void UpdateCurrencyTextNumberByNumber()
+    public void UpdateCurrencyTextNumberByNumber(int targetCurrency, ref int currentCurrency, TextMeshProUGUI currencyText, float currentTimeBetweenAdding)
     {
-        if (currencyAmount == currency)
+        if (currentCurrency == targetCurrency)
             return;
         
-        float _addNumberMultiplier = Mathf.Clamp(Mathf.Abs(currency - currencyAmount) / divisionNumberPerMultiplier, 1, maxCurrencyNumberByNumberMultiplier);
+        float _addNumberMultiplier = Mathf.Clamp(Mathf.Abs(targetCurrency - currentCurrency) / divisionNumberPerMultiplier, 1, maxCurrencyNumberByNumberMultiplier);
 
         if (currentTimeBetweenAddingNumbers < 0)
         {
             //Mathf Sign to subtract or add numbers if needed - so if it is -1, it decreases number accordingly
-            int _step = Mathf.CeilToInt(_addNumberMultiplier * Mathf.Sign(currency - currencyAmount));
-            currencyAmount += _step;
+            int _step = Mathf.CeilToInt(_addNumberMultiplier * Mathf.Sign(targetCurrency - currentCurrency));
+            currentCurrency += _step;
             AudioManager.Instance.Play("CurrencyAdd");
 
-            if ((_step > 0 && currencyAmount > currency) || (_step < 0 && currencyAmount < currency) || currencyAmount == currency)
+            if ((_step > 0 && currentCurrency > targetCurrency) || (_step < 0 && currentCurrency < targetCurrency) || currentCurrency == targetCurrency)
             {
-                currencyAmount = currency;
+                currentCurrency = targetCurrency;
 
                 if (playTschaTschingSFX)
                 {
@@ -90,7 +85,7 @@ public class PlayerCurrency : MonoBehaviour
                 }
             }
 
-            SetCurrencyText();
+            currencyText.text = currentCurrency.ToString();
             currentTimeBetweenAddingNumbers = timeBetweenAddingNumbers / _addNumberMultiplier;
         }
         else

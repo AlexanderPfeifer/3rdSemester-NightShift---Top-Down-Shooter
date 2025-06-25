@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerBehaviour : Singleton<PlayerBehaviour>
 {
@@ -119,6 +120,10 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         currentMoveSpeed = baseMoveSpeed;
         playerCurrency = GetComponent<PlayerCurrency>();
         standartMaterial = playerNoHandVisual.GetComponent<SpriteRenderer>().material;
+        if(!GameInputManager.Instance.mouseIsLastUsedDevice)
+        {
+            GameInputManager.Instance.OnInputDeviceChanged(false);
+        }
 
 
         if (DebugMode.Instance != null)

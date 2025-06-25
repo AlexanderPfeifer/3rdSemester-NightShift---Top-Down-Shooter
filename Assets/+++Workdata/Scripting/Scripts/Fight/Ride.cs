@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Runtime.CompilerServices;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,6 +44,9 @@ public class Ride : Singleton<Ride>
     public Image[] fuses;
     public Sprite activeFuse;
     public Sprite inActiveFuse;
+    [SerializeField] private TextMeshProUGUI prizeText;
+    private int countedCurrency;
+    private float currentTimeBetweenAddingNumbers;
 
     [Header("Loose")]
     [SerializeField] private Vector2 restartPosition;
@@ -51,8 +55,19 @@ public class Ride : Singleton<Ride>
 
     private void Start()
     {
-        InGameUIManager.Instance.dialogueUI.dialogueCountShop = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
-        
+        InGameUIManager.Instance.dialogueUI.dialogueCountShop = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();   
+    }
+
+    private void Update()
+    {
+        if(waveStarted)
+        {
+            PlayerBehaviour.Instance.playerCurrency.UpdateCurrencyTextNumberByNumber(Mathf.RoundToInt(waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].currencyPrize * (currentRideHealth / maxRideHealth)), ref countedCurrency, prizeText, currentTimeBetweenAddingNumbers);
+        }
+        else if(countedCurrency > 0)
+        {
+            PlayerBehaviour.Instance.playerCurrency.UpdateCurrencyTextNumberByNumber(0, ref countedCurrency, prizeText, currentTimeBetweenAddingNumbers);
+        }
     }
 
     public void StartEnemyClusterCoroutines()
@@ -297,12 +312,14 @@ public class Ride : Singleton<Ride>
     {
         StopAllCoroutines();
         Time.timeScale = 1f;
+        PlayerBehaviour.Instance.weaponBehaviour.playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
         bottomRideRenderer.material = standartMaterial;
         topRideRenderer.material = standartMaterial;
         rideGotHit = false;
         waveStarted = false;
         rideActivation.fightMusic.Stop();
         rideActivation.interactable = true;
+        prizeText.text = Mathf.RoundToInt(waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].currencyPrize * (currentRideHealth / maxRideHealth)).ToString();
     }
 
     public void ReceiveDamage(float rideAttackDamage)
