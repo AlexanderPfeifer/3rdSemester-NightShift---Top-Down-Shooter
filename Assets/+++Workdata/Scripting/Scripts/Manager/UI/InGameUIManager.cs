@@ -26,7 +26,8 @@ public class InGameUIManager : Singleton<InGameUIManager>
 
     [Header("LooseGame")] 
     public Image shutterLooseImage;
-    
+    public Animator loseShutterAnim;
+
     [Header("References")]
     public GeneratorUI generatorUI;
     public FortuneWheelUI fortuneWheelUI;

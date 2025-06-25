@@ -89,8 +89,8 @@ public class DialogueUI : MonoBehaviour
             case DialogueState.DialoguePlaying:
                 if(!isSkippingDialogue)
                 {
-                    //StopAllCoroutines();
-                    //StartCoroutine(TypeAllText());
+                    StopAllCoroutines();
+                    StartCoroutine(TypeAllText());
                 }
                 break;
             case DialogueState.DialogueAbleToGoNext:

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -45,28 +44,41 @@ public class Ride : Singleton<Ride>
     public Sprite activeFuse;
     public Sprite inActiveFuse;
     [SerializeField] private TextMeshProUGUI prizeText;
+    private Color startColorPrizeText;
     private int countedCurrency;
     private float currentTimeBetweenAddingNumbers;
 
     [Header("Loose")]
     [SerializeField] private Vector2 restartPosition;
-    [SerializeField] private float shutterGoDownTime;
     [SerializeField, TextArea(3, 10)] private string peggyLooseText;
 
     private void Start()
     {
-        InGameUIManager.Instance.dialogueUI.dialogueCountShop = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();   
+        InGameUIManager.Instance.dialogueUI.dialogueCountShop = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
+        startColorPrizeText = prizeText.color;
     }
 
     private void Update()
     {
-        if(waveStarted)
+        if(waveStarted && GetCurrentWavePrize() > 0)
         {
-            PlayerBehaviour.Instance.playerCurrency.UpdateCurrencyTextNumberByNumber(Mathf.RoundToInt(waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].currencyPrize * (currentRideHealth / maxRideHealth)), ref countedCurrency, prizeText, currentTimeBetweenAddingNumbers);
+            PlayerBehaviour.Instance.playerCurrency.UpdateCurrencyTextNumberByNumber(GetCurrentWavePrize(), 
+                ref countedCurrency, prizeText, currentTimeBetweenAddingNumbers);
+
+            prizeText.color = startColorPrizeText;
         }
-        else if(countedCurrency > 0)
+        else if(prizeText.text != "0")
         {
             PlayerBehaviour.Instance.playerCurrency.UpdateCurrencyTextNumberByNumber(0, ref countedCurrency, prizeText, currentTimeBetweenAddingNumbers);
+        }
+        else if(GetCurrentWavePrize() < 0)
+        {
+            prizeText.text = "0";
+            prizeText.color = Color.black;
+        }
+        else
+        {
+            prizeText.color = Color.black;
         }
     }
 
@@ -80,7 +92,7 @@ public class Ride : Singleton<Ride>
         foreach (var _enemyCluster in waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].enemyClusters)
         {            
             spawnedEnemiesInCluster += _enemyCluster.enemyPrefab.Length * _enemyCluster.spawnCount * _enemyCluster.repeatCount;
-            
+
             StartCoroutine(SpawnEnemies(_enemyCluster));
         }
     }
@@ -149,7 +161,6 @@ public class Ride : Singleton<Ride>
     private IEnumerator LooseVisuals()
     {
         PlayerBehaviour.Instance.SetPlayerBusy(true);
-        var shutter = InGameUIManager.Instance.shutterLooseImage.rectTransform;
 
         while (AudioManager.Instance.IsPlaying("FightMusicLoss"))
         {
@@ -157,39 +168,39 @@ public class Ride : Singleton<Ride>
             yield return new WaitForSeconds(0.75f);
         }
 
-        AudioManager.Instance.Play("MetalShutterDown");
+        var loseAnim = InGameUIManager.Instance.loseShutterAnim;
+        loseAnim.SetBool("GoUp", false);
 
-        yield return MoveShutter(shutter, shutter.localPosition.y, 0f, shutterGoDownTime);
+        while (!loseAnim.GetCurrentAnimatorStateInfo(0).IsName("ShopStallShutterDown"))
+        {
+            yield return null;
+        }
+
+        while (loseAnim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            yield return null;
+        }
 
         PlayerBehaviour.Instance.transform.position = restartPosition;
         CleanStageFromEnemies();
-
-        yield return new WaitForSeconds(1);
 
         //Set player busy false because otherwise the shop won't open 
         PlayerBehaviour.Instance.SetPlayerBusy(false);
         InGameUIManager.Instance.OpenShop();
 
-        float targetY = 1100f;
-        yield return MoveShutter(shutter, shutter.localPosition.y, targetY, 0f);
+        loseAnim.SetBool("GoUp", true);
 
-        InGameUIManager.Instance.dialogueUI.StopCurrentAndTypeNewTextCoroutine(peggyLooseText, null,InGameUIManager.Instance.dialogueUI.currentTextBox);
-    }
-
-    private IEnumerator MoveShutter(RectTransform shutter, float startY, float endY, float duration)
-    {
-        float elapsed = 0f;
-        Vector3 pos = shutter.localPosition;
-
-        while (elapsed < duration)
+        while (!loseAnim.GetCurrentAnimatorStateInfo(0).IsName("ShopStallShutterUp"))
         {
-            elapsed += Time.deltaTime;
-            float newY = Mathf.Lerp(startY, endY, elapsed / duration);
-            shutter.localPosition = new Vector3(pos.x, newY, pos.z);
             yield return null;
         }
 
-        shutter.localPosition = new Vector3(pos.x, endY, pos.z);
+        while (loseAnim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            yield return null;
+        }
+
+        InGameUIManager.Instance.dialogueUI.StopCurrentAndTypeNewTextCoroutine(peggyLooseText, null, InGameUIManager.Instance.dialogueUI.currentTextBox);
     }
 
     public void WonWave()
@@ -203,8 +214,7 @@ public class Ride : Singleton<Ride>
             
         InGameUIManager.Instance.SetWalkieTalkieQuestLog(TutorialManager.Instance.getNewWeapons);
         
-        PlayerBehaviour.Instance.playerCurrency.AddCurrency(
-            Mathf.RoundToInt(waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].currencyPrize * (currentRideHealth / maxRideHealth)), true);
+        PlayerBehaviour.Instance.playerCurrency.AddCurrency(GetCurrentWavePrize(), true);
         
         ResetRide();
         
@@ -308,6 +318,11 @@ public class Ride : Singleton<Ride>
         }
     }
 
+    private int GetCurrentWavePrize()
+    {
+        return Mathf.RoundToInt(waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].currencyPrize * (currentRideHealth / maxRideHealth));
+    }
+
     public void ResetRide()
     {
         StopAllCoroutines();
@@ -319,7 +334,7 @@ public class Ride : Singleton<Ride>
         waveStarted = false;
         rideActivation.fightMusic.Stop();
         rideActivation.interactable = true;
-        prizeText.text = Mathf.RoundToInt(waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].currencyPrize * (currentRideHealth / maxRideHealth)).ToString();
+        prizeText.text = GetCurrentWavePrize().ToString();
     }
 
     public void ReceiveDamage(float rideAttackDamage)
