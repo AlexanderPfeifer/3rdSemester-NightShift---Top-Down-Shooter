@@ -26,7 +26,7 @@ public class PlayerCurrency : MonoBehaviour
 
     private void Update()
     {
-        UpdateCurrencyTextNumberByNumber(playerCurrency, ref countedCurrency, playerCurrencyText);
+        UpdateCurrencyTextNumberByNumber(playerCurrency, ref countedCurrency, playerCurrencyText, currentTimeBetweenAddingNumbers);
     }
 
     public void AddCurrency(int amount, bool playTschaTschingSFX)
@@ -67,7 +67,7 @@ public class PlayerCurrency : MonoBehaviour
         
         float _addNumberMultiplier = Mathf.Clamp(Mathf.Abs(targetCurrency - currentCurrency) / divisionNumberPerMultiplier, 1, maxCurrencyNumberByNumberMultiplier);
 
-        if (currentTimeBetweenAddingNumbers < 0)
+        if (currentTimeBetweenAdding < 0)
         {
             //Mathf Sign to subtract or add numbers if needed - so if it is -1, it decreases number accordingly
             int _step = Mathf.CeilToInt(_addNumberMultiplier * Mathf.Sign(targetCurrency - currentCurrency));
@@ -86,11 +86,11 @@ public class PlayerCurrency : MonoBehaviour
             }
 
             currencyText.text = currentCurrency.ToString();
-            currentTimeBetweenAddingNumbers = timeBetweenAddingNumbers / _addNumberMultiplier;
+            currentTimeBetweenAdding = timeBetweenAddingNumbers / _addNumberMultiplier;
         }
         else
         {
-            currentTimeBetweenAddingNumbers -= Time.deltaTime;
+            currentTimeBetweenAdding -= Time.deltaTime;
         }
     }
 }
