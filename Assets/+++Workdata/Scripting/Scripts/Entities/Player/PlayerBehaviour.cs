@@ -1,13 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerBehaviour : Singleton<PlayerBehaviour>
 {
@@ -301,7 +298,7 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
             }
             else if (currentMoveSpeed == baseMoveSpeed && currentSprintTime < maxSprintTime)
             {
-                currentSprintTime += Time.deltaTime;
+                currentSprintTime += Time.deltaTime / 2;
                 sprintBarFill.fillAmount = currentSprintTime / maxSprintTime;
             }
         }

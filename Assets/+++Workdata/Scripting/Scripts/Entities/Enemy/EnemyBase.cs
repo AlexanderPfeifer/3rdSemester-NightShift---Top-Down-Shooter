@@ -27,6 +27,7 @@ public class EnemyBase : MonoBehaviour
     [Header("Ride")]
     [SerializeField] private float rideAttackDamage = 1;
     private bool gotKilledFromRide;
+    [SerializeField] private float screenShakeStrength = 8;
 
     [FormerlySerializedAs("addCurrencyOnDeath")]
     [Header("Drops")] 
@@ -91,7 +92,7 @@ public class EnemyBase : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out Ride _ride))
         {
-            Ride.Instance.ReceiveDamage(rideAttackDamage);
+            Ride.Instance.ReceiveDamage(rideAttackDamage, screenShakeStrength);
                         
             gotKilledFromRide = true;
             Destroy(gameObject);

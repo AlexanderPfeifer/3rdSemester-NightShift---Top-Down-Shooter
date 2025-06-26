@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -114,14 +113,15 @@ public class DialogueUI : MonoBehaviour
         {
             if (dialogueShop.Length >= currentDialogueCount)
             {
-                currentTextBox.text = dialogueShop[currentDialogueCount].dialogues[dialogueTextCount];
+                //-1 because here the game thinks the dialogue was already played, but we want to finish the current one
+                currentTextBox.text = dialogueShop[currentDialogueCount].dialogues[dialogueTextCount - 1];
             }
         }
         else
         {
             if (dialogueWalkieTalkie.Length >= currentDialogueCount)
             {
-                currentTextBox.text = dialogueWalkieTalkie[currentDialogueCount].dialogues[dialogueTextCount];
+                currentTextBox.text = dialogueWalkieTalkie[currentDialogueCount].dialogues[dialogueTextCount - 1];
             }
         }
 

@@ -25,9 +25,9 @@ public class Ride : Singleton<Ride>
     [SerializeField] private float hitVisualTime = .05f;
     [SerializeField] private ParticleSystem hitParticles;
     private bool rideGotHit;
+    [SerializeField] private float rideLoseScreenShakeStrength = 6;
     [SerializeField] private SpriteRenderer bottomRideRenderer;
     [SerializeField] private SpriteRenderer topRideRenderer;
-    [SerializeField] private float rideHitScreenShakeStrength;
     [SerializeField] private Material hitWhiteMaterial;
     [SerializeField] private Material standartMaterial;
 
@@ -63,13 +63,13 @@ public class Ride : Singleton<Ride>
         if(waveStarted && GetCurrentWavePrize() > 0)
         {
             PlayerBehaviour.Instance.playerCurrency.UpdateCurrencyTextNumberByNumber(GetCurrentWavePrize(), 
-                ref countedCurrency, prizeText, currentTimeBetweenAddingNumbers);
+                ref countedCurrency, prizeText, ref currentTimeBetweenAddingNumbers);
 
             prizeText.color = startColorPrizeText;
         }
         else if(prizeText.text != "0")
         {
-            PlayerBehaviour.Instance.playerCurrency.UpdateCurrencyTextNumberByNumber(0, ref countedCurrency, prizeText, currentTimeBetweenAddingNumbers);
+            PlayerBehaviour.Instance.playerCurrency.UpdateCurrencyTextNumberByNumber(0, ref countedCurrency, prizeText, ref currentTimeBetweenAddingNumbers);
         }
         else if(GetCurrentWavePrize() < 0)
         {
@@ -131,22 +131,35 @@ public class Ride : Singleton<Ride>
         float _halfSizeX = squareSizeX / 2f;
         Vector2 _spawnPos = spawnCenter.position;
 
-        switch (Random.Range(0, 4))
+        for (int i = 0; i < 10; i++)
         {
-            case 0: // Top Edge
-                _spawnPos += new Vector2(Random.Range(-_halfSizeY, _halfSizeY), _halfSizeY);
-                break;
-            case 1: // Right Edge
-                _spawnPos += new Vector2(_halfSizeX, Random.Range(-_halfSizeX, _halfSizeX));
-                break;
-            case 2: // Bottom Edge
-                _spawnPos += new Vector2(Random.Range(-_halfSizeY, _halfSizeY), -_halfSizeY);
-                break;
-            case 3: // Left Edge
-                _spawnPos += new Vector2(-_halfSizeX, Random.Range(-_halfSizeX, _halfSizeX));
-                break;
+            switch (Random.Range(0, 4))
+            {
+                case 0: // Top Edge
+                    _spawnPos += new Vector2(Random.Range(-_halfSizeX, _halfSizeX), _halfSizeY);
+                    break;
+                case 1: // Right Edge
+                    _spawnPos += new Vector2(_halfSizeX, Random.Range(-_halfSizeY, _halfSizeY));
+                    break;
+                case 2: // Bottom Edge
+                    _spawnPos += new Vector2(Random.Range(-_halfSizeX, _halfSizeX), -_halfSizeY);
+                    break;
+                case 3: // Left Edge
+                    _spawnPos += new Vector2(-_halfSizeX, Random.Range(-_halfSizeY, _halfSizeY));
+                    break;
+            }
+
+            //Check if there is a tree so the player does not see how an enemy is spawned to keep immersion
+            Collider2D hit = Physics2D.OverlapPoint(_spawnPos);
+            if (hit == null || hit.GetComponent<TreeBehaviour>() == null)
+            {
+                continue;
+            }
+
+            return _spawnPos;
         }
-        
+
+        //We want to spawn anyways, even if the player could see how enemies appear - spawning it is more important
         return _spawnPos;
     }
 
@@ -164,8 +177,15 @@ public class Ride : Singleton<Ride>
 
         while (AudioManager.Instance.IsPlaying("FightMusicLoss"))
         {
+            PlayerBehaviour.Instance.weaponBehaviour.playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = rideLoseScreenShakeStrength;
             hitParticles.Play();
             yield return new WaitForSeconds(0.75f);
+        }
+
+        AudioManager.Instance.Play("RideShutDown");
+        foreach (var _light in rideLight)
+        {
+            _light.SetActive(false);
         }
 
         var loseAnim = InGameUIManager.Instance.loseShutterAnim;
@@ -181,6 +201,7 @@ public class Ride : Singleton<Ride>
             yield return null;
         }
 
+        PlayerBehaviour.Instance.weaponBehaviour.playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
         PlayerBehaviour.Instance.transform.position = restartPosition;
         CleanStageFromEnemies();
 
@@ -337,14 +358,14 @@ public class Ride : Singleton<Ride>
         prizeText.text = GetCurrentWavePrize().ToString();
     }
 
-    public void ReceiveDamage(float rideAttackDamage)
+    public void ReceiveDamage(float rideAttackDamage, float screenShakeStrength)
     {
         currentRideHealth -= rideAttackDamage;
         rideHealthFill.fillAmount = currentRideHealth / maxRideHealth;
 
         AudioManager.Instance.Play("RideHit");
 
-        StartRideHitVisual();
+        StartRideHitVisual(screenShakeStrength);
 
         if (currentRideHealth <= 0)
         {
@@ -352,7 +373,7 @@ public class Ride : Singleton<Ride>
         }
     }
 
-    public void StartRideHitVisual()
+    public void StartRideHitVisual(float screenShakeStrength)
     {
         if (rideGotHit)
             return;
@@ -361,7 +382,7 @@ public class Ride : Singleton<Ride>
 
         hitParticles.Play();
 
-        PlayerBehaviour.Instance.weaponBehaviour.playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = rideHitScreenShakeStrength;
+        PlayerBehaviour.Instance.weaponBehaviour.playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = screenShakeStrength;
 
         bottomRideRenderer.material = hitWhiteMaterial;
         topRideRenderer.material = hitWhiteMaterial;

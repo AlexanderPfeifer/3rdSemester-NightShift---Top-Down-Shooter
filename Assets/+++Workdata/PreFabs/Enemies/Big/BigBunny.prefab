@@ -69,6 +69,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: screenShakeStrength
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: currentEnemyKnockBack
       value: 2
       objectReference: {fileID: 0}

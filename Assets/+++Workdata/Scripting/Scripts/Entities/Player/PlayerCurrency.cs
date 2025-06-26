@@ -26,7 +26,7 @@ public class PlayerCurrency : MonoBehaviour
 
     private void Update()
     {
-        UpdateCurrencyTextNumberByNumber(playerCurrency, ref countedCurrency, playerCurrencyText, currentTimeBetweenAddingNumbers);
+        UpdateCurrencyTextNumberByNumber(playerCurrency, ref countedCurrency, playerCurrencyText, ref currentTimeBetweenAddingNumbers);
     }
 
     public void AddCurrency(int amount, bool playTschaTschingSFX)
@@ -60,7 +60,7 @@ public class PlayerCurrency : MonoBehaviour
         return false;
     }
 
-    public void UpdateCurrencyTextNumberByNumber(int targetCurrency, ref int currentCurrency, TextMeshProUGUI currencyText, float currentTimeBetweenAdding)
+    public void UpdateCurrencyTextNumberByNumber(int targetCurrency, ref int currentCurrency, TextMeshProUGUI currencyText, ref float currentTimeBetweenAdding)
     {
         if (currentCurrency == targetCurrency)
             return;
