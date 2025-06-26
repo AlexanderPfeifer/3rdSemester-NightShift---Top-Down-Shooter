@@ -33,7 +33,7 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     [SerializeField] private GameObject loadButton;
     [SerializeField] private GameObject optionsButton;
     [SerializeField] private GameObject creditsButton;
-    [SerializeField] private GameObject firstMainMenuSelected;
+    public GameObject firstMainMenuSelected;
     [SerializeField] private GameObject wishlistButton;
     [SerializeField] private GameObject joinDiscordButton;
 
@@ -61,10 +61,7 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     [SerializeField] private Button fullScreenButton;
 
     private void Start()
-    {
-        //Here I do not set it via GameInputManager because it should be selected always
-        EventSystem.current.SetSelectedGameObject(firstMainMenuSelected);
-
+    {        
         AudioManager.Instance.SetAudioPlayerPrefs(masterPoints, musicPoints, sfxPoints);
         SceneManager.Instance.SetFullscreenPlayerPrefs(fullScreenCheck);
 

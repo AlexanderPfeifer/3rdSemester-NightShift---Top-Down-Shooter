@@ -103,7 +103,7 @@ public class TutorialManager : SingletonPersistent<TutorialManager>
                 fuse.sprite = (i % 2 == 0) ? Ride.Instance.DeactivateFuse() : Ride.Instance.ActivateFuse();
             }
 
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(0.25f);
         }
 
 

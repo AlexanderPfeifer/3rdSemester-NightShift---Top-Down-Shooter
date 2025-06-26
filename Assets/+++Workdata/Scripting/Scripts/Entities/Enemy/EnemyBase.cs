@@ -100,9 +100,6 @@ public class EnemyBase : MonoBehaviour
         else if (other.gameObject.TryGetComponent(out PlayerBehaviour _playerBehaviour) && target == _playerBehaviour.transform)
         {
             _playerBehaviour.StartHitVisual();
-
-            gotKilledFromRide = true;
-            Destroy(gameObject);
         }
     }
 
@@ -132,14 +129,25 @@ public class EnemyBase : MonoBehaviour
         if (addHelpDropsOnDeath)
         {
             PlayerBehaviour.Instance.abilityBehaviour.AddAbilityFill(enemyAbilityGainForPlayer);
-            GameObject _currencyDrop = Instantiate(currencyDropPrefab, transform.position, Quaternion.identity);
+            GameObject _currencyDrop = Instantiate(currencyDropPrefab, transform.position, Quaternion.identity, _transform.parent);
             _currencyDrop.GetComponent<CurrencyDrop>().currencyCount = Random.Range((int)currencyDropRange.x, (int)currencyDropRange.y);
+
+            if (GetComponent<EnemyHealthPoints>().followsPlayerOnBeingShot)
+            {
+                _currencyDrop.transform.localScale = new Vector3(_currencyDrop.transform.localScale.x * 2, _currencyDrop.transform.localScale.y * 2, _currencyDrop.transform.localScale.z);
+            }
 
             if (Random.value <= ammunitionDropChancePercentage)
             {
                 int _ammoAmount = Random.Range(ammunitionAmountDropRange.x, ammunitionAmountDropRange.y + 1);
-                GameObject _ammoDrop = Instantiate(ammoDropPrefab, transform.position, Quaternion.identity);
+                
+                GameObject _ammoDrop = Instantiate(ammoDropPrefab, transform.position, Quaternion.identity, _transform.parent);
                 _ammoDrop.GetComponent<AmmoDrop>().ammoCount = _ammoAmount;
+
+                if (GetComponent<EnemyHealthPoints>().followsPlayerOnBeingShot)
+                {
+                    _ammoDrop.transform.localScale = new Vector3(_ammoDrop.transform.localScale.x / 2, _ammoDrop.transform.localScale.y / 2, _ammoDrop.transform.localScale.z);
+                }
             }
         }
     }

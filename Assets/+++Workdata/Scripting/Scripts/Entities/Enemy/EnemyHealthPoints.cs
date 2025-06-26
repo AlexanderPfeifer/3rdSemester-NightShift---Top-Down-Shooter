@@ -11,7 +11,7 @@ public class EnemyHealthPoints : MonoBehaviour
     [SerializeField] private float knockBackTime = .15f;
 
     [Header("Follow")]
-    [SerializeField] private bool followsPlayerOnBeingShot;
+    public bool followsPlayerOnBeingShot;
 
     private void Start()
     {

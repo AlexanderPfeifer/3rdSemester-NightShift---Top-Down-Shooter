@@ -43,8 +43,8 @@ public class Ride : Singleton<Ride>
     public Image[] fuses;
     public Sprite activeFuse;
     public Sprite inActiveFuse;
-    [SerializeField] private TextMeshProUGUI prizeText;
-    private Color startColorPrizeText;
+    public TextMeshProUGUI prizeText;
+    [HideInInspector] public Color startColorPrizeText;
     private int countedCurrency;
     private float currentTimeBetweenAddingNumbers;
 
@@ -60,23 +60,11 @@ public class Ride : Singleton<Ride>
 
     private void Update()
     {
-        if(waveStarted && GetCurrentWavePrize() > 0)
-        {
-            PlayerBehaviour.Instance.playerCurrency.UpdateCurrencyTextNumberByNumber(GetCurrentWavePrize(), 
-                ref countedCurrency, prizeText, ref currentTimeBetweenAddingNumbers);
-
-            prizeText.color = startColorPrizeText;
-        }
-        else if(prizeText.text != "0")
+        if(!waveStarted && prizeText.text != "0")
         {
             PlayerBehaviour.Instance.playerCurrency.UpdateCurrencyTextNumberByNumber(0, ref countedCurrency, prizeText, ref currentTimeBetweenAddingNumbers);
         }
-        else if(GetCurrentWavePrize() < 0)
-        {
-            prizeText.text = "0";
-            prizeText.color = Color.black;
-        }
-        else
+        else if(prizeText.text == "0")
         {
             prizeText.color = Color.black;
         }
@@ -88,7 +76,9 @@ public class Ride : Singleton<Ride>
         {
             DebugMode.Instance.AddWaves();
         }
-        
+
+        prizeText.color = startColorPrizeText;
+
         foreach (var _enemyCluster in waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].enemyClusters)
         {            
             spawnedEnemiesInCluster += _enemyCluster.enemyPrefab.Length * _enemyCluster.spawnCount * _enemyCluster.repeatCount;
@@ -203,7 +193,7 @@ public class Ride : Singleton<Ride>
 
         PlayerBehaviour.Instance.weaponBehaviour.playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
         PlayerBehaviour.Instance.transform.position = restartPosition;
-        CleanStageFromEnemies();
+        CleanStage();
 
         //Set player busy false because otherwise the shop won't open 
         PlayerBehaviour.Instance.SetPlayerBusy(false);
@@ -286,7 +276,7 @@ public class Ride : Singleton<Ride>
         for (int i = 0; i < 6; i++)
         {
             fuses[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() - 2].sprite = (i % 2 == 0) ? DeactivateFuse() : ActivateFuse();
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(0.25f);
         }
 
         yield return new WaitForSeconds(.5f);
@@ -324,7 +314,7 @@ public class Ride : Singleton<Ride>
         return activeFuse;
     }
 
-    private void CleanStageFromEnemies()
+    public void CleanStage()
     {
         for (int _i = 0; _i < enemyParent.transform.childCount; _i++)
         {
@@ -339,7 +329,7 @@ public class Ride : Singleton<Ride>
         }
     }
 
-    private int GetCurrentWavePrize()
+    public int GetCurrentWavePrize()
     {
         return Mathf.RoundToInt(waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].currencyPrize * (currentRideHealth / maxRideHealth));
     }
@@ -355,13 +345,15 @@ public class Ride : Singleton<Ride>
         waveStarted = false;
         rideActivation.fightMusic.Stop();
         rideActivation.interactable = true;
-        prizeText.text = GetCurrentWavePrize().ToString();
+        prizeText.text = 0.ToString();
     }
 
     public void ReceiveDamage(float rideAttackDamage, float screenShakeStrength)
     {
         currentRideHealth -= rideAttackDamage;
         rideHealthFill.fillAmount = currentRideHealth / maxRideHealth;
+
+        prizeText.text = GetCurrentWavePrize().ToString();
 
         AudioManager.Instance.Play("RideHit");
 
@@ -370,6 +362,9 @@ public class Ride : Singleton<Ride>
         if (currentRideHealth <= 0)
         {
             LostWave();
+
+            prizeText.text = "0";
+            prizeText.color = Color.black;
         }
     }
 
