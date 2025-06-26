@@ -88,7 +88,7 @@ public class ShopUI : MonoBehaviour
 
     public void UpgradeWeapon(WeaponObjectSO weapon)
     {
-        WeaponObjectSO[] _upgradeTiers = weapon.name switch
+        WeaponObjectSO[] _upgradeTiers = weapon.weaponName switch
         {
             "Magnum magnum" => magnumMagnumUpgradeTiers,
             "French Fries AR" => assaultRifleUpgradeTiers,

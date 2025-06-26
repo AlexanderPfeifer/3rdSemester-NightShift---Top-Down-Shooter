@@ -155,6 +155,11 @@ public class InGameUIManager : Singleton<InGameUIManager>
                 
                 StartCoroutine(dialogueUI.TypeTextCoroutine("Peggy:" + "\n" + "...", null, dialogueUI.currentTextBox));
             }
+
+            if(GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() == 2)
+            {
+                InputGraphicsManager.Instance.RemoveAllChalkSigns();
+            }
             
             PlayerBehaviour.Instance.SetPlayerBusy(true);
 

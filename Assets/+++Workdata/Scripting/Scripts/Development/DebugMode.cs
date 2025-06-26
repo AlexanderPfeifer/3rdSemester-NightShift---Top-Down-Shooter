@@ -30,11 +30,9 @@ public class DebugMode : SingletonPersistent<DebugMode>
                 GameSaveStateManager.Instance.saveGameDataManager.AddWeapon(_unlockWeapon.weaponName);
             }
         }
-        
-        GetDebuggedWeapon(equipWeapon);
     }
 
-    private void GetDebuggedWeapon(WeaponObjectSO weapon)
+    public void GetDebuggedWeapon(WeaponObjectSO weapon)
     {
         PlayerBehaviour.Instance.weaponBehaviour.GetWeapon(weapon);
     }

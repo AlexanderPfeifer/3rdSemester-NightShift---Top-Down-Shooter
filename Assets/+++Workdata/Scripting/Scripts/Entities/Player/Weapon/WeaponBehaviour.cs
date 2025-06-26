@@ -80,7 +80,6 @@ public class WeaponBehaviour : MonoBehaviour
 
     [Header("Reference")]
     private MeleeWeaponBehaviour meleeWeaponBehaviour;
-    private AbilityBehaviour abilityBehaviour;
 
     [HideInInspector] public string currentEquippedWeapon;
     
@@ -120,7 +119,6 @@ public class WeaponBehaviour : MonoBehaviour
     private void Start()
     {
         meleeWeaponBehaviour = GetComponent<MeleeWeaponBehaviour>();
-        abilityBehaviour = GetComponent<AbilityBehaviour>();
     }
 
     private void Update()
@@ -437,7 +435,7 @@ public class WeaponBehaviour : MonoBehaviour
         AudioManager.Instance.ChangeSound("Shooting", weapon.shotSound);
         AudioManager.Instance.ChangeSound("Reload", weapon.reloadSound);
         AudioManager.Instance.ChangeSound("Repetition", weapon.repetitionSound);
-        abilityBehaviour.abilityProgressImage.color = weapon.abilityFillColor;
+        PlayerBehaviour.Instance.abilityBehaviour.abilityProgressImage.color = weapon.abilityFillColor;
         foreach (var _bullet in BulletPoolingManager.Instance.GetBulletList())
         {
             _bullet.transform.localScale = weapon.bulletSize;

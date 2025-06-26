@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: French Fries AR
   upgradeTier: 0
-  bulletDamage: 2
+  bulletDamage: 1.5
   shootDelay: 0.175
   clipSize: 25
   reloadTime: 1.8

@@ -132,6 +132,8 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
                 transform.position = new Vector3(36, 36, 0);   
             }
 
+            DebugMode.Instance.GetDebuggedWeapon(DebugMode.Instance.equipWeapon);
+
             DebugMode.Instance.GetDebugWeapon();
             
             InGameUIManager.Instance.playerHUD.SetActive(true);
