@@ -5,11 +5,14 @@ using UnityEngine.InputSystem;
 
 public class GameInputManager : SingletonPersistent<GameInputManager>
 {
+    [Header("Controller")]
+    [SerializeField] private float controllerAimSmoothness = 10;
+
     private PlayerInputActions playerInputActions;
     [HideInInspector] public bool mouseIsLastUsedDevice = true;
-    private Vector2 aimScreenPosition;
     private Vector2 mouseDelta;
     private Vector2 rightStickInput;
+    private Vector3 smoothedAimPosition;
 
     public event EventHandler OnShootingAction, OnGamePausedAction, OnInteractAction, OnUsingAbilityAction, OnNotShootingAction, OnReloadAction, OnMeleeWeaponAction, 
         OnSkipDialogueWithController, OnSprinting, OnNotSprinting;
@@ -130,7 +133,9 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
     public void OnInputDeviceChanged(bool isMouse)
     {
         if(InputGraphicsManager.Instance != null)
+        {
             InputGraphicsManager.Instance.SetInputGraphics(isMouse);
+        }
     }
 
     private void CheckForCurrentInput()
@@ -141,11 +146,36 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
 
         if (rightStickInput.sqrMagnitude > 0.01f || _leftStickInput.sqrMagnitude > 0.01f)
         {
+            if (MainMenuUIManager.Instance != null)
+            {
+                if (mouseIsLastUsedDevice)
+                {
+                    //Set via Eventsystem because here I check if before the mouse was active but now I switched to controller
+                    EventSystem.current.SetSelectedGameObject(MainMenuUIManager.Instance.firstMainMenuSelected);
+                }
+
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+
             MouseIsLastUsedDevice = false;
         }
         else if (mouseDelta.sqrMagnitude > 0.01f)
         {
+            if (!mouseIsLastUsedDevice)
+            {
+                SetNewButtonAsSelected(null);
+            }
+
             MouseIsLastUsedDevice = true;
+
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
         }
     }
 
@@ -157,14 +187,15 @@ public class GameInputManager : SingletonPersistent<GameInputManager>
             
             if(rightStickInput.sqrMagnitude > 0.25f)
             {
-                aimScreenPosition = _playerScreenPos + new Vector3(rightStickInput.x, rightStickInput.y, 0f).normalized * ((float)Screen.width / 6);
-                Mouse.current.WarpCursorPosition(aimScreenPosition);
+                Vector3 targetAimPosition = _playerScreenPos + new Vector3(rightStickInput.x, rightStickInput.y, 0f).normalized * (Screen.width / 6f);
+                smoothedAimPosition = Vector3.Lerp(smoothedAimPosition, targetAimPosition, Time.deltaTime * controllerAimSmoothness);
+
+                Mouse.current.WarpCursorPosition(smoothedAimPosition);
             }
 
-            return PlayerBehaviour.Instance.weaponBehaviour.mainCamera.ScreenToWorldPoint(new Vector3(aimScreenPosition.x, aimScreenPosition.y, _playerScreenPos.z));
+            return PlayerBehaviour.Instance.weaponBehaviour.mainCamera.ScreenToWorldPoint(new Vector3(smoothedAimPosition.x, smoothedAimPosition.y, _playerScreenPos.z));
         }
 
-        Cursor.lockState = CursorLockMode.Confined;
         return PlayerBehaviour.Instance.weaponBehaviour.mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
     }
 }

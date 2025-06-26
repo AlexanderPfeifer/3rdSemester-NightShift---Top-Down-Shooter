@@ -4,6 +4,7 @@ public class InputGraphicsManager : Singleton<InputGraphicsManager>
 {
     [SerializeField] private GameObject[] mouseGraphics;
     [SerializeField] private GameObject[] controllerGraphics;
+    [SerializeField] private GameObject[] chalkObjects;
 
     public void SetInputGraphics(bool mouseIsLastUsedDevice)
     {
@@ -30,6 +31,14 @@ public class InputGraphicsManager : Singleton<InputGraphicsManager>
             {
                 graphic.SetActive(false);
             }
+        }
+    }
+
+    public void RemoveAllChalkSigns()
+    {
+        foreach(var chalk in chalkObjects)
+        {
+            chalk.SetActive(false);
         }
     }
 }

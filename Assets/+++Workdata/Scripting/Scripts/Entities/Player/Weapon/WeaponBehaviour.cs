@@ -218,6 +218,7 @@ public class WeaponBehaviour : MonoBehaviour
         {
             smoothedLookAhead = _targetLookAhead;
         }
+
         smoothedLookAhead = Vector3.SmoothDamp(smoothedLookAhead, _targetLookAhead, ref lookAheadVelocity, lookAheadSmoothTime);
 
         // Reset the Z Pos because otherwise the cam is below the floor

@@ -54,11 +54,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: currencyDropRange.x
-      value: 30
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: currencyDropRange.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: knockBackResistance
@@ -78,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: enemyAbilityGainForPlayer
-      value: 30
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: ammunitionAmountDropRange.x
@@ -94,7 +94,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 263635569489941998, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: ammunitionDropChancePercentage
-      value: 0.6
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 2257984013469163083, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: m_Size.x

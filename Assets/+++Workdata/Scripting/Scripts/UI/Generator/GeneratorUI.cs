@@ -76,6 +76,9 @@ public class GeneratorUI : MonoBehaviour
                 Ride.Instance.canWinGame = false;
                 Ride.Instance.ResetRide();
                 Ride.Instance.rideActivation.interactable = false;
+
+                Ride.Instance.prizeText.text = Ride.Instance.GetCurrentWavePrize().ToString();
+                Ride.Instance.prizeText.color = Ride.Instance.startColorPrizeText;
             }
 
             gameObject.SetActive(false);

@@ -116,7 +116,7 @@ public class InGameUIManager : Singleton<InGameUIManager>
 
     public void CloseGeneratorUI()
     {
-        if (generatorScreen.activeSelf)
+        if (generatorScreen.activeSelf && generatorUI.changeFill)
         {
             generatorScreen.SetActive(false);
         }
@@ -137,10 +137,7 @@ public class InGameUIManager : Singleton<InGameUIManager>
 
             List<Transform> _enemies = Ride.Instance.enemyParent.transform.Cast<Transform>().ToList();
 
-            foreach (Transform _enemy in _enemies)
-            {
-                Destroy(_enemy.gameObject);
-            }
+            Ride.Instance.CleanStage();
             
             if(Ride.Instance.rideActivation.interactable)
                 Ride.Instance.rideActivation.gateAnim.SetBool("OpenGate", false);

@@ -117,7 +117,7 @@ public class FortuneWheelUI : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             mark.transform.localScale = (i % 2 == 0) ? new Vector3(2, 2, 1) : new Vector3(1, 1, 1);
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.25f);
         }
 
         InGameUIManager.Instance.inGameUICanvasGroup.interactable = true;
