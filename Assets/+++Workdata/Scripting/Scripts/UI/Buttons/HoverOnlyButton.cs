@@ -7,7 +7,18 @@ public class HoverOnlyButton : Button
     
     public override void OnPointerClick(PointerEventData eventData)
     {
-        if (!disableClick)
-            base.OnPointerClick(eventData);
+        if (disableClick)
+            return;
+
+        base.OnPointerClick(eventData);
+    }
+
+    //For controller
+    public override void OnSubmit(BaseEventData eventData)
+    {
+        if (disableClick)
+            return;
+
+        base.OnSubmit(eventData);
     }
 }

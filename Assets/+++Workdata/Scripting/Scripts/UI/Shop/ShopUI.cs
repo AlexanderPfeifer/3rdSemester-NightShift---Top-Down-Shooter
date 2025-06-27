@@ -259,6 +259,11 @@ public class ShopUI : MonoBehaviour
                 hoverOnlyButton.image.sprite = pinkButtonSprite;
                 hoverOnlyButton.interactable = false;
             }
+            else
+            {
+                hoverOnlyButton.image.sprite = grayButtonSprite;
+                hoverOnlyButton.interactable = true;
+            }
             
             hoverOnlyButton.disableClick = true;
             SpriteState spriteState = hoverOnlyButton.spriteState;

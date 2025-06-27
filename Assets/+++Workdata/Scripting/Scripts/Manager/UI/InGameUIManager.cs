@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
@@ -69,6 +68,10 @@ public class InGameUIManager : Singleton<InGameUIManager>
     public void GoToMainMenu()
     {
         GameSaveStateManager.Instance.GoToMainMenu();
+
+        AudioManager.Instance.Pause("InGameMusic");
+
+        AudioManager.Instance.FadeIn("MainMenuMusic");
     }
     
     private void SimulateDayLight()
