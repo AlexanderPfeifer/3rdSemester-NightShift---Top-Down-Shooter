@@ -87,6 +87,7 @@ public class PauseMenuUI : MonoBehaviour
         }
         else
         {
+            Time.timeScale = 0;
             pauseMenu.SetActive(true);
             PlayerBehaviour.Instance.SetPlayerBusy(true);
             GameInputManager.Instance.SetNewButtonAsSelected(firstPauseMenuSelected);
@@ -96,6 +97,7 @@ public class PauseMenuUI : MonoBehaviour
 
     public void ClosePauseMenu()
     {
+        Time.timeScale = 1;
         pauseMenu.SetActive(false);
         PlayerBehaviour.Instance.SetPlayerBusy(false);
         pauseMenuActive = false;
