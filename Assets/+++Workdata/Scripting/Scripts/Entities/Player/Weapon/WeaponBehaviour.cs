@@ -158,26 +158,23 @@ public class WeaponBehaviour : MonoBehaviour
     {
         if (!weapon.activeSelf || TutorialManager.Instance.isExplainingCurrencyDialogue || (PlayerBehaviour.Instance.IsPlayerBusy() && !InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())) 
             return;
-        
-        if (GetCurrentWeaponObjectSO() == null || meleeWeaponBehaviour.hitCollider.isActiveAndEnabled || 
-            (Mathf.Abs(weaponToMouse.x) <= meleeWeaponBehaviour.currentGetMeleeWeaponOutRange && 
-            Mathf.Abs(weaponToMouse.y) <= meleeWeaponBehaviour.currentGetMeleeWeaponOutRange &&
-            Mathf.Abs(weaponToMouse.x) >= 0 && Mathf.Abs(weaponToMouse.y) >= 0) && GameInputManager.Instance.mouseIsLastUsedDevice) 
+
+        if (GetCurrentWeaponObjectSO() != null)
         {
-            meleeWeaponBehaviour.GetMeleeWeaponOut();
+            currentEnemyKnockBack = enemyShootingKnockBack;
+
+            weapon.GetComponent<SpriteRenderer>().sprite = longRangeWeaponSprite;
+            
+            meleeWeaponBehaviour.SetMeleeWeaponTakeOut();
         }
         else
         {
-            currentEnemyKnockBack = enemyShootingKnockBack;
-            
-            weapon.GetComponent<SpriteRenderer>().sprite = longRangeWeaponSprite;
-            
-            weaponToMouse = GameInputManager.Instance.GetAimingVector() - weaponEndPoint.transform.position;
-            weaponToMouse.z = 0;
-
-            meleeWeaponBehaviour.SetMeleeWeaponTakeOut();
+            meleeWeaponBehaviour.GetMeleeWeaponOut();
         }
-        
+
+        weaponToMouse = GameInputManager.Instance.GetAimingVector() - PlayerBehaviour.Instance.transform.position;
+        weaponToMouse.z = 0;
+
         weaponAimingAngle = Vector3.SignedAngle(Vector3.up, weaponToMouse, Vector3.forward);
         float _angle360 = weaponAimingAngle < 0 ? 360 + weaponAimingAngle : weaponAimingAngle;
         var _snapAngle = 360f / weaponRotationSnapPoints;

@@ -155,6 +155,9 @@ public class Ride : Singleton<Ride>
 
     public void LostWave()
     {
+        if(!waveStarted)
+            return;
+
         AudioManager.Instance.Play("FightMusicLoss");
         
         ResetRide();
@@ -216,6 +219,9 @@ public class Ride : Singleton<Ride>
 
     public void WonWave()
     {
+        if (!waveStarted)
+            return;
+
         winConfettiParticles.Play();
 
         foreach (var _balloonCart in FindObjectsByType<BalloonCartBehaviour>(FindObjectsSortMode.None))

@@ -13,8 +13,6 @@ public class MeleeWeaponBehaviour : MonoBehaviour
     [SerializeField] private float[] swingTime;
 
     [Header("WeaponOut")]
-    [SerializeField] private float getMeleeWeaponOutRange = 2f;
-    [HideInInspector] public float currentGetMeleeWeaponOutRange;
     [HideInInspector] public bool meleeWeaponOut;
 
     [Header("Visuals")]
@@ -41,7 +39,6 @@ public class MeleeWeaponBehaviour : MonoBehaviour
     private void Start()
     {
         hitCollider = GetComponent<CapsuleCollider2D>();
-        currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange;
         weaponBehaviour = GetComponent<WeaponBehaviour>();
     }
 
@@ -89,8 +86,6 @@ public class MeleeWeaponBehaviour : MonoBehaviour
 
     public void SetMeleeWeaponTakeOut()
     {
-        currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange - getMeleeWeaponOutRange / 4;
-
         meleeWeaponOut = false;
     }
 
@@ -99,11 +94,6 @@ public class MeleeWeaponBehaviour : MonoBehaviour
         weaponBehaviour.currentEnemyKnockBack = knockBack;
 
         weaponBehaviour.weapon.GetComponent<SpriteRenderer>().sprite = meleeWeapon;
-
-        weaponBehaviour.weaponToMouse = GameInputManager.Instance.GetAimingVector() - PlayerBehaviour.Instance.transform.position;
-        weaponBehaviour.weaponToMouse.z = 0;
-
-        currentGetMeleeWeaponOutRange = getMeleeWeaponOutRange + getMeleeWeaponOutRange / 4;
 
         meleeWeaponOut = true;
     }

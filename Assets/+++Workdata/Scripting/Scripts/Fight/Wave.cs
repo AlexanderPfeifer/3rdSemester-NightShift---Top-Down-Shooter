@@ -30,9 +30,9 @@ public class EnemyClusterData
 
     public void UpdateClusterName()
     {
-        clusterName = enemyPrefab[0].name + " | " + spawnStartTime.ToString(CultureInfo.CurrentCulture) + " -> " + (repeatCount * timeBetweenSpawns + spawnStartTime);
+        clusterName = enemyPrefab[0].name + " | " + spawnStartTime.ToString(CultureInfo.CurrentCulture) + " -> " + (repeatCount * timeBetweenSpawns + spawnStartTime - timeBetweenSpawns);
 
-        stopsSpawningAtTime = repeatCount * timeBetweenSpawns + spawnStartTime;
+        stopsSpawningAtTime = repeatCount * timeBetweenSpawns + spawnStartTime - timeBetweenSpawns;
     }
 }
 

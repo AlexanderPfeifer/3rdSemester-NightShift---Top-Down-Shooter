@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Popcorn Launcher
   upgradeTier: 2
-  bulletDamage: 2.5
+  bulletDamage: 5
   shootDelay: 0.5
   clipSize: 15
   reloadTime: 1.1
