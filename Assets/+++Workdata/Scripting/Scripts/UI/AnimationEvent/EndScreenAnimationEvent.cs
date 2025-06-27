@@ -8,8 +8,6 @@ public class EndScreenAnimationEvent : MonoBehaviour
 
         GameSaveStateManager.Instance.gameGotFinished = true;
         
-        InGameUIManager.Instance.endScreen.gameObject.SetActive(false);
-        
         GameSaveStateManager.Instance.GoToMainMenu();
     }
 }

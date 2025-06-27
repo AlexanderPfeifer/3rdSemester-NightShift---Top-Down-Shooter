@@ -106,6 +106,8 @@ public class EnemyBase : MonoBehaviour
     private void OnDestroy()
     {
         StopAllCoroutines();
+
+        Ride.Instance.CheckWin();
         
         if(!gameObject.scene.isLoaded || gotKilledFromRide) 
             return;

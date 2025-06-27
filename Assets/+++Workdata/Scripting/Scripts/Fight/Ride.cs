@@ -55,13 +55,13 @@ public class Ride : Singleton<Ride>
 
     private void Start()
     {
-        InGameUIManager.Instance.dialogueUI.dialogueCountShop = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
         startColorPrizeText = prizeText.color;
+        InGameUIManager.Instance.dialogueUI.dialogueCountShop = GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished();
     }
 
     private void Update()
     {
-        if(!waveStarted && prizeText.text != "0")
+        if(!waveStarted && prizeText.text != "0" && rideActivation.interactable == true)
         {
             PlayerBehaviour.Instance.playerCurrency.UpdateCurrencyTextNumberByNumber(0, ref countedCurrency, prizeText, ref currentTimeBetweenAddingNumbers);
         }
@@ -111,7 +111,7 @@ public class Ride : Singleton<Ride>
             if(_i != enemyCluster.repeatCount - 1)
                 yield return new WaitForSeconds(enemyCluster.timeBetweenSpawns);
         }
-        
+
         if (spawnedEnemiesInCluster == currentSpawnedEnemies)
         {
             canWinGame = true;
@@ -354,6 +354,8 @@ public class Ride : Singleton<Ride>
         waveStarted = false;
         rideActivation.fightMusic.Stop();
         rideActivation.interactable = true;
+        prizeText.text = GetCurrentWavePrize().ToString();
+        prizeText.color = startColorPrizeText;
     }
 
     public void ReceiveDamage(float rideAttackDamage, float screenShakeStrength)
@@ -366,7 +368,10 @@ public class Ride : Singleton<Ride>
         AudioManager.Instance.Play("RideHit");
 
         StartRideHitVisual(screenShakeStrength);
+    }
 
+    public void CheckWin()
+    {
         if (currentRideHealth <= 0)
         {
             LostWave();
