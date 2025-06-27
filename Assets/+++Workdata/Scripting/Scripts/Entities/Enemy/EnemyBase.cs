@@ -132,7 +132,7 @@ public class EnemyBase : MonoBehaviour
             GameObject _currencyDrop = Instantiate(currencyDropPrefab, transform.position, Quaternion.identity, _transform.parent);
             _currencyDrop.GetComponent<CurrencyDrop>().currencyCount = Random.Range((int)currencyDropRange.x, (int)currencyDropRange.y);
 
-            if (GetComponent<EnemyHealthPoints>().followsPlayerOnBeingShot)
+            if (!GetComponent<EnemyHealthPoints>().followsPlayerOnBeingShot)
             {
                 _currencyDrop.transform.localScale = new Vector3(_currencyDrop.transform.localScale.x * 2, _currencyDrop.transform.localScale.y * 2, _currencyDrop.transform.localScale.z);
             }
