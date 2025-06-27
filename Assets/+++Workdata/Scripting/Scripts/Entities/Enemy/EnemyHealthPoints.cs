@@ -50,6 +50,10 @@ public class EnemyHealthPoints : MonoBehaviour
         float _knockBackWithEnemyResistance = Mathf.Max(PlayerBehaviour.Instance.weaponBehaviour.currentEnemyKnockBack - bulletFlyingTime - GetComponent<EnemyBase>().knockBackResistance, 0);
         GetComponent<Rigidbody2D>().AddForce(travelDirection * _knockBackWithEnemyResistance, ForceMode2D.Impulse);
 
+        gameObject.GetComponent<EnemyBase>().currentSpeed = 0;
+
         yield return new WaitForSeconds(knockBackTime);
+
+        gameObject.GetComponent<EnemyBase>().currentSpeed = gameObject.GetComponent<EnemyBase>().speedOnHit;
     }
 }

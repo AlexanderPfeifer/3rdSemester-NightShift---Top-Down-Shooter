@@ -44,6 +44,7 @@ public class ShopUI : MonoBehaviour
     [FormerlySerializedAs("inventoryHeader")] [SerializeField] private TextMeshProUGUI descriptionHeader;
     [FormerlySerializedAs("inventoryImage")] [SerializeField] private Image descriptionImage;
     [FormerlySerializedAs("inventoryImage")] [SerializeField] private Image levelFillImage;
+    [FormerlySerializedAs("inventoryImage")][SerializeField] private Image levelBGImage;
     [SerializeField] private TextMeshProUGUI bulletDamageTextField;
     [SerializeField] private TextMeshProUGUI bulletDelayTextField;
     [SerializeField] private TextMeshProUGUI reloadSpeedTextField;
@@ -187,7 +188,7 @@ public class ShopUI : MonoBehaviour
         
         descriptionImage.gameObject.SetActive(true);
         descriptionHeader.gameObject.SetActive(true);
-        levelFillImage.gameObject.SetActive(true);
+        levelBGImage.gameObject.SetActive(true);
         bulletDamageTextField.gameObject.SetActive(true);
         bulletDelayTextField.gameObject.SetActive(true);
         reloadSpeedTextField.gameObject.SetActive(true);

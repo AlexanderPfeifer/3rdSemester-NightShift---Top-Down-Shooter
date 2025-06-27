@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class AbilityBehaviour : MonoBehaviour
@@ -37,7 +38,18 @@ public class AbilityBehaviour : MonoBehaviour
     {
         GameInputManager.Instance.OnUsingAbilityAction -= GameInputManagerOnUsingAbilityAction;
     }
-    
+
+    private void Update()
+    {
+        if (Gamepad.current != null)
+        {
+            if (Gamepad.current.leftStickButton.isPressed && Gamepad.current.rightStickButton.isPressed)
+            {
+                StartCoroutine(StartWeaponAbility());
+            }
+        }
+    }
+
     private void GameInputManagerOnUsingAbilityAction(object sender, EventArgs e)
     {
         if (currentAbilityTime >= maxAbilityTime && Ride.Instance.waveStarted && hasAbilityUpgrade)

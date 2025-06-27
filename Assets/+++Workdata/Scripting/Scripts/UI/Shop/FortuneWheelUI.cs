@@ -156,6 +156,8 @@ public class FortuneWheelUI : MonoBehaviour
 
     private IEnumerator WinWeaponVisual(WeaponObjectSO weapon)
     {
+        newWeaponAnim.gameObject.SetActive(true);
+
         weaponImage.sprite = weapon.uiWeaponVisual;
 
         weaponName.text = weapon.weaponName;
@@ -205,7 +207,12 @@ public class FortuneWheelUI : MonoBehaviour
         
         spinCounter = 0;
     }
-    
+
+    private void OnDisable()
+    {
+        newWeaponAnim.gameObject.SetActive(false);
+    }
+
     [Header("Debugging Stuff")]
     [SerializeField] private float labelRadiusMultiplier = 0.8f;
     //Font size does not change through inspector

@@ -123,6 +123,8 @@ public class Ride : Singleton<Ride>
 
         for (int i = 0; i < 10; i++)
         {
+            _spawnPos = spawnCenter.position;
+
             switch (Random.Range(0, 4))
             {
                 case 0: // Top Edge
@@ -291,11 +293,6 @@ public class Ride : Singleton<Ride>
 
         InGameUIManager.Instance.generatorUI.changeFill = true;
 
-        if (fuses.Length == GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished() - 2)
-        {
-            InGameUIManager.Instance.EndScreen();
-        }
-
         if (InGameUIManager.Instance.dialogueUI.dialogueCountWalkieTalkie < InGameUIManager.Instance.dialogueUI.dialogueWalkieTalkie.Length)
         {
             InGameUIManager.Instance.dialogueUI.SetWalkieTalkieTextBoxAnimation(true, true);
@@ -348,10 +345,10 @@ public class Ride : Singleton<Ride>
         bottomRideRenderer.material = standartMaterial;
         topRideRenderer.material = standartMaterial;
         rideGotHit = false;
+        countedCurrency = GetCurrentWavePrize();
         waveStarted = false;
         rideActivation.fightMusic.Stop();
         rideActivation.interactable = true;
-        prizeText.text = 0.ToString();
     }
 
     public void ReceiveDamage(float rideAttackDamage, float screenShakeStrength)
