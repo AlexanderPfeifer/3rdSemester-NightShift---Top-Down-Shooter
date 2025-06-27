@@ -79,6 +79,7 @@ public class Ride : Singleton<Ride>
         }
 
         spawnedEnemiesInCluster = 0;
+        currentSpawnedEnemies = 0;
         prizeText.color = startColorPrizeText;
 
         foreach (var _enemyCluster in waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].enemyClusters)
