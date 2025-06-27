@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -371,6 +372,15 @@ public class Ride : Singleton<Ride>
 
             prizeText.text = "0";
             prizeText.color = Color.black;
+        }
+        else if (canWinGame)
+        {
+            int _enemies = enemyParent.transform.Cast<Transform>().Count(child => child.GetComponent<EnemyBase>());
+
+            if (_enemies <= 1)
+            {
+                WonWave();
+            }
         }
     }
 

@@ -106,16 +106,6 @@ public class EnemyBase : MonoBehaviour
     private void OnDestroy()
     {
         StopAllCoroutines();
-
-        if (Ride.Instance.canWinGame)
-        {
-            int _enemies = Ride.Instance.enemyParent.transform.Cast<Transform>().Count(child => child.GetComponent<EnemyBase>());
-
-            if (_enemies <= 1)
-            {
-                Ride.Instance.WonWave();
-            }
-        }
         
         if(!gameObject.scene.isLoaded || gotKilledFromRide) 
             return;
