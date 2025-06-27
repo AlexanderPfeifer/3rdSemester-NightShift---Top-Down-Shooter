@@ -77,6 +77,7 @@ public class Ride : Singleton<Ride>
             DebugMode.Instance.AddWaves();
         }
 
+        spawnedEnemiesInCluster = 0;
         prizeText.color = startColorPrizeText;
 
         foreach (var _enemyCluster in waves[GameSaveStateManager.Instance.saveGameDataManager.HasWavesFinished()].enemyClusters)
@@ -198,6 +199,8 @@ public class Ride : Singleton<Ride>
 
         PlayerBehaviour.Instance.weaponBehaviour.playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
         PlayerBehaviour.Instance.transform.position = restartPosition;
+        prizeText.text = GetCurrentWavePrize().ToString();
+        prizeText.color = startColorPrizeText;
         CleanStage();
 
         //Set player busy false because otherwise the shop won't open 
