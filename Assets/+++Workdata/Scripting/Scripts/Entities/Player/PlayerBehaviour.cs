@@ -127,8 +127,8 @@ public class PlayerBehaviour : Singleton<PlayerBehaviour>
         {
             if (DebugMode.Instance.activateRide)
             {
-                FindAnyObjectByType<RideActivation>().GetComponent<RideActivation>().SetUpFightArena();
-            
+                InGameUIManager.Instance.generatorUI.StartGenerator(FindAnyObjectByType<RideActivation>());
+
                 transform.position = new Vector3(36, 36, 0);   
             }
 

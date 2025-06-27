@@ -67,15 +67,8 @@ public class GeneratorUI : MonoBehaviour
         if (generatorFillImage.fillAmount > activateGeneratorFillAmount)
         {
             if (PlayerBehaviour.Instance.GetInteractionObjectInRange(PlayerBehaviour.Instance.generatorLayer, out Collider2D _generator))
-            {          
-                _generator.GetComponent<RideActivation>().gateAnim.SetBool("OpenGate", true);
-                _generator.GetComponent<RideActivation>().interactable = false;
-                InGameUIManager.Instance.SetWalkieTalkieQuestLog(TutorialManager.Instance.activateRide);
-                Ride.Instance.currentRideHealth = Ride.Instance.maxRideHealth;
-                Ride.Instance.rideHealthFill.fillAmount = Ride.Instance.currentRideHealth / Ride.Instance.maxRideHealth;
-                Ride.Instance.canWinGame = false;
-                Ride.Instance.ResetRide();
-                Ride.Instance.rideActivation.interactable = false;
+            {
+                StartGenerator(_generator.GetComponent<RideActivation>());
             }
 
             gameObject.SetActive(false);
@@ -84,6 +77,18 @@ public class GeneratorUI : MonoBehaviour
         {
             StartCoroutine(SmoothlyReduceFill(1f)); // Adjust duration as needed
         }
+    }
+
+    public void StartGenerator(RideActivation _generator)
+    {
+        _generator.gateAnim.SetBool("OpenGate", true);
+        _generator.interactable = false;
+        InGameUIManager.Instance.SetWalkieTalkieQuestLog(TutorialManager.Instance.activateRide);
+        Ride.Instance.currentRideHealth = Ride.Instance.maxRideHealth;
+        Ride.Instance.rideHealthFill.fillAmount = Ride.Instance.currentRideHealth / Ride.Instance.maxRideHealth;
+        Ride.Instance.canWinGame = false;
+        Ride.Instance.ResetRide();
+        Ride.Instance.rideActivation.interactable = false;
     }
     
     IEnumerator SmoothlyReduceFill(float duration)
