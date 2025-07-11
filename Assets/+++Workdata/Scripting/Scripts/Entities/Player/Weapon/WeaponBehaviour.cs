@@ -42,8 +42,7 @@ public class WeaponBehaviour : MonoBehaviour
 
     [Header("Aiming")]
     public Transform weaponEndPoint;
-    private Vector3 changingWeaponToMouse;
-    [HideInInspector] public Vector3 weaponToMouse;
+    [HideInInspector] public Vector3 playerToMouse;
     [SerializeField] private int weaponRotationSnapPoints;
     [NonSerialized] public float LastSnappedAngle;
     private float weaponAimingAngle;
@@ -172,10 +171,10 @@ public class WeaponBehaviour : MonoBehaviour
             meleeWeaponBehaviour.GetMeleeWeaponOut();
         }
 
-        weaponToMouse = GameInputManager.Instance.GetAimingVector() - PlayerBehaviour.Instance.transform.position;
-        weaponToMouse.z = 0;
+        playerToMouse = GameInputManager.Instance.GetAimingVector() - PlayerBehaviour.Instance.transform.position;
+        playerToMouse.z = 0;
 
-        weaponAimingAngle = Vector3.SignedAngle(Vector3.up, weaponToMouse, Vector3.forward);
+        weaponAimingAngle = Vector3.SignedAngle(Vector3.up, playerToMouse, Vector3.forward);
         float _angle360 = weaponAimingAngle < 0 ? 360 + weaponAimingAngle : weaponAimingAngle;
         var _snapAngle = 360f / weaponRotationSnapPoints;
         
@@ -260,7 +259,7 @@ public class WeaponBehaviour : MonoBehaviour
         for (int _i = 0; _i < bulletsPerShot; _i++)
         {
             Vector2 _randomSpread = Random.insideUnitCircle * currentBulletDirectionSpread;            
-            Vector2 _bulletDirection = ((Vector2)weaponToMouse.normalized + _randomSpread).normalized;
+            Vector2 _bulletDirection = (GetWeaponEndpointToMouse() + _randomSpread).normalized;
 
             Vector2 _randomSpawnOffset = Vector2.zero;
             if (bulletsPerShot > 1)
@@ -270,7 +269,8 @@ public class WeaponBehaviour : MonoBehaviour
             Vector3 _spawnPosition = weaponEndPoint.position + new Vector3(_randomSpawnOffset.x, _randomSpawnOffset.y, 0f);
     
             var _bullet = BulletPoolingManager.Instance.GetInactiveBullet();
-            _bullet.transform.SetPositionAndRotation(_spawnPosition, Quaternion.Euler(0, 0, weaponAimingAngle));
+            var bulletRotationAngle = Vector3.SignedAngle(Vector3.up, GetWeaponEndpointToMouse(), Vector3.forward);
+            _bullet.transform.SetPositionAndRotation(_spawnPosition, Quaternion.Euler(0, 0, bulletRotationAngle));
             _bullet.gameObject.SetActive(true);
             _bullet.LaunchInDirection(PlayerBehaviour.Instance, _bulletDirection);
         }
@@ -282,7 +282,7 @@ public class WeaponBehaviour : MonoBehaviour
 
         StartCoroutine(WeaponVisualCoroutine());
 
-        currentKnockBack = -weaponToMouse.normalized * shootingKnockBack;
+        currentKnockBack = -playerToMouse.normalized * shootingKnockBack;
             
         ammunitionInClip--;
         
@@ -292,6 +292,11 @@ public class WeaponBehaviour : MonoBehaviour
         }
                 
         SetAmmunitionText(ammunitionInClip.ToString(), ammunitionInBackUp.ToString());
+    }
+
+    private Vector2 GetWeaponEndpointToMouse()
+    {
+        return GameInputManager.Instance.GetAimingVector() - weaponEndPoint.position;
     }
 
     private IEnumerator ReloadCoroutine()
