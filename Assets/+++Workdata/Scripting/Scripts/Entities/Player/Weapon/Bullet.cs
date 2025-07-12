@@ -12,6 +12,7 @@ public class Bullet : MonoBehaviour
     private Rigidbody2D rb;
     private TrailRenderer trailRenderer;
     private SpriteRenderer bulletSpriteRenderer;
+    private int currentPenetrationCount;
 
     [Header("Ability")]
     [SerializeField] private float stickyBulletTimer;
@@ -38,6 +39,7 @@ public class Bullet : MonoBehaviour
         trailRenderer = GetComponent<TrailRenderer>();
         bulletSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         gameObject.SetActive(false);
+        currentPenetrationCount = PlayerBehaviour.Instance.weaponBehaviour.maxPenetrationCount;
     }
 
     private void OnEnable()
@@ -180,12 +182,10 @@ public class Bullet : MonoBehaviour
     }
 
     private void DealDamage(EnemyHealthPoints enemyHealthPoints)
-    {
-        var _bulletPenetrationCount = PlayerBehaviour.Instance.weaponBehaviour.maxPenetrationCount;
-        
+    {        
         if (PlayerBehaviour.Instance.abilityBehaviour.currentActiveAbility != AbilityBehaviour.CurrentAbility.PenetrationBullets)
         {
-            _bulletPenetrationCount -= 1;
+            currentPenetrationCount -= 1;
             enemyHealthPoints.TakeDamage(PlayerBehaviour.Instance.weaponBehaviour.bulletDamage, transform);
         }
         else
@@ -193,7 +193,7 @@ public class Bullet : MonoBehaviour
             enemyHealthPoints.TakeDamage(criticalDamage, transform);
         }
 
-        if (_bulletPenetrationCount >= 0) 
+        if (currentPenetrationCount > 0) 
             return;
         
         if (PlayerBehaviour.Instance.abilityBehaviour.currentActiveAbility != AbilityBehaviour.CurrentAbility.StickyBullets)

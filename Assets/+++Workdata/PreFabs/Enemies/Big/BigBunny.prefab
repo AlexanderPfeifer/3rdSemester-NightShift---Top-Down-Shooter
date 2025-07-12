@@ -180,6 +180,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: BigBunny
       objectReference: {fileID: 0}
+    - target: {fileID: 7056541009078654190, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7056541009078654190, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7056541009078654190, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.129
+      objectReference: {fileID: 0}
+    - target: {fileID: 7056541009078654190, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.206
+      objectReference: {fileID: 0}
+    - target: {fileID: 7056541009078654190, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7295137754459367048, guid: a250d0b2eca041b418ced94a2fa6264f, type: 3}
       propertyPath: maximumHitPoints
       value: 45
@@ -264,7 +284,7 @@ SpriteRenderer:
   m_SortingLayerID: -1707444235
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5704453355903167036, guid: 13629b1d6d264d2479e5eb4317c7f12e, type: 3}
+  m_Sprite: {fileID: 396119136547352919, guid: 4d67408455d72fe4b8a37a47ce8ebe2f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
