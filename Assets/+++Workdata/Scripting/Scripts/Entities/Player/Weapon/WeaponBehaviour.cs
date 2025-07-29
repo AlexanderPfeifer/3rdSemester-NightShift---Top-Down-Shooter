@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -46,6 +47,7 @@ public class WeaponBehaviour : MonoBehaviour
     [SerializeField] private int weaponRotationSnapPoints;
     [NonSerialized] public float LastSnappedAngle;
     private float weaponAimingAngle;
+    [SerializeField] float useWeaponAsMeleeRange;
 
     [Header("Shooting")]
     private float maxShootingDelay;
@@ -54,7 +56,7 @@ public class WeaponBehaviour : MonoBehaviour
     
     [Header("Knock Back")]
     [HideInInspector] public float currentEnemyKnockBack;
-    private float enemyShootingKnockBack;
+    [HideInInspector] public float enemyShootingKnockBack;
     private float shootingKnockBack;
     [FormerlySerializedAs("CurrentKnockBack")] [HideInInspector] public Vector2 currentKnockBack;
 
@@ -161,14 +163,7 @@ public class WeaponBehaviour : MonoBehaviour
         if (GetCurrentWeaponObjectSO() != null)
         {
             currentEnemyKnockBack = enemyShootingKnockBack;
-
-            weapon.GetComponent<SpriteRenderer>().sprite = longRangeWeaponSprite;
-            
-            meleeWeaponBehaviour.SetMeleeWeaponTakeOut();
-        }
-        else
-        {
-            meleeWeaponBehaviour.GetMeleeWeaponOut();
+            weapon.GetComponent<SpriteRenderer>().sprite = longRangeWeaponSprite;            
         }
 
         playerToMouse = GameInputManager.Instance.GetAimingVector() - PlayerBehaviour.Instance.transform.position;
@@ -230,12 +225,13 @@ public class WeaponBehaviour : MonoBehaviour
         if (!isPressingLeftClick) 
             return;
         
-        if (meleeWeaponBehaviour.meleeWeaponOut)
+        if (meleeWeaponBehaviour.meleeWeaponOut || Vector2.Distance(weaponEndPoint.transform.position, GameInputManager.Instance.GetAimingVector()) < useWeaponAsMeleeRange)
         {
             meleeWeaponBehaviour.HitAutomatic();
+            meleeWeaponBehaviour.meleeWeaponOut = true;
             return;
         }
-        
+
         if (ammunitionInClip <= 0)
         {
             currentReloadCoroutine ??= StartCoroutine(ReloadCoroutine());

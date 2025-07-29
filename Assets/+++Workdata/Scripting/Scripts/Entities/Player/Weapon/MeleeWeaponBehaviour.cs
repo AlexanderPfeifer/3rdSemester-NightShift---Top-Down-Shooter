@@ -40,6 +40,7 @@ public class MeleeWeaponBehaviour : MonoBehaviour
     {
         hitCollider = GetComponent<CapsuleCollider2D>();
         weaponBehaviour = GetComponent<WeaponBehaviour>();
+        GetMeleeWeaponOut();
     }
 
     private void OnPressingMeleeAction(object sender, EventArgs eventArgs)
@@ -91,10 +92,7 @@ public class MeleeWeaponBehaviour : MonoBehaviour
 
     public void GetMeleeWeaponOut()
     {
-        weaponBehaviour.currentEnemyKnockBack = knockBack;
-
         weaponBehaviour.weapon.GetComponent<SpriteRenderer>().sprite = meleeWeapon;
-
         meleeWeaponOut = true;
     }
 
@@ -102,6 +100,7 @@ public class MeleeWeaponBehaviour : MonoBehaviour
     {
         if (currentHitDelay > 0 || PlayerBehaviour.Instance.IsPlayerBusy() || InGameUIManager.Instance.dialogueUI.IsDialoguePlaying())
             return;
+        weaponBehaviour.currentEnemyKnockBack = knockBack;
 
         StartCoroutine(MeleeWeaponSwingCoroutine());
 
@@ -173,6 +172,8 @@ public class MeleeWeaponBehaviour : MonoBehaviour
 
         GetComponent<MeleeWeaponBehaviour>().hitCollider.enabled = false;
 
-        meleeWeaponOut = false;
+        weaponBehaviour.currentEnemyKnockBack = weaponBehaviour.enemyShootingKnockBack;
+
+        SetMeleeWeaponTakeOut();
     }
 }
