@@ -27,6 +27,7 @@ MonoBehaviour:
   bulletsPerShot: 12
   weaponBulletSpread: 0.7
   penetrationCount: 0
+  weaponEndpointPos: {x: -0.549, y: 0.588}
   uiWeaponVisual: {fileID: -158313173, guid: 2ee16b216fff61347ada413f2aad07a2, type: 3}
   inGameWeaponVisual: {fileID: 3834243142360421763, guid: cdad9a5716385f44eaba4354cba76481, type: 3}
   screenShake: 6

@@ -107,6 +107,7 @@ public class MeleeWeaponBehaviour : MonoBehaviour
 
         currentHitDelay = maxHitDelay;
     }
+
     IEnumerator MeleeWeaponSwingCoroutine()
     {
         var _steps = new[]

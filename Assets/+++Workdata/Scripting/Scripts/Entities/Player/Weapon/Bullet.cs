@@ -39,12 +39,14 @@ public class Bullet : MonoBehaviour
         trailRenderer = GetComponent<TrailRenderer>();
         bulletSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         gameObject.SetActive(false);
-        currentPenetrationCount = PlayerBehaviour.Instance.weaponBehaviour.maxPenetrationCount;
     }
 
     private void OnEnable()
     {
         flyingTime = 0;
+
+        if(PlayerBehaviour.Instance.weaponBehaviour != null) 
+            currentPenetrationCount = PlayerBehaviour.Instance.weaponBehaviour.maxPenetrationCount;
     }
 
     private void Update()

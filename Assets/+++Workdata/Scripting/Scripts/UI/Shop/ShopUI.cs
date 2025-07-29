@@ -342,11 +342,13 @@ public class ShopUI : MonoBehaviour
         if (header == "Broken Pistol")
         {
             upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "NO UPGRADE";
+            return;
         }
         //I take a random weapon as a reference of how many upgrades a weapon has, assault rifle in this case
         else if (collectedItemsDictionary[header].weaponObjectSO.upgradeTier >= assaultRifleUpgradeTiers.Length)
         {
             upgradeWeaponButton.GetComponentInChildren<TextMeshProUGUI>().text = "MAX LEVEL";
+            return;
         }
         else
         {

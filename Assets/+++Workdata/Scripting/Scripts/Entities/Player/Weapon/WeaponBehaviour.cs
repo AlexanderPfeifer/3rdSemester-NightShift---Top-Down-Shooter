@@ -426,6 +426,7 @@ public class WeaponBehaviour : MonoBehaviour
         bulletDirectionSpread = weapon.weaponBulletSpread;
         this.weapon.transform.localScale = weapon.weaponScale;
         bulletsPerShot = weapon.bulletsPerShot;
+        weaponEndPoint.transform.localPosition = weapon.weaponEndpointPos;
         shootingKnockBack = weapon.playerKnockBack;
         maxClipSize = weapon.clipSize;
         ammunitionInBackUp = weapon.ammunitionInBackUp;

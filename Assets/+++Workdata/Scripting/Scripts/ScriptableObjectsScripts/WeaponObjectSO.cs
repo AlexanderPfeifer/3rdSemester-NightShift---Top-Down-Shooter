@@ -28,6 +28,7 @@ public class WeaponObjectSO : ScriptableObject
     public int bulletsPerShot;
     [Range(0,1)] public float weaponBulletSpread;
     public int penetrationCount;
+    public Vector2 weaponEndpointPos;
     
     [Header("Visuals")]
     [FormerlySerializedAs("inventoryWeaponVisual")] [FormerlySerializedAs("inGameWeaponVisual")] public Sprite uiWeaponVisual;
