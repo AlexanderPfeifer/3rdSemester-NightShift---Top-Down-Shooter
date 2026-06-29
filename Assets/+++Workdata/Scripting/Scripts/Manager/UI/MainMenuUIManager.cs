@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using Steamworks;
 
 public class MainMenuUIManager : Singleton<MainMenuUIManager>
 {
@@ -36,6 +37,7 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     public GameObject firstMainMenuSelected;
     [SerializeField] private GameObject wishlistButton;
     [SerializeField] private GameObject joinDiscordButton;
+    private AppId_t mainGameAppId = new AppId_t(3206760);
 
     [Header("Visuals")]
     [SerializeField] private Animator stallShutterAnimator;
@@ -95,7 +97,17 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
 
     public void WishlistOnSteam()
     {
-        Application.OpenURL("https://store.steampowered.com/app/3206760/Night_Shift/");
+        if (SteamInit.Initialized)
+        {
+            SteamFriends.ActivateGameOverlayToStore(
+                mainGameAppId,
+                EOverlayToStoreFlag.k_EOverlayToStoreFlag_None
+            );
+        }
+        else
+        {
+            Application.OpenURL("https://store.steampowered.com/app/3206760/Night_Shift/");
+        }
     }
 
     public void OpenOptionsMenu()
